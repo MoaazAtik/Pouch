@@ -1,17 +1,3 @@
-package com.example.sqliteapp;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-
-public class MainActivity extends AppCompatActivity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
-}
 
 package com.example.sqliteapp;
 
@@ -326,3 +312,18 @@ public class MainActivity extends AppCompatActivity {
 
 
 }//class MainActivity
+
+//package com.example.sqliteapp;
+//
+//import androidx.appcompat.app.AppCompatActivity;
+//
+//import android.os.Bundle;
+//
+//public class MainActivity extends AppCompatActivity {
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.activity_main);
+//    }
+//}

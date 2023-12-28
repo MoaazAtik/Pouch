@@ -1,7 +1,4 @@
-package com.example.sqliteapp;
 
-public class DatabaseHelper {
-}
 package com.example.sqliteapp;
 
         import android.content.ContentValues;
@@ -177,3 +174,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 }//class
+
+//package com.example.sqliteapp;
+//
+//public class DatabaseHelper {
+//}

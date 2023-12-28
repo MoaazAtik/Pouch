@@ -1,7 +1,3 @@
-package com.example.sqliteapp;
-
-public class Note {
-}
 
 package com.example.sqliteapp;
 
@@ -64,3 +60,8 @@ public class Note {
     }
 
 }//class
+
+//package com.example.sqliteapp;
+//
+//public class Note {
+//}

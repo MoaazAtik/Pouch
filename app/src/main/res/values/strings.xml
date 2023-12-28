@@ -1,15 +1,11 @@
 <resources>
     <string name="app_name">SQLite App</string>
-</resources>
 
-<resources>
-<string name="app_name">SQLite App</string>
-
-<!--    #5.7-->
-<string name="action_settings">Settings</string>
-<string name="activity_title_home">Notes</string>
-<string name="msg_not_notes">No notes foundd!</string>
-<string name="lbl_new_note_title">New Note</string>
-<string name="lbl_edit_note_title">Edit Note</string>
-<string name="hint_enter_note">Enter your note!!</string>
+    <!--    #5.7-->
+    <string name="action_settings">Settings</string>
+    <string name="activity_title_home">Notes</string>
+    <string name="msg_not_notes">No notes found!</string>
+    <string name="lbl_new_note_title">New Note</string>
+    <string name="lbl_edit_note_title">Edit Note</string>
+    <string name="hint_enter_note">Enter your note!!</string>
 </resources>

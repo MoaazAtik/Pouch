@@ -1,7 +1,3 @@
-package com.example.sqliteapp;
-
-public class RecyclerTouchListener {
-}
 
 package com.example.sqliteapp;
 
@@ -83,3 +79,10 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
 
 }//class RecyclerTouchListener
+
+
+
+//package com.example.sqliteapp;
+//
+//public class RecyclerTouchListener {
+//}

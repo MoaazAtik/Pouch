@@ -1,7 +1,3 @@
-package com.example.sqliteapp;
-
-public class NotesAdapter {
-}
 
 package com.example.sqliteapp;
 
@@ -104,3 +100,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     }
 
 }//class NotesAdapter
+
+//package com.example.sqliteapp;
+//
+//public class NotesAdapter {
+//}
