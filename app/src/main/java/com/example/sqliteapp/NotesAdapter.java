@@ -1,4 +1,3 @@
-
 package com.example.sqliteapp;
 
         import android.content.Context;
@@ -16,7 +15,6 @@ package com.example.sqliteapp;
         import java.util.Date;
         import java.util.List;
 
-//#5.10
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
 
     private Context context;
@@ -100,8 +98,3 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     }
 
 }//class NotesAdapter
-
-//package com.example.sqliteapp;
-//
-//public class NotesAdapter {
-//}

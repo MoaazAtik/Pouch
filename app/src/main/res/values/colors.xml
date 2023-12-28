@@ -8,11 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!--    #5.7-->
-    <!--    <color name="msg_no_notes">#999</color>-->
-    <!--    <color name="hint_enter_note">#89c3c3c3</color>-->
-    <!--    <color name="timestamp">#858585</color>-->
-    <!--    <color name="note_list_text">#232323</color>-->
     <color name="msg_no_notes">#ED9595</color>
     <color name="hint_enter_note">#5BB9E3</color>
     <color name="timestamp">#E1D674</color>

@@ -1,4 +1,3 @@
-
 package com.example.sqliteapp;
 
         import androidx.appcompat.app.AppCompatActivity;
@@ -20,8 +19,6 @@ package com.example.sqliteapp;
         import java.util.ArrayList;
         import java.util.List;
 
-//#5.6
-//#5.11
 public class MainActivity extends AppCompatActivity {
 
     private NotesAdapter mAdapter;
@@ -312,18 +309,3 @@ public class MainActivity extends AppCompatActivity {
 
 
 }//class MainActivity
-
-//package com.example.sqliteapp;
-//
-//import androidx.appcompat.app.AppCompatActivity;
-//
-//import android.os.Bundle;
-//
-//public class MainActivity extends AppCompatActivity {
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//    }
-//}

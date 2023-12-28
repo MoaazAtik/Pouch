@@ -1,4 +1,3 @@
-
 package com.example.sqliteapp;
 
         import android.content.Context;
@@ -9,7 +8,6 @@ package com.example.sqliteapp;
         import androidx.annotation.NonNull;
         import androidx.recyclerview.widget.RecyclerView;
 
-//#5.9
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
 
@@ -79,10 +77,3 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
 
 }//class RecyclerTouchListener
-
-
-
-//package com.example.sqliteapp;
-//
-//public class RecyclerTouchListener {
-//}

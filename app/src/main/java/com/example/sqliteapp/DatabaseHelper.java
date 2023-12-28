@@ -1,4 +1,3 @@
-
 package com.example.sqliteapp;
 
         import android.content.ContentValues;
@@ -12,8 +11,6 @@ package com.example.sqliteapp;
         import java.util.ArrayList;
         import java.util.List;
 
-//#5.8
-//we could also name it DatabaseController, DatabaseHandler or any other name
 public class DatabaseHelper extends SQLiteOpenHelper {
 
 
@@ -25,8 +22,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //#5.11*
-    //2:15 create constructor with context parameter
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -150,7 +145,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    //#5.9
     //update note:
     public int updateNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -174,8 +168,3 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 }//class
-
-//package com.example.sqliteapp;
-//
-//public class DatabaseHelper {
-//}

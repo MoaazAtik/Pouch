@@ -1,7 +1,5 @@
-
 package com.example.sqliteapp;
 
-//#5.7
 public class Note {
     //
     public static final String TABLE_NAME = "notes";
@@ -60,8 +58,3 @@ public class Note {
     }
 
 }//class
-
-//package com.example.sqliteapp;
-//
-//public class Note {
-//}
