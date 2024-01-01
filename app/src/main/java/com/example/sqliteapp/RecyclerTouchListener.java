@@ -1,6 +1,7 @@
 package com.example.sqliteapp;
 
         import android.content.Context;
+        import android.util.Log;
         import android.view.GestureDetector;
         import android.view.MotionEvent;
         import android.view.View;
@@ -10,6 +11,7 @@ package com.example.sqliteapp;
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
+    private static final String TAG = "RecyclerTouchListener";
 
     private ClickListener clicklistener;
     private GestureDetector gestureDetector;
@@ -47,7 +49,8 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         View child = rv.findChildViewUnder(e.getX(), e.getY());
 
-        if(child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+        if(child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) { /// why clicklistener != null && gestureDetector.onTouchEvent(e)
+//            gestureDetector.onTouchEvent(e); ///  add this and replace 'if' with 'if(child != null){'
 
             clicklistener.onClick(child, rv.getChildAdapterPosition(child));
         }

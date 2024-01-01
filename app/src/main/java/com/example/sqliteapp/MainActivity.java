@@ -9,8 +9,10 @@ package com.example.sqliteapp;
         import android.content.DialogInterface;
         import android.os.Bundle;
         import android.text.TextUtils;
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.View;
+        import android.widget.ArrayAdapter;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.TextView;
@@ -20,6 +22,8 @@ package com.example.sqliteapp;
         import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
 
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
@@ -39,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
 
-
-        db = new DatabaseHelper(this);
+        db = new DatabaseHelper(this); /// rename it to dbh like Sluiter
         notesList.addAll(db.getAllNote());
 
 
@@ -54,13 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
 
         toggleEmptyNotes();
-
+        Log.d(TAG, "onCreate: this " + this.getClass());
 
         Button addNote = findViewById(R.id.addNoteBtn);
         addNote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                Log.d(TAG, "onClick: addNoteBtn this " + this.getClass());
                 showNoteDialog(false, null, -1);
             }
         });
@@ -82,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onLongClick(View view, int position) {
 
+                                Log.d(TAG, "onLongClick: recyclerView this " + this.getClass());
                                 showActionsDialog(position);
                             }
                         }));
@@ -95,25 +100,30 @@ public class MainActivity extends AppCompatActivity {
      */
     private void createNote(String note) {
 
+        Log.d(TAG, "createNote: note "+note);
+
         //inserting note in db
         long id = db.insertNote(note);
+        Log.d(TAG, "createNote: id "+id);
 
 
         //get the newly inserted note from db
         Note n = db.getNote(id);
+        Log.d(TAG, "createNote: n "+n);
 
 
-        if(n != null) {
+//        if(n != null) { /// shouldn't this check be before db.insertNote(note) (?)
 
             //adding new note to array list at 0 position
             notesList.add(0, n);
 
             //refreshing the list
             mAdapter.notifyDataSetChanged();
+//            mAdapter.notifyItemInserted(0); /// replace with this
 
 
             toggleEmptyNotes();
-        }
+//        }
 
     }//createNote()
 
@@ -125,9 +135,12 @@ public class MainActivity extends AppCompatActivity {
     private void updateNote(String note, int position) {
 
         Note n = notesList.get(position);
+        Log.d(TAG, "updateNote: n "+n);
 
         //updating note text (note body)
         n.setNote(note);
+        Log.d(TAG, "updateNote: n "+n);
+        Log.d(TAG, "updateNote: note "+note);
 
         //updating note in db
         db.updateNote(n);
@@ -169,13 +182,13 @@ public class MainActivity extends AppCompatActivity {
     /**
      * opens dialog with Edit - Delete options
      * Edit - 0
-     * Delete - 0
+     * Delete - 0 /// replace with 1
      */
     //what does Edit - 0 mean ??
 
     private void showActionsDialog(final int position) {
 
-        CharSequence colors[] = new CharSequence[] {"Edit", "Delete"};
+        CharSequence colors[] = new CharSequence[] {"Edit", "Delete"}; /// rename this
         //why did we call it colors??
 
 
@@ -222,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         alertDialogBuilderUserInput.setView(view);
 
 
-        final EditText inputNote = view.findViewById(R.id.note);
+        final EditText inputNote = view.findViewById(R.id.note); /// extract inputNote.getText().toString()
 
 
         TextView dialogTitle = view.findViewById(R.id.dialog_title);
@@ -238,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton(shouldUpdate ? "updatee" : "savee", new DialogInterface.OnClickListener() {
 
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(DialogInterface dialog, int which) { /// is this needed (?)
 
                     }
                 })
@@ -274,7 +287,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 //check if user updating note
-                if(shouldUpdate && note != null) {
+                if(shouldUpdate && note != null) { /// remove '&& note != null'
 
                     //update note by its id
                     updateNote(inputNote.getText().toString(), position);
@@ -294,7 +307,7 @@ public class MainActivity extends AppCompatActivity {
     //toggling list and empty notes view
     private void toggleEmptyNotes() {
 
-        //you can check notesList.size() > 0
+        //you can check notesList.size() > 0 /// replace with this
 
 //        if(db.getNotesCount() > 0) {
         //in the course it's written like this but there is no "getNotesCount()" method in DatabaseHelper, so I did it as following

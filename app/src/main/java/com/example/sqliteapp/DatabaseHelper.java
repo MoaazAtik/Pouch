@@ -5,6 +5,7 @@ package com.example.sqliteapp;
         import android.database.Cursor;
         import android.database.sqlite.SQLiteDatabase;
         import android.database.sqlite.SQLiteOpenHelper;
+        import android.util.Log;
 
         import androidx.annotation.Nullable;
 
@@ -13,6 +14,7 @@ package com.example.sqliteapp;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private static final String TAG = "DatabaseHelper";
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "notes_db";
@@ -42,10 +44,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //add new note
     public long insertNote(String note) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase(); // 'this' here refers to this class which is called 'DatabaseHelper'. getWritableDatabase() method is inherited from 'SQLiteOpenHelper.
+//        SQLiteDatabase db = getWritableDatabase(); // this also works. I think it can be used
+        Log.d(TAG, "insertNote: db "+db);
 
         ContentValues values = new ContentValues();
+        Log.d(TAG, "insertNote: values "+values);
         values.put(Note.COLUMN_NAME, note);
+        Log.d(TAG, "insertNote: values "+values);
 
         long id = db.insert(Note.TABLE_NAME, null, values);
         db.close();
@@ -61,7 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = dp.query(Note.TABLE_NAME,
                 new String[]{Note.COLUMN_ID, Note.COLUMN_NAME, Note.COLUMN_TIMESTAMP},
-                Note.COLUMN_ID + "=?",
+                Note.COLUMN_ID + " = ? ", /// added spaces
                 new String[]{String.valueOf(id)}, null, null, null, null
         );
         //"=?" means "if it does".
@@ -69,10 +75,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //and if it does continue (new String[]{String.valueOf...)
         //is it " =?" ??
 
+//        Log.d(TAG, "getNote: cursor "+cursor.getPosition());
+//        Log.d(TAG, "getNote: cursor.moveToFirst() " + cursor.moveToFirst()); /// it affects the cursor position even in a Log, 'if', 'while' statement
+//        Log.d(TAG, "getNote: cursor "+cursor.getPosition());
         if(cursor != null) {
-            cursor.moveToFirst();
+//        if(cursor.moveToFirst()) { /// replace the line above and below with this
+            cursor.moveToFirst(); /// what does this do (?) , do I need it even though dp.query or db.rawQuery return 'A Cursor object, which is positioned before the first entry.' as in the documentation.
+            /// db.query vs db.rawQuery
             //what does it mean??
         }
+        Log.d(TAG, "getNote: cursor "+cursor.getPosition());
+//        Log.d(TAG, "getNote: cursor "+cursor.moveToNext());
+//        Log.d(TAG, "getNote: cursor "+cursor.getPosition());
 
 
         //E lines (don't work)
@@ -96,13 +110,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-        cursor.close();
+        cursor.close(); // add db.close(); like Sluiter (is it needed (?)) YT: 1:07:50
         return note;
     }
 
 
     //get all notes
-    public List<Note> getAllNote() {
+    public List<Note> getAllNote() { /// rename to getAllNotes
         List<Note> notes = new ArrayList<>();
 
         //select all query:
@@ -137,10 +151,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
                 notes.add(note);
-            } while(cursor.moveToNext());
+            } while(cursor.moveToNext()); /// is cursor.moveToNext() executed or just checked and I need to execute it above. It is executed.
         }
 
-        db.close();
+        db.close(); /// add cursor.close(); like Sluiter (is it needed (?)) YT: 1:07:50
         return notes;
     }
 
@@ -154,15 +168,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //because the database takes the id and the timestamp automatically I need to pass the note body only.
         //update for database value
-        return db.update(Note.TABLE_NAME, value, Note.COLUMN_ID + " =?", new String[]{String.valueOf(note.getId())});
+        return db.update(Note.TABLE_NAME, value, Note.COLUMN_ID + " = ? ", new String[]{String.valueOf(note.getId())});
     }
 
 
     //Delete note:
     public void deleteNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
+//        Log.d(TAG, "deleteNote: this "+this);
 
-        db.delete(Note.TABLE_NAME, Note.COLUMN_ID + " =?", new String[]{String.valueOf(note.getId())});
+        db.delete(Note.TABLE_NAME, Note.COLUMN_ID + " = ? ", new String[]{String.valueOf(note.getId())});
+
+        /// Or like Sluiter, instead of db.delete
+//        String queryString = "DELETE FROM " + Note.TABLE_NAME + " WHERE " + Note.COLUMN_ID + " = " + note.getId();
+//        Cursor cursor = db.rawQuery(queryString, null);
+//        if (cursor.moveToFirst()) // there is a match
+
         db.close();
     }
 

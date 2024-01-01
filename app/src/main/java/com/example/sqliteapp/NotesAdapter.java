@@ -83,18 +83,18 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         try {
             SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = fmt.parse(dateStr);
-            //java.util.Date or java.sql.Date ??
-            //are "fmt" and "fmt.parse" needed??
+            //java.util.Date or java.sql.Date ?? ///
+            //are "fmt" and "fmt.parse" needed?? ///
 
             SimpleDateFormat fmtOut = new SimpleDateFormat("MMM d");
             return fmtOut.format(date);
 
         } catch (ParseException e) {
-            e.printStackTrace();
+            e.printStackTrace(); /// add Lot.E
         }
 
         return "";
-        //why do we need this
+        //why do we need this ///
     }
 
 }//class NotesAdapter

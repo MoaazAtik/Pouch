@@ -1,7 +1,9 @@
 package com.example.sqliteapp;
 
+import androidx.annotation.NonNull;
+
 public class Note {
-    //
+    /// rename these
     public static final String TABLE_NAME = "notes";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "note";
@@ -32,6 +34,15 @@ public class Note {
         this.timestamp = timestamp;
     }
 
+    @NonNull
+    @Override
+    public String toString() {
+        return "Note{" +
+                "id=" + id +
+                ", note='" + note + '\'' +
+                ", timestamp='" + timestamp + '\'' +
+                '}';
+    }
 
     public int getId() {
         return id;
