@@ -3,34 +3,17 @@ package com.example.sqliteapp;
 import androidx.annotation.NonNull;
 
 public class Note {
-    /// rename these
-    public static final String TABLE_NAME = "notes";
-    public static final String COLUMN_ID = "id";
-    public static final String COLUMN_NAME = "note";
-    public static final String COLUMN_TIMESTAMP = "timestamp";
-    //each "row" refers to a note (whole note i.e. id, note body, timestamp)
-    //COLUMN_ID refers to the "column" that contains the id's of the rows, and not an id of the column
-    //COLUMN_NAME refers to the "column" that contains the bodies of the notes, and not the name (title/header) of each column
 
     private int id;
-    private String note;
+    private String noteBody;
     private String timestamp;
-
-    //create SQL: create table
-    public static final String CREATE_TABLE =
-            "CREATE TABLE " + TABLE_NAME + "("
-                    + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                    + COLUMN_NAME + " TEXT,"
-                    + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ")";
-    //the spaces within the CREATE_TABLE Statement are not so important (e.g. " DATETIME DEFAULT CURRENT_TIMESTAMP     " is right also)
-
 
     public Note() {
     }
 
-    public Note(int id, String note, String timestamp) {
+    public Note(int id, String noteBody, String timestamp) {
         this.id = id;
-        this.note = note;
+        this.noteBody = noteBody;
         this.timestamp = timestamp;
     }
 
@@ -39,7 +22,7 @@ public class Note {
     public String toString() {
         return "Note{" +
                 "id=" + id +
-                ", note='" + note + '\'' +
+                ", noteBody='" + noteBody + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
     }
@@ -52,12 +35,12 @@ public class Note {
         this.id = id;
     }
 
-    public String getNote() {
-        return note;
+    public String getNoteBody() {
+        return noteBody;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setNoteBody(String noteBody) {
+        this.noteBody = noteBody;
     }
 
     public String getTimestamp() {
@@ -67,5 +50,4 @@ public class Note {
     public void setTimestamp(String timestamp) {
         this.timestamp = timestamp;
     }
-
-}//class
+}
