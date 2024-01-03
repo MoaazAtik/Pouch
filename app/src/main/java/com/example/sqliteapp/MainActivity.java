@@ -105,24 +105,14 @@ public class MainActivity extends AppCompatActivity {
      * @param position of note in Notes List to be updated
      */
     private void updateNote(String noteBody, int position) {
+        // getting reference to the note
         Note n = notesList.get(position);
-        Log.d(TAG, "updateNote: notesList.get(position) "+notesList.get(position));
-        Log.d(TAG, "updateNote: n "+n);
-
-        // updating note body
+        // updating note body in the Notes List
         n.setNoteBody(noteBody);
-        Log.d(TAG, "updateNote: notesList.get(position) "+notesList.get(position));
-        Log.d(TAG, "updateNote: n "+n);
-
         // updating note in Database
         databaseHelper.updateNote(n);
-
-        // updating the note in the list
-//        notesList.set(position, n); // not needed //todo: add it to top of list
         // refreshing the Recycler view
-        mAdapter.notifyDataSetChanged();
-        Log.d(TAG, "updateNote: notesList.get(position) "+notesList.get(position));
-        Log.d(TAG, "updateNote: n "+n);
+        mAdapter.notifyItemChanged(position);
 
         toggleEmptyNotes();
     }
@@ -157,18 +147,18 @@ public class MainActivity extends AppCompatActivity {
         builder.setItems(
                 optionsNames,
                 new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                if (which == 0) {
-                    showNoteDialog(
-                            true,
-                            notesList.get(position),
-                            position);
-                } else {
-                    deleteNote(position);
-                }
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            showNoteDialog(
+                                    true,
+                                    notesList.get(position),
+                                    position);
+                        } else {
+                            deleteNote(position);
+                        }
+                    }
+                });
 
         builder.show();
     }
@@ -179,8 +169,8 @@ public class MainActivity extends AppCompatActivity {
      * changes the button text to UPDATE
      *
      * @param shouldUpdate Updating or Creating a new Note.
-     * @param note that will be updated, or null when creating new note.
-     * @param position of note to be updated, or -1 when creating new note.
+     * @param note         that will be updated, or null when creating new note.
+     * @param position     of note to be updated, or -1 when creating new note.
      */
     private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
         LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
@@ -202,56 +192,35 @@ public class MainActivity extends AppCompatActivity {
                 .setPositiveButton(
                         shouldUpdate ? "update" : "save",
                         new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) { /// is this needed (?)
-                        String noteBody = etNoteBody.getText().toString();
+                            public void onClick(DialogInterface dialog, int which) {
+                                String noteBody = etNoteBody.getText().toString();
 
-                        // show toast message when no text is entered
-                        if (TextUtils.isEmpty(noteBody)) {
-                            Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
-                            return;
-                        } else {
-//                            alertDialog.dismiss();
-                            dialog.dismiss();
-                        }
-                        // check if user updating note
-                        if (shouldUpdate) {
-                            updateNote(noteBody, position);
-                        } else {
-                            createNote(noteBody);
-                        }
-                    }
-                })
+                                // show toast message when no text is entered
+                                if (TextUtils.isEmpty(noteBody)) {
+                                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
+                                    return;
+                                } else {
+                                    dialog.dismiss();
+                                }
+                                // check if user updating note
+                                if (shouldUpdate) {
+                                    updateNote(noteBody, position);
+                                } else {
+                                    createNote(noteBody);
+                                }
+                            }
+                        })
 
                 .setNegativeButton(
                         "cancel",
                         new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
 
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
-//        alertDialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
-////            String noteBody = etNoteBody.getText().toString();
-////
-////            // show toast message when no text is entered
-////            if (TextUtils.isEmpty(noteBody)) {
-////                Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
-////                return;
-////            } else {
-////                alertDialog.dismiss();
-////            }
-////
-////            // check if user updating note
-////            if (shouldUpdate) {
-////                updateNote(noteBody, position);
-////            } else {
-////                createNote(noteBody);
-////            }
-//        });
-
     }//showNoteDialog()
 
     /**

@@ -1,14 +1,14 @@
 package com.example.sqliteapp;
 
-        import android.content.ContentValues;
-        import android.content.Context;
-        import android.database.Cursor;
-        import android.database.sqlite.SQLiteDatabase;
-        import android.database.sqlite.SQLiteOpenHelper;
-        import android.util.Log;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-        import java.util.ArrayList;
-        import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -79,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         );
 
         Note note = null;
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             int i1 = cursor.getColumnIndex(COLUMN_ID);
             int i2 = cursor.getColumnIndex(COLUMN_NOTE_BODY);
             int i3 = cursor.getColumnIndex(COLUMN_TIMESTAMP);
@@ -119,7 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setTimestamp(cursor.getString(i3));
 
                 notes.add(note);
-            } while(cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
 
         cursor.close();
