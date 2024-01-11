@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
 
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "notes_db";
     public static final String TABLE_NAME = "Notes";
     public static final String COLUMN_ID = "ID";
@@ -25,23 +25,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // create data Table on app's First Run, or after Clearing Storage related to the app
+    /*
+    create data Table on app's First Run, or after Clearing Storage related to the app, or when onCreate is called Explicitly by upgradeOrDowngrade()
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTableStatement =
                 "CREATE TABLE " + TABLE_NAME + "("
                         + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                         + COLUMN_NOTE_BODY + " TEXT,"
-                        + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP" + ")";
+                        + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
+                        + ")";
 
         db.execSQL(createTableStatement);
     }
 
-    // when upgrading the Database, Remove the old one and Create a new one
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+        upgradeOrDowngrade(db);
+    }
+
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+//        super.onDowngrade(db, oldVersion, newVersion);
+        upgradeOrDowngrade(db);
     }
 
 
@@ -163,4 +170,120 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+    /**
+     * Transfer data from Old table to New Table for the Common columns and Renamed columns.
+     * It doesn't transfer data of columns that no longer exist in New table.<p>
+     * <p>
+     * Note: 1. When upgrading or downgrading the database, modify {@link #DATABASE_VERSION}.<P>
+     * 2. When renaming columns, modify {@link #setAndGetColumnMappings()}.
+     *
+     * @param db to be upgraded or downgraded
+     */
+    private void upgradeOrDowngrade(SQLiteDatabase db) {
+        // Create a temporary table with the same structure as the old table
+        String tempTableName = TABLE_NAME + "_temp";
+        db.execSQL(
+                "CREATE TABLE IF NOT EXISTS " + tempTableName +
+                        " AS SELECT * FROM " + TABLE_NAME
+        );
+
+        // Drop the old table
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+
+        // Create the new table
+        onCreate(db);
+
+        // Get column information for the old and new tables.
+        List<String> oldTableColumns = getTableColumns(db, tempTableName);
+        List<String> newTableColumns = getTableColumns(db, TABLE_NAME);
+
+        // Find common columns between old and new tables. Note: Renamed columns are not added to this temporary commonColumns List
+        List<String> commonColumns = new ArrayList<>(oldTableColumns);
+        commonColumns.retainAll(newTableColumns);
+
+        // Copy data from the temporary table to the new table for the common columns
+        String commonColumnsString = TextUtils.join(",", commonColumns);
+        db.execSQL(
+                "INSERT INTO " + TABLE_NAME + " (" + commonColumnsString +
+                        ") SELECT " + commonColumnsString +
+                        " FROM " + tempTableName
+        );
+
+        // Check and transfer data to Renamed columns
+        List<ColumnMapping> columnMappings = setAndGetColumnMappings();
+        for (ColumnMapping mapping : columnMappings) {
+            if (oldTableColumns.contains(mapping.oldColumnName) && newTableColumns.contains(mapping.newColumnName)) {
+                // Perform data transfer or adjustments based on the column mapping
+                String transferQuery =
+                        "UPDATE " + TABLE_NAME +
+                                " SET " + mapping.newColumnName + " = " + mapping.oldColumnName +
+                                " FROM " + tempTableName +
+                                " WHERE " + TABLE_NAME + " . " + COLUMN_ID + " = " + tempTableName + " . " + COLUMN_ID;
+                db.execSQL(transferQuery);
+            }
+        }
+
+        // Drop the temporary table
+        db.execSQL("DROP TABLE IF EXISTS " + tempTableName);
+
+        // Find removed columns (for debugging)
+        List<String> removedColumns = new ArrayList<>(oldTableColumns);
+        removedColumns.removeAll(newTableColumns);
+        // Find added columns (for debugging)
+        List<String> addedColumns = new ArrayList<>(newTableColumns);
+        addedColumns.removeAll(oldTableColumns);
+    }
+
+    /**
+     * Get Names of Columns of a Table
+     *
+     * @param db        database where Table is stored
+     * @param tableName to get its columns
+     * @return list of columns names
+     */
+    private List<String> getTableColumns(SQLiteDatabase db, String tableName) {
+        List<String> columns = new ArrayList<>();
+        Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
+
+        if (cursor != null) {
+//        if (cursor.moveToFirst()) {
+            try {
+                while (cursor.moveToNext()) {
+                    int columnOfTableColumnsNames = cursor.getColumnIndex("name");
+                    columns.add(cursor.getString(columnOfTableColumnsNames));
+                }
+            } finally {
+                cursor.close();
+            }
+        }
+
+        return columns;
+    }
+
+    /**
+     * Set and Get column mappings. It is used for Renaming Columns.
+     * I need to populate this list with new column mappings.
+     *
+     * @return list of Column Mappings which have Old and New names of Renamed Columns.
+     */
+    private List<ColumnMapping> setAndGetColumnMappings() {
+        List<ColumnMapping> columnMappings = new ArrayList<>();
+        // Add new column mappings here
+        columnMappings.add(new ColumnMapping("NoteBody2", COLUMN_NOTE_BODY));
+        return columnMappings;
+    }
+
+
+    // A class to hold column mapping information to be used when Renaming Columns
+    private class ColumnMapping {
+        public String oldColumnName;
+        public String newColumnName;
+
+        public ColumnMapping(String oldColumnName, String newColumnName) {
+            this.oldColumnName = oldColumnName;
+            this.newColumnName = newColumnName;
+        }
+    }
+
 }
