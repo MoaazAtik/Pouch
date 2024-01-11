@@ -47,7 +47,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        super.onDowngrade(db, oldVersion, newVersion);
         upgradeOrDowngrade(db);
     }
 
@@ -173,7 +172,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Transfer data from Old table to New Table for the Common columns and Renamed columns.
-     * It doesn't transfer data of columns that no longer exist in New table.<p>
+     * It doesn't transfer data of columns that no longer exist in New table.
      * <p>
      * Note: 1. When upgrading or downgrading the database, modify {@link #DATABASE_VERSION}.<P>
      * 2. When renaming columns, modify {@link #setAndGetColumnMappings()}.
@@ -227,12 +226,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Drop the temporary table
         db.execSQL("DROP TABLE IF EXISTS " + tempTableName);
 
-        // Find removed columns (for debugging)
-        List<String> removedColumns = new ArrayList<>(oldTableColumns);
-        removedColumns.removeAll(newTableColumns);
-        // Find added columns (for debugging)
-        List<String> addedColumns = new ArrayList<>(newTableColumns);
-        addedColumns.removeAll(oldTableColumns);
+        // Find removed and added columns (for debugging)
+//        List<String> removedColumns = new ArrayList<>(oldTableColumns);
+//        removedColumns.removeAll(newTableColumns);
+//        List<String> addedColumns = new ArrayList<>(newTableColumns);
+//        addedColumns.removeAll(oldTableColumns);
     }
 
     /**
@@ -247,7 +245,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("PRAGMA table_info(" + tableName + ")", null);
 
         if (cursor != null) {
-//        if (cursor.moveToFirst()) {
             try {
                 while (cursor.moveToNext()) {
                     int columnOfTableColumnsNames = cursor.getColumnIndex("name");
