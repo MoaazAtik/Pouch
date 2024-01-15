@@ -2,8 +2,10 @@ package com.example.sqliteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -16,6 +18,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,9 @@ public class MainActivity extends AppCompatActivity {
         notesList.addAll(databaseHelper.getAllNotes());
 
         mAdapter = new NotesAdapter(this, notesList);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+//        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -51,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
         toggleEmptyNotes();
 
-        Button addNote = findViewById(R.id.addNoteBtn);
+//        Button addNote = findViewById(R.id.addNoteBtn);
+        FloatingActionButton addNote = findViewById(R.id.addNoteBtn);
         addNote.setOnClickListener(v ->
                 showNoteDialog(false, null, -1));
 
