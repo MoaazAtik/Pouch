@@ -1,6 +1,8 @@
 package com.example.sqliteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -73,6 +75,8 @@ public class MainActivity extends AppCompatActivity {
                         new RecyclerTouchListener.ClickListener() {
                             @Override
                             public void onClick(View view, int position) {
+                                Log.d(TAG, "onClick: ");
+                                addNote(null);
                             }
 
                             @Override
@@ -169,6 +173,82 @@ public class MainActivity extends AppCompatActivity {
 
         builder.show();
     }
+
+    /**
+//     * Show alert dialog with EditText options to create or edit a note.
+//     * when shouldUpdate = true, it automatically displays old note and
+//     * changes the button text to UPDATE
+//     *
+//     * @param shouldUpdate Updating or Creating a new Note.
+//     * @param note         that will be updated, or null when creating new note.
+//     * @param position     of note to be updated, or -1 when creating new note.
+     */
+//    private void addNote(final boolean shouldUpdate, final Note note, final int position) {
+    private void addNote(final Note note) {
+
+        // Direct to MoreFragment
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        // Animations. this has to be before fragmentTransaction.replace()
+        fragmentTransaction.setCustomAnimations(
+                androidx.fragment.R.animator.fragment_fade_enter, // Enter animation
+                androidx.fragment.R.animator.fragment_fade_exit, // Exit animation
+                androidx.fragment.R.animator.fragment_close_enter, // Pop enter animation (when navigating back)
+                androidx.fragment.R.animator.fragment_fade_exit // Pop exit animation (when navigating back)
+        );
+        fragmentTransaction.replace(R.id.fragment_container_note, new NoteFragment());
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+
+//        LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
+//        View view = layoutInflater.inflate(R.layout.note_dialog, null);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        builder.setView(view);
+//
+//        final EditText etNoteBody = view.findViewById(R.id.note);
+//
+//        TextView dialogTitle = view.findViewById(R.id.dialog_title);
+////        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+//
+////        if (shouldUpdate) {
+////            etNoteBody.setText(note.getNoteBody());
+////        }
+//
+//        builder
+//                .setCancelable(false)
+////                .setPositiveButton(
+////                        shouldUpdate ? "update" : "save",
+////                        new DialogInterface.OnClickListener() {
+////                            public void onClick(DialogInterface dialog, int which) {
+////                                String noteBody = etNoteBody.getText().toString();
+////
+////                                // show toast message when no text is entered
+////                                if (TextUtils.isEmpty(noteBody)) {
+////                                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
+////                                    return;
+////                                } else {
+////                                    dialog.dismiss();
+////                                }
+////                                // check if user updating note
+////                                if (shouldUpdate) {
+////                                    updateNote(noteBody, position);
+////                                } else {
+////                                    createNote(noteBody);
+////                                }
+////                            }
+////                        })
+//
+//                .setNegativeButton(
+//                        "cancel",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        final AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+    }//addNote()
 
     /**
      * Show alert dialog with EditText options to create or edit a note.
