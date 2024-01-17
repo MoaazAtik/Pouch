@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -16,7 +15,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,7 +60,9 @@ public class MainActivity extends AppCompatActivity {
 //        Button addNote = findViewById(R.id.addNoteBtn);
         FloatingActionButton addNote = findViewById(R.id.addNoteBtn);
         addNote.setOnClickListener(v ->
-                showNoteDialog(false, null, -1));
+//                showNoteDialog(false, null, -1)
+                openNote(false,null, -1)
+        );
 
         /*
         Touch Listener of Recycler View Items.
@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(View view, int position) {
                                 Log.d(TAG, "onClick: ");
-                                addNote(null);
+                                openNote(true, notesList.get(position), position);
                             }
 
                             @Override
@@ -184,7 +184,19 @@ public class MainActivity extends AppCompatActivity {
 //     * @param position     of note to be updated, or -1 when creating new note.
      */
 //    private void addNote(final boolean shouldUpdate, final Note note, final int position) {
-    private void addNote(final Note note) {
+    private void openNote(final boolean shouldUpdate, final Note note, final int position) {
+
+        NoteFragment noteFragment = new NoteFragment();
+        if (note != null) {
+            Bundle argsBundle = new Bundle();
+
+            argsBundle.putInt(DatabaseHelper.COLUMN_ID, note.getId());
+            argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
+            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
+
+            noteFragment.setArguments(argsBundle);
+            Log.d(TAG, "openNote: argsBundle " + argsBundle);
+        }
 
         // Direct to MoreFragment
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -196,59 +208,43 @@ public class MainActivity extends AppCompatActivity {
                 androidx.fragment.R.animator.fragment_close_enter, // Pop enter animation (when navigating back)
                 androidx.fragment.R.animator.fragment_fade_exit // Pop exit animation (when navigating back)
         );
-        fragmentTransaction.replace(R.id.fragment_container_note, new NoteFragment());
+//        fragmentTransaction.replace(R.id.fragment_container_note, new NoteFragment());
+        fragmentTransaction.replace(R.id.fragment_container_note, noteFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
-//        LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
-//        View view = layoutInflater.inflate(R.layout.note_dialog, null);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        builder.setView(view);
-//
-//        final EditText etNoteBody = view.findViewById(R.id.note);
-//
-//        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-////        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
-//
-////        if (shouldUpdate) {
-////            etNoteBody.setText(note.getNoteBody());
-////        }
-//
-//        builder
-//                .setCancelable(false)
-////                .setPositiveButton(
-////                        shouldUpdate ? "update" : "save",
-////                        new DialogInterface.OnClickListener() {
-////                            public void onClick(DialogInterface dialog, int which) {
-////                                String noteBody = etNoteBody.getText().toString();
-////
-////                                // show toast message when no text is entered
-////                                if (TextUtils.isEmpty(noteBody)) {
-////                                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
-////                                    return;
-////                                } else {
-////                                    dialog.dismiss();
-////                                }
-////                                // check if user updating note
-////                                if (shouldUpdate) {
-////                                    updateNote(noteBody, position);
-////                                } else {
-////                                    createNote(noteBody);
-////                                }
-////                            }
-////                        })
-//
-//                .setNegativeButton(
-//                        "cancel",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//        final AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-    }//addNote()
+        Log.d(TAG, "openNote: ");
+
+        noteFragment.setDataPassListener(new NoteFragment.DataPassListener() {
+            @Override
+            public void onDataPass(String noteTitle, String noteBody) {
+                Log.d(TAG, "onDataPass: noteTitle "+noteTitle);
+                Log.d(TAG, "onDataPass: noteBody "+noteBody);
+
+//                String noteBody = noteBody;
+
+                // show toast message when no text is entered
+//                if (TextUtils.isEmpty(noteBody)) {
+                if (TextUtils.isEmpty(noteTitle) && TextUtils.isEmpty(noteBody)) {
+                    Log.d(TAG, "empty note ");
+                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+//                else {
+//                    dialog.dismiss();
+//                }
+                // check if user updating note
+                if (shouldUpdate) {
+                    updateNote(noteBody, position);
+                } else {
+                    createNote(noteBody);
+                }
+
+            }
+        });
+
+    }
 
     /**
      * Show alert dialog with EditText options to create or edit a note.

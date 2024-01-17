@@ -1,10 +1,12 @@
 package com.example.sqliteapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
@@ -17,7 +19,11 @@ public class NoteFragment extends Fragment {
 
     private static final String TAG = "NoteFragment";
 
-    ImageButton btnBack, btnDelete;
+    private ImageButton btnBack, btnDelete;
+    private EditText etNoteTitle, etNoteBody;
+    private DataPassListener dataPassListener;
+
+    private DatabaseHelper databaseHelper;
 
     @Nullable
     @Override
@@ -32,31 +38,18 @@ public class NoteFragment extends Fragment {
 //        btnBack = (ImageButton) view.findViewById(R.id.btn_back);
         btnBack = view.findViewById(R.id.btn_back);
         btnDelete = view.findViewById(R.id.btn_delete);
+        etNoteTitle = view.findViewById(R.id.et_note_title);
+        etNoteBody = view.findViewById(R.id.et_note_body);
+
+        databaseHelper = new DatabaseHelper(requireContext());
+
+        initializeNote();
 
         //btnBack
         btnBack.setOnClickListener(v -> {
 
             closeNote();
 
-//            // Get the Uri of the default tone
-//            int rawResourceId = R.raw.soft;
-//            String rawResourceString = ContentResolver.SCHEME_ANDROID_RESOURCE + "://" +
-//                    getResources().getResourcePackageName(rawResourceId) + '/' +
-//                    getResources().getResourceTypeName(rawResourceId) + '/' +
-//                    getResources().getResourceEntryName(rawResourceId);
-//            Uri rawResourceUri = Uri.parse(rawResourceString);
-//
-//            // Create an intent to open the ringtone picker to change the alarm tone of the app
-//            Intent intent = new Intent(RingtoneManager.ACTION_RINGTONE_PICKER);//to choose from internal (ringtones) storage
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TYPE, RingtoneManager.TYPE_ALL);
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_TITLE, "Select Tone");
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_DEFAULT_URI, rawResourceUri);
-//            intent.putExtra(RingtoneManager.EXTRA_RINGTONE_SHOW_SILENT, false);
-//
-////                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI); //to choose from external storage
-//
-//            // Open the ringtone picker
-//            mGetContent.launch(intent);
         });
 
         //btnDelete
@@ -85,7 +78,38 @@ public class NoteFragment extends Fragment {
         return view;
     }
 
+    private void initializeNote() {
+        Bundle argsBundle = getArguments();
+        Log.d(TAG, "initializeNote: ");
+        Log.d(TAG, "argsBundle "+argsBundle);
+
+        if (argsBundle != null) {
+            int id = argsBundle.getInt(DatabaseHelper.COLUMN_ID);
+            String noteBody = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_BODY);
+            String timestamp = argsBundle.getString(DatabaseHelper.COLUMN_TIMESTAMP);
+            Log.d(TAG, "id "+id);
+            Log.d(TAG, "noteBody "+noteBody);
+            Log.d(TAG, "timestamp "+timestamp);
+
+            etNoteTitle.setText(id + " - " + timestamp);
+            etNoteBody.setText(noteBody);
+        }
+    }
+
     private void closeNote() {
+
+        String noteTitle = etNoteTitle.getText().toString();
+        String noteBody = etNoteBody.getText().toString();
+
+        if (dataPassListener != null) {
+            dataPassListener.onDataPass(
+                    noteTitle,
+                    noteBody
+//                    "Neww Tt",
+//                    "Hello World!",
+            );
+        }
+
         // Get the FragmentManager
 //        assert getFragmentManager() != null; // Ensure that getFragmentManager() is not null
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
@@ -110,5 +134,18 @@ public class NoteFragment extends Fragment {
 
         // Commit the transaction
         fragmentTransaction.commit();
+    }
+
+    public void setDataPassListener(DataPassListener listener) {
+        this.dataPassListener = listener;
+    }
+
+
+    public interface DataPassListener {
+        void onDataPass(
+                String noteTitle,
+                String noteBody
+//                boolean shouldUpdate
+        );
     }
 }
