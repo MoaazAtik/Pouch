@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         /*
         Touch Listener of Recycler View Items.
-        on Long Press on RecyclerView item, open alert dialog with options to choose: Edit or Delete
+        on Long Press on RecyclerView item, open alert dialog with options to choose: Edit or Delete todo edit
          */
         recyclerView.addOnItemTouchListener(
                 new RecyclerTouchListener(
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
                             @Override
                             public void onLongClick(View view, int position) {
-                                showActionsDialog(position);
+//                                showActionsDialog(position); todo
                             }
                         }));
     }//onCreate
@@ -89,11 +89,12 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Add new note to the Database and Notes List of Recycler View
      *
+     * @param noteTitle newly added note
      * @param noteBody newly added note
      */
-    private void createNote(String noteBody) {
+    private void createNote(String noteTitle, String noteBody) {
         // inserting note in Database
-        long id = databaseHelper.insertNote(noteBody);
+        long id = databaseHelper.insertNote(noteTitle, noteBody);
 
         // get the newly inserted note from Database
         Note n = databaseHelper.getNote(id);
@@ -112,13 +113,15 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Update note in Database and Notes List of Recycler View
      *
+     * @param noteTitle of updated note
      * @param noteBody of updated note
      * @param position of note in Notes List to be updated
      */
-    private void updateNote(String noteBody, int position) {
+    private void updateNote(String noteTitle, String noteBody, int position) {
         // getting reference to the note
         Note n = notesList.get(position);
-        // updating note body in the Notes List
+        // updating note title and body in the Notes List
+        n.setNoteTitle(noteTitle);
         n.setNoteBody(noteBody);
         // updating note in Database
         databaseHelper.updateNote(n);
@@ -152,27 +155,27 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param position of clicked Item in Recycler View
      */
-    private void showActionsDialog(final int position) {
-        CharSequence[] optionsNames = new CharSequence[]{"Edit", "Delete"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setItems(
-                optionsNames,
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            showNoteDialog(
-                                    true,
-                                    notesList.get(position),
-                                    position);
-                        } else {
-                            deleteNote(position);
-                        }
-                    }
-                });
-
-        builder.show();
-    }
+//    private void showActionsDialog(final int position) {
+//        CharSequence[] optionsNames = new CharSequence[]{"Edit", "Delete"};
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setItems(
+//                optionsNames,
+//                new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        if (which == 0) {
+//                            showNoteDialog(
+//                                    true,
+//                                    notesList.get(position),
+//                                    position);
+//                        } else {
+//                            deleteNote(position);
+//                        }
+//                    }
+//                });
+//
+//        builder.show();
+//    }
 
     /**
 //     * Show alert dialog with EditText options to create or edit a note.
@@ -191,6 +194,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle argsBundle = new Bundle();
 
             argsBundle.putInt(DatabaseHelper.COLUMN_ID, note.getId());
+            argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
             argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
 
@@ -236,9 +240,9 @@ public class MainActivity extends AppCompatActivity {
 //                }
                 // check if user updating note
                 if (shouldUpdate) {
-                    updateNote(noteBody, position);
+                    updateNote(noteTitle, noteBody, position);
                 } else {
-                    createNote(noteBody);
+                    createNote(noteTitle, noteBody);
                 }
 
             }
@@ -255,56 +259,56 @@ public class MainActivity extends AppCompatActivity {
      * @param note         that will be updated, or null when creating new note.
      * @param position     of note to be updated, or -1 when creating new note.
      */
-    private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
-        LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
-        View view = layoutInflater.inflate(R.layout.note_dialog, null);
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setView(view);
-
-        final EditText etNoteBody = view.findViewById(R.id.note);
-
-        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
-
-        if (shouldUpdate) {
-            etNoteBody.setText(note.getNoteBody());
-        }
-
-        builder
-                .setCancelable(false)
-                .setPositiveButton(
-                        shouldUpdate ? "update" : "save",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                String noteBody = etNoteBody.getText().toString();
-
-                                // show toast message when no text is entered
-                                if (TextUtils.isEmpty(noteBody)) {
-                                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
-                                    return;
-                                } else {
-                                    dialog.dismiss();
-                                }
-                                // check if user updating note
-                                if (shouldUpdate) {
-                                    updateNote(noteBody, position);
-                                } else {
-                                    createNote(noteBody);
-                                }
-                            }
-                        })
-
-                .setNegativeButton(
-                        "cancel",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-
-        final AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-    }//showNoteDialog()
+//    private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
+//        LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
+//        View view = layoutInflater.inflate(R.layout.note_dialog, null);
+//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+//        builder.setView(view);
+//
+//        final EditText etNoteBody = view.findViewById(R.id.note);
+//
+//        TextView dialogTitle = view.findViewById(R.id.dialog_title);
+//        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
+//
+//        if (shouldUpdate) {
+//            etNoteBody.setText(note.getNoteBody());
+//        }
+//
+//        builder
+//                .setCancelable(false)
+//                .setPositiveButton(
+//                        shouldUpdate ? "update" : "save",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                String noteBody = etNoteBody.getText().toString();
+//
+//                                // show toast message when no text is entered
+//                                if (TextUtils.isEmpty(noteBody)) {
+//                                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
+//                                    return;
+//                                } else {
+//                                    dialog.dismiss();
+//                                }
+//                                // check if user updating note
+//                                if (shouldUpdate) {
+//                                    updateNote(noteBody, position);
+//                                } else {
+//                                    createNote(noteBody);
+//                                }
+//                            }
+//                        })
+//
+//                .setNegativeButton(
+//                        "cancel",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                dialog.cancel();
+//                            }
+//                        });
+//
+//        final AlertDialog alertDialog = builder.create();
+//        alertDialog.show();
+//    }//showNoteDialog()
 
     /**
      * Toggle list when there are notes to display, Or empty notes View when there are none.

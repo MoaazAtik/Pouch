@@ -1,7 +1,6 @@
 package com.example.sqliteapp;
 
 import android.content.Context;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,14 +25,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView note, dot, timestamp;
+        public TextView txtNoteBodyRv, txtNoteTitleRv, timestamp;
 
         public MyViewHolder(View view) {
             super(view);
 
-            note = view.findViewById(R.id.note);
-            dot = view.findViewById(R.id.dot);
-            timestamp = view.findViewById(R.id.timestamp);
+            txtNoteBodyRv = view.findViewById(R.id.note);
+            txtNoteTitleRv = view.findViewById(R.id.txt_note_title_rv);
+            timestamp = view.findViewById(R.id.timestamp); //todo remove
 //            Log.d(TAG, "MyViewHolder: ");
         }
     }//class MyViewHolder
@@ -56,9 +55,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Note note = notesList.get(position);
 
-        holder.note.setText(note.getNoteBody());
-        //displaying dot from HTML character code
-//        holder.dot.setText(Html.fromHtml("&#8226;"));
+        holder.txtNoteTitleRv.setText(note.getNoteTitle());
+        holder.txtNoteBodyRv.setText(note.getNoteBody());
         //formatting and displaying timestamp
         holder.timestamp.setText(formatDate(note.getTimestamp()));
     }

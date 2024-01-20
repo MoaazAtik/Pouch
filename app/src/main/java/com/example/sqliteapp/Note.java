@@ -5,14 +5,16 @@ import androidx.annotation.NonNull;
 public class Note {
 
     private int id;
+    private String noteTitle;
     private String noteBody;
     private String timestamp;
 
     public Note() {
     }
 
-    public Note(int id, String noteBody, String timestamp) {
+    public Note(int id, String noteTitle, String noteBody, String timestamp) {
         this.id = id;
+        this.noteTitle = noteTitle;
         this.noteBody = noteBody;
         this.timestamp = timestamp;
     }
@@ -22,6 +24,7 @@ public class Note {
     public String toString() {
         return "Note{" +
                 "id=" + id +
+                "noteTitle=" + noteTitle +
                 ", noteBody='" + noteBody + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
@@ -33,6 +36,14 @@ public class Note {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getNoteTitle() {
+        return noteTitle;
+    }
+
+    public void setNoteTitle(String noteTitle) {
+        this.noteTitle = noteTitle;
     }
 
     public String getNoteBody() {

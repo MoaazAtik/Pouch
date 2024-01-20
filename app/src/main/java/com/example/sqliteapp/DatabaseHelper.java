@@ -14,10 +14,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "notes_db";
     public static final String TABLE_NAME = "Notes";
     public static final String COLUMN_ID = "ID";
+    public static final String COLUMN_NOTE_TITLE = "NoteTitle";
     public static final String COLUMN_NOTE_BODY = "NoteBody";
     public static final String COLUMN_TIMESTAMP = "Timestamp";
 
@@ -33,6 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createTableStatement =
                 "CREATE TABLE " + TABLE_NAME + "("
                         + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                        + COLUMN_NOTE_TITLE + " TEXT,"
                         + COLUMN_NOTE_BODY + " TEXT,"
                         + COLUMN_TIMESTAMP + " DATETIME DEFAULT CURRENT_TIMESTAMP"
                         + ")";
@@ -54,12 +56,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Insert new note to Database
      *
+     * @param noteTitle of the new note
      * @param noteBody of the new note
      * @return the Row/Note ID of the newly inserted row, or -1 if an error occurred
      */
-    public long insertNote(String noteBody) {
+    public long insertNote(String noteTitle, String noteBody) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTE_TITLE, noteTitle);
         values.put(COLUMN_NOTE_BODY, noteBody);
 
         long id = db.insert(TABLE_NAME, null, values);
@@ -78,7 +82,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.query(
                 TABLE_NAME,
-                new String[]{COLUMN_ID, COLUMN_NOTE_BODY, COLUMN_TIMESTAMP},
+                new String[]{COLUMN_ID, COLUMN_NOTE_TITLE, COLUMN_NOTE_BODY, COLUMN_TIMESTAMP},
                 COLUMN_ID + " = ? ",
                 new String[]{String.valueOf(id)},
                 null, null, null, null
@@ -87,12 +91,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Note note = null;
         if (cursor.moveToFirst()) {
             int i1 = cursor.getColumnIndex(COLUMN_ID);
-            int i2 = cursor.getColumnIndex(COLUMN_NOTE_BODY);
-            int i3 = cursor.getColumnIndex(COLUMN_TIMESTAMP);
+            int i2 = cursor.getColumnIndex(COLUMN_NOTE_TITLE);
+            int i3 = cursor.getColumnIndex(COLUMN_NOTE_BODY);
+            int i4 = cursor.getColumnIndex(COLUMN_TIMESTAMP);
             note = new Note(
                     cursor.getInt(i1),
                     cursor.getString(i2),
-                    cursor.getString(i3)
+                    cursor.getString(i3),
+                    cursor.getString(i4)
             );
         }
 
@@ -118,11 +124,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             do {
                 Note note = new Note();
                 int i1 = cursor.getColumnIndex(COLUMN_ID);
-                int i2 = cursor.getColumnIndex(COLUMN_NOTE_BODY);
-                int i3 = cursor.getColumnIndex(COLUMN_TIMESTAMP);
+                int i2 = cursor.getColumnIndex(COLUMN_NOTE_TITLE);
+                int i3 = cursor.getColumnIndex(COLUMN_NOTE_BODY);
+                int i4 = cursor.getColumnIndex(COLUMN_TIMESTAMP);
                 note.setId(cursor.getInt(i1));
-                note.setNoteBody(cursor.getString(i2));
-                note.setTimestamp(cursor.getString(i3));
+                note.setNoteTitle(cursor.getString(i2));
+                note.setNoteBody(cursor.getString(i3));
+                note.setTimestamp(cursor.getString(i4));
 
                 notes.add(note);
             } while (cursor.moveToNext());
@@ -143,6 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues value = new ContentValues();
+        value.put(COLUMN_NOTE_TITLE, note.getNoteTitle());
         value.put(COLUMN_NOTE_BODY, note.getNoteBody());
 
         return db.update(
@@ -267,7 +276,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private List<ColumnMapping> setAndGetColumnMappings() {
         List<ColumnMapping> columnMappings = new ArrayList<>();
         // Add new column mappings here
-        columnMappings.add(new ColumnMapping("NoteBody2", COLUMN_NOTE_BODY));
+//        columnMappings.add(new ColumnMapping("NoteBody2", COLUMN_NOTE_BODY));
         return columnMappings;
     }
 

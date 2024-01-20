@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ public class NoteFragment extends Fragment {
 
     private ImageButton btnBack, btnDelete;
     private EditText etNoteTitle, etNoteBody;
+    private TextView txtTimestamp;
     private DataPassListener dataPassListener;
 
     private DatabaseHelper databaseHelper;
@@ -40,6 +42,7 @@ public class NoteFragment extends Fragment {
         btnDelete = view.findViewById(R.id.btn_delete);
         etNoteTitle = view.findViewById(R.id.et_note_title);
         etNoteBody = view.findViewById(R.id.et_note_body);
+        txtTimestamp = view.findViewById(R.id.txt_timestamp);
 
         databaseHelper = new DatabaseHelper(requireContext());
 
@@ -85,14 +88,17 @@ public class NoteFragment extends Fragment {
 
         if (argsBundle != null) {
             int id = argsBundle.getInt(DatabaseHelper.COLUMN_ID);
+            String noteTitle = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_TITLE);
             String noteBody = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_BODY);
             String timestamp = argsBundle.getString(DatabaseHelper.COLUMN_TIMESTAMP);
             Log.d(TAG, "id "+id);
+            Log.d(TAG, "noteTitle "+noteTitle);
             Log.d(TAG, "noteBody "+noteBody);
             Log.d(TAG, "timestamp "+timestamp);
 
-            etNoteTitle.setText(id + " - " + timestamp);
+            etNoteTitle.setText(noteTitle);
             etNoteBody.setText(noteBody);
+            txtTimestamp.setText("Edited " + timestamp);
         }
     }
 
