@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -68,22 +69,31 @@ public class MainActivity extends AppCompatActivity {
         Touch Listener of Recycler View Items.
         on Long Press on RecyclerView item, open alert dialog with options to choose: Edit or Delete todo edit
          */
-        recyclerView.addOnItemTouchListener(
-                new RecyclerTouchListener(
-                        this,
-                        recyclerView,
-                        new RecyclerTouchListener.ClickListener() {
-                            @Override
-                            public void onClick(View view, int position) {
-                                Log.d(TAG, "onClick: ");
-                                openNote(true, notesList.get(position), position);
-                            }
+        RecyclerTouchListener recyclerTouchListener = new RecyclerTouchListener(
+                this,
+                recyclerView,
+                new RecyclerTouchListener.ClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        Log.d(TAG, "onClick: ");
+                        openNote(true, notesList.get(position), position);
+                    }
 
-                            @Override
-                            public void onLongClick(View view, int position) {
+                    @Override
+                    public void onSwiped(int position) {
+                        Log.d(TAG, "onSwiped: main");
+                        deleteNote(position);
+                    }
+
+                    @Override
+                    public void onLongClick(View view, int position) {
 //                                showActionsDialog(position); todo
-                            }
-                        }));
+                    }
+                }
+        );
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(recyclerTouchListener);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+        recyclerView.addOnItemTouchListener(recyclerTouchListener);
     }//onCreate
 
     /**
