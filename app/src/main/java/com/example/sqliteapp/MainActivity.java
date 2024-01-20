@@ -9,14 +9,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,12 +63,12 @@ public class MainActivity extends AppCompatActivity {
 
         /*
         Touch Listener of Recycler View Items.
-        on Long Press on RecyclerView item, open alert dialog with options to choose: Edit or Delete todo edit
+        on Click on RecyclerView item open note, on Swipe delete note.
          */
         RecyclerTouchListener recyclerTouchListener = new RecyclerTouchListener(
                 this,
                 recyclerView,
-                new RecyclerTouchListener.ClickListener() {
+                new RecyclerTouchListener.TouchListener() {
                     @Override
                     public void onClick(View view, int position) {
                         Log.d(TAG, "onClick: ");
@@ -84,13 +80,9 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onSwiped: main");
                         deleteNote(position);
                     }
-
-                    @Override
-                    public void onLongClick(View view, int position) {
-//                                showActionsDialog(position); todo
-                    }
                 }
         );
+        // ItemTouchHelper to handle onSwiped
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(recyclerTouchListener);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.addOnItemTouchListener(recyclerTouchListener);

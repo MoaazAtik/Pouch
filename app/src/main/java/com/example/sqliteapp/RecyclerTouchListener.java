@@ -10,16 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * This class is used by the Recycle View of MainActivity to handle item interactions.
+ * It includes: 1. Callback of ItemTouchHelper to handle item Swipes. <p>
+ *              2. OnItemTouchListener with GestureDetector to handle item Clicks.
+ */
 public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implements RecyclerView.OnItemTouchListener {
 
     private static final String TAG = "RecyclerTouchListener";
 
-    private ClickListener clickListener;
+    private TouchListener touchListener;
     private GestureDetector gestureDetector;
 
-    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final TouchListener touchListener) {
         super(0, ItemTouchHelper.START);
-        this.clickListener = clickListener;
+        this.touchListener = touchListener;
 
         gestureDetector = new GestureDetector(
                 context,
@@ -28,15 +33,8 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
                     public boolean onSingleTapUp(MotionEvent e) {
                         View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
                         if (childView != null)
-                            clickListener.onClick(childView, recyclerView.getChildAdapterPosition(childView));
+                            touchListener.onClick(childView, recyclerView.getChildAdapterPosition(childView));
                         return true;
-                    }
-
-                    @Override
-                    public void onLongPress(MotionEvent e) { //todo remove
-                        View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                        if (childView != null)
-                            clickListener.onLongClick(childView, recyclerView.getChildAdapterPosition(childView));
                     }
                 }
         );
@@ -64,15 +62,13 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         Log.d(TAG, "onSwiped: ");
-        clickListener.onSwiped(viewHolder.getAdapterPosition());
+        touchListener.onSwiped(viewHolder.getAdapterPosition());
     }
 
 
-    public interface ClickListener {
+    public interface TouchListener {
         void onClick(View view, int position);
         void onSwiped(int position);
-
-        void onLongClick(View view, int position); //todo delete
     }
 
 }
