@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clickable="true"
     android:background="?android:colorBackground"
+    android:clickable="true"
     android:focusable="true">
 
     <ImageButton
@@ -15,10 +15,10 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="Back and Save note"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back"
-        android:contentDescription="Back and Save note" />
+        app:srcCompat="@drawable/arrow_back" />
 
     <ImageButton
         android:id="@+id/btn_delete"
@@ -27,21 +27,21 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
+        android:contentDescription="Delete Note"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete"
-        android:contentDescription="Delete Note" />
+        app:srcCompat="@drawable/ic_delete" />
 
     <EditText
         android:id="@+id/et_note_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginTop="32dp"
-        android:hint="Title"
+        android:layout_marginEnd="16dp"
         android:background="@android:color/transparent"
         android:gravity="start|top"
+        android:hint="Title"
         android:inputType="textCapSentences|textMultiLine"
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,19 +51,19 @@
         android:id="@+id/et_note_body"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         android:background="@android:color/transparent"
         android:gravity="start|top"
         android:hint="@string/hint_enter_note"
-        android:requiresFadingEdge="vertical"
         android:inputType="textCapSentences|textMultiLine"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:requiresFadingEdge="vertical"
+        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
         app:layout_constraintBottom_toTopOf="@id/txt_timestamp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_note_title" />
 
     <TextView

@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * This class is used by the Recycle View of MainActivity to handle item interactions.
  * It includes: 1. Callback of ItemTouchHelper to handle item Swipes. <p>
- *              2. OnItemTouchListener with GestureDetector to handle item Clicks.
+ * 2. OnItemTouchListener with GestureDetector to handle item Clicks.
  */
 public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implements RecyclerView.OnItemTouchListener {
 
@@ -67,6 +67,7 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
 
     public interface TouchListener {
         void onClick(View view, int position);
+
         void onSwiped(int position);
     }
 

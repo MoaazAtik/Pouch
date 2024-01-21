@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton addNote = findViewById(R.id.addNoteBtn);
         addNote.setOnClickListener(v ->
-                openNote(false,null, -1)
+                openNote(false, null, -1)
         );
 
         /*
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
      * Add new note to the Database and Notes List of Recycler View
      *
      * @param noteTitle newly added note
-     * @param noteBody newly added note
+     * @param noteBody  newly added note
      */
     private void createNote(String noteTitle, String noteBody) {
         // inserting note in Database
@@ -109,8 +109,8 @@ public class MainActivity extends AppCompatActivity {
      * Update note in Database and Notes List of Recycler View
      *
      * @param noteTitle of updated note
-     * @param noteBody of updated note
-     * @param position of note in Notes List to be updated
+     * @param noteBody  of updated note
+     * @param position  of note in Notes List to be updated
      */
     private void updateNote(String noteTitle, String noteBody, int position) {
         // getting reference to the note

@@ -57,7 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Insert new note to Database
      *
      * @param noteTitle of the new note
-     * @param noteBody of the new note
+     * @param noteBody  of the new note
      * @return the Row/Note ID of the newly inserted row, or -1 if an error occurred
      */
     public long insertNote(String noteTitle, String noteBody) {

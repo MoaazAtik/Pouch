@@ -29,5 +29,5 @@
         <item name="colorPrimaryInverse">@color/md_theme_light_inversePrimary</item>
     </style>
 
-        <style name="Theme.SQLiteApp" parent="Base.Theme.SQLiteApp" />
+    <style name="Theme.SQLiteApp" parent="Base.Theme.SQLiteApp" />
 </resources>

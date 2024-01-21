@@ -123,6 +123,7 @@ public class NoteFragment extends Fragment {
 
     /**
      * Initialize DataPassListener
+     *
      * @param listener DataPassListener
      */
     public void setDataPassListener(DataPassListener listener) {

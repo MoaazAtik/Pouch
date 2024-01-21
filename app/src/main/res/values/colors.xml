@@ -15,7 +15,7 @@
 
     <color name="red_border">#FFFF4757</color>
 
-<!--    Material Theme Colors-->
+    <!--    Material Theme Colors-->
     <color name="seed">#FF4757</color>
     <color name="md_theme_light_primary">#BC0D2E</color>
     <color name="md_theme_light_onPrimary">#FFFFFF</color>

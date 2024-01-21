@@ -25,6 +25,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtNoteBodyRv, txtNoteTitleRv, timestamp;
+
         public MyViewHolder(View view) {
             super(view);
 
