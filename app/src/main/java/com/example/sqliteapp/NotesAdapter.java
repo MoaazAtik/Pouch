@@ -20,26 +20,22 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     private static final String TAG = "NotesAdapter";
 
-    private Context context;
     private List<Note> notesList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txtNoteBodyRv, txtNoteTitleRv, timestamp;
-
         public MyViewHolder(View view) {
             super(view);
 
             txtNoteBodyRv = view.findViewById(R.id.note);
             txtNoteTitleRv = view.findViewById(R.id.txt_note_title_rv);
             timestamp = view.findViewById(R.id.timestamp); //todo remove
-//            Log.d(TAG, "MyViewHolder: ");
         }
     }//class MyViewHolder
 
 
-    public NotesAdapter(Context context, List<Note> notesList) {
-//        this.context = context;
+    public NotesAdapter(List<Note> notesList) {
         this.notesList = notesList;
     }
 
@@ -47,7 +43,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_list_row, parent, false);
-//        context = parent.getContext(); // maybe I can get the context here without the necessity of passing it while creating the Adapter instance
         return new MyViewHolder(itemView);
     }
 

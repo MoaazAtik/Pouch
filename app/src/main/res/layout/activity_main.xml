@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 <!--    xmlns:tools="http://schemas.android.com/apk/res-auto"-->
-<!--    xmlns:tools="http://schemas.android.com/tools"-->
 
     <EditText
         android:id="@+id/et_search_notes"
@@ -22,48 +21,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--        android:textAllCaps="false"-->
-    <!--        android:textColor="@color/red_border"-->
-    <!--        android:textSize="12sp"-->
-
-<!--    <Button-->
-<!--        android:id="@+id/addNoteBtn"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="30dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginEnd="30dp"-->
-<!--        android:background="@drawable/search_box"-->
-<!--        android:fontFamily="@font/mulish_regular"-->
-<!--        android:text="Search notes"-->
-<!--        app:elevation="12dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/et_search_notes" />-->
-<!--&lt;!&ndash;        android:textAllCaps="false"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:textColor="@color/red_border"&ndash;&gt;-->
-<!--&lt;!&ndash;        android:textSize="12sp"&ndash;&gt;-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/n3"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="30dp"-->
-<!--        android:layout_marginTop="20dp"-->
-<!--        android:layout_marginEnd="30dp"-->
-<!--        android:background="@drawable/search_box"-->
-<!--        android:outlineSpotShadowColor="@color/red_border"-->
-<!--        android:elevation="19dp"-->
-<!--        android:fontFamily="@font/mulish_regular"-->
-<!--        android:gravity="center"-->
-<!--        android:text="Search notes"-->
-<!--        android:textAllCaps="false"-->
-<!--        android:textSize="12sp"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/addNoteBtn" />-->
-<!--&lt;!&ndash;        android:textColor="@color/red_border"&ndash;&gt;-->
-<!--    &lt;!&ndash;        android:shadowColor="@color/teal_200"&ndash;&gt;-->
-<!--    &lt;!&ndash;        android:shadowDx="0.5"&ndash;&gt;-->
-<!--    &lt;!&ndash;        android:shadowDy="0.5"&ndash;&gt;-->
-<!--    &lt;!&ndash;        android:shadowRadius="10"&ndash;&gt;-->
-<!--    &lt;!&ndash;        style="@style/Widget.Material3.Button.ElevatedButton"&ndash;&gt;-->
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -89,15 +46,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/et_search_notes"
         />
-<!--        android:fadingEdgeLength="20dp"-->
-<!--        android:requiresFadingEdge="vertical"-->
-<!--        android:overScrollMode="never"-->
-<!--        android:scrollbars="none"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/n3"-->
-<!--        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"-->
-    <!--    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"-->
-    <!--            android:layout_height="match_parent" />-->
-
     </FrameLayout>
 
     <TextView
@@ -113,17 +61,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <!--            android:layout_centerHorizontal="true"-->
-
-<!--    <ImageButton-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_margin="20dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        android:src="@drawable/btn_add_note"-->
-<!--        android:background="@android:color/transparent"-->
-<!--        android:elevation="12dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
@@ -133,11 +70,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@drawable/btn_add_note"
         app:layout_constraintEnd_toEndOf="parent" />
-<!--        android:src="@drawable/btn_add_note"-->
-<!--        android:elevation="12dp"-->
-<!--        android:background="@drawable/btn_add_note"-->
-<!--        android:background="@android:color/transparent"-->
-
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_note"
@@ -148,14 +80,5 @@
         tools:name="com.example.sqliteapp.NoteFragment"
         tools:visibility="gone"
         />
-
-<!--    <androidx.fragment.app.FragmentContainerView-->
-<!--        android:id="@+id/fragment_container_notes"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:layout="@layout/fragment_notes"-->
-<!--        tools:name="com.thewhitewings.shaky.NotesFragment"-->
-<!--        android:elevation="3dp"-->
-<!--        tools:visibility="gone"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

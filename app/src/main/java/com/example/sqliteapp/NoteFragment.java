@@ -25,34 +25,24 @@ public class NoteFragment extends Fragment {
     private TextView txtTimestamp;
     private DataPassListener dataPassListener;
 
-    private DatabaseHelper databaseHelper;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        return super.onCreateView(inflater, container, savedInstanceState);
-
-
         // Inflate a custom layout for the fragment
         View view = inflater.inflate(R.layout.fragment_note, container, false);
 
         // Initialize the UI elements
-//        btnBack = (ImageButton) view.findViewById(R.id.btn_back);
         btnBack = view.findViewById(R.id.btn_back);
         btnDelete = view.findViewById(R.id.btn_delete);
         etNoteTitle = view.findViewById(R.id.et_note_title);
         etNoteBody = view.findViewById(R.id.et_note_body);
         txtTimestamp = view.findViewById(R.id.txt_timestamp);
 
-        databaseHelper = new DatabaseHelper(requireContext());
-
         initializeNote();
 
         //btnBack
         btnBack.setOnClickListener(v -> {
-
             closeNote();
-
         });
 
         //btnDelete
@@ -81,20 +71,16 @@ public class NoteFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Get and fill screen fields with corresponding note values when updating the note.
+     */
     private void initializeNote() {
         Bundle argsBundle = getArguments();
-        Log.d(TAG, "initializeNote: ");
-        Log.d(TAG, "argsBundle "+argsBundle);
 
         if (argsBundle != null) {
-            int id = argsBundle.getInt(DatabaseHelper.COLUMN_ID);
             String noteTitle = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_TITLE);
             String noteBody = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_BODY);
             String timestamp = argsBundle.getString(DatabaseHelper.COLUMN_TIMESTAMP);
-            Log.d(TAG, "id "+id);
-            Log.d(TAG, "noteTitle "+noteTitle);
-            Log.d(TAG, "noteBody "+noteBody);
-            Log.d(TAG, "timestamp "+timestamp);
 
             etNoteTitle.setText(noteTitle);
             etNoteBody.setText(noteBody);
@@ -102,28 +88,26 @@ public class NoteFragment extends Fragment {
         }
     }
 
+    /**
+     * Close note fragment. Navigate to MainActivity and Save note values.
+     */
     private void closeNote() {
-
+        // Get note values from corresponding fields
         String noteTitle = etNoteTitle.getText().toString();
         String noteBody = etNoteBody.getText().toString();
-
+        // Pass note values to be saved
         if (dataPassListener != null) {
             dataPassListener.onDataPass(
                     noteTitle,
                     noteBody
-//                    "Neww Tt",
-//                    "Hello World!",
             );
         }
 
         // Get the FragmentManager
-//        assert getFragmentManager() != null; // Ensure that getFragmentManager() is not null
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-
         // Begin a fragment transaction
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        // Animations. this has to be before fragmentTransaction.replace()
+        // Set fragment transaction Animations
         fragmentTransaction.setCustomAnimations(
                 androidx.fragment.R.animator.fragment_fade_enter, // Enter animation
                 androidx.fragment.R.animator.fragment_fade_exit, // Exit animation
@@ -133,25 +117,26 @@ public class NoteFragment extends Fragment {
 
         // Remove the current fragment from the container
         fragmentTransaction.remove(this);
-
-        // Optionally, add the transaction to the back stack
-        // This allows the user to navigate back to the previous fragment
-        // fragmentTransaction.addToBackStack(null);
-
         // Commit the transaction
         fragmentTransaction.commit();
     }
 
+    /**
+     * Initialize DataPassListener
+     * @param listener DataPassListener
+     */
     public void setDataPassListener(DataPassListener listener) {
         this.dataPassListener = listener;
     }
 
 
+    /**
+     * Interface used to pass data from NoteFragment to MainActivity to be saved.
+     */
     public interface DataPassListener {
         void onDataPass(
                 String noteTitle,
                 String noteBody
-//                boolean shouldUpdate
         );
     }
 }

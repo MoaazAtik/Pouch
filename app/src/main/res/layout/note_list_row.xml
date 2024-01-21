@@ -14,7 +14,6 @@
     android:paddingBottom="@dimen/dimen_10"
     android:foreground="?attr/selectableItemBackground"
     android:focusable="true">
-<!--    android:id="@+id/one_note"-->
 
     <TextView
         android:id="@+id/txt_note_title_rv"
@@ -25,13 +24,6 @@
         android:ellipsize="end"
         android:maxLines="2"
     />
-<!--        android:includeFontPadding="false"-->
-<!--        android:lineSpacingExtra="0dp"-->
-<!--        android:textColor="#00c6ae"-->
-<!--        android:textSize="@dimen/dot_tex_size"-->
-<!--        android:layout_marginRight="@dimen/dot_margin_right"-->
-<!--        android:layout_marginTop="@dimen/dot_margin_right"-->
-<!--        android:layout_height="@dimen/dot_height"-->
 
     <TextView
         android:id="@+id/timestamp"
@@ -41,7 +33,6 @@
         android:text="Timestamp"
         android:textSize="@dimen/timestamp" 
         />
-<!--        android:layout_toRightOf="@id/dot"-->
 
     <TextView
         android:id="@+id/note"
@@ -52,9 +43,5 @@
         android:text="Note\nNote\nNote\nNote\nNote\nNote\nNote\nNote"
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         />
-<!--        android:textColor="@color/note_list_text"-->
-<!--        android:textSize="@dimen/note_list_text"-->
-<!--        android:layout_below="@id/timestamp"-->
-<!--        android:layout_toRightOf="@id/dot"-->
 
 </LinearLayout>

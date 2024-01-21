@@ -43,9 +43,7 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper = new DatabaseHelper(this);
         notesList.addAll(databaseHelper.getAllNotes());
 
-        mAdapter = new NotesAdapter(this, notesList);
-//        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        mAdapter = new NotesAdapter(notesList);
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(mLayoutManager);
@@ -54,10 +52,8 @@ public class MainActivity extends AppCompatActivity {
 
         toggleEmptyNotes();
 
-//        Button addNote = findViewById(R.id.addNoteBtn);
         FloatingActionButton addNote = findViewById(R.id.addNoteBtn);
         addNote.setOnClickListener(v ->
-//                showNoteDialog(false, null, -1)
                 openNote(false,null, -1)
         );
 
@@ -71,13 +67,11 @@ public class MainActivity extends AppCompatActivity {
                 new RecyclerTouchListener.TouchListener() {
                     @Override
                     public void onClick(View view, int position) {
-                        Log.d(TAG, "onClick: ");
                         openNote(true, notesList.get(position), position);
                     }
 
                     @Override
                     public void onSwiped(int position) {
-                        Log.d(TAG, "onSwiped: main");
                         deleteNote(position);
                     }
                 }
@@ -111,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     /**
      * Update note in Database and Notes List of Recycler View
      *
@@ -133,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
         toggleEmptyNotes();
     }
 
-
     /**
      * Delete note from Database and Notes List of Recycler View
      *
@@ -151,166 +143,63 @@ public class MainActivity extends AppCompatActivity {
         toggleEmptyNotes();
     }
 
-
     /**
-     * Open Dialog with Edit and Delete Note options
+     * Open Existing or New Note to create or edit a note.
+     * when shouldUpdate = true, it automatically displays old note.
      *
-     * @param position of clicked Item in Recycler View
+     * @param shouldUpdate Updating an Existing note or Creating a new Note.
+     * @param note         that will be updated, or null when creating new note.
+     * @param position     of note to be updated, or -1 when creating new note.
      */
-//    private void showActionsDialog(final int position) {
-//        CharSequence[] optionsNames = new CharSequence[]{"Edit", "Delete"};
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setItems(
-//                optionsNames,
-//                new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        if (which == 0) {
-//                            showNoteDialog(
-//                                    true,
-//                                    notesList.get(position),
-//                                    position);
-//                        } else {
-//                            deleteNote(position);
-//                        }
-//                    }
-//                });
-//
-//        builder.show();
-//    }
-
-    /**
-//     * Show alert dialog with EditText options to create or edit a note.
-//     * when shouldUpdate = true, it automatically displays old note and
-//     * changes the button text to UPDATE
-//     *
-//     * @param shouldUpdate Updating or Creating a new Note.
-//     * @param note         that will be updated, or null when creating new note.
-//     * @param position     of note to be updated, or -1 when creating new note.
-     */
-//    private void addNote(final boolean shouldUpdate, final Note note, final int position) {
     private void openNote(final boolean shouldUpdate, final Note note, final int position) {
 
         NoteFragment noteFragment = new NoteFragment();
         if (note != null) {
             Bundle argsBundle = new Bundle();
 
-            argsBundle.putInt(DatabaseHelper.COLUMN_ID, note.getId());
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
             argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
 
             noteFragment.setArguments(argsBundle);
-            Log.d(TAG, "openNote: argsBundle " + argsBundle);
         }
 
-        // Direct to MoreFragment
+        // Direct to NoteFragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        // Animations. this has to be before fragmentTransaction.replace()
+        /*
+        Animations. this has to be before fragmentTransaction.replace()
+         */
         fragmentTransaction.setCustomAnimations(
                 androidx.fragment.R.animator.fragment_fade_enter, // Enter animation
                 androidx.fragment.R.animator.fragment_fade_exit, // Exit animation
                 androidx.fragment.R.animator.fragment_close_enter, // Pop enter animation (when navigating back)
                 androidx.fragment.R.animator.fragment_fade_exit // Pop exit animation (when navigating back)
         );
-//        fragmentTransaction.replace(R.id.fragment_container_note, new NoteFragment());
         fragmentTransaction.replace(R.id.fragment_container_note, noteFragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
-        Log.d(TAG, "openNote: ");
 
         noteFragment.setDataPassListener(new NoteFragment.DataPassListener() {
             @Override
             public void onDataPass(String noteTitle, String noteBody) {
-                Log.d(TAG, "onDataPass: noteTitle "+noteTitle);
-                Log.d(TAG, "onDataPass: noteBody "+noteBody);
-
-//                String noteBody = noteBody;
 
                 // show toast message when no text is entered
-//                if (TextUtils.isEmpty(noteBody)) {
                 if (TextUtils.isEmpty(noteTitle) && TextUtils.isEmpty(noteBody)) {
-                    Log.d(TAG, "empty note ");
                     Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-//                else {
-//                    dialog.dismiss();
-//                }
-                // check if user updating note
+                // check if user is updating note
                 if (shouldUpdate) {
                     updateNote(noteTitle, noteBody, position);
                 } else {
                     createNote(noteTitle, noteBody);
                 }
-
             }
         });
-
     }
-
-    /**
-     * Show alert dialog with EditText options to create or edit a note.
-     * when shouldUpdate = true, it automatically displays old note and
-     * changes the button text to UPDATE
-     *
-     * @param shouldUpdate Updating or Creating a new Note.
-     * @param note         that will be updated, or null when creating new note.
-     * @param position     of note to be updated, or -1 when creating new note.
-     */
-//    private void showNoteDialog(final boolean shouldUpdate, final Note note, final int position) {
-//        LayoutInflater layoutInflater = LayoutInflater.from(getApplicationContext());
-//        View view = layoutInflater.inflate(R.layout.note_dialog, null);
-//        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//        builder.setView(view);
-//
-//        final EditText etNoteBody = view.findViewById(R.id.note);
-//
-//        TextView dialogTitle = view.findViewById(R.id.dialog_title);
-//        dialogTitle.setText(!shouldUpdate ? getString(R.string.lbl_new_note_title) : getString(R.string.lbl_edit_note_title));
-//
-//        if (shouldUpdate) {
-//            etNoteBody.setText(note.getNoteBody());
-//        }
-//
-//        builder
-//                .setCancelable(false)
-//                .setPositiveButton(
-//                        shouldUpdate ? "update" : "save",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                String noteBody = etNoteBody.getText().toString();
-//
-//                                // show toast message when no text is entered
-//                                if (TextUtils.isEmpty(noteBody)) {
-//                                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
-//                                    return;
-//                                } else {
-//                                    dialog.dismiss();
-//                                }
-//                                // check if user updating note
-//                                if (shouldUpdate) {
-//                                    updateNote(noteBody, position);
-//                                } else {
-//                                    createNote(noteBody);
-//                                }
-//                            }
-//                        })
-//
-//                .setNegativeButton(
-//                        "cancel",
-//                        new DialogInterface.OnClickListener() {
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                dialog.cancel();
-//                            }
-//                        });
-//
-//        final AlertDialog alertDialog = builder.create();
-//        alertDialog.show();
-//    }//showNoteDialog()
 
     /**
      * Toggle list when there are notes to display, Or empty notes View when there are none.
@@ -322,5 +211,4 @@ public class MainActivity extends AppCompatActivity {
             noNotesView.setVisibility(View.VISIBLE);
         }
     }
-
 }
