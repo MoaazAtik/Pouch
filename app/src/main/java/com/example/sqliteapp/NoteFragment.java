@@ -20,6 +20,10 @@ public class NoteFragment extends Fragment {
 
     private static final String TAG = "NoteFragment";
 
+    public static final int ACTION_CREATE = 0;
+    public static final int ACTION_UPDATE = 1;
+    public static final int ACTION_DELETE = 2;
+
     private ImageButton btnBack, btnDelete;
     private EditText etNoteTitle, etNoteBody;
     private TextView txtTimestamp;
@@ -41,32 +45,19 @@ public class NoteFragment extends Fragment {
         initializeNote();
 
         //btnBack
-        btnBack.setOnClickListener(v -> {
-            closeNote();
-        });
+        /*
+        When updating note, note title and body would be passed to fragment. When nothing is passed it means I am creating a new note.
+         */
+        btnBack.setOnClickListener(v ->
+                closeNote(
+                        getArguments() == null ? ACTION_CREATE : ACTION_UPDATE
+                )
+        );
 
         //btnDelete
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Direct to NotesFragment
-//                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//                // Animations. this has to be before fragmentTransaction.replace()
-//                fragmentTransaction.setCustomAnimations(
-//                        androidx.fragment.R.animator.fragment_fade_enter, // Enter animation
-//                        androidx.fragment.R.animator.fragment_fade_exit, // Exit animation
-//                        androidx.fragment.R.animator.fragment_close_enter, // Pop enter animation (when navigating back)
-//                        androidx.fragment.R.animator.fragment_fade_exit // Pop exit animation (when navigating back)
-//                );
-//
-//                fragmentTransaction.replace(R.id.fragment_container_notes, new NotesFragment());
-//                fragmentTransaction.addToBackStack(null); // Optional, for back navigation
-//
-//                fragmentTransaction.commit();
-//            }
-//        });
+        btnDelete.setOnClickListener(v ->
+                closeNote(ACTION_DELETE)
+        );
 
         return view;
     }
@@ -89,15 +80,18 @@ public class NoteFragment extends Fragment {
     }
 
     /**
-     * Close note fragment. Navigate to MainActivity and Save note values.
+     * Close note fragment. Pass wanted action and note values with DataPassListener.onDataPass then Navigate to MainActivity.
+     *
+     * @param action Wanted action to handle the note: {@link #ACTION_CREATE}, {@link #ACTION_UPDATE}, or {@link #ACTION_DELETE}
      */
-    private void closeNote() {
+    private void closeNote(int action) {
         // Get note values from corresponding fields
         String noteTitle = etNoteTitle.getText().toString();
         String noteBody = etNoteBody.getText().toString();
-        // Pass note values to be saved
+        // Pass wanted action and note values
         if (dataPassListener != null) {
             dataPassListener.onDataPass(
+                    action,
                     noteTitle,
                     noteBody
             );
@@ -132,10 +126,18 @@ public class NoteFragment extends Fragment {
 
 
     /**
-     * Interface used to pass data from NoteFragment to MainActivity to be saved.
+     * Interface used to pass data and action from NoteFragment to MainActivity.
      */
     public interface DataPassListener {
+        /**
+         * Pass data and action to MainActivity
+         *
+         * @param action    Wanted action to handle the note: {@link #ACTION_CREATE}, {@link #ACTION_UPDATE}, or {@link #ACTION_DELETE}
+         * @param noteTitle .
+         * @param noteBody  .
+         */
         void onDataPass(
+                int action,
                 String noteTitle,
                 String noteBody
         );

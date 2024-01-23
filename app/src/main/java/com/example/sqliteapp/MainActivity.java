@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         FloatingActionButton addNote = findViewById(R.id.addNoteBtn);
         addNote.setOnClickListener(v ->
-                openNote(false, null, -1)
+                openNote(null, -1)
         );
 
         /*
@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
                 new RecyclerTouchListener.TouchListener() {
                     @Override
                     public void onClick(View view, int position) {
-                        openNote(true, notesList.get(position), position);
+                        openNote(notesList.get(position), position);
                     }
 
                     @Override
@@ -145,15 +145,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Open Existing or New Note to create or edit a note.
-     * when shouldUpdate = true, it automatically displays old note.
      *
-     * @param shouldUpdate Updating an Existing note or Creating a new Note.
      * @param note         that will be updated, or null when creating new note.
      * @param position     of note to be updated, or -1 when creating new note.
      */
-    private void openNote(final boolean shouldUpdate, final Note note, final int position) {
+    private void openNote(final Note note, final int position) {
 
         NoteFragment noteFragment = new NoteFragment();
+        // Pass note vales to fragment when Updating note
         if (note != null) {
             Bundle argsBundle = new Bundle();
 
@@ -183,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
 
         noteFragment.setDataPassListener(new NoteFragment.DataPassListener() {
             @Override
-            public void onDataPass(String noteTitle, String noteBody) {
+            public void onDataPass(int action, String noteTitle, String noteBody) {
 
                 // show toast message when no text is entered
                 if (TextUtils.isEmpty(noteTitle) && TextUtils.isEmpty(noteBody)) {
@@ -191,11 +190,20 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                // check if user is updating note
-                if (shouldUpdate) {
-                    updateNote(noteTitle, noteBody, position);
-                } else {
-                    createNote(noteTitle, noteBody);
+                // check wanted action
+                switch (action) {
+                    case NoteFragment.ACTION_CREATE:
+                        createNote(noteTitle, noteBody);
+                        break;
+                    case NoteFragment.ACTION_UPDATE:
+                        updateNote(noteTitle, noteBody, position);
+                        break;
+                    case NoteFragment.ACTION_DELETE:
+                        deleteNote(position);
+                        break;
+                    default:
+                        createNote(noteTitle, noteBody);
+                        break;
                 }
             }
         });
