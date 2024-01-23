@@ -46,7 +46,7 @@ public class NoteFragment extends Fragment {
 
         //btnBack
         /*
-        When updating note, note title and body would be passed to fragment. When nothing is passed it means I am creating a new note.
+        When updating note, note values would be passed to fragment. When nothing is passed it means I am creating a new note.
          */
         btnBack.setOnClickListener(v ->
                 closeNote(

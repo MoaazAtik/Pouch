@@ -6,9 +6,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
+import android.util.Log;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -150,13 +154,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public int updateNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ContentValues value = new ContentValues();
-        value.put(COLUMN_NOTE_TITLE, note.getNoteTitle());
-        value.put(COLUMN_NOTE_BODY, note.getNoteBody());
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOTE_TITLE, note.getNoteTitle());
+        values.put(COLUMN_NOTE_BODY, note.getNoteBody());
+        values.put(COLUMN_TIMESTAMP, note.getTimestamp());
 
         return db.update(
                 TABLE_NAME,
-                value,
+                values,
                 COLUMN_ID + " = ? ",
                 new String[]{String.valueOf(note.getId())}
         );

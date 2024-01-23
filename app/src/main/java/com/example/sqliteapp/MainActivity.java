@@ -18,8 +18,11 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -115,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
     private void updateNote(String noteTitle, String noteBody, int position) {
         // getting reference to the note
         Note n = notesList.get(position);
-        // updating note title and body in the Notes List
+        // updating note values in the Notes List
         n.setNoteTitle(noteTitle);
         n.setNoteBody(noteBody);
+        n.setTimestamp(getCurrentDateTime());
         // updating note in Database
         databaseHelper.updateNote(n);
         // refreshing the Recycler view
@@ -184,19 +188,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataPass(int action, String noteTitle, String noteBody) {
 
-                // show toast message when no text is entered
-                if (TextUtils.isEmpty(noteTitle) && TextUtils.isEmpty(noteBody)) {
-                    Toast.makeText(MainActivity.this, "Enter note!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
                 // check wanted action
                 switch (action) {
                     case NoteFragment.ACTION_CREATE:
-                        createNote(noteTitle, noteBody);
+                        // Create note only if it has content
+                        if (!TextUtils.isEmpty(noteBody) || !TextUtils.isEmpty(noteTitle))
+                            createNote(noteTitle, noteBody);
                         break;
                     case NoteFragment.ACTION_UPDATE:
-                        updateNote(noteTitle, noteBody, position);
+                        // Update note only if its content was changed
+                        if (note != null && (!note.getNoteBody().equals(noteBody) || !note.getNoteTitle().equals(noteTitle)))
+                            updateNote(noteTitle, noteBody, position);
                         break;
                     case NoteFragment.ACTION_DELETE:
                         deleteNote(position);
@@ -207,6 +209,15 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    /**
+     * Helper method to get the Current timestamp
+     */
+    private String getCurrentDateTime() {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        Date date = new Date();
+        return sdFormat.format(date);
     }
 
     /**
