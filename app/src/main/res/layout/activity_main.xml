@@ -73,7 +73,7 @@
         android:id="@+id/fragment_container_note"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:elevation="6dp"
+        android:elevation="7dp"
         tools:layout="@layout/fragment_note"
         tools:name="com.example.sqliteapp.NoteFragment"
         tools:visibility="gone" />
