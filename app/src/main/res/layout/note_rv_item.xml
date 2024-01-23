@@ -25,7 +25,7 @@
         android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
 
     <TextView
-        android:id="@+id/timestamp"
+        android:id="@+id/txt_timestamp_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Timestamp"
@@ -33,7 +33,7 @@
         android:textSize="@dimen/timestamp" />
 
     <TextView
-        android:id="@+id/note"
+        android:id="@+id/txt_note_body_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ellipsize="end"

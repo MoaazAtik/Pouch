@@ -1,6 +1,5 @@
 package com.example.sqliteapp;
 
-import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +28,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public MyViewHolder(View view) {
             super(view);
 
-            txtNoteBodyRv = view.findViewById(R.id.note);
+            txtNoteBodyRv = view.findViewById(R.id.txt_note_body_rv);
             txtNoteTitleRv = view.findViewById(R.id.txt_note_title_rv);
-            timestamp = view.findViewById(R.id.timestamp); //todo remove
+            timestamp = view.findViewById(R.id.txt_timestamp_rv); //todo remove
         }
     }//class MyViewHolder
 
@@ -43,7 +42,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_list_row, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.note_rv_item, parent, false);
         return new MyViewHolder(itemView);
     }
 
