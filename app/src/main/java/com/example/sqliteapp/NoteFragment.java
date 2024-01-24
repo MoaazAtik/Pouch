@@ -5,7 +5,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -21,6 +20,7 @@ public class NoteFragment extends Fragment {
 
     private static final String TAG = "NoteFragment";
 
+    public static final int ACTION_CLOSE_ONLY = -1;
     public static final int ACTION_CREATE = 0;
     public static final int ACTION_UPDATE = 1;
     public static final int ACTION_DELETE = 2;
@@ -29,6 +29,7 @@ public class NoteFragment extends Fragment {
     private EditText etNoteTitle, etNoteBody;
     private TextView txtTimestamp;
     private DataPassListener dataPassListener;
+    private boolean isNewNote;
 
     @Nullable
     @Override
@@ -43,7 +44,9 @@ public class NoteFragment extends Fragment {
         etNoteBody = view.findViewById(R.id.et_note_body);
         txtTimestamp = view.findViewById(R.id.txt_timestamp);
 
-        initializeNote();
+        setIsNewNote();
+        if (!isNewNote)
+            initializeNote();
 
         //btnBack
         /*
@@ -57,7 +60,9 @@ public class NoteFragment extends Fragment {
 
         //btnDelete
         btnDelete.setOnClickListener(v ->
-                closeNote(ACTION_DELETE)
+                closeNote(
+                        !isNewNote ? ACTION_DELETE : ACTION_CLOSE_ONLY
+                )
         );
 
         return view;
@@ -76,6 +81,13 @@ public class NoteFragment extends Fragment {
                 );
             }
         });
+    }
+
+    /**
+     * Figure out if this is a new note or not, and assign {@link #isNewNote}.
+     */
+    private void setIsNewNote() {
+        isNewNote = getArguments() == null;
     }
 
     /**

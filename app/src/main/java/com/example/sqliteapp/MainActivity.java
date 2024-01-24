@@ -203,8 +203,7 @@ public class MainActivity extends AppCompatActivity {
                     case NoteFragment.ACTION_DELETE:
                         deleteNote(position);
                         break;
-                    default:
-                        createNote(noteTitle, noteBody);
+                    default: // ACTION_CLOSE_ONLY
                         break;
                 }
             }
