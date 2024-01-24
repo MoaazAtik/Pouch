@@ -18,7 +18,8 @@
         android:contentDescription="Back and Save note"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/arrow_back" />
+        app:srcCompat="@drawable/arrow_back"
+        app:tint="?attr/colorPrimaryInverse" />
 
     <ImageButton
         android:id="@+id/btn_delete"
@@ -30,7 +31,8 @@
         android:contentDescription="Delete Note"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete" />
+        app:srcCompat="@drawable/ic_delete"
+        app:tint="?attr/colorPrimaryInverse" />
 
     <EditText
         android:id="@+id/et_note_title"
@@ -71,11 +73,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        tools:text="Edited 2024-01-24 10:24:33"
         android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        android:textColor="?attr/colorPrimaryInverse"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_note_body" />
+        app:layout_constraintTop_toBottomOf="@id/et_note_body"
+        tools:text="Edited 2024-01-24 10:24:33" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

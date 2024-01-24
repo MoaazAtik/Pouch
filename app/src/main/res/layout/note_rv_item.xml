@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="16dp"
@@ -28,9 +29,9 @@
         android:id="@+id/txt_timestamp_rv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Timestamp"
-        android:textColor="@color/timestamp"
-        android:textSize="@dimen/timestamp" />
+        android:textColor="?attr/colorPrimaryInverse"
+        android:textSize="@dimen/timestamp"
+        tools:text="Jan 24" />
 
     <TextView
         android:id="@+id/txt_note_body_rv"
