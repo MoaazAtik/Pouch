@@ -54,7 +54,7 @@ public class NoteFragment extends Fragment {
          */
         btnBack.setOnClickListener(v ->
                 closeNote(
-                        getArguments() == null ? ACTION_CREATE : ACTION_UPDATE
+                        isNewNote ? ACTION_CREATE : ACTION_UPDATE
                 )
         );
 
@@ -91,20 +91,18 @@ public class NoteFragment extends Fragment {
     }
 
     /**
-     * Get and fill screen fields with corresponding note values when updating the note.
+     * Get and fill screen fields with corresponding note values when updating the note after calling {@link #setIsNewNote()}.
      */
     private void initializeNote() {
         Bundle argsBundle = getArguments();
 
-        if (argsBundle != null) {
-            String noteTitle = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_TITLE);
-            String noteBody = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_BODY);
-            String timestamp = argsBundle.getString(DatabaseHelper.COLUMN_TIMESTAMP);
+        String noteTitle = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_TITLE);
+        String noteBody = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_BODY);
+        String timestamp = argsBundle.getString(DatabaseHelper.COLUMN_TIMESTAMP);
 
-            etNoteTitle.setText(noteTitle);
-            etNoteBody.setText(noteBody);
-            txtTimestamp.setText("Edited " + timestamp);
-        }
+        etNoteTitle.setText(noteTitle);
+        etNoteBody.setText(noteBody);
+        txtTimestamp.setText("Edited " + timestamp);
     }
 
     /**
