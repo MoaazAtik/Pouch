@@ -1,10 +1,13 @@
 package com.example.sqliteapp;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -76,6 +79,11 @@ public class NoteFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
+                /*
+                Needed for device's back button so the focus won't be automatically passed to EditText Search note (?)
+                 */
+//                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
+//                imm.hideSoftInputFromWindow(btnBack.getWindowToken(), 0);
                 closeNote(
                         getArguments() == null ? ACTION_CREATE : ACTION_UPDATE
                 );
@@ -114,6 +122,13 @@ public class NoteFragment extends Fragment {
         // Get note values from corresponding fields
         String noteTitle = etNoteTitle.getText().toString();
         String noteBody = etNoteBody.getText().toString();
+
+        /*
+        Needed for back arrow and device's back button so the focus won't be automatically passed to EditText Search note.
+         */
+        etNoteTitle.clearFocus();
+        etNoteBody.clearFocus();
+
         // Pass wanted action and note values
         if (dataPassListener != null) {
             dataPassListener.onDataPass(
