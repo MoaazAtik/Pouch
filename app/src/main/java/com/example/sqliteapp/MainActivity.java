@@ -197,7 +197,6 @@ public class MainActivity extends AppCompatActivity {
                 androidx.fragment.R.animator.fragment_fade_exit // Pop exit animation (when navigating back)
         );
         fragmentTransaction.replace(R.id.fragment_container_note, noteFragment);
-        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
 
 
