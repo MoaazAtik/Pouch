@@ -241,8 +241,6 @@ public class MainActivity extends AppCompatActivity {
      * @param view to clear its focus.
      */
     public void clearFocusAndHideKeyboard(View view) {
-        // todo add this to back button in fragment for etNoteBody, etNoteTitle too. Try passing array of views
-        // todo add this to note fragment's root layout click listener too
         // Hide Soft (Virtual) Keyboard when outside of Et search note is clicked
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);

@@ -51,6 +51,19 @@ public class NoteFragment extends Fragment {
         if (!isNewNote)
             initializeNote();
 
+        // Clear Focus of EditText's and Hide Soft keyboard when Root layout is clicked
+        view.getRootView()
+                .setOnClickListener(v -> {
+                        ((MainActivity) requireActivity())
+                                .clearFocusAndHideKeyboard(
+                                        etNoteTitle
+                                );
+                        ((MainActivity) requireActivity())
+                                .clearFocusAndHideKeyboard(
+                                        etNoteBody
+                                );
+                });
+
         //btnBack
         /*
         When updating note, note values would be passed to fragment. When nothing is passed it means I am creating a new note.
