@@ -79,11 +79,6 @@ public class NoteFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                /*
-                Needed for device's back button so the focus won't be automatically passed to EditText Search note (?)
-                 */
-//                InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(INPUT_METHOD_SERVICE);
-//                imm.hideSoftInputFromWindow(btnBack.getWindowToken(), 0);
                 closeNote(
                         getArguments() == null ? ACTION_CREATE : ACTION_UPDATE
                 );
@@ -123,12 +118,6 @@ public class NoteFragment extends Fragment {
         String noteTitle = etNoteTitle.getText().toString();
         String noteBody = etNoteBody.getText().toString();
 
-        /*
-        Needed for back arrow and device's back button so the focus won't be automatically passed to EditText Search note.
-         */
-        etNoteTitle.clearFocus();
-        etNoteBody.clearFocus();
-
         // Pass wanted action and note values
         if (dataPassListener != null) {
             dataPassListener.onDataPass(
@@ -137,6 +126,12 @@ public class NoteFragment extends Fragment {
                     noteBody
             );
         }
+
+        /*
+        Needed for back arrow and device's back button so the focus won't be automatically passed to EditText Search note.
+         */
+        etNoteTitle.clearFocus();
+        etNoteBody.clearFocus();
 
         // Get the FragmentManager
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

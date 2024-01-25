@@ -23,14 +23,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView txtNoteBodyRv, txtNoteTitleRv, timestamp;
+        public TextView txtNoteBodyRv, txtNoteTitleRv, txtTimestamp;
 
         public MyViewHolder(View view) {
             super(view);
 
             txtNoteBodyRv = view.findViewById(R.id.txt_note_body_rv);
             txtNoteTitleRv = view.findViewById(R.id.txt_note_title_rv);
-            timestamp = view.findViewById(R.id.txt_timestamp_rv); //todo remove
+            txtTimestamp = view.findViewById(R.id.txt_timestamp_rv);
         }
     }//class MyViewHolder
 
@@ -53,7 +53,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         holder.txtNoteTitleRv.setText(note.getNoteTitle());
         holder.txtNoteBodyRv.setText(note.getNoteBody());
         //formatting and displaying timestamp
-        holder.timestamp.setText(formatDate(note.getTimestamp()));
+        holder.txtTimestamp.setText(formatDate(note.getTimestamp()));
     }
 
     @Override

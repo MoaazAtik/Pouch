@@ -7,13 +7,6 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg_activity_main"
     android:orientation="vertical">
-<!--    android:focusable="true"-->
-<!--    android:focusableInTouchMode="true"-->
-<!--    android:background="@android:color/transparent"-->
-
-<!--    android:descendantFocusability="beforeDescendants"-->
-<!--    android:focusable="false"-->
-    <!--    xmlns:tools="http://schemas.android.com/apk/res-auto"-->
 
     <EditText
         android:id="@+id/et_search_notes"

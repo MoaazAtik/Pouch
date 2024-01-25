@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-<!--    todo delete the drawable. not needed after removing android:focusable="true" and android:focusableInTouchMode="true" -->
-<!--    If main activity's root layout has android:focusableInTouchMode="true" or android:focusable="true", using this background Fixes Grayed-out main screen when navigating back from note fragment after one of the fragment's views is clicked-->
-    <item android:state_focused="true" android:drawable="@android:color/transparent" />
-<!--    <item android:drawable="@android:color/transparent" />
-<!- todo delete. not needed-->
+    <item
+        android:state_focused="true"
+        android:drawable="@android:color/transparent" />
 </selector>

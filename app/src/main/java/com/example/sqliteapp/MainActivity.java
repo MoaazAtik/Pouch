@@ -44,29 +44,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        findViewById(R.id.et_search_notes).setFocusable(false);
-//        findViewById(R.id.et_search_notes).setFocusable(true);
-        Log.d(TAG, "onCreate: getCurrentFocus() 0 "+getCurrentFocus());
-
-//        activityMainRoot = findViewById(R.id.activity_main_root);
-//        findViewById(R.id.activity_main_root).setOnTouchListener((v, event) -> false);
-        // onClick needs two steps to hide keyboard when android:focusableInTouchMode="true" is set, while onTouch probably needs only one step
-        findViewById(R.id.activity_main_root)
-                .setOnClickListener(v -> {
-                            // Hide Soft (Virtual) Keyboard when outside of et_search_notes is clicked
-                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-                            // Clear Focus of et_search_notes when clicking outside
-                            findViewById(R.id.et_search_notes).clearFocus();
-
-//                            Log.d(TAG, "onClick: getCurrentFocus()  " + getCurrentFocus());
-//                            findViewById(R.id.et_search_notes).clearFocus();
-//                            activityMainRoot.requestFocus();
-//                            Log.d(TAG, "onClick: getCurrentFocus()  " + getCurrentFocus());
-                        }
-                );
-
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
 
@@ -110,6 +87,16 @@ public class MainActivity extends AppCompatActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(recyclerTouchListener);
         itemTouchHelper.attachToRecyclerView(recyclerView);
         recyclerView.addOnItemTouchListener(recyclerTouchListener);
+
+        findViewById(R.id.activity_main_root)
+                .setOnClickListener(v -> {
+                            // Hide Soft (Virtual) Keyboard when outside of Et search note is clicked
+                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                            // Clear Focus of Et search note when clicking outside
+                            findViewById(R.id.et_search_notes).clearFocus();
+                        }
+                );
     }//onCreate
 
     /**
@@ -183,25 +170,14 @@ public class MainActivity extends AppCompatActivity {
     private void openNote(final Note note, final int position) {
         // Hide the virtual keyboard if it was open by clicking et_search_notes
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-//        try { // todo remove. was needed for getCurrentFocus().getWindowToken()
-//            if (imm.isAcceptingText()) { // todo remove. not needed
-                Log.d(TAG, "openNote: getCurrentFocus() 0 imm.isAcceptingText()  " + getCurrentFocus());
-//                imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0); // todo remove. needs try-catch
-                imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
-//            }
-//        } catch (NullPointerException e) {
-//            Log.e("Exception", e.getMessage() + ">>");
-//        }
+        imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
 
-        // Clear Focus of et_search_notes when opening note fragment
+        // Clear Focus of Et search note when opening note fragment
         /*
-        If et_search_notes has focus then a note fragment is opened and nothing was clicked in the fragment, if the Keyboard got input it will be directed to et_search_notes. This step fixes that.
+        If Et search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
+        This step fixes that.
          */
         findViewById(R.id.et_search_notes).clearFocus();
-        Log.d(TAG, "openNote: getCurrentFocus() 1  "+getCurrentFocus());
-////        findViewById(R.id.et_search_notes).setFocusableInTouchMode(false);
-//        findViewById(R.id.et_search_notes).setFocusable(false);
-//        Log.d(TAG, "openNote: getCurrentFocus()2  "+getCurrentFocus());
 
         NoteFragment noteFragment = new NoteFragment();
         // Pass note vales to fragment when Updating note
@@ -235,15 +211,6 @@ public class MainActivity extends AppCompatActivity {
         noteFragment.setDataPassListener(new NoteFragment.DataPassListener() {
             @Override
             public void onDataPass(int action, String noteTitle, String noteBody) {
-
-
-//                findViewById(R.id.et_search_notes).setFocusable(true);
-//                findViewById(R.id.et_search_notes).setFocusableInTouchMode(true);
-//                findViewById(R.id.et_search_notes).clearFocus();
-//                Log.d(TAG, "onDataPass: getCurrentFocus()  "+getCurrentFocus());
-//                activityMainRoot.requestFocus();// todo try
-//                Log.d(TAG, "onDataPass: getCurrentFocus()  "+getCurrentFocus());
-
                 // check wanted action
                 switch (action) {
                     case NoteFragment.ACTION_CREATE:
