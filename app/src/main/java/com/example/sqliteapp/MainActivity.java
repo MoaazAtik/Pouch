@@ -90,11 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.activity_main_root)
                 .setOnClickListener(v -> {
-                            // Hide Soft (Virtual) Keyboard when outside of Et search note is clicked
-                            InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                            // Clear Focus of Et search note when clicking outside
-                            findViewById(R.id.et_search_notes).clearFocus();
+                            // Clear Focus of Et search note, and Hide Soft Keyboard when outside of Et search note is clicked
+                            clearFocusAndHideKeyboard(findViewById(R.id.et_search_notes));
                         }
                 );
     }//onCreate
@@ -168,16 +165,12 @@ public class MainActivity extends AppCompatActivity {
      * @param position     of note to be updated, or -1 when creating new note.
      */
     private void openNote(final Note note, final int position) {
-        // Hide the virtual keyboard if it was open by clicking et_search_notes
-        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(recyclerView.getWindowToken(), 0);
-
-        // Clear Focus of Et search note when opening note fragment
         /*
+        Clear Focus of Et search note when opening note fragment, and Hide the virtual keyboard if it was opened by clicking Et search note.
         If Et search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
         This step fixes that.
          */
-        findViewById(R.id.et_search_notes).clearFocus();
+        clearFocusAndHideKeyboard(findViewById(R.id.et_search_notes));
 
         NoteFragment noteFragment = new NoteFragment();
         // Pass note vales to fragment when Updating note
@@ -242,10 +235,19 @@ public class MainActivity extends AppCompatActivity {
         return sdFormat.format(date);
     }
 
+    /**
+     * Clear the Focus of the passed view, and Hide Soft (Virtual / Device's) Keyboard.
+     *
+     * @param view to clear its focus.
+     */
     public void clearFocusAndHideKeyboard(View view) {
         // todo add this to back button in fragment for etNoteBody, etNoteTitle too. Try passing array of views
-        // todo add this to recycler view's click listener too
-        // todo implement
+        // todo add this to note fragment's root layout click listener too
+        // Hide Soft (Virtual) Keyboard when outside of Et search note is clicked
+        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        // Clear Focus of Et search note when clicking outside
+        view.clearFocus();
     }
 
     /**
