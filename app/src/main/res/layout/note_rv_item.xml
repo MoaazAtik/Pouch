@@ -10,7 +10,7 @@
     android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
-    android:outlineSpotShadowColor="@color/red_border"
+    android:outlineSpotShadowColor="?attr/colorPrimary"
     android:paddingLeft="@dimen/activity_margin"
     android:paddingTop="@dimen/dimen_10"
     android:paddingRight="@dimen/activity_margin"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
-        android:text="Title\na\na"
-        android:textAppearance="@style/TextAppearance.Material3.TitleLarge" />
+        android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+        tools:text="Title\na\na" />
 
     <TextView
         android:id="@+id/txt_timestamp_rv"
@@ -39,7 +39,7 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="6"
-        android:text="Note\nNote\nNote\nNote\nNote\nNote\nNote\nNote"
-        android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+        tools:text="Note\nNote\nNote\nNote\nNote\nNote\nNote\nNote" />
 
 </LinearLayout>
