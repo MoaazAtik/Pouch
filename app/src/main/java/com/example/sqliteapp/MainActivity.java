@@ -1,7 +1,6 @@
 package com.example.sqliteapp;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -12,12 +11,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -26,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,8 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         toggleEmptyNotes();
 
-        FloatingActionButton addNote = findViewById(R.id.addNoteBtn);
-        addNote.setOnClickListener(v ->
+        FloatingActionButton btnCreateNote = findViewById(R.id.btn_create_note);
+        btnCreateNote.setOnClickListener(v ->
                 openNote(null, -1)
         );
 

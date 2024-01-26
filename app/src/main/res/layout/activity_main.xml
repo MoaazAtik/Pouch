@@ -10,7 +10,7 @@
 
     <EditText
         android:id="@+id/et_search_notes"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_margin="30dp"
         android:background="@drawable/search_box"
@@ -22,20 +22,33 @@
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:textColorHint="?attr/colorPrimaryInverse"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_sort"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_sort"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="30dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Sort notes"
+        app:layout_constraintBottom_toBottomOf="@id/et_search_notes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/et_search_notes"
+        app:srcCompat="@drawable/ic_sort"
+        app:tint="?attr/colorPrimaryInverse" />
 
     <ImageView
         android:id="@+id/img_logo"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:contentDescription="Logo"
-        app:layout_constraintVertical_bias="0.7"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7"
         app:srcCompat="@drawable/logo" />
 
     <FrameLayout
@@ -77,14 +90,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNoteBtn"
+        android:id="@+id/btn_create_note"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
+        android:contentDescription="Add new note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/btn_add_note"
-        android:contentDescription="Add new note" />
+        app:srcCompat="@drawable/btn_add_note" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_note"
