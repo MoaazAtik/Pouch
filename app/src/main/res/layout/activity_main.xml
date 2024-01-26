@@ -8,6 +8,42 @@
     android:background="@drawable/bg_activity_main"
     android:orientation="vertical">
 
+    <SearchView
+        android:id="@+id/sv_search_notes"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="30dp"
+        app:layout_constraintEnd_toStartOf="@id/btn_sort"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:fontFamily="@font/mulish_regular"
+        android:inputType="textCapSentences|textMultiLine"
+        android:background="@drawable/search_box"
+
+        android:searchIcon="@drawable/search_icon"
+
+        android:iconifiedByDefault="false"
+        android:queryBackground="@android:color/transparent"
+        android:queryHint="Search notes"
+        />
+<!--        style="@style/Theme.SQLiteApp"-->
+
+<!--        android:submitBackground="@color/white"-->
+
+<!--        android:hint="AAAA"-->
+<!--        app:defaultQueryHint="mmmm"-->
+<!--        android:hint="Search notes"-->
+<!--        android:drawableStart="@drawable/search_icon"-->
+
+<!--    android:paddingStart="12dp"-->
+<!--    android:paddingEnd="12dp"-->
+
+<!--        android:gravity="center"-->
+<!--    not changeable here-->
+<!--        android:textColorHighlight="?attr/colorPrimaryInverse"-->
+<!--        android:textColorHint="?attr/colorPrimaryInverse"-->
+
+    
     <EditText
         android:id="@+id/et_search_notes"
         android:layout_width="0dp"
@@ -25,7 +61,8 @@
         android:textColorHint="?attr/colorPrimaryInverse"
         app:layout_constraintEnd_toStartOf="@id/btn_sort"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/sv_search_notes" />
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageButton
         android:id="@+id/btn_sort"
