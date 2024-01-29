@@ -4,6 +4,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -11,15 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
+public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> implements Filterable {
 
     private static final String TAG = "NotesAdapter";
 
     private List<Note> notesList;
+    private List<Note> notesListFull;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -37,6 +42,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     public NotesAdapter(List<Note> notesList) {
         this.notesList = notesList;
+        notesListFull = new ArrayList<>(notesList);
     }
 
     @NonNull
@@ -61,6 +67,56 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         return notesList.size();
     }
 
+    @Override
+    public Filter getFilter() {
+//        return null;
+        return notesFilter;
+    }
+
+
+    private Filter notesFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+//            return null;
+            List<Note> filteredList = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredList.addAll(notesListFull);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Note note : notesListFull) {
+                    String noteTitle = note.getNoteTitle();
+                    String noteBody = note.getNoteBody();
+                    boolean matchTitle = false;
+                    boolean matchBody;
+
+                    if (noteTitle != null) {
+                        matchTitle = noteTitle.toLowerCase().contains(filterPattern);
+                    }
+                    if (matchTitle) {
+                        filteredList.add(note);
+                    } else if (noteBody != null) {
+                        matchBody = noteBody.toLowerCase().contains(filterPattern);
+                        if (matchBody) {
+                            filteredList.add(note);
+                        }
+                    }
+                }
+            }
+
+            FilterResults results;
+            results = new FilterResults();
+            results.values = filteredList;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            notesList.clear();
+            notesList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     /**
      * Format timestamp to 'MMM d' format

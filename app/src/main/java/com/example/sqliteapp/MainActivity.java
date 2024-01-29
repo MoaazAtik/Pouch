@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -89,6 +91,21 @@ public class MainActivity extends AppCompatActivity {
                             clearFocusAndHideKeyboard(findViewById(R.id.et_search_notes));
                         }
                 );
+
+        SearchView svSearchNotes = findViewById(R.id.sv_search_notes);
+//        svSearchNotes.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        svSearchNotes.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
     }//onCreate
 
     /**
