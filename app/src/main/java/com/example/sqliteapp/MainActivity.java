@@ -148,7 +148,8 @@ public class MainActivity extends AppCompatActivity {
         // updating note values in the Notes List
         n.setNoteTitle(noteTitle);
         n.setNoteBody(noteBody);
-        n.setTimestamp(getCurrentDateTime()); //todo convert it to UTC
+        // Get Current timestamp in Local time zone for Storing in Notes List
+        n.setTimestamp(databaseHelper.getFormattedDateTime(2, null));
         // updating note in Database
         databaseHelper.updateNote(n);
         // refreshing the Recycler view
@@ -197,7 +198,8 @@ public class MainActivity extends AppCompatActivity {
 
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp()); //todo convert it to local time
+//            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, databaseHelper.getFormattedDateTime(0, note.getTimestamp()));
+            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
 
             noteFragment.setArguments(argsBundle);
         }
@@ -242,15 +244,45 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
-    /**
-     * Helper method to get the Current timestamp
-     */
-    private String getCurrentDateTime() {
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        Date date = new Date();
-        return sdFormat.format(date);
-    }
+//
+//    /**
+//     * Get Formatted date and time
+//     *
+//     * @param usage    0: Current date and time in UTC for Storing (yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19),
+//     *                 1: Date and time in Local Time Zone for Retrieving (yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19).
+//     * @param dateTime (Optional) Provide date and/or time to format.
+//     * @return Formatted date or time.
+//     */
+//    private String getFormattedDateTime(int usage, String dateTime) {
+//
+//        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date date;
+//
+//        switch (usage) {
+//            case 0:
+//                date = new Date();
+////                Log.d(TAG, "sdFormat.format(date) 0 "+sdFormat.format(date));
+//                sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+////                Log.d(TAG, "sdFormat.format(date) 1 "+sdFormat.format(date));
+//                return sdFormat.format(date);
+//            case 1:
+//                try {
+//                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//                    date = sdFormat.parse(dateTime);
+////                    Log.d(TAG, " date "+ date);
+////                    Log.d(TAG, " sdFormat.format(date) 0 "+ sdFormat.format(date));
+//
+//                    sdFormat.setTimeZone(TimeZone.getDefault());
+////                    Log.d(TAG, " sdFormat.format(date) 1 "+ sdFormat.format(date));
+//                    return sdFormat.format(date);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                    Log.e(TAG, "getFormattedDateTime: catch e case 1 ", e);
+//                    return "";
+//                }
+//        }
+//        return null;
+//    }
 
     /**
      * Clear the Focus of the passed view, and Hide Soft (Virtual / Device's) Keyboard.

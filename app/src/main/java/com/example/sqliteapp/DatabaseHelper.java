@@ -104,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(i1),
                     cursor.getString(i2),
                     cursor.getString(i3),
-                    cursor.getString(i4) //todo convert it to local time
+                    getFormattedDateTime(0, cursor.getString(i4))
             );
         }
 
@@ -136,7 +136,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(cursor.getString(i4)); //todo convert it to local time
+                note.setTimestamp(getFormattedDateTime(0, cursor.getString(i4)));
+//                note.setTimestamp(cursor.getString(i4));
 
                 notes.add(note);
             } while (cursor.moveToNext());
@@ -159,7 +160,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOTE_TITLE, note.getNoteTitle());
         values.put(COLUMN_NOTE_BODY, note.getNoteBody());
-        values.put(COLUMN_TIMESTAMP, note.getTimestamp());
+        // Convert timestamp to UTC for Storing in Database
+//        values.put(COLUMN_TIMESTAMP, note.getTimestamp()); //todo
+        values.put(COLUMN_TIMESTAMP, getFormattedDateTime(1, note.getTimestamp()));
 
         return db.update(
                 TABLE_NAME,
@@ -185,6 +188,90 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.close();
     }
+
+//    /**
+//     * Convert timestamp that is Stored in the Database in UTC to the device's Local time zone
+//     *
+//     * @param dateString provided date as String
+//     * @return date as string after formatting
+//     */
+//    private String formatDateTime(String dateString) {
+//        try {
+////            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+//            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            Date date = sdFormat.parse(dateString);
+////            Log.d(TAG, "formatDateTime: date "+ date);
+////            Log.d(TAG, "formatDateTime: sdFormat.format(date) 0 "+ sdFormat.format(date));
+//
+//            sdFormat.setTimeZone(TimeZone.getDefault());
+////            Log.d(TAG, "formatDateTime: sdFormat.format(date) 1 "+ sdFormat.format(date));
+//            return sdFormat.format(date);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//            Log.e(TAG, "formatDateTime: catch e ", e);
+//            return "";
+//        }
+//    }
+
+    /**
+     * Get Formatted date and time. The format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
+     * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
+     *
+     * @param usage    0: Date and time in Local Time Zone for Retrieving,
+     *                 1: Date and time in UTC for Storing in Database,
+     *                 //     *                 2: Current date and time in UTC for Storing,
+     *                 2: Current date and time in Local Time Zone for Storing in Notes List.
+     * @param dateTime (Optional) Provide date and/or time to format.
+     * @return Formatted date or time.
+     */
+    public String getFormattedDateTime(int usage, String dateTime) {
+
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date;
+
+        switch (usage) {
+            case 0: // Local
+                try {
+                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    date = sdFormat.parse(dateTime);
+//                    Log.d(TAG, " date "+ date);
+//                    Log.d(TAG, " sdFormat.format(date) 0 "+ sdFormat.format(date));
+
+                    sdFormat.setTimeZone(TimeZone.getDefault());
+//                    Log.d(TAG, " sdFormat.format(date) 1 "+ sdFormat.format(date));
+                    return sdFormat.format(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "getFormattedDateTime: catch e case 1 ", e);
+                    return "";
+                }
+            case 1: // UTC
+                try {
+//                    sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()); //todo might be needed
+                    date = sdFormat.parse(dateTime);
+//                    Log.d(TAG, " date "+ date);
+//                    Log.d(TAG, " sdFormat.format(date) 0 "+ sdFormat.format(date));
+
+                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//                    Log.d(TAG, " sdFormat.format(date) 1 "+ sdFormat.format(date));
+                    return sdFormat.format(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "getFormattedDateTime: case 0 ", e);
+                    return "";
+                }
+//            case 2: // Current UTC
+            case 2: // Current Local
+                date = new Date();
+//                Log.d(TAG, "sdFormat.format(date) 0 "+sdFormat.format(date));
+//                sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+//                Log.d(TAG, "sdFormat.format(date) 1 "+sdFormat.format(date));
+                return sdFormat.format(date);
+        }
+        return null;
+    }
+
 
     /**
      * Transfer data from Old table to New Table for the Common columns and Renamed columns.
