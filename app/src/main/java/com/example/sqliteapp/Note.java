@@ -24,7 +24,7 @@ public class Note {
     public String toString() {
         return "Note{" +
                 "id=" + id +
-                "noteTitle=" + noteTitle +
+                ", noteTitle='" + noteTitle + '\'' +
                 ", noteBody='" + noteBody + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';

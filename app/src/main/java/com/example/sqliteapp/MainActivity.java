@@ -198,7 +198,6 @@ public class MainActivity extends AppCompatActivity {
 
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
-//            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, databaseHelper.getFormattedDateTime(0, note.getTimestamp()));
             argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
 
             noteFragment.setArguments(argsBundle);
@@ -244,45 +243,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-//
-//    /**
-//     * Get Formatted date and time
-//     *
-//     * @param usage    0: Current date and time in UTC for Storing (yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19),
-//     *                 1: Date and time in Local Time Zone for Retrieving (yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19).
-//     * @param dateTime (Optional) Provide date and/or time to format.
-//     * @return Formatted date or time.
-//     */
-//    private String getFormattedDateTime(int usage, String dateTime) {
-//
-//        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        Date date;
-//
-//        switch (usage) {
-//            case 0:
-//                date = new Date();
-////                Log.d(TAG, "sdFormat.format(date) 0 "+sdFormat.format(date));
-//                sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-////                Log.d(TAG, "sdFormat.format(date) 1 "+sdFormat.format(date));
-//                return sdFormat.format(date);
-//            case 1:
-//                try {
-//                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-//                    date = sdFormat.parse(dateTime);
-////                    Log.d(TAG, " date "+ date);
-////                    Log.d(TAG, " sdFormat.format(date) 0 "+ sdFormat.format(date));
-//
-//                    sdFormat.setTimeZone(TimeZone.getDefault());
-////                    Log.d(TAG, " sdFormat.format(date) 1 "+ sdFormat.format(date));
-//                    return sdFormat.format(date);
-//                } catch (ParseException e) {
-//                    e.printStackTrace();
-//                    Log.e(TAG, "getFormattedDateTime: catch e case 1 ", e);
-//                    return "";
-//                }
-//        }
-//        return null;
-//    }
 
     /**
      * Clear the Focus of the passed view, and Hide Soft (Virtual / Device's) Keyboard.
