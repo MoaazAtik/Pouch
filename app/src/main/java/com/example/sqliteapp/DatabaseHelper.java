@@ -8,11 +8,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -102,7 +104,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(i1),
                     cursor.getString(i2),
                     cursor.getString(i3),
-                    cursor.getString(i4)
+                    cursor.getString(i4) //todo convert it to local time
             );
         }
 
@@ -134,7 +136,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(cursor.getString(i4));
+                note.setTimestamp(cursor.getString(i4)); //todo convert it to local time
 
                 notes.add(note);
             } while (cursor.moveToNext());

@@ -11,19 +11,21 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -126,6 +128,8 @@ public class MainActivity extends AppCompatActivity {
             notesList.add(0, n);
             // refreshing the Recycler view
             mAdapter.notifyItemInserted(0);
+            // add note to the Adapter's notes list
+//            mAdapter.editNotesListFull(n, 0, NoteFragment.ACTION_CREATE);
 
             toggleEmptyNotes();
         }
@@ -144,11 +148,13 @@ public class MainActivity extends AppCompatActivity {
         // updating note values in the Notes List
         n.setNoteTitle(noteTitle);
         n.setNoteBody(noteBody);
-        n.setTimestamp(getCurrentDateTime());
+        n.setTimestamp(getCurrentDateTime()); //todo convert it to UTC
         // updating note in Database
         databaseHelper.updateNote(n);
         // refreshing the Recycler view
         mAdapter.notifyItemChanged(position);
+        // update note in the Adapter's notes list
+//        mAdapter.editNotesListFull(n, position, NoteFragment.ACTION_UPDATE);
 
         toggleEmptyNotes();
     }
@@ -191,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
 
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
+            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp()); //todo convert it to local time
 
             noteFragment.setArguments(argsBundle);
         }

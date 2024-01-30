@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> implements Filterable {
 
@@ -117,6 +116,36 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             notifyDataSetChanged();
         }
     };
+
+    /**
+     *
+     * @param note
+     * @param position of note in notesList. Note: needed only for action delete
+     * @param action Wanted action to handle the note: NoteFragment.ACTION_CREATE, NoteFragment.ACTION_UPDATE, or NoteFragment.ACTION_DELETE
+     */
+    public void editNotesListFull(Note note, int position, int action) {
+        switch (action) {
+            case NoteFragment.ACTION_CREATE:
+                Log.d(TAG, "notesList.get(0)     "+notesList.get(0));
+                Log.d(TAG, "notesListFull.get(0) "+notesListFull.get(0));
+                Log.d(TAG, "notesList.get(1)     "+notesList.get(1));
+                Log.d(TAG, "notesListFull.get(1) "+notesListFull.get(1));
+                notesListFull.add(0, note);
+                Log.d(TAG, "after     ");
+                Log.d(TAG, "notesList.get(0)     "+notesList.get(0));
+                Log.d(TAG, "notesListFull.get(0) "+notesListFull.get(0));
+                Log.d(TAG, "notesList.get(1)     "+notesList.get(1));
+                Log.d(TAG, "notesListFull.get(1) "+notesListFull.get(1));
+                break;
+            case NoteFragment.ACTION_UPDATE:
+//                Note n = notesListFull.get(position);
+//                n = note;
+                break;
+            case NoteFragment.ACTION_DELETE:
+
+                break;
+        }
+    }
 
     /**
      * Format timestamp to 'MMM d' format
