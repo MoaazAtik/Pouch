@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    private SearchView svSearchNotes;
     private TextView noNotesView;
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        svSearchNotes = findViewById(R.id.sv_search_notes);
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
 
@@ -90,12 +92,10 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.activity_main_root)
                 .setOnClickListener(v -> {
                             // Clear Focus of Sv search note, and Hide Soft Keyboard when outside of Sv search note is clicked
-                            clearFocusAndHideKeyboard(findViewById(R.id.sv_search_notes));
+                            clearFocusAndHideKeyboard(svSearchNotes);
                         }
                 );
 
-        SearchView svSearchNotes = findViewById(R.id.sv_search_notes);
-//        svSearchNotes.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
         svSearchNotes.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
         If Sv search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
         This step fixes that.
          */
-        clearFocusAndHideKeyboard(findViewById(R.id.sv_search_notes));
+        clearFocusAndHideKeyboard(svSearchNotes);
 
         NoteFragment noteFragment = new NoteFragment();
         // Pass note vales to fragment when Updating note

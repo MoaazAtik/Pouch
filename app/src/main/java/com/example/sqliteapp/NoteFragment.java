@@ -143,8 +143,8 @@ public class NoteFragment extends Fragment {
         /*
         Needed for back arrow and device's back button so the focus won't be automatically passed to Sv Search note.
          */
-        etNoteTitle.clearFocus(); //
-        etNoteBody.clearFocus(); //
+        etNoteTitle.clearFocus();
+        etNoteBody.clearFocus();
 
         // Get the FragmentManager
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

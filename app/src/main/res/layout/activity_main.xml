@@ -13,19 +13,16 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_margin="30dp"
-        app:layout_constraintEnd_toStartOf="@id/btn_sort"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:fontFamily="@font/mulish_regular"
-        android:inputType="textCapSentences|textMultiLine"
         android:background="@drawable/search_box"
-
-        android:searchIcon="@drawable/search_icon"
-
+        android:fontFamily="@font/mulish_regular"
         android:iconifiedByDefault="false"
+        android:inputType="textCapSentences|textMultiLine"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search notes"
-        />
+        android:searchIcon="@drawable/search_icon"
+        app:layout_constraintEnd_toStartOf="@id/btn_sort"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/btn_sort"
