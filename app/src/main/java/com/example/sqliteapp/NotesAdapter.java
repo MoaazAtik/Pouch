@@ -118,31 +118,23 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     };
 
     /**
+     * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.
      *
-     * @param note
-     * @param position of note in notesList. Note: needed only for action delete
-     * @param action Wanted action to handle the note: NoteFragment.ACTION_CREATE, NoteFragment.ACTION_UPDATE, or NoteFragment.ACTION_DELETE
+     * @param note     pass null for action delete.
+     * @param position of note in notesList. Pass 0 for action create.
+     * @param action   Wanted action to handle the note: NoteFragment.ACTION_CREATE, NoteFragment.ACTION_UPDATE, or NoteFragment.ACTION_DELETE.
      */
     public void editNotesListFull(Note note, int position, int action) {
+        /*
+        With 'notesListFull.add(0, note)' instead of 'notesListFull.add(0, new Note(note.getId(),...' in 'case NoteFragment.ACTION_CREATE', notesList and notesListFull refer to the same note in the RAM.
+        So, there is no need for 'case NoteFragment.ACTION_UPDATE' because note is automatically updated in notesListFull when it's updated in notesList.
+         */
         switch (action) {
             case NoteFragment.ACTION_CREATE:
-                Log.d(TAG, "notesList.get(0)     "+notesList.get(0));
-                Log.d(TAG, "notesListFull.get(0) "+notesListFull.get(0));
-                Log.d(TAG, "notesList.get(1)     "+notesList.get(1));
-                Log.d(TAG, "notesListFull.get(1) "+notesListFull.get(1));
-                notesListFull.add(0, note);
-                Log.d(TAG, "after     ");
-                Log.d(TAG, "notesList.get(0)     "+notesList.get(0));
-                Log.d(TAG, "notesListFull.get(0) "+notesListFull.get(0));
-                Log.d(TAG, "notesList.get(1)     "+notesList.get(1));
-                Log.d(TAG, "notesListFull.get(1) "+notesListFull.get(1));
-                break;
-            case NoteFragment.ACTION_UPDATE:
-//                Note n = notesListFull.get(position);
-//                n = note;
+                notesListFull.add(position, note);
                 break;
             case NoteFragment.ACTION_DELETE:
-
+                notesListFull.remove(position);
                 break;
         }
     }

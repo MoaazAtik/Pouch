@@ -111,10 +111,10 @@ public class MainActivity extends AppCompatActivity {
     }//onCreate
 
     /**
-     * Add new note to the Database and Notes List of Recycler View
+     * Add new note to the Database, Notes List of Recycler View, and Adapter's notes lists
      *
-     * @param noteTitle newly added note
-     * @param noteBody  newly added note
+     * @param noteTitle of newly added note
+     * @param noteBody  of newly added note
      */
     private void createNote(String noteTitle, String noteBody) {
         // inserting note in Database
@@ -128,15 +128,15 @@ public class MainActivity extends AppCompatActivity {
             notesList.add(0, n);
             // refreshing the Recycler view
             mAdapter.notifyItemInserted(0);
-            // add note to the Adapter's notes list
-//            mAdapter.editNotesListFull(n, 0, NoteFragment.ACTION_CREATE);
+            // add note to the Adapter's notesListFull
+            mAdapter.editNotesListFull(n, 0, NoteFragment.ACTION_CREATE);
 
             toggleEmptyNotes();
         }
     }
 
     /**
-     * Update note in Database and Notes List of Recycler View
+     * Update note in Database, Notes List of Recycler View, and Adapter's notes lists
      *
      * @param noteTitle of updated note
      * @param noteBody  of updated note
@@ -154,14 +154,12 @@ public class MainActivity extends AppCompatActivity {
         databaseHelper.updateNote(n);
         // refreshing the Recycler view
         mAdapter.notifyItemChanged(position);
-        // update note in the Adapter's notes list
-//        mAdapter.editNotesListFull(n, position, NoteFragment.ACTION_UPDATE);
 
         toggleEmptyNotes();
     }
 
     /**
-     * Delete note from Database and Notes List of Recycler View
+     * Delete note from Database, Notes List of Recycler View, and Adapter's notes lists
      *
      * @param position of note in Notes List to be deleted
      */
@@ -173,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
         notesList.remove(position);
         // refreshing the Recycler view
         mAdapter.notifyItemRemoved(position);
+        // remove note from the Adapter's notesListFull
+        mAdapter.editNotesListFull(null, position, NoteFragment.ACTION_DELETE);
 
         toggleEmptyNotes();
     }
