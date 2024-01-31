@@ -89,8 +89,8 @@ public class MainActivity extends AppCompatActivity {
 
         findViewById(R.id.activity_main_root)
                 .setOnClickListener(v -> {
-                            // Clear Focus of Et search note, and Hide Soft Keyboard when outside of Et search note is clicked
-                            clearFocusAndHideKeyboard(findViewById(R.id.et_search_notes));
+                            // Clear Focus of Sv search note, and Hide Soft Keyboard when outside of Sv search note is clicked
+                            clearFocusAndHideKeyboard(findViewById(R.id.sv_search_notes));
                         }
                 );
 
@@ -185,11 +185,11 @@ public class MainActivity extends AppCompatActivity {
      */
     private void openNote(final Note note, final int position) {
         /*
-        Clear Focus of Et search note when opening note fragment, and Hide the virtual keyboard if it was opened by clicking Et search note.
-        If Et search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
+        Clear Focus of Sv search note when opening note fragment, and Hide the virtual keyboard if it was opened by clicking Sv search note.
+        If Sv search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
         This step fixes that.
          */
-        clearFocusAndHideKeyboard(findViewById(R.id.et_search_notes));
+        clearFocusAndHideKeyboard(findViewById(R.id.sv_search_notes));
 
         NoteFragment noteFragment = new NoteFragment();
         // Pass note vales to fragment when Updating note

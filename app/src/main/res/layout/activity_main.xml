@@ -26,43 +26,6 @@
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search notes"
         />
-<!--        style="@style/Theme.SQLiteApp"-->
-
-<!--        android:submitBackground="@color/white"-->
-
-<!--        android:hint="AAAA"-->
-<!--        app:defaultQueryHint="mmmm"-->
-<!--        android:hint="Search notes"-->
-<!--        android:drawableStart="@drawable/search_icon"-->
-
-<!--    android:paddingStart="12dp"-->
-<!--    android:paddingEnd="12dp"-->
-
-<!--        android:gravity="center"-->
-<!--    not changeable here-->
-<!--        android:textColorHighlight="?attr/colorPrimaryInverse"-->
-<!--        android:textColorHint="?attr/colorPrimaryInverse"-->
-
-    
-    <EditText
-        android:id="@+id/et_search_notes"
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:layout_margin="30dp"
-        android:background="@drawable/search_box"
-        android:drawableStart="@drawable/search_icon"
-        android:fontFamily="@font/mulish_regular"
-        android:gravity="center"
-        android:hint="Search notes"
-        android:inputType="textCapSentences|textMultiLine"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:textColorHighlight="?attr/colorPrimaryInverse"
-        android:textColorHint="?attr/colorPrimaryInverse"
-        app:layout_constraintEnd_toStartOf="@id/btn_sort"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/sv_search_notes" />
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <ImageButton
         android:id="@+id/btn_sort"
@@ -71,9 +34,9 @@
         android:layout_marginEnd="30dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Sort notes"
-        app:layout_constraintBottom_toBottomOf="@id/et_search_notes"
+        app:layout_constraintBottom_toBottomOf="@id/sv_search_notes"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/et_search_notes"
+        app:layout_constraintTop_toTopOf="@id/sv_search_notes"
         app:srcCompat="@drawable/ic_sort"
         app:tint="?attr/colorPrimaryInverse" />
 
@@ -96,7 +59,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/et_search_notes">
+        app:layout_constraintTop_toBottomOf="@id/sv_search_notes">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
@@ -105,9 +68,6 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/et_search_notes"
             tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             tools:listitem="@layout/note_rv_item"
             tools:spanCount="2" />
