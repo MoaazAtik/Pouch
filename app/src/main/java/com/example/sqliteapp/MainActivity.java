@@ -11,27 +11,26 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
     private SearchView svSearchNotes;
+    private ImageButton btnSort;
     private TextView noNotesView;
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
@@ -45,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         svSearchNotes = findViewById(R.id.sv_search_notes);
+        btnSort = findViewById(R.id.btn_sort);
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
 
@@ -107,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter.getFilter().filter(newText);
                 return false;
             }
+        });
+
+        // Button Sort
+        btnSort.setOnClickListener(v -> {
+            showSortingPopupMenu();
         });
     }//onCreate
 
@@ -255,6 +260,33 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         // Clear Focus of Et search note when clicking outside
         view.clearFocus();
+    }
+
+    /**
+     * Show Popup Menu to Sort Notes
+     */
+    private void showSortingPopupMenu() {
+        PopupMenu popupMenu = new PopupMenu(MainActivity.this, btnSort);
+//        PopupMenu popupMenu = new PopupMenu(this, btnSort);
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                int itemId = item.getItemId();
+                if (itemId == R.id.menu_option_a_z) {
+                    return true;
+                } else if (itemId == R.id.menu_option_z_a) {
+                    return true;
+                } else if (itemId == R.id.menu_option_o) {
+                    return true;
+                } else if (itemId == R.id.menu_option_n) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        popupMenu.show();
     }
 
     /**
