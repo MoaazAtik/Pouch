@@ -211,7 +211,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     return sdFormat.format(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: catch e case 1 ", e);
+                    Log.e(TAG, "getFormattedDateTime: catch e case 0 ", e);
                     return "";
                 }
             case 1: // UTC
@@ -221,7 +221,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     return sdFormat.format(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case 0 ", e);
+                    Log.e(TAG, "getFormattedDateTime: case 1 ", e);
                     return "";
                 }
             case 2: // Current Local

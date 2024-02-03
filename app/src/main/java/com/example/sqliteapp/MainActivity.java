@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,8 +23,14 @@ import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -185,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Open Existing or New Note to create or edit a note.
      *
-     * @param note         that will be updated, or null when creating new note.
-     * @param position     of note to be updated, or -1 when creating new note.
+     * @param note     that will be updated, or null when creating new note.
+     * @param position of note to be updated, or -1 when creating new note.
      */
     private void openNote(final Note note, final int position) {
         /*
@@ -266,27 +273,97 @@ public class MainActivity extends AppCompatActivity {
      * Show Popup Menu to Sort Notes
      */
     private void showSortingPopupMenu() {
-        PopupMenu popupMenu = new PopupMenu(MainActivity.this, btnSort);
-//        PopupMenu popupMenu = new PopupMenu(this, btnSort);
+        PopupMenu popupMenu = new PopupMenu(this, btnSort);
         MenuInflater menuInflater = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
-        popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                int itemId = item.getItemId();
-                if (itemId == R.id.menu_option_a_z) {
-                    return true;
-                } else if (itemId == R.id.menu_option_z_a) {
-                    return true;
-                } else if (itemId == R.id.menu_option_o) {
-                    return true;
-                } else if (itemId == R.id.menu_option_n) {
-                    return true;
-                }
-                return false;
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_option_a_z) {
+                sortNotes(Constants.SORT_A_Z);
+                return true;
+            } else if (itemId == R.id.menu_option_z_a) {
+                sortNotes(Constants.SORT_Z_A);
+                return true;
+            } else if (itemId == R.id.menu_option_o) {
+                sortNotes(Constants.SORT_OLDEST_FIRST);
+                return true;
+            } else if (itemId == R.id.menu_option_n) {
+                sortNotes(Constants.SORT_NEWEST_FIRST);
+                return true;
             }
+            return false;
         });
         popupMenu.show();
+    }
+
+    /**
+     * Sort Notes by the wanted parameter
+     *
+     * @param sortBy Constants.SORT_A_Z, Constants.SORT_Z_A, Constants.SORT_OLDEST_FIRST, or Constants.SORT_NEWEST_FIRST.
+     */
+    private void sortNotes(int sortBy) {
+        switch (sortBy) {
+            case Constants.SORT_A_Z:
+                Collections.sort(notesList, (o1, o2) -> {
+                    String o1NoteTitle = o1.getNoteTitle();
+                    String o2NoteTitle = o2.getNoteTitle();
+                    if (o1NoteTitle == null) o1NoteTitle = "";
+                    if (o2NoteTitle == null) o2NoteTitle = "";
+                    return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
+                });
+                break;
+            case Constants.SORT_Z_A:
+                Collections.sort(notesList, (o1, o2) -> {
+                    String o1NoteTitle = o1.getNoteTitle();
+                    String o2NoteTitle = o2.getNoteTitle();
+                    if (o1NoteTitle == null) o1NoteTitle = "";
+                    if (o2NoteTitle == null) o2NoteTitle = "";
+                    return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
+                });
+                Collections.reverse(notesList);
+                break;
+            case Constants.SORT_OLDEST_FIRST:
+                Collections.sort(notesList,
+                        (o1, o2) -> Long.compare(
+                                getTimeInMillis(o1.getTimestamp()),
+                                getTimeInMillis(o2.getTimestamp())
+                        ));
+                break;
+            case Constants.SORT_NEWEST_FIRST:
+                Collections.sort(notesList, new Comparator<Note>() {
+                    @Override
+                    public int compare(Note o1, Note o2) {
+                        return Long.compare(
+                                getTimeInMillis(o1.getTimestamp()),
+                                getTimeInMillis(o2.getTimestamp())
+                        );
+                    }
+                });
+                Collections.reverse(notesList);
+                break;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Convert Date Time String to Time in Milliseconds
+     *
+     * @param dateTime to convert
+     * @return time in millis
+     */
+    private long getTimeInMillis(String dateTime) {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date;
+        long dateMs;
+        try {
+            date = sdFormat.parse(dateTime);
+            dateMs = date.getTime();
+        } catch (ParseException e) {
+            Log.d(TAG, "stringToMillis: catch e " + e);
+            throw new RuntimeException(e);
+        }
+        return dateMs;
     }
 
     /**
