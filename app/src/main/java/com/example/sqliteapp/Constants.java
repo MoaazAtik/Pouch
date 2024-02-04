@@ -17,6 +17,12 @@ public class Constants {
     public static final int ACTION_UPDATE = 1;
     public static final int ACTION_DELETE = 2;
 
+    // Date Time Formatting
+    public static final int UTC_TO_LOCAL = 0;
+    public static final int LOCAL_TO_UTC = 1;
+    public static final int CURRENT_LOCAL = 2;
+    public static final int FORMATTING_LOCAL = 3;
+
     // Sorting parameters
     public static final int SORT_A_Z = 0;
     public static final int SORT_Z_A = 1;

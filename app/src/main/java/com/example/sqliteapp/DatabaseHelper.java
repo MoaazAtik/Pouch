@@ -95,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(i1),
                     cursor.getString(i2),
                     cursor.getString(i3),
-                    getFormattedDateTime(0, cursor.getString(i4))
+                    getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4))
             );
         }
 
@@ -127,7 +127,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(0, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 notes.add(note);
             } while (cursor.moveToNext());
@@ -151,7 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
         values.put(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
         // Convert timestamp to UTC for Storing in Database
-        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(1, note.getTimestamp()));
+        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(Constants.LOCAL_TO_UTC, note.getTimestamp()));
 
         return db.update(
                 Constants.TABLE_NAME,
@@ -194,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Date date;
 
         switch (usage) {
-            case 0: // UTC to Local
+            case Constants.UTC_TO_LOCAL:
                 try {
                     sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     date = sdFormat.parse(dateTime);
@@ -202,30 +202,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     return sdFormat.format(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: catch e case 0 ", e);
+                    Log.e(TAG, "getFormattedDateTime: catch e case UTC_TO_LOCAL ", e);
                     return "";
                 }
-            case 1: // Local to UTC
+            case Constants.LOCAL_TO_UTC:
                 try {
                     date = sdFormat.parse(dateTime);
                     sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
                     return sdFormat.format(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case 1 ", e);
+                    Log.e(TAG, "getFormattedDateTime: case LOCAL_TO_UTC ", e);
                     return "";
                 }
-            case 2: // Current Local
+            case Constants.CURRENT_LOCAL:
                 date = new Date();
                 return sdFormat.format(date);
-            case 3: // Formatting Local
+            case Constants.FORMATTING_LOCAL:
                 try {
                     date = sdFormat.parse(dateTime);
                     sdFormat.applyPattern("MMM d, yyyy");
                     return sdFormat.format(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case 3 ", e);
+                    Log.e(TAG, "getFormattedDateTime: case FORMATTING_LOCAL ", e);
                     return "";
                 }
         }

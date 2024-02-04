@@ -163,7 +163,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         Then it will be automatically converted to UTC by DatabaseHelper.updateNote() for Storing in Database
          */
-        n.setTimestamp(databaseHelper.getFormattedDateTime(2, null));
+        n.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
         // updating note in Database
         databaseHelper.updateNote(n);
         // refreshing the Recycler view
@@ -212,8 +212,7 @@ public class MainActivity extends AppCompatActivity {
 
             argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
-//            argsBundle.putString(Constants.COLUMN_TIMESTAMP, note.getTimestamp());
-            argsBundle.putString(Constants.COLUMN_TIMESTAMP, databaseHelper.getFormattedDateTime(3, note.getTimestamp()));
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, databaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
 
             noteFragment.setArguments(argsBundle);
         }
