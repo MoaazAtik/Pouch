@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.notifyItemInserted(0);
             // add note to the Adapter's notesListFull
             mAdapter.editNotesListFull(n, 0, NoteFragment.ACTION_CREATE);
+            recyclerView.scrollToPosition(0);
 
             toggleEmptyNotes();
         }
