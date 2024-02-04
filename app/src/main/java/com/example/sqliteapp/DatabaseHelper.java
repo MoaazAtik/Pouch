@@ -179,12 +179,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get Formatted date and time. The format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
+     * Get Formatted date and time. The Basic format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
      * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
      *
-     * @param usage    0: Date and time in Local Time Zone for Retrieving,
-     *                 1: Date and time in UTC for Storing in Database,
-     *                 2: Current date and time in Local Time Zone for Storing in Notes List.
+     * @param usage    UTC_TO_LOCAL: Date and time from UTC to Local Time Zone for Retrieving,
+     *                 LOCAL_TO_UTC: Date and time from Local Time Zone to UTC for Storing in Database,
+     *                 CURRENT_LOCAL: Current date and time in Local Time Zone for Storing in Notes List.
+     *                 FORMATTING_LOCAL: Formatted Date in Local Time Zone for Retrieving in Note Fragment. "MMM d, yyyy" = Feb 4, 2024
      * @param dateTime (Optional) Provide date and/or time to format.
      * @return Formatted date or time.
      */
@@ -203,7 +204,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 } catch (ParseException e) {
                     e.printStackTrace();
                     Log.e(TAG, "getFormattedDateTime: catch e case UTC_TO_LOCAL ", e);
-                    return "";
+                    return "e " + dateTime;
                 }
             case Constants.LOCAL_TO_UTC:
                 try {
@@ -213,7 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 } catch (ParseException e) {
                     e.printStackTrace();
                     Log.e(TAG, "getFormattedDateTime: case LOCAL_TO_UTC ", e);
-                    return "";
+                    return "e " + dateTime;
                 }
             case Constants.CURRENT_LOCAL:
                 date = new Date();
@@ -226,7 +227,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 } catch (ParseException e) {
                     e.printStackTrace();
                     Log.e(TAG, "getFormattedDateTime: case FORMATTING_LOCAL ", e);
-                    return "";
+                    return "e " + dateTime;
                 }
         }
         return null;
