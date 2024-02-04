@@ -160,6 +160,9 @@ public class MainActivity extends AppCompatActivity {
         n.setNoteTitle(noteTitle);
         n.setNoteBody(noteBody);
         // Get Current timestamp in Local time zone for Storing in Notes List
+        /*
+        Then it will be automatically converted to UTC by DatabaseHelper.updateNote() for Storing in Database
+         */
         n.setTimestamp(databaseHelper.getFormattedDateTime(2, null));
         // updating note in Database
         databaseHelper.updateNote(n);
@@ -209,7 +212,8 @@ public class MainActivity extends AppCompatActivity {
 
             argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(Constants.COLUMN_TIMESTAMP, note.getTimestamp());
+//            argsBundle.putString(Constants.COLUMN_TIMESTAMP, note.getTimestamp());
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, databaseHelper.getFormattedDateTime(3, note.getTimestamp()));
 
             noteFragment.setArguments(argsBundle);
         }
@@ -363,7 +367,7 @@ public class MainActivity extends AppCompatActivity {
             date = sdFormat.parse(dateTime);
             dateMs = date.getTime();
         } catch (ParseException e) {
-            Log.d(TAG, "stringToMillis: catch e " + e);
+            Log.d(TAG, "getTimeInMillis: catch e " + e);
             throw new RuntimeException(e);
         }
         return dateMs;

@@ -218,6 +218,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             case 2: // Current Local
                 date = new Date();
                 return sdFormat.format(date);
+            case 3: // Formatting Local
+                try {
+                    date = sdFormat.parse(dateTime);
+                    sdFormat.applyPattern("MMM d, yyyy");
+                    return sdFormat.format(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    Log.e(TAG, "getFormattedDateTime: case 3 ", e);
+                    return "";
+                }
         }
         return null;
     }
