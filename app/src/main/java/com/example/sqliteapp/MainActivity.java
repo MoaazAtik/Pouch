@@ -42,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
     private RecyclerView recyclerView;
-
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -279,16 +278,20 @@ public class MainActivity extends AppCompatActivity {
         popupMenu.setOnMenuItemClickListener(item -> {
             int itemId = item.getItemId();
             if (itemId == R.id.menu_option_a_z) {
-                sortNotes(Constants.SORT_A_Z);
+                sortNotes(Constants.SORT_A_Z, notesList);
+                sortNotes(Constants.SORT_A_Z, mAdapter.notesListFull);
                 return true;
             } else if (itemId == R.id.menu_option_z_a) {
-                sortNotes(Constants.SORT_Z_A);
+                sortNotes(Constants.SORT_Z_A, notesList);
+                sortNotes(Constants.SORT_Z_A, mAdapter.notesListFull);
                 return true;
             } else if (itemId == R.id.menu_option_o) {
-                sortNotes(Constants.SORT_OLDEST_FIRST);
+                sortNotes(Constants.SORT_OLDEST_FIRST, notesList);
+                sortNotes(Constants.SORT_OLDEST_FIRST, mAdapter.notesListFull);
                 return true;
             } else if (itemId == R.id.menu_option_n) {
-                sortNotes(Constants.SORT_NEWEST_FIRST);
+                sortNotes(Constants.SORT_NEWEST_FIRST, notesList);
+                sortNotes(Constants.SORT_NEWEST_FIRST, mAdapter.notesListFull);
                 return true;
             }
             return false;
@@ -301,7 +304,7 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param sortBy Constants.SORT_A_Z, Constants.SORT_Z_A, Constants.SORT_OLDEST_FIRST, or Constants.SORT_NEWEST_FIRST.
      */
-    private void sortNotes(int sortBy) {
+    private void sortNotes(int sortBy, List<Note> notesList) {
         switch (sortBy) {
             case Constants.SORT_A_Z:
                 Collections.sort(notesList, (o1, o2) -> {

@@ -23,7 +23,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     private static final String TAG = "NotesAdapter";
 
     private List<Note> notesList;
-    private List<Note> notesListFull;
+    public List<Note> notesListFull;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -118,7 +118,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     };
 
     /**
-     * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.
+     * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.<p>
+     * Note: Sorting notesList is reflected by sortNotes() in MainActivity.
      *
      * @param note     pass null for action delete.
      * @param position of note in notesList. Pass 0 for action create.
