@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
@@ -140,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
             // refreshing the Recycler view
             mAdapter.notifyItemInserted(0);
             // add note to the Adapter's notesListFull
-            mAdapter.editNotesListFull(n, 0, NoteFragment.ACTION_CREATE);
+            mAdapter.editNotesListFull(n, 0, Constants.ACTION_CREATE);
             recyclerView.scrollToPosition(0);
 
             toggleEmptyNotes();
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
         // refreshing the Recycler view
         mAdapter.notifyItemRemoved(position);
         // remove note from the Adapter's notesListFull
-        mAdapter.editNotesListFull(null, position, NoteFragment.ACTION_DELETE);
+        mAdapter.editNotesListFull(null, position, Constants.ACTION_DELETE);
 
         toggleEmptyNotes();
     }
@@ -208,9 +207,9 @@ public class MainActivity extends AppCompatActivity {
         if (note != null) {
             Bundle argsBundle = new Bundle();
 
-            argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
-            argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
+            argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
+            argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, note.getTimestamp());
 
             noteFragment.setArguments(argsBundle);
         }
@@ -236,17 +235,17 @@ public class MainActivity extends AppCompatActivity {
             public void onDataPass(int action, String noteTitle, String noteBody) {
                 // check wanted action
                 switch (action) {
-                    case NoteFragment.ACTION_CREATE:
+                    case Constants.ACTION_CREATE:
                         // Create note only if it has content
                         if (!TextUtils.isEmpty(noteBody) || !TextUtils.isEmpty(noteTitle))
                             createNote(noteTitle, noteBody);
                         break;
-                    case NoteFragment.ACTION_UPDATE:
+                    case Constants.ACTION_UPDATE:
                         // Update note only if its content was changed
                         if (note != null && (!note.getNoteBody().equals(noteBody) || !note.getNoteTitle().equals(noteTitle)))
                             updateNote(noteTitle, noteBody, position);
                         break;
-                    case NoteFragment.ACTION_DELETE:
+                    case Constants.ACTION_DELETE:
                         deleteNote(position);
                         break;
                     default: // ACTION_CLOSE_ONLY

@@ -131,10 +131,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         So, there is no need for 'case NoteFragment.ACTION_UPDATE' because note is automatically updated in notesListFull when it's updated in notesList.
          */
         switch (action) {
-            case NoteFragment.ACTION_CREATE:
+            case Constants.ACTION_CREATE:
                 notesListFull.add(position, note);
                 break;
-            case NoteFragment.ACTION_DELETE:
+            case Constants.ACTION_DELETE:
                 notesListFull.remove(position);
                 break;
         }

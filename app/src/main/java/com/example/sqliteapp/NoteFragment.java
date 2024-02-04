@@ -1,13 +1,9 @@
 package com.example.sqliteapp;
 
-import static android.content.Context.INPUT_METHOD_SERVICE;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -22,11 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 public class NoteFragment extends Fragment {
 
     private static final String TAG = "NoteFragment";
-
-    public static final int ACTION_CLOSE_ONLY = -1;
-    public static final int ACTION_CREATE = 0;
-    public static final int ACTION_UPDATE = 1;
-    public static final int ACTION_DELETE = 2;
 
     private ImageButton btnBack, btnDelete;
     private EditText etNoteTitle, etNoteBody;
@@ -70,14 +61,14 @@ public class NoteFragment extends Fragment {
          */
         btnBack.setOnClickListener(v ->
                 closeNote(
-                        isNewNote ? ACTION_CREATE : ACTION_UPDATE
+                        isNewNote ? Constants.ACTION_CREATE : Constants.ACTION_UPDATE
                 )
         );
 
         //btnDelete
         btnDelete.setOnClickListener(v ->
                 closeNote(
-                        !isNewNote ? ACTION_DELETE : ACTION_CLOSE_ONLY
+                        !isNewNote ? Constants.ACTION_DELETE : Constants.ACTION_CLOSE_ONLY
                 )
         );
 
@@ -93,7 +84,7 @@ public class NoteFragment extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 closeNote(
-                        getArguments() == null ? ACTION_CREATE : ACTION_UPDATE
+                        getArguments() == null ? Constants.ACTION_CREATE : Constants.ACTION_UPDATE
                 );
             }
         });
@@ -112,9 +103,9 @@ public class NoteFragment extends Fragment {
     private void initializeNote() {
         Bundle argsBundle = getArguments();
 
-        String noteTitle = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_TITLE);
-        String noteBody = argsBundle.getString(DatabaseHelper.COLUMN_NOTE_BODY);
-        String timestamp = argsBundle.getString(DatabaseHelper.COLUMN_TIMESTAMP);
+        String noteTitle = argsBundle.getString(Constants.COLUMN_NOTE_TITLE);
+        String noteBody = argsBundle.getString(Constants.COLUMN_NOTE_BODY);
+        String timestamp = argsBundle.getString(Constants.COLUMN_TIMESTAMP);
 
         etNoteTitle.setText(noteTitle);
         etNoteBody.setText(noteBody);
@@ -124,7 +115,7 @@ public class NoteFragment extends Fragment {
     /**
      * Close note fragment. Pass wanted action and note values with DataPassListener.onDataPass then Navigate to MainActivity.
      *
-     * @param action Wanted action to handle the note: {@link #ACTION_CREATE}, {@link #ACTION_UPDATE}, or {@link #ACTION_DELETE}
+     * @param action Wanted action to handle the note: {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
      */
     private void closeNote(int action) {
         // Get note values from corresponding fields
@@ -181,7 +172,7 @@ public class NoteFragment extends Fragment {
         /**
          * Pass data and action to MainActivity
          *
-         * @param action    Wanted action to handle the note: {@link #ACTION_CREATE}, {@link #ACTION_UPDATE}, or {@link #ACTION_DELETE}
+         * @param action    Wanted action to handle the note: {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
          * @param noteTitle .
          * @param noteBody  .
          */
