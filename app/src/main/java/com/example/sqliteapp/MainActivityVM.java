@@ -15,13 +15,14 @@ public class MainActivityVM extends AndroidViewModel {
 
     DatabaseHelper databaseHelper;
     List<Note> notesList = new ArrayList<>();
-    NotesAdapter mAdapter = new NotesAdapter(notesList);
+    NotesAdapter mAdapter;
 
     public MainActivityVM(@NonNull Application application) {
         super(application);
 
         databaseHelper = new DatabaseHelper(application.getApplicationContext());
         notesList.addAll(databaseHelper.getAllNotes());
+        mAdapter = new NotesAdapter(notesList);
     }
 
 }
