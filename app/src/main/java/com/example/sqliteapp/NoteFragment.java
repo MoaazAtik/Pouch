@@ -1,6 +1,7 @@
 package com.example.sqliteapp;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,12 @@ public class NoteFragment extends Fragment {
                         !isNewNote ? Constants.ACTION_DELETE : Constants.ACTION_CLOSE_ONLY
                 )
         );
+
+        /*
+        It's used so dataPassListener would survive Configuration changes.
+        Otherwise, it would be null after config changes, therefore, onDataPass() won't be called when closing note fragment.
+         */
+        setRetainInstance(true);
 
         return view;
     }

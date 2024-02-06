@@ -3,6 +3,7 @@ package com.example.sqliteapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Note> notesList = new ArrayList<>();
     private RecyclerView recyclerView;
     private DatabaseHelper databaseHelper;
+    private MainActivityVM vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +55,12 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
 
-        databaseHelper = new DatabaseHelper(this);
-        notesList.addAll(databaseHelper.getAllNotes());
+        vm = new ViewModelProvider(this).get(MainActivityVM.class);
 
-        mAdapter = new NotesAdapter(notesList);
+        databaseHelper = vm.databaseHelper;
+        notesList = vm.notesList;
+
+        mAdapter = vm.mAdapter;
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(mLayoutManager);
