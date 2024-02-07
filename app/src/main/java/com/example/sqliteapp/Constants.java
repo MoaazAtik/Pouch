@@ -3,8 +3,10 @@ package com.example.sqliteapp;
 public class Constants {
 
     // Databases
-    public static final int DATABASE_VERSION = 3;
-    public static final String DATABASE_NAME = "notes_db";
+    // Name and Version of Database of MainActivity
+    public static final int MAIN_DATABASE_VERSION = 3;
+    public static final String MAIN_DATABASE_NAME = "notes_db";
+    // Name and Version of Database of BoxOfMysteriesActivity
     public static final int BOM_DATABASE_VERSION = 1;
     public static final String BOM_DATABASE_NAME = "bom_db";
     public static final String TABLE_NAME = "Notes";

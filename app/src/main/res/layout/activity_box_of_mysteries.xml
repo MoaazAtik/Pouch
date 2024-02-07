@@ -111,10 +111,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/reveal_screen_black"
         app:lottie_speed="0.25"
-        tools:visibility="gone" />
+        android:visibility="gone" />
+<!--        app:lottie_autoPlay="true"-->
     <!--        app:lottie_loop="true"-->
     <!--        app:lottie_repeatMode="reverse"-->
     <!--        android:scaleType="centerCrop"-->
@@ -127,10 +127,10 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
         app:lottie_rawRes="@raw/reveal_loader"
             tools:visibility="gone"
         app:lottie_speed="0.6" />
+<!--        app:lottie_autoPlay="true"-->
     <!--        app:lottie_loop="true"-->
     <!--        app:lottie_repeatMode="reverse"-->
     <!--        android:scaleType="centerCrop"-->

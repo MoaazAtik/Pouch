@@ -22,8 +22,8 @@ public class MainActivityVM extends AndroidViewModel {
 
         databaseHelper = new DatabaseHelper(
                 application.getApplicationContext(),
-                Constants.DATABASE_NAME,
-                Constants.DATABASE_VERSION
+                Constants.MAIN_DATABASE_NAME,
+                Constants.MAIN_DATABASE_VERSION
         );
         notesList.addAll(databaseHelper.getAllNotes());
         mAdapter = new NotesAdapter(notesList);
