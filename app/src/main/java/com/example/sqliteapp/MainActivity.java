@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -121,6 +122,11 @@ public class MainActivity extends AppCompatActivity {
         // Button Sort
         btnSort.setOnClickListener(v -> {
             showSortingPopupMenu();
+        });
+
+        // Button Open Box of Mysteries
+        findViewById(R.id.btn_open_bom).setOnClickListener(v -> {
+            startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
         });
     }//onCreate
 

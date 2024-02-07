@@ -102,4 +102,45 @@
         tools:name="com.example.sqliteapp.NoteFragment"
         tools:visibility="gone" />
 
+    <Button
+        android:id="@+id/btn_open_bom"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        app:layout_constraintEnd_toEndOf="@id/sv_search_notes"
+        app:layout_constraintStart_toStartOf="@id/sv_search_notes"
+        app:layout_constraintTop_toBottomOf="@id/sv_search_notes" />
+    <!--        android:background="@android:color/transparent"-->
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_reveal_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_rawRes="@raw/reveal_screen_black"
+        app:lottie_speed="0.25"
+            app:lottie_autoPlay="true"
+        tools:visibility="gone" />
+    <!--        app:lottie_loop="true"-->
+    <!--        app:lottie_repeatMode="reverse"-->
+    <!--        android:scaleType="centerCrop"-->
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_reveal_loader"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_rawRes="@raw/reveal_loader"
+            app:lottie_autoPlay="true"
+        app:lottie_speed="0.6" />
+    <!--        tools:visibility="gone"-->
+    <!--        app:lottie_loop="true"-->
+    <!--        app:lottie_repeatMode="reverse"-->
+    <!--        android:scaleType="centerCrop"-->
+
 </androidx.constraintlayout.widget.ConstraintLayout>
