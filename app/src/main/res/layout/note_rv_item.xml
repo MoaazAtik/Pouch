@@ -14,10 +14,10 @@
     android:foreground="?attr/selectableItemBackground"
     android:orientation="vertical"
     android:outlineSpotShadowColor="?attr/colorPrimary"
-    android:paddingLeft="@dimen/activity_margin"
-    android:paddingTop="@dimen/dimen_10"
-    android:paddingRight="@dimen/activity_margin"
-    android:paddingBottom="@dimen/dimen_10">
+    android:paddingLeft="16dp"
+    android:paddingTop="10dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="10dp">
 
     <TextView
         android:id="@+id/txt_note_title_rv"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="?attr/colorPrimaryInverse"
-        android:textSize="@dimen/timestamp"
+        android:textSize="14sp"
         tools:text="Jan 24" />
 
     <TextView

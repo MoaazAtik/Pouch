@@ -3,6 +3,7 @@ package com.example.sqliteapp;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,8 +13,11 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -22,9 +26,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     private SearchView svSearchNotes;
+    private ImageButton btnSort;
     private TextView noNotesView;
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
     private RecyclerView recyclerView;
-
     private DatabaseHelper databaseHelper;
+    private MainActivityVM vm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +51,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         svSearchNotes = findViewById(R.id.sv_search_notes);
+        btnSort = findViewById(R.id.btn_sort);
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
 
-        databaseHelper = new DatabaseHelper(this);
-        notesList.addAll(databaseHelper.getAllNotes());
+        vm = new ViewModelProvider(this).get(MainActivityVM.class);
 
-        mAdapter = new NotesAdapter(notesList);
+        databaseHelper = vm.databaseHelper;
+        notesList = vm.notesList;
+
+        mAdapter = vm.mAdapter;
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
         recyclerView.setLayoutManager(mLayoutManager);
@@ -108,6 +117,11 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        // Button Sort
+        btnSort.setOnClickListener(v -> {
+            showSortingPopupMenu();
+        });
     }//onCreate
 
     /**
@@ -129,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
             // refreshing the Recycler view
             mAdapter.notifyItemInserted(0);
             // add note to the Adapter's notesListFull
-            mAdapter.editNotesListFull(n, 0, NoteFragment.ACTION_CREATE);
+            mAdapter.editNotesListFull(n, 0, Constants.ACTION_CREATE);
+            recyclerView.scrollToPosition(0);
 
             toggleEmptyNotes();
         }
@@ -149,7 +164,10 @@ public class MainActivity extends AppCompatActivity {
         n.setNoteTitle(noteTitle);
         n.setNoteBody(noteBody);
         // Get Current timestamp in Local time zone for Storing in Notes List
-        n.setTimestamp(databaseHelper.getFormattedDateTime(2, null));
+        /*
+        Then it will be automatically converted to UTC by DatabaseHelper.updateNote() for Storing in Database
+         */
+        n.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
         // updating note in Database
         databaseHelper.updateNote(n);
         // refreshing the Recycler view
@@ -172,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
         // refreshing the Recycler view
         mAdapter.notifyItemRemoved(position);
         // remove note from the Adapter's notesListFull
-        mAdapter.editNotesListFull(null, position, NoteFragment.ACTION_DELETE);
+        mAdapter.editNotesListFull(null, position, Constants.ACTION_DELETE);
 
         toggleEmptyNotes();
     }
@@ -180,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Open Existing or New Note to create or edit a note.
      *
-     * @param note         that will be updated, or null when creating new note.
-     * @param position     of note to be updated, or -1 when creating new note.
+     * @param note     that will be updated, or null when creating new note.
+     * @param position of note to be updated, or -1 when creating new note.
      */
     private void openNote(final Note note, final int position) {
         /*
@@ -196,9 +214,9 @@ public class MainActivity extends AppCompatActivity {
         if (note != null) {
             Bundle argsBundle = new Bundle();
 
-            argsBundle.putString(DatabaseHelper.COLUMN_NOTE_TITLE, note.getNoteTitle());
-            argsBundle.putString(DatabaseHelper.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(DatabaseHelper.COLUMN_TIMESTAMP, note.getTimestamp());
+            argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
+            argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, databaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
 
             noteFragment.setArguments(argsBundle);
         }
@@ -224,17 +242,17 @@ public class MainActivity extends AppCompatActivity {
             public void onDataPass(int action, String noteTitle, String noteBody) {
                 // check wanted action
                 switch (action) {
-                    case NoteFragment.ACTION_CREATE:
+                    case Constants.ACTION_CREATE:
                         // Create note only if it has content
                         if (!TextUtils.isEmpty(noteBody) || !TextUtils.isEmpty(noteTitle))
                             createNote(noteTitle, noteBody);
                         break;
-                    case NoteFragment.ACTION_UPDATE:
+                    case Constants.ACTION_UPDATE:
                         // Update note only if its content was changed
                         if (note != null && (!note.getNoteBody().equals(noteBody) || !note.getNoteTitle().equals(noteTitle)))
                             updateNote(noteTitle, noteBody, position);
                         break;
-                    case NoteFragment.ACTION_DELETE:
+                    case Constants.ACTION_DELETE:
                         deleteNote(position);
                         break;
                     default: // ACTION_CLOSE_ONLY
@@ -255,6 +273,107 @@ public class MainActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         // Clear Focus of Et search note when clicking outside
         view.clearFocus();
+    }
+
+    /**
+     * Show Popup Menu to Sort Notes
+     */
+    private void showSortingPopupMenu() {
+        PopupMenu popupMenu = new PopupMenu(this, btnSort);
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_option_a_z) {
+                sortNotes(Constants.SORT_A_Z, notesList);
+                sortNotes(Constants.SORT_A_Z, mAdapter.notesListFull);
+                return true;
+            } else if (itemId == R.id.menu_option_z_a) {
+                sortNotes(Constants.SORT_Z_A, notesList);
+                sortNotes(Constants.SORT_Z_A, mAdapter.notesListFull);
+                return true;
+            } else if (itemId == R.id.menu_option_o) {
+                sortNotes(Constants.SORT_OLDEST_FIRST, notesList);
+                sortNotes(Constants.SORT_OLDEST_FIRST, mAdapter.notesListFull);
+                return true;
+            } else if (itemId == R.id.menu_option_n) {
+                sortNotes(Constants.SORT_NEWEST_FIRST, notesList);
+                sortNotes(Constants.SORT_NEWEST_FIRST, mAdapter.notesListFull);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
+    }
+
+    /**
+     * Sort Notes by the wanted parameter
+     *
+     * @param sortBy Constants.SORT_A_Z, Constants.SORT_Z_A, Constants.SORT_OLDEST_FIRST, or Constants.SORT_NEWEST_FIRST.
+     */
+    private void sortNotes(int sortBy, List<Note> notesList) {
+        switch (sortBy) {
+            case Constants.SORT_A_Z:
+                Collections.sort(notesList, (o1, o2) -> {
+                    String o1NoteTitle = o1.getNoteTitle();
+                    String o2NoteTitle = o2.getNoteTitle();
+                    if (o1NoteTitle == null) o1NoteTitle = "";
+                    if (o2NoteTitle == null) o2NoteTitle = "";
+                    return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
+                });
+                break;
+            case Constants.SORT_Z_A:
+                Collections.sort(notesList, (o1, o2) -> {
+                    String o1NoteTitle = o1.getNoteTitle();
+                    String o2NoteTitle = o2.getNoteTitle();
+                    if (o1NoteTitle == null) o1NoteTitle = "";
+                    if (o2NoteTitle == null) o2NoteTitle = "";
+                    return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
+                });
+                Collections.reverse(notesList);
+                break;
+            case Constants.SORT_OLDEST_FIRST:
+                Collections.sort(notesList,
+                        (o1, o2) -> Long.compare(
+                                getTimeInMillis(o1.getTimestamp()),
+                                getTimeInMillis(o2.getTimestamp())
+                        ));
+                break;
+            case Constants.SORT_NEWEST_FIRST:
+                Collections.sort(notesList, new Comparator<Note>() {
+                    @Override
+                    public int compare(Note o1, Note o2) {
+                        return Long.compare(
+                                getTimeInMillis(o1.getTimestamp()),
+                                getTimeInMillis(o2.getTimestamp())
+                        );
+                    }
+                });
+                Collections.reverse(notesList);
+                break;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Convert Date Time String to Time in Milliseconds
+     *
+     * @param dateTime to convert
+     * @return time in millis
+     */
+    private long getTimeInMillis(String dateTime) {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date;
+        long dateMs;
+        try {
+            date = sdFormat.parse(dateTime);
+            dateMs = date.getTime();
+        } catch (ParseException e) {
+            Log.d(TAG, "getTimeInMillis: catch e " + e);
+            throw new RuntimeException(e);
+        }
+        return dateMs;
     }
 
     /**

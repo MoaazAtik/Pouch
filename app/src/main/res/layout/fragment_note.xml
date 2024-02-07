@@ -60,7 +60,7 @@
         android:layout_marginBottom="16dp"
         android:background="@android:color/transparent"
         android:gravity="start|top"
-        android:hint="@string/hint_enter_note"
+        android:hint="Note..."
         android:inputType="textCapSentences|textMultiLine"
         android:requiresFadingEdge="vertical"
         android:textAppearance="@style/TextAppearance.Material3.BodyLarge"

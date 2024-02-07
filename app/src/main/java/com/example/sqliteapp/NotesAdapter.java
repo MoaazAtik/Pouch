@@ -23,7 +23,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     private static final String TAG = "NotesAdapter";
 
     private List<Note> notesList;
-    private List<Note> notesListFull;
+    public List<Note> notesListFull;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -118,7 +118,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     };
 
     /**
-     * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.
+     * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.<p>
+     * Note: Sorting notesList is reflected by sortNotes() in MainActivity.
      *
      * @param note     pass null for action delete.
      * @param position of note in notesList. Pass 0 for action create.
@@ -130,10 +131,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         So, there is no need for 'case NoteFragment.ACTION_UPDATE' because note is automatically updated in notesListFull when it's updated in notesList.
          */
         switch (action) {
-            case NoteFragment.ACTION_CREATE:
+            case Constants.ACTION_CREATE:
                 notesListFull.add(position, note);
                 break;
-            case NoteFragment.ACTION_DELETE:
+            case Constants.ACTION_DELETE:
                 notesListFull.remove(position);
                 break;
         }
