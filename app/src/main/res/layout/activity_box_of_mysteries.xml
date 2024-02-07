@@ -1,16 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_bom_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <!--    android:background="@drawable/bg_activity_main"-->
 
-    <Button
-        android:id="@+id/bttt"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+    <SearchView
+        android:id="@+id/sv_search_notes"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/search_box"
+        android:fontFamily="@font/mulish_regular"
+        android:iconifiedByDefault="false"
+        android:inputType="textCapSentences|textMultiLine"
+        android:queryBackground="@android:color/transparent"
+        android:queryHint="Search notes"
+        android:searchIcon="@drawable/search_icon"
+        app:layout_constraintEnd_toStartOf="@id/btn_sort"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/btn_sort"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginEnd="30dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Sort notes"
+        app:layout_constraintBottom_toBottomOf="@id/sv_search_notes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/sv_search_notes"
+        app:srcCompat="@drawable/ic_sort"
+        app:tint="?attr/colorPrimaryInverse" />
+
+    <ImageView
+        android:id="@+id/img_logo"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:contentDescription="Logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.7"
+        app:srcCompat="@drawable/logo" />
+
+    <FrameLayout
+        android:id="@+id/frame_rv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sv_search_notes">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            tools:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+            tools:listitem="@layout/note_rv_item"
+            tools:spanCount="2" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/txt_empty_notes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="cursive"
+        android:text="Box\nof\nMysteries"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:gravity="center"
+        android:textSize="32sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_create_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:contentDescription="Add new note"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/btn_add_note" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_note"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="7dp"
+        tools:layout="@layout/fragment_note"
+        tools:name="com.example.sqliteapp.NoteFragment"
+        tools:visibility="gone" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_reveal_screen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/reveal_screen_black"
+        app:lottie_speed="0.25"
+        tools:visibility="gone" />
+    <!--        app:lottie_loop="true"-->
+    <!--        app:lottie_repeatMode="reverse"-->
+    <!--        android:scaleType="centerCrop"-->
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_reveal_loader"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/reveal_loader"
+            tools:visibility="gone"
+        app:lottie_speed="0.6" />
+    <!--        app:lottie_loop="true"-->
+    <!--        app:lottie_repeatMode="reverse"-->
+    <!--        android:scaleType="centerCrop"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
