@@ -19,7 +19,11 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     public BoxOfMysteriesVM(@NonNull Application application) {
         super(application);
 
-        databaseHelper = new DatabaseHelper(application.getApplicationContext());
+        databaseHelper = new DatabaseHelper(
+                application.getApplicationContext(),
+                Constants.BOM_DATABASE_NAME,
+                Constants.BOM_DATABASE_VERSION
+        );
         notesList.addAll(databaseHelper.getAllNotes());
         mAdapter = new NotesAdapter(notesList);
     }

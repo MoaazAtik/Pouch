@@ -20,7 +20,11 @@ public class MainActivityVM extends AndroidViewModel {
     public MainActivityVM(@NonNull Application application) {
         super(application);
 
-        databaseHelper = new DatabaseHelper(application.getApplicationContext());
+        databaseHelper = new DatabaseHelper(
+                application.getApplicationContext(),
+                Constants.DATABASE_NAME,
+                Constants.DATABASE_VERSION
+        );
         notesList.addAll(databaseHelper.getAllNotes());
         mAdapter = new NotesAdapter(notesList);
     }

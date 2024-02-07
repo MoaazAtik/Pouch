@@ -19,8 +19,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
 
-    public DatabaseHelper(Context context) {
-        super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+    /**
+     * Constructor of DatabaseHelper
+     *
+     * @param context         of App or Activity
+     * @param databaseName    Constants.DATABASE_NAME for the default database of Main Activity or Constants.BOM_DATABASE_NAME for the Box of Mysteries database
+     * @param databaseVersion Constants.DATABASE_VERSION for the default database of Main Activity or Constants.BOM_DATABASE_VERSION for the Box of Mysteries database
+     */
+    public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
+        super(context, databaseName, null, databaseVersion);
     }
 
     /*

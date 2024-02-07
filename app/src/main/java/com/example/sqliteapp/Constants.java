@@ -2,9 +2,11 @@ package com.example.sqliteapp;
 
 public class Constants {
 
-    // Database
+    // Databases
     public static final int DATABASE_VERSION = 3;
     public static final String DATABASE_NAME = "notes_db";
+    public static final int BOM_DATABASE_VERSION = 1;
+    public static final String BOM_DATABASE_NAME = "bom_db";
     public static final String TABLE_NAME = "Notes";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_NOTE_TITLE = "NoteTitle";
