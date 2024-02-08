@@ -12,8 +12,14 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class BoxOfMysteriesVM extends AndroidViewModel {
 
@@ -200,6 +206,86 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
         mAdapter.editNotesListFull(null, position, Constants.ACTION_DELETE);
         // update doneNoteAction which is observed by the Activity
         doneNoteAction.setValue(Constants.ACTION_DELETE);
+    }
+
+    /**
+     * Helper method for sorting notes. It calls {@link #sortNotes(int, List)} for {@link #notesList} and mAdapter.notesListFull
+     *
+     * @param sortBy Constants.SORT_A_Z, Constants.SORT_Z_A, Constants.SORT_OLDEST_FIRST, or Constants.SORT_NEWEST_FIRST.
+     */
+    public void sortNotesHelper(int sortBy) {
+        sortNotes(sortBy, notesList);
+        sortNotes(sortBy, mAdapter.notesListFull);
+    }
+
+    /**
+     * Sort Notes by the wanted parameter
+     *
+     * @param sortBy Constants.SORT_A_Z, Constants.SORT_Z_A, Constants.SORT_OLDEST_FIRST, or Constants.SORT_NEWEST_FIRST.
+     */
+    private void sortNotes(int sortBy, List<Note> notesList) {
+        switch (sortBy) {
+            case Constants.SORT_A_Z:
+                Collections.sort(notesList, (o1, o2) -> {
+                    String o1NoteTitle = o1.getNoteTitle();
+                    String o2NoteTitle = o2.getNoteTitle();
+                    if (o1NoteTitle == null) o1NoteTitle = "";
+                    if (o2NoteTitle == null) o2NoteTitle = "";
+                    return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
+                });
+                break;
+            case Constants.SORT_Z_A:
+                Collections.sort(notesList, (o1, o2) -> {
+                    String o1NoteTitle = o1.getNoteTitle();
+                    String o2NoteTitle = o2.getNoteTitle();
+                    if (o1NoteTitle == null) o1NoteTitle = "";
+                    if (o2NoteTitle == null) o2NoteTitle = "";
+                    return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
+                });
+                Collections.reverse(notesList);
+                break;
+            case Constants.SORT_OLDEST_FIRST:
+                Collections.sort(notesList,
+                        (o1, o2) -> Long.compare(
+                                getTimeInMillis(o1.getTimestamp()),
+                                getTimeInMillis(o2.getTimestamp())
+                        ));
+                break;
+            case Constants.SORT_NEWEST_FIRST:
+                Collections.sort(notesList, new Comparator<Note>() {
+                    @Override
+                    public int compare(Note o1, Note o2) {
+                        return Long.compare(
+                                getTimeInMillis(o1.getTimestamp()),
+                                getTimeInMillis(o2.getTimestamp())
+                        );
+                    }
+                });
+                Collections.reverse(notesList);
+                break;
+        }
+        mAdapter.notifyDataSetChanged();
+    }
+
+    /**
+     * Convert Date Time String to Time in Milliseconds
+     *
+     * @param dateTime to convert
+     * @return time in millis
+     */
+    private long getTimeInMillis(String dateTime) {
+        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date date;
+        long dateMs;
+        try {
+            date = sdFormat.parse(dateTime);
+            dateMs = date.getTime();
+        } catch (ParseException e) {
+            Log.d(TAG, "getTimeInMillis: catch e " + e);
+            throw new RuntimeException(e);
+        }
+        return dateMs;
     }
 
 }

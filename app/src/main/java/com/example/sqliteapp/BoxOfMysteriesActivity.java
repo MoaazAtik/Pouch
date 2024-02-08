@@ -2,9 +2,11 @@ package com.example.sqliteapp;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -73,6 +75,11 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
 
         // Search View
         binding.svSearchNotes.setOnQueryTextListener(vm.getOnQueryTextListener());
+
+        // Button Sort Notes
+        binding.btnSort.setOnClickListener(v ->
+            showSortingPopupMenu()
+        );
 
     } // onCreate
 
@@ -201,6 +208,33 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
                 toggleEmptyNotes();
             }
         });
+    }
+
+    /**
+     * Show Popup Menu to Sort Notes
+     */
+    private void showSortingPopupMenu() {
+        PopupMenu popupMenu = new PopupMenu(this, binding.btnSort);
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.menu_option_a_z) {
+                vm.sortNotesHelper(Constants.SORT_A_Z);
+                return true;
+            } else if (itemId == R.id.menu_option_z_a) {
+                vm.sortNotesHelper(Constants.SORT_Z_A);
+                return true;
+            } else if (itemId == R.id.menu_option_o) {
+                vm.sortNotesHelper(Constants.SORT_OLDEST_FIRST);
+                return true;
+            } else if (itemId == R.id.menu_option_n) {
+                vm.sortNotesHelper(Constants.SORT_NEWEST_FIRST);
+                return true;
+            }
+            return false;
+        });
+        popupMenu.show();
     }
 
 }
