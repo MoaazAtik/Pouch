@@ -15,6 +15,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
@@ -52,11 +53,14 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         vm = new ViewModelProvider(this).get(BoxOfMysteriesVM.class);
 
         showWelcomingMessage();
-        buildRecyclerView();
+        handleRecyclerView();
         toggleEmptyNotes();
 
+        // Set Observer for note Action done by View Model after closing Note Fragment
+        observeDoneNoteAction();
+
         binding.btnCreateNote.setOnClickListener(v ->
-                openNote(null, -1)
+                openNote(-1)
         );
 
     } // onCreate
@@ -66,12 +70,39 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void buildRecyclerView() {
+    /**
+     * Build Recycler View and Handle Item Click and Swipe events
+     */
+    private void handleRecyclerView() {
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(vm.mAdapter);
+
+        /*
+        Touch Listener of Recycler View Items.
+        on Click on RecyclerView item open note, on Swipe delete note.
+         */
+        RecyclerTouchListener recyclerTouchListener = new RecyclerTouchListener(
+                this,
+                binding.recyclerView,
+                new RecyclerTouchListener.TouchListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        openNote(position);
+                    }
+
+                    @Override
+                    public void onSwiped(int position) {
+                        vm.deleteNote(position);
+                    }
+                }
+        );
+        // ItemTouchHelper to handle onSwiped
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(recyclerTouchListener);
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView);
+        binding.recyclerView.addOnItemTouchListener(recyclerTouchListener);
     }
 
     /**
@@ -88,10 +119,9 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
     /**
      * Open Existing or New Note to create or edit a note.
      *
-     * @param note     that will be updated, or null when creating new note.
      * @param position of note to be updated, or -1 when creating new note.
      */
-    private void openNote(final Note note, final int position) {
+    private void openNote(final int position) {
         /*
         Clear Focus of Sv search note when opening note fragment, and Hide the virtual keyboard if it was opened by clicking Sv search note.
         If Sv search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
@@ -99,17 +129,18 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
          */
         clearFocusAndHideKeyboard(binding.svSearchNotes);
 
-        // Pass data to ViewModel
-        vm.passNoteToVM(note, position);
-
         NoteFragment noteFragment = new NoteFragment();
-        // Pass note vales to fragment when Updating note
-        if (note != null) {
+
+        // Pass note vales to fragment when Opening an already created note
+        if (position > -1) {
+            // Pass position to ViewModel and Get Note at current position
+            Note currentNote = vm.passPositionToVM(position);
+
             Bundle argsBundle = new Bundle();
 
-            argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
-            argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(Constants.COLUMN_TIMESTAMP, vm.databaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
+            argsBundle.putString(Constants.COLUMN_NOTE_TITLE, currentNote.getNoteTitle());
+            argsBundle.putString(Constants.COLUMN_NOTE_BODY, currentNote.getNoteBody());
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, vm.databaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, currentNote.getTimestamp()));
 
             noteFragment.setArguments(argsBundle);
         }
@@ -129,22 +160,8 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_container_note, noteFragment);
         fragmentTransaction.commit();
 
-
         // Set up data pass listener
         noteFragment.setDataPassListener(vm.getDataPassListener());
-
-        // Observe if new note is created
-        vm.getIsNoteCreated().observe(this, new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean) {
-                    binding.recyclerView.scrollToPosition(0);
-                    toggleEmptyNotes();
-                    vm.setIsNoteCreated(false);
-                }
-            }
-        });
-        
     }
 
     /**
@@ -158,6 +175,21 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         // Clear Focus of Et search note when clicking outside
         view.clearFocus();
+    }
+
+    /**
+     * Observe done note action after closing note fragment
+     */
+    private void observeDoneNoteAction() {
+        vm.getDoneNoteAction().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer == Constants.ACTION_CREATE)
+                    binding.recyclerView.scrollToPosition(0);
+
+                toggleEmptyNotes();
+            }
+        });
     }
 
 }

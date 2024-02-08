@@ -25,7 +25,7 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     private DataPassListener dataPassListener;
     private MutableLiveData<Note> currentNote = new MutableLiveData<>();
     private MutableLiveData<Integer> currentPosition = new MutableLiveData<>();
-    private MutableLiveData<Boolean> isNoteCreated = new MutableLiveData<>();
+    private MutableLiveData<Integer> doneNoteAction = new MutableLiveData<>();
 
     public BoxOfMysteriesVM(@NonNull Application application) {
         super(application);
@@ -61,20 +61,16 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     /**
      * Pass data from the Activity to the ViewModel to be used by {@link #handleDataPass(int, String, String)} for {@link #dataPassListener}
      *
-     * @param note     note
      * @param position of the note in notesList
      */
-    public void passNoteToVM(Note note, int position) {
-        currentNote.setValue(note);
+    public Note passPositionToVM(int position) {
         currentPosition.setValue(position);
+        currentNote.setValue(notesList.get(position));
+        return currentNote.getValue();
     }
 
-    public LiveData<Boolean> getIsNoteCreated() {
-        return isNoteCreated;
-    }
-
-    public void setIsNoteCreated(boolean isNoteCreated) {
-        this.isNoteCreated.setValue(isNoteCreated);
+    public LiveData<Integer> getDoneNoteAction() {
+        return doneNoteAction;
     }
 
     /**
@@ -87,8 +83,7 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
      */
     private void handleDataPass(int action, String noteTitle, String noteBody) {
         Note note = this.currentNote.getValue();
-        int position = this.currentPosition.getValue();
-//        Integer position = this.currentPosition.getValue();
+        Integer position = this.currentPosition.getValue();
 
         // Perform database operations based on action
         switch (action) {
@@ -133,17 +128,54 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
             mAdapter.notifyItemInserted(0);
             // add note to the Adapter's notesListFull
             mAdapter.editNotesListFull(n, 0, Constants.ACTION_CREATE);
-            // update isNoteCreated which is observed by the Activity
-            isNoteCreated.setValue(true);
+            // update doneNoteAction which is observed by the Activity
+            doneNoteAction.setValue(Constants.ACTION_CREATE);
         }
     }
 
+    /**
+     * Update note in Database, Notes List of Recycler View, and Adapter's notes lists
+     *
+     * @param noteTitle of updated note
+     * @param noteBody  of updated note
+     * @param position  of note in Notes List to be updated
+     */
     private void updateNote(String noteTitle, String noteBody, int position) {
-        // Implement update note logic
+        // getting reference to the note
+        Note n = notesList.get(position);
+        // updating note values in the Notes List
+        n.setNoteTitle(noteTitle);
+        n.setNoteBody(noteBody);
+        // Get Current timestamp in Local time zone for Storing in Notes List
+        /*
+        Then it will be automatically converted to UTC by DatabaseHelper.updateNote() for Storing in Database
+         */
+        n.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
+        // updating note in Database
+        databaseHelper.updateNote(n);
+        // refreshing the Recycler view
+        mAdapter.notifyItemChanged(position);
+        // update doneNoteAction which is observed by the Activity
+        doneNoteAction.setValue(Constants.ACTION_UPDATE);
     }
 
-    private void deleteNote(int position) {
-        // Implement delete note logic
+    /**
+     * Delete note from Database, Notes List of Recycler View, and Adapter's notes lists
+     *
+     * @param position of note in Notes List to be deleted
+     */
+    public void deleteNote(int position) {
+        // deleting the note from Database
+        databaseHelper.deleteNote(notesList.get(position));
+
+        // removing the note from the Notes List
+        notesList.remove(position);
+        // refreshing the Recycler view
+        mAdapter.notifyItemRemoved(position);
+        // remove note from the Adapter's notesListFull
+        mAdapter.editNotesListFull(null, position, Constants.ACTION_DELETE);
+        // update doneNoteAction which is observed by the Activity
+        doneNoteAction.setValue(Constants.ACTION_DELETE);
     }
 
 }
