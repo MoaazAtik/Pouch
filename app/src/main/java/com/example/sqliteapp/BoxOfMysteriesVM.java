@@ -5,6 +5,7 @@ import com.example.sqliteapp.NoteFragment.DataPassListener;
 import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -23,6 +24,7 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     NotesAdapter mAdapter;
 
     private DataPassListener dataPassListener;
+    private SearchView.OnQueryTextListener onQueryTextListener;
     private int currentPosition;
     private Note currentNote;
     private MutableLiveData<Integer> doneNoteAction = new MutableLiveData<>();
@@ -46,6 +48,20 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
                 handleDataPass(action, noteTitle, noteBody);
             }
         };
+
+        // Initialize onQueryTextListener
+        onQueryTextListener = new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mAdapter.getFilter().filter(newText);
+                return false;
+            }
+        };
     }
 
 
@@ -56,6 +72,15 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
      */
     public DataPassListener getDataPassListener() {
         return dataPassListener;
+    }
+
+    /**
+     * Get OnQueryTextListener for SearchView
+     *
+     * @return {@link #onQueryTextListener} which is tied to SearchView in Activity to search notes
+     */
+    public SearchView.OnQueryTextListener getOnQueryTextListener() {
+        return onQueryTextListener;
     }
 
     /**

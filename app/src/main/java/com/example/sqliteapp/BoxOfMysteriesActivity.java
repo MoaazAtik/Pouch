@@ -59,9 +59,20 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         // Set Observer for note Action done by View Model after closing Note Fragment
         observeDoneNoteAction();
 
+        // Button Create Note
         binding.btnCreateNote.setOnClickListener(v ->
                 openNote(-1)
         );
+
+        // Root Layout
+        binding.activityBomRoot.setOnClickListener(v -> {
+                    // Clear Focus of Sv search note, and Hide Soft Keyboard when outside of Sv search note is clicked
+                    clearFocusAndHideKeyboard(binding.svSearchNotes);
+                }
+        );
+
+        // Search View
+        binding.svSearchNotes.setOnQueryTextListener(vm.getOnQueryTextListener());
 
     } // onCreate
 
