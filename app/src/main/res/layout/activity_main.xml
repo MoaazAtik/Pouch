@@ -40,12 +40,11 @@
         android:id="@+id/img_logo"
         android:layout_width="140dp"
         android:layout_height="140dp"
+        android:layout_marginTop="300dp"
         android:contentDescription="Logo"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.7"
         app:srcCompat="@drawable/logo" />
 
     <FrameLayout
@@ -77,10 +76,9 @@
         android:text="Creative Zone"
         android:textColor="?attr/colorPrimaryInverse"
         android:textSize="26sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/lv_reveal_loader"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_create_note"
