@@ -46,14 +46,14 @@ public class NoteFragment extends Fragment {
         // Clear Focus of EditText's and Hide Soft keyboard when Root layout is clicked
         view.getRootView()
                 .setOnClickListener(v -> {
-                        ((MainActivity) requireActivity())
-                                .clearFocusAndHideKeyboard(
-                                        etNoteTitle
-                                );
-                        ((MainActivity) requireActivity())
-                                .clearFocusAndHideKeyboard(
-                                        etNoteBody
-                                );
+                    String hostActivityName = requireActivity().getClass().getName();
+                    if (hostActivityName.equals(MainActivity.class.getName())) {
+                        ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
+                        ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
+                    } else if (hostActivityName.equals(BoxOfMysteriesActivity.class.getName())) {
+                        ((BoxOfMysteriesActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
+                        ((BoxOfMysteriesActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
+                    }
                 });
 
         //btnBack
