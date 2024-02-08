@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_bom_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <!--    android:background="@drawable/bg_activity_main"-->
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_activity_main">
 
     <SearchView
         android:id="@+id/sv_search_notes"
