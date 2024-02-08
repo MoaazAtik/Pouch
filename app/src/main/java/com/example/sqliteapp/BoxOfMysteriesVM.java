@@ -23,8 +23,8 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     NotesAdapter mAdapter;
 
     private DataPassListener dataPassListener;
-    private MutableLiveData<Note> currentNote = new MutableLiveData<>();
-    private MutableLiveData<Integer> currentPosition = new MutableLiveData<>();
+    private int currentPosition;
+    private Note currentNote;
     private MutableLiveData<Integer> doneNoteAction = new MutableLiveData<>();
 
     public BoxOfMysteriesVM(@NonNull Application application) {
@@ -59,14 +59,15 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     }
 
     /**
-     * Pass data from the Activity to the ViewModel to be used by {@link #handleDataPass(int, String, String)} for {@link #dataPassListener}
+     * Pass data from the Activity to the ViewModel to be used by {@link #handleDataPass(int, String, String)} for {@link #dataPassListener}.<p>
+     * Note: {@link #currentPosition} and {@link #currentNote} is to be used when Updating or Deleting a note, and not when Creating one.
      *
      * @param position of the note in notesList
      */
     public Note passPositionToVM(int position) {
-        currentPosition.setValue(position);
-        currentNote.setValue(notesList.get(position));
-        return currentNote.getValue();
+        currentPosition = position;
+        currentNote = notesList.get(position);
+        return currentNote;
     }
 
     public LiveData<Integer> getDoneNoteAction() {
@@ -82,8 +83,6 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
      * @param noteBody  .
      */
     private void handleDataPass(int action, String noteTitle, String noteBody) {
-        Note note = this.currentNote.getValue();
-        Integer position = this.currentPosition.getValue();
 
         // Perform database operations based on action
         switch (action) {
@@ -93,12 +92,12 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
                 }
                 break;
             case Constants.ACTION_UPDATE:
-                if (note != null && (!note.getNoteBody().equals(noteBody) || !note.getNoteTitle().equals(noteTitle))) {
-                    updateNote(noteTitle, noteBody, position);
+                if (currentNote != null && (!currentNote.getNoteBody().equals(noteBody) || !currentNote.getNoteTitle().equals(noteTitle))) {
+                    updateNote(noteTitle, noteBody, currentPosition);
                 }
                 break;
             case Constants.ACTION_DELETE:
-                deleteNote(position);
+                deleteNote(currentPosition);
                 break;
             default: // ACTION_CLOSE_ONLY
                 break;
