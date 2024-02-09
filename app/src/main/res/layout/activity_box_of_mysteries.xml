@@ -40,7 +40,7 @@
         android:id="@+id/img_logo"
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="330dp"
         android:contentDescription="Logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

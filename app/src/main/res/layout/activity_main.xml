@@ -40,7 +40,7 @@
         android:id="@+id/img_logo"
         android:layout_width="140dp"
         android:layout_height="140dp"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="330dp"
         android:contentDescription="Logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -100,7 +100,7 @@
         tools:visibility="gone" />
 
     <Button
-        android:id="@+id/btn_open_bom"
+        android:id="@+id/btn_reveal_bom"
         android:layout_width="100dp"
         android:layout_height="30dp"
         android:background="@android:color/transparent"

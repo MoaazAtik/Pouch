@@ -34,17 +34,6 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
     private ActivityBoxOfMysteriesBinding binding;
     private BoxOfMysteriesVM vm;
 
-    // use binding. instead
-//    private TextView noNotesView;
-//    private SearchView svSearchNotes;
-//    private ImageButton btnSort;
-//    private RecyclerView recyclerView;
-
-    // use VM
-//    private NotesAdapter mAdapter;
-//    private List<Note> notesList = new ArrayList<>();
-//    private DatabaseHelper databaseHelper;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

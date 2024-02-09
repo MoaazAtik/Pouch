@@ -32,6 +32,8 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -45,6 +47,9 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DatabaseHelper databaseHelper;
     private MainActivityVM vm;
+
+    private int bomKnocks = 0;
+    private boolean bomTimeoutStarted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,10 +129,10 @@ public class MainActivity extends AppCompatActivity {
             showSortingPopupMenu();
         });
 
-        // Button Open Box of Mysteries
-        findViewById(R.id.btn_open_bom).setOnClickListener(v -> {
-            startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
-        });
+        // Button Reveal Box of Mysteries
+        findViewById(R.id.btn_reveal_bom).setOnClickListener(v ->
+                revealBoxOfMysteries()
+        );
     }//onCreate
 
     /**
@@ -392,4 +397,48 @@ public class MainActivity extends AppCompatActivity {
             noNotesView.setVisibility(View.VISIBLE);
         }
     }
+
+    /**
+     * Try to reveal The Box of Mysteries.<p>
+     * The Box of Mysteries will reveal itself only to those who knocks exactly 5 Times within a window of 7 Seconds.
+     */
+    private void revealBoxOfMysteries() {
+        bomKnocks++;
+
+        if (!bomTimeoutStarted) {
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+
+                    long timeoutKnocking = 7 * 1000; // 7 seconds
+                    long startKnockingTime = System.currentTimeMillis();
+                    bomTimeoutStarted = true;
+                    while (bomTimeoutStarted) {
+                        long elapsedKnockingTime = System.currentTimeMillis() - startKnockingTime;
+                        if (elapsedKnockingTime >= timeoutKnocking) {
+                            Log.d(TAG, "Timeout reached. Breaking the Unlocking loop.");
+                            bomTimeoutStarted = false;
+                            bomKnocks = 0;
+                            break;
+                        } else if (bomKnocks == 5) {
+                            startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
+                            bomTimeoutStarted = false;
+                            bomKnocks = 0;
+                            break;
+                        }
+
+                        synchronized (this) {
+                            try {
+                                wait(1000);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    }
+
 }
