@@ -1,4 +1,4 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import android.util.Log;
 import android.view.LayoutInflater;

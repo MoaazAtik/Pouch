@@ -1,14 +1,10 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.ImageButton;
 import android.widget.PopupMenu;
-import android.widget.SearchView;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,11 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import com.example.sqliteapp.databinding.ActivityBoxOfMysteriesBinding;
+import com.thewhitewings.pouch.databinding.ActivityBoxOfMysteriesBinding;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class BoxOfMysteriesActivity extends AppCompatActivity {
 

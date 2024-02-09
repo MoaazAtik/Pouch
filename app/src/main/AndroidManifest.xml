@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.SQLiteApp"
+        android:theme="@style/Base.Theme.Pouch"
         tools:targetApi="34">
         <activity
             android:name=".MainActivity"
@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.example.sqliteapp.BoxOfMysteriesActivity" />
+        <activity android:name="com.thewhitewings.pouch.BoxOfMysteriesActivity" />
     </application>
 
 </manifest>

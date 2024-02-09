@@ -1,6 +1,6 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
-import com.example.sqliteapp.NoteFragment.DataPassListener;
+import com.thewhitewings.pouch.NoteFragment.DataPassListener;
 
 import android.app.Application;
 import android.text.TextUtils;

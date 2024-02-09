@@ -1,4 +1,4 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;

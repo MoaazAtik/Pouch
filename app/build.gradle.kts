@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.sqliteapp"
+    namespace = "com.thewhitewings.pouch"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.sqliteapp"
+        applicationId = "com.thewhitewings.pouch"
         minSdk = 21
         targetSdk = 34
         versionCode = 1

@@ -1,4 +1,4 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 public class Constants {
 
