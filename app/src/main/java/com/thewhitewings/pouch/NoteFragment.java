@@ -121,7 +121,7 @@ public class NoteFragment extends Fragment {
     /**
      * Close note fragment. Pass wanted action and note values with DataPassListener.onDataPass then Navigate to MainActivity.
      *
-     * @param action Wanted action to handle the note: {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
+     * @param action Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
      */
     private void closeNote(int action) {
         // Get note values from corresponding fields
@@ -178,7 +178,7 @@ public class NoteFragment extends Fragment {
         /**
          * Pass data and action to MainActivity
          *
-         * @param action    Wanted action to handle the note: {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
+         * @param action    Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
          * @param noteTitle .
          * @param noteBody  .
          */

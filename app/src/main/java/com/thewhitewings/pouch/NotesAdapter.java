@@ -123,12 +123,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
      *
      * @param note     pass null for action delete.
      * @param position of note in notesList. Pass 0 for action create.
-     * @param action   Wanted action to handle the note: NoteFragment.ACTION_CREATE, NoteFragment.ACTION_UPDATE, or NoteFragment.ACTION_DELETE.
+     * @param action   Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}.
      */
     public void editNotesListFull(Note note, int position, int action) {
         /*
-        With 'notesListFull.add(0, note)' instead of 'notesListFull.add(0, new Note(note.getId(),...' in 'case NoteFragment.ACTION_CREATE', notesList and notesListFull refer to the same note in the RAM.
-        So, there is no need for 'case NoteFragment.ACTION_UPDATE' because note is automatically updated in notesListFull when it's updated in notesList.
+        With 'notesListFull.add(0, note)' instead of 'notesListFull.add(0, new Note(note.getId(),...' in 'case Constants.ACTION_CREATE', notesList and notesListFull refer to the same note in the RAM.
+        So, there is no need for 'case Constants.ACTION_UPDATE' because note is automatically updated in notesListFull when it's updated in notesList.
          */
         switch (action) {
             case Constants.ACTION_CREATE:

@@ -320,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sort Notes by the wanted parameter
      *
-     * @param sortBy Constants.SORT_A_Z, Constants.SORT_Z_A, Constants.SORT_OLDEST_FIRST, or Constants.SORT_NEWEST_FIRST.
+     * @param sortBy {@link Constants#SORT_A_Z}, {@link Constants#SORT_Z_A}, {@link Constants#SORT_OLDEST_FIRST}, or {@link Constants#SORT_NEWEST_FIRST}.
      */
     private void sortNotes(int sortBy, List<Note> notesList) {
         switch (sortBy) {
