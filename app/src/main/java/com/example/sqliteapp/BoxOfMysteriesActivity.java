@@ -84,7 +84,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
     } // onCreate
 
     private void showWelcomingMessage() {
-        Snackbar.make(binding.activityBomRoot, "Box of Mysteries is open", Snackbar.LENGTH_LONG)
+        Snackbar.make(binding.activityBomRoot, "Box of Mysteries is revealed", Snackbar.LENGTH_LONG)
                 .show();
     }
 

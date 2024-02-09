@@ -76,7 +76,7 @@
         android:text="Creative Zone"
         android:textColor="?attr/colorPrimaryInverse"
         android:textSize="26sp"
-        app:layout_constraintBottom_toTopOf="@id/lv_reveal_loader"
+        app:layout_constraintBottom_toTopOf="@id/img_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -103,10 +103,10 @@
         android:id="@+id/btn_open_bom"
         android:layout_width="100dp"
         android:layout_height="30dp"
+        android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="@id/sv_search_notes"
         app:layout_constraintStart_toStartOf="@id/sv_search_notes"
         app:layout_constraintTop_toBottomOf="@id/sv_search_notes" />
-    <!--        android:background="@android:color/transparent"-->
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lv_reveal_screen"
@@ -116,28 +116,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:lottie_rawRes="@raw/reveal_screen_black"
-        app:lottie_speed="0.25"
-        android:visibility="gone" />
-<!--            app:lottie_autoPlay="true"-->
-    <!--        app:lottie_loop="true"-->
-    <!--        app:lottie_repeatMode="reverse"-->
-    <!--        android:scaleType="centerCrop"-->
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:id="@+id/lv_reveal_loader"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_rawRes="@raw/reveal_loader"
-        app:lottie_speed="0.6" />
-<!--            app:lottie_autoPlay="true"-->
-    <!--        tools:visibility="gone"-->
-    <!--        app:lottie_loop="true"-->
-    <!--        app:lottie_repeatMode="reverse"-->
-    <!--        android:scaleType="centerCrop"-->
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/reveal_screen_red"
+        app:lottie_speed="1"
+        tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
