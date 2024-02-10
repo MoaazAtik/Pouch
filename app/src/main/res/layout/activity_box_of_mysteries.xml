@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main_root"
+    android:id="@+id/activity_bom_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_activity_main">
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo_bom" />
 
     <FrameLayout
         android:id="@+id/frame_rv"
@@ -69,13 +69,15 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/empty_notes_view"
+        android:id="@+id/txt_empty_notes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-light"
-        android:text="Creative Zone"
-        android:textColor="?attr/colorPrimaryInverse"
-        android:textSize="26sp"
+        android:fontFamily="cursive"
+        android:gravity="center"
+        android:text="Box\nof\nMysteries"
+        android:textColor="@color/black"
+        android:textSize="32sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@id/img_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -99,15 +101,6 @@
         tools:name="com.thewhitewings.pouch.NoteFragment"
         tools:visibility="gone" />
 
-    <Button
-        android:id="@+id/btn_reveal_bom"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="@id/sv_search_notes"
-        app:layout_constraintStart_toStartOf="@id/sv_search_notes"
-        app:layout_constraintTop_toBottomOf="@id/sv_search_notes" />
-
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lv_reveal_screen"
         android:layout_width="wrap_content"
@@ -118,8 +111,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:lottie_autoPlay="true"
-        app:lottie_rawRes="@raw/reveal_screen_red"
-        app:lottie_speed="1"
+        app:lottie_rawRes="@raw/reveal_screen_black"
+        app:lottie_speed="0.5"
+        tools:visibility="gone" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_reveal_loader"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img_logo"
+        app:lottie_autoPlay="true"
+        app:lottie_rawRes="@raw/reveal_loader"
+        app:lottie_speed="0.6"
         tools:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

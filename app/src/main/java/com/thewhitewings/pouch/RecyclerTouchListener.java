@@ -1,7 +1,6 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * This class is used by the Recycle View of MainActivity to handle item interactions.
+ * This class is used by the Recycle View to handle item interactions.
  * It includes: 1. Callback of ItemTouchHelper to handle item Swipes. <p>
  * 2. OnItemTouchListener with GestureDetector to handle item Clicks.
  */

@@ -1,7 +1,6 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import android.app.Application;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -20,7 +19,11 @@ public class MainActivityVM extends AndroidViewModel {
     public MainActivityVM(@NonNull Application application) {
         super(application);
 
-        databaseHelper = new DatabaseHelper(application.getApplicationContext());
+        databaseHelper = new DatabaseHelper(
+                application.getApplicationContext(),
+                Constants.MAIN_DATABASE_NAME,
+                Constants.MAIN_DATABASE_VERSION
+        );
         notesList.addAll(databaseHelper.getAllNotes());
         mAdapter = new NotesAdapter(notesList);
     }

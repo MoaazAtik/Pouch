@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "SQLite App"
+rootProject.name = "Pouch"
 include(":app")

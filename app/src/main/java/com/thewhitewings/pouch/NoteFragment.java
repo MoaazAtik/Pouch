@@ -1,7 +1,6 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,14 +45,14 @@ public class NoteFragment extends Fragment {
         // Clear Focus of EditText's and Hide Soft keyboard when Root layout is clicked
         view.getRootView()
                 .setOnClickListener(v -> {
-                        ((MainActivity) requireActivity())
-                                .clearFocusAndHideKeyboard(
-                                        etNoteTitle
-                                );
-                        ((MainActivity) requireActivity())
-                                .clearFocusAndHideKeyboard(
-                                        etNoteBody
-                                );
+                    String hostActivityName = requireActivity().getClass().getName();
+                    if (hostActivityName.equals(MainActivity.class.getName())) {
+                        ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
+                        ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
+                    } else if (hostActivityName.equals(BoxOfMysteriesActivity.class.getName())) {
+                        ((BoxOfMysteriesActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
+                        ((BoxOfMysteriesActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
+                    }
                 });
 
         //btnBack
@@ -120,9 +119,9 @@ public class NoteFragment extends Fragment {
     }
 
     /**
-     * Close note fragment. Pass wanted action and note values with DataPassListener.onDataPass then Navigate to MainActivity.
+     * Close note fragment. Pass wanted action and note values with {@link DataPassListener#onDataPass(int, String, String)} then Navigate back to the Activity.
      *
-     * @param action Wanted action to handle the note: {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
+     * @param action Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
      */
     private void closeNote(int action) {
         // Get note values from corresponding fields
@@ -173,13 +172,13 @@ public class NoteFragment extends Fragment {
 
 
     /**
-     * Interface used to pass data and action from NoteFragment to MainActivity.
+     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity} or {@link BoxOfMysteriesVM}.
      */
     public interface DataPassListener {
         /**
-         * Pass data and action to MainActivity
+         * Pass data and action
          *
-         * @param action    Wanted action to handle the note: {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
+         * @param action    Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
          * @param noteTitle .
          * @param noteBody  .
          */

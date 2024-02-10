@@ -1,4 +1,4 @@
-package com.example.sqliteapp;
+package com.thewhitewings.pouch;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -19,8 +19,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
 
-    public DatabaseHelper(Context context) {
-        super(context, Constants.DATABASE_NAME, null, Constants.DATABASE_VERSION);
+    /**
+     * Constructor of DatabaseHelper
+     *
+     * @param context         of App or Activity
+     * @param databaseName    {@link Constants#MAIN_DATABASE_NAME} for the default database of Main Activity or {@link Constants#BOM_DATABASE_NAME} for the Box of Mysteries database
+     * @param databaseVersion {@link Constants#MAIN_DATABASE_VERSION} for the default database of Main Activity or {@link Constants#BOM_DATABASE_VERSION} for the Box of Mysteries database
+     */
+    public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
+        super(context, databaseName, null, databaseVersion);
     }
 
     /*
@@ -182,10 +189,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Get Formatted date and time. The Basic format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
      * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
      *
-     * @param usage    UTC_TO_LOCAL: Date and time from UTC to Local Time Zone for Retrieving,
-     *                 LOCAL_TO_UTC: Date and time from Local Time Zone to UTC for Storing in Database,
-     *                 CURRENT_LOCAL: Current date and time in Local Time Zone for Storing in Notes List.
-     *                 FORMATTING_LOCAL: Formatted Date in Local Time Zone for Retrieving in Note Fragment. "MMM d, yyyy" = Feb 4, 2024
+     * @param usage    {@link Constants#UTC_TO_LOCAL}: Date and time from UTC to Local Time Zone for Retrieving,
+     *                 {@link Constants#LOCAL_TO_UTC}: Date and time from Local Time Zone to UTC for Storing in Database,
+     *                 {@link Constants#CURRENT_LOCAL}: Current date and time in Local Time Zone for Storing in Notes List.
+     *                 {@link Constants#FORMATTING_LOCAL}: Formatted Date in Local Time Zone for Retrieving in Note Fragment. "MMM d, yyyy" = Feb 4, 2024
      * @param dateTime (Optional) Provide date and/or time to format.
      * @return Formatted date or time.
      */
@@ -238,7 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Transfer data from Old table to New Table for the Common columns and Renamed columns.
      * It doesn't transfer data of columns that no longer exist in New table.
      * <p>
-     * Note: 1. When upgrading or downgrading the database, modify {@link Constants#DATABASE_VERSION}.<P>
+     * Note: 1. When upgrading or downgrading the database, modify {@link Constants#MAIN_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.<P>
      * 2. When renaming columns, modify {@link #setAndGetColumnMappings()}.
      *
      * @param db to be upgraded or downgraded
