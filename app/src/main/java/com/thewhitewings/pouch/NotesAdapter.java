@@ -68,7 +68,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     @Override
     public Filter getFilter() {
-//        return null;
         return notesFilter;
     }
 
@@ -76,7 +75,6 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     private Filter notesFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-//            return null;
             List<Note> filteredList = new ArrayList<>();
 
             if (constraint == null || constraint.length() == 0) {
@@ -119,7 +117,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     /**
      * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.<p>
-     * Note: Sorting notesList is reflected by sortNotes() in MainActivity.
+     * Note: Sorting notesList is reflected by sortNotes() in {@link MainActivity} and {@link BoxOfMysteriesVM}.
      *
      * @param note     pass null for action delete.
      * @param position of note in notesList. Pass 0 for action create.

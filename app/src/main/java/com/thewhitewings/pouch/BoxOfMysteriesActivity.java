@@ -1,6 +1,8 @@
 package com.thewhitewings.pouch;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -37,6 +39,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         vm = new ViewModelProvider(this).get(BoxOfMysteriesVM.class);
 
         showWelcomingMessage();
+        hideLoadingAnimation();
         handleRecyclerView();
         toggleEmptyNotes();
 
@@ -68,6 +71,14 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
     private void showWelcomingMessage() {
         Snackbar.make(binding.activityBomRoot, "Box of Mysteries is revealed", Snackbar.LENGTH_LONG)
                 .show();
+    }
+
+    private void hideLoadingAnimation() {
+        new Handler(Looper.getMainLooper())
+                .postDelayed(
+                        () -> binding.lvRevealLoader.setVisibility(View.GONE),
+                        2000
+                );
     }
 
     /**

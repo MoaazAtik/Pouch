@@ -26,6 +26,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    // View Binding
     buildFeatures {
         viewBinding = true
     }
@@ -41,5 +43,5 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // Lottie Animations
-    implementation ("com.airbnb.android:lottie:6.3.0")
+    implementation("com.airbnb.android:lottie:6.3.0")
 }

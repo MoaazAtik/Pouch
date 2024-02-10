@@ -119,7 +119,7 @@ public class NoteFragment extends Fragment {
     }
 
     /**
-     * Close note fragment. Pass wanted action and note values with DataPassListener.onDataPass then Navigate to MainActivity.
+     * Close note fragment. Pass wanted action and note values with {@link DataPassListener#onDataPass(int, String, String)} then Navigate back to the Activity.
      *
      * @param action Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
      */
@@ -172,11 +172,11 @@ public class NoteFragment extends Fragment {
 
 
     /**
-     * Interface used to pass data and action from NoteFragment to MainActivity.
+     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity} or {@link BoxOfMysteriesVM}.
      */
     public interface DataPassListener {
         /**
-         * Pass data and action to MainActivity
+         * Pass data and action
          *
          * @param action    Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
          * @param noteTitle .
