@@ -99,13 +99,16 @@
         tools:name="com.thewhitewings.pouch.NoteFragment"
         tools:visibility="gone" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_reveal_bom"
-        android:layout_width="100dp"
-        android:layout_height="30dp"
+        android:layout_width="80dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="2dp"
         android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="@id/sv_search_notes"
-        app:layout_constraintStart_toStartOf="@id/sv_search_notes"
+        android:backgroundTint="?attr/colorSurface"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="@id/frame_rv"
+        app:layout_constraintStart_toStartOf="@id/frame_rv"
         app:layout_constraintTop_toBottomOf="@id/sv_search_notes" />
 
     <com.airbnb.lottie.LottieAnimationView

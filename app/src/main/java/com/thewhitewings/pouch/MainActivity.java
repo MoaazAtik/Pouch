@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchView svSearchNotes;
     private ImageButton btnSort;
     private TextView noNotesView;
+    private AppCompatButton btnRevealBom;
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
     private RecyclerView recyclerView;
@@ -60,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
         btnSort = findViewById(R.id.btn_sort);
         recyclerView = findViewById(R.id.recycler_view);
         noNotesView = findViewById(R.id.empty_notes_view);
+        btnRevealBom = findViewById(R.id.btn_reveal_bom);
 
         vm = new ViewModelProvider(this).get(MainActivityVM.class);
 
@@ -74,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
 
         toggleEmptyNotes();
+        showBtnRevealBom();
 
         FloatingActionButton btnCreateNote = findViewById(R.id.btn_create_note);
         btnCreateNote.setOnClickListener(v ->
@@ -130,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Button Reveal Box of Mysteries
-        findViewById(R.id.btn_reveal_bom).setOnClickListener(v ->
+        btnRevealBom.setOnClickListener(v ->
                 revealBoxOfMysteries()
         );
     }//onCreate
@@ -399,6 +405,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Make {@link #btnRevealBom} visible
+     */
+    private void showBtnRevealBom() {
+        new Handler().postDelayed(
+                () -> btnRevealBom.setVisibility(View.VISIBLE),
+                1500);
+    }
+
+    /**
      * Try to reveal The Box of Mysteries.<p>
      * The Box of Mysteries will reveal itself only to those who knocks exactly 5 Times within a window of 7 Seconds.
      */
@@ -421,16 +436,24 @@ public class MainActivity extends AppCompatActivity {
                             bomTimeoutStarted = false;
                             bomKnocks = 0;
                             break;
+                        } else if (bomKnocks == 4) {
+                            // add Ripple Trick to btnRevealBom
+                            runOnUiThread(() ->
+                                btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
+//                            break; // bug
                         } else if (bomKnocks == 5) {
                             startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
                             bomTimeoutStarted = false;
                             bomKnocks = 0;
+                            // hide btnRevealBom background
+                            runOnUiThread(() ->
+                                btnRevealBom.setBackgroundColor(Color.TRANSPARENT));
                             break;
                         }
 
                         synchronized (this) {
                             try {
-                                wait(1000);
+                                wait(200);
                             } catch (InterruptedException e) {
                                 throw new RuntimeException(e);
                             }
