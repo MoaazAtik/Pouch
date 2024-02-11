@@ -440,7 +440,6 @@ public class MainActivity extends AppCompatActivity {
                             // add Ripple Trick to btnRevealBom
                             runOnUiThread(() ->
                                 btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
-//                            break; // bug
                         } else if (bomKnocks == 5) {
                             startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
                             bomTimeoutStarted = false;
