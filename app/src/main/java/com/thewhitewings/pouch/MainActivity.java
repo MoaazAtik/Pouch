@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -419,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void revealBoxOfMysteries() {
         bomKnocks++;
+        Handler handler = new Handler(Looper.getMainLooper());
 
         if (!bomTimeoutStarted) {
             ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -441,12 +443,14 @@ public class MainActivity extends AppCompatActivity {
                             runOnUiThread(() ->
                                 btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
                         } else if (bomKnocks == 5) {
-                            startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
-                            bomTimeoutStarted = false;
-                            bomKnocks = 0;
-                            // hide btnRevealBom background
-                            runOnUiThread(() ->
-                                btnRevealBom.setBackgroundColor(Color.TRANSPARENT));
+                            handler.postDelayed(() -> {
+                                        startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
+                                        bomTimeoutStarted = false;
+                                        bomKnocks = 0;
+                                        // hide btnRevealBom background
+                                        btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
+                                    },
+                                    500);
                             break;
                         }
 
