@@ -88,12 +88,12 @@ Click the image below to watch the full app demo on YouTube ⬇️
 <br>
 
 ## Main Files 📁
- - [MainActivity.java](app/src/main/java/com/thewhitewings/pouch/MainActivity.java)
- - [MainActivityVM.java](app/src/main/java/com/thewhitewings/pouch/MainActivityVM.java)
- - [activity_main.xml](app/src/main/res/layout/activity_main.xml)<br><br>
  - [BoxOfMysteriesActivity.java](app/src/main/java/com/thewhitewings/pouch/BoxOfMysteriesActivity.java)
  - [BoxOfMysteriesVM.java](app/src/main/java/com/thewhitewings/pouch/BoxOfMysteriesVM.java)
  - [activity_box_of_mysteries.xml](app/src/main/res/layout/activity_box_of_mysteries.xml)<br><br>
+ - [MainActivity.java](app/src/main/java/com/thewhitewings/pouch/MainActivity.java)
+ - [MainActivityVM.java](app/src/main/java/com/thewhitewings/pouch/MainActivityVM.java)
+ - [activity_main.xml](app/src/main/res/layout/activity_main.xml)<br><br>
  - [DatabaseHelper.java](app/src/main/java/com/thewhitewings/pouch/DatabaseHelper.java)
 
 <br></br>
