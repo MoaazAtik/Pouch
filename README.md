@@ -74,7 +74,7 @@ Rest assured, your notes are securely stored locally on your device using SQLite
 ## Demonstration 📸
 Click the image below to watch the full app demo on YouTube ⬇️
 
-[![Full demo](https://img.youtube.com/vi/20ExnZcRBzE/maxresdefault.jpg)](https://youtu.be/20ExnZcRBzE)
+[![Full demo](https://img.youtube.com/vi/20ExnZcRBzE/maxresdefault.jpg)](https://youtu.be/TIbixpGNFwU)
 
 <br>
 
