@@ -83,6 +83,8 @@ Click the image below to watch the full app demo on YouTube ⬇️
 
  - **Storage:** SQLite Database for local storage of notes.
 
+ - **Architecture Pattern:** Model View ViewModel (MVVM).
+
  - **Development Tools:** Figma, Lottie Animations, Git, and Android Studio.
 
 <br>
