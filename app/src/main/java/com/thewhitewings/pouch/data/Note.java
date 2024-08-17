@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.data;
 
 import androidx.annotation.NonNull;
 

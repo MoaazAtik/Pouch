@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.ui;
 
 import android.content.Context;
 import android.view.GestureDetector;

@@ -1,9 +1,13 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.ui;
 
 import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+
+import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.data.DatabaseHelper;
+import com.thewhitewings.pouch.data.Note;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +16,9 @@ public class MainActivityVM extends AndroidViewModel {
 
     private static final String TAG = "MainActivityVM";
 
-    DatabaseHelper databaseHelper;
-    List<Note> notesList = new ArrayList<>();
-    NotesAdapter mAdapter;
+    public DatabaseHelper databaseHelper;
+    public List<Note> notesList = new ArrayList<>();
+    public NotesAdapter mAdapter;
 
     public MainActivityVM(@NonNull Application application) {
         super(application);

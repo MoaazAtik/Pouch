@@ -1,5 +1,8 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.ui;
 
+import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.data.DatabaseHelper;
+import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.NoteFragment.DataPassListener;
 
 import android.app.Application;
@@ -25,9 +28,9 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
 
     private static final String TAG = "BoxOfMysteriesVM";
 
-    DatabaseHelper databaseHelper;
-    List<Note> notesList = new ArrayList<>();
-    NotesAdapter mAdapter;
+    public DatabaseHelper databaseHelper;
+    public List<Note> notesList = new ArrayList<>();
+    public NotesAdapter mAdapter;
 
     private DataPassListener dataPassListener;
     private SearchView.OnQueryTextListener onQueryTextListener;

@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.data;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.thewhitewings.pouch.Constants;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

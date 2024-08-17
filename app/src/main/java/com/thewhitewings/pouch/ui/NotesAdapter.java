@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.ui;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.MainActivity;
+import com.thewhitewings.pouch.data.Note;
+import com.thewhitewings.pouch.R;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -27,6 +27,11 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.thewhitewings.pouch.data.DatabaseHelper;
+import com.thewhitewings.pouch.data.Note;
+import com.thewhitewings.pouch.ui.MainActivityVM;
+import com.thewhitewings.pouch.ui.NotesAdapter;
+import com.thewhitewings.pouch.ui.RecyclerTouchListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

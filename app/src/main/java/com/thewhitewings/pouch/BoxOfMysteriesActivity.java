@@ -20,8 +20,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.databinding.ActivityBoxOfMysteriesBinding;
 import com.google.android.material.snackbar.Snackbar;
+import com.thewhitewings.pouch.ui.BoxOfMysteriesVM;
+import com.thewhitewings.pouch.ui.RecyclerTouchListener;
 
 public class BoxOfMysteriesActivity extends AppCompatActivity {
 
