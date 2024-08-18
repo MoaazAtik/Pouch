@@ -29,6 +29,7 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.Note;
+import com.thewhitewings.pouch.databinding.ActivityMainBinding;
 import com.thewhitewings.pouch.ui.MainActivityVM;
 import com.thewhitewings.pouch.ui.NotesAdapter;
 import com.thewhitewings.pouch.ui.RecyclerTouchListener;
@@ -48,13 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
-    private SearchView svSearchNotes;
-    private ImageButton btnSort;
-    private TextView noNotesView;
-    private AppCompatButton btnRevealBom;
+    private ActivityMainBinding binding;
+
     private NotesAdapter mAdapter;
     private List<Note> notesList = new ArrayList<>();
-    private RecyclerView recyclerView;
     private DatabaseHelper databaseHelper;
     private MainActivityVM vm;
 
@@ -64,13 +62,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        svSearchNotes = findViewById(R.id.sv_search_notes);
-        btnSort = findViewById(R.id.btn_sort);
-        recyclerView = findViewById(R.id.recycler_view);
-        noNotesView = findViewById(R.id.empty_notes_view);
-        btnRevealBom = findViewById(R.id.btn_reveal_bom);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         vm = new ViewModelProvider(this).get(MainActivityVM.class);
 
@@ -80,9 +73,9 @@ public class MainActivity extends AppCompatActivity {
         mAdapter = vm.mAdapter;
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
 
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(mAdapter);
+        binding.recyclerView.setLayoutManager(mLayoutManager);
+        binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+        binding.recyclerView.setAdapter(mAdapter);
 
         toggleEmptyNotes();
         showBtnRevealBom();
@@ -98,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
          */
         RecyclerTouchListener recyclerTouchListener = new RecyclerTouchListener(
                 this,
-                recyclerView,
+                binding.recyclerView,
                 new RecyclerTouchListener.TouchListener() {
                     @Override
                     public void onClick(View view, int position) {
@@ -113,17 +106,17 @@ public class MainActivity extends AppCompatActivity {
         );
         // ItemTouchHelper to handle onSwiped
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(recyclerTouchListener);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-        recyclerView.addOnItemTouchListener(recyclerTouchListener);
+        itemTouchHelper.attachToRecyclerView(binding.recyclerView);
+        binding.recyclerView.addOnItemTouchListener(recyclerTouchListener);
 
         findViewById(R.id.activity_main_root)
                 .setOnClickListener(v -> {
                             // Clear Focus of Sv search note, and Hide Soft Keyboard when outside of Sv search note is clicked
-                            clearFocusAndHideKeyboard(svSearchNotes);
+                            clearFocusAndHideKeyboard(binding.svSearchNotes);
                         }
                 );
 
-        svSearchNotes.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        binding.svSearchNotes.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -137,12 +130,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Button Sort
-        btnSort.setOnClickListener(v -> {
+        binding.btnSort.setOnClickListener(v -> {
             showSortingPopupMenu();
         });
 
         // Button Reveal Box of Mysteries
-        btnRevealBom.setOnClickListener(v ->
+        binding.btnRevealBom.setOnClickListener(v ->
                 revealBoxOfMysteries()
         );
     }//onCreate
@@ -167,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
             mAdapter.notifyItemInserted(0);
             // add note to the Adapter's notesListFull
             mAdapter.editNotesListFull(n, 0, Constants.ACTION_CREATE);
-            recyclerView.scrollToPosition(0);
+            binding.recyclerView.scrollToPosition(0);
 
             toggleEmptyNotes();
         }
@@ -230,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
         If Sv search note has the focus then a note fragment is opened and nothing was clicked in the fragment, while the fragment's screen is open if the Hard Keyboard got input it will be directed to Et search note.
         This step fixes that.
          */
-        clearFocusAndHideKeyboard(svSearchNotes);
+        clearFocusAndHideKeyboard(binding.svSearchNotes);
 
         NoteFragment noteFragment = new NoteFragment();
         // Pass note vales to fragment when Updating note
@@ -302,7 +295,7 @@ public class MainActivity extends AppCompatActivity {
      * Show Popup Menu to Sort Notes
      */
     private void showSortingPopupMenu() {
-        PopupMenu popupMenu = new PopupMenu(this, btnSort);
+        PopupMenu popupMenu = new PopupMenu(this, binding.btnSort);
         MenuInflater menuInflater = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
@@ -404,18 +397,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private void toggleEmptyNotes() {
         if (notesList.size() > 0) {
-            noNotesView.setVisibility(View.GONE);
+            binding.emptyNotesView.setVisibility(View.GONE);
         } else {
-            noNotesView.setVisibility(View.VISIBLE);
+            binding.emptyNotesView.setVisibility(View.VISIBLE);
         }
     }
 
     /**
-     * Make {@link #btnRevealBom} visible
+     * Make {@link ActivityMainBinding#btnRevealBom} visible
      */
     private void showBtnRevealBom() {
         new Handler().postDelayed(
-                () -> btnRevealBom.setVisibility(View.VISIBLE),
+                () -> binding.btnRevealBom.setVisibility(View.VISIBLE),
                 1500);
     }
 
@@ -446,14 +439,14 @@ public class MainActivity extends AppCompatActivity {
                         } else if (bomKnocks == 4) {
                             // add Ripple Trick to btnRevealBom
                             runOnUiThread(() ->
-                                btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
+                                    binding.btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
                         } else if (bomKnocks == 5) {
                             handler.postDelayed(() -> {
                                         startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
                                         bomTimeoutStarted = false;
                                         bomKnocks = 0;
                                         // hide btnRevealBom background
-                                        btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
+                                        binding.btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
                                     },
                                     500);
                             break;
