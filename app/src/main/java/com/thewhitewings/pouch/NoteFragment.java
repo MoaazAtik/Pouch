@@ -15,7 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.thewhitewings.pouch.ui.BoxOfMysteriesVM;
+import com.thewhitewings.pouch.ui.BoxOfMysteriesViewModel;
 
 public class NoteFragment extends Fragment {
 
@@ -174,7 +174,7 @@ public class NoteFragment extends Fragment {
 
 
     /**
-     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity} or {@link BoxOfMysteriesVM}.
+     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity} or {@link BoxOfMysteriesViewModel}.
      */
     public interface DataPassListener {
         /**

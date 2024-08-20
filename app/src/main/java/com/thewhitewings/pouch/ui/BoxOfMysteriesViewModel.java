@@ -24,9 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-public class BoxOfMysteriesVM extends AndroidViewModel {
+public class BoxOfMysteriesViewModel extends AndroidViewModel {
 
-    private static final String TAG = "BoxOfMysteriesVM";
+    private static final String TAG = "BoxOfMysteriesViewModel";
 
     public DatabaseHelper databaseHelper;
     public List<Note> notesList = new ArrayList<>();
@@ -38,7 +38,7 @@ public class BoxOfMysteriesVM extends AndroidViewModel {
     private Note currentNote;
     private MutableLiveData<Integer> doneNoteAction = new MutableLiveData<>();
 
-    public BoxOfMysteriesVM(@NonNull Application application) {
+    public BoxOfMysteriesViewModel(@NonNull Application application) {
         super(application);
 
         databaseHelper = new DatabaseHelper(

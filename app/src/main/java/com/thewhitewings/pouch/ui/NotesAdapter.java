@@ -9,6 +9,7 @@ import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thewhitewings.pouch.Constants;
@@ -45,8 +46,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
 
     public NotesAdapter(List<Note> notesList) {
-        this.notesList = notesList;
-        notesListFull = new ArrayList<>(notesList);
+        setNotes(notesList);
+    }
+    public void setNotes(List<Note> notes) {
+        this.notesList = notes;
+        this.notesListFull = new ArrayList<>(notes); // Keep a full copy for filtering. Remove notesListFull later
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -122,7 +127,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
 
     /**
      * Reflect changes in {@link #notesList} to {@link #notesListFull} for {@link #notesFilter}.<p>
-     * Note: Sorting notesList is reflected by sortNotes() in {@link MainActivity} and {@link BoxOfMysteriesVM}.
+     * Note: Sorting notesList is reflected by sortNotes() in {@link MainActivity} and {@link BoxOfMysteriesViewModel}.
      *
      * @param note     pass null for action delete.
      * @param position of note in notesList. Pass 0 for action create.

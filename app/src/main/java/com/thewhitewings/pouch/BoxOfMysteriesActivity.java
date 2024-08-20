@@ -23,14 +23,14 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.databinding.ActivityBoxOfMysteriesBinding;
 import com.google.android.material.snackbar.Snackbar;
-import com.thewhitewings.pouch.ui.BoxOfMysteriesVM;
+import com.thewhitewings.pouch.ui.BoxOfMysteriesViewModel;
 import com.thewhitewings.pouch.ui.RecyclerTouchListener;
 
 public class BoxOfMysteriesActivity extends AppCompatActivity {
 
     private static final String TAG = "BoxOfMysteriesActivity";
     private ActivityBoxOfMysteriesBinding binding;
-    private BoxOfMysteriesVM vm;
+    private BoxOfMysteriesViewModel vm;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +39,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         binding = ActivityBoxOfMysteriesBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        vm = new ViewModelProvider(this).get(BoxOfMysteriesVM.class);
+        vm = new ViewModelProvider(this).get(BoxOfMysteriesViewModel.class);
 
         showWelcomingMessage();
         hideLoadingAnimation();
