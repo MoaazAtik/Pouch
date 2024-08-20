@@ -28,7 +28,6 @@ public class MainViewModel extends AndroidViewModel {
 
     private static final String TAG = "MainViewModel";
     public final DatabaseHelper databaseHelper;
-    private final NotesAdapter mAdapter;
     private final MutableLiveData<List<Note>> notesLiveData;
 
     public MainViewModel(@NonNull Application application) {
@@ -39,15 +38,10 @@ public class MainViewModel extends AndroidViewModel {
                 Constants.MAIN_DATABASE_VERSION
         );
         notesLiveData = new MutableLiveData<>(databaseHelper.getAllNotes());
-        mAdapter = new NotesAdapter(notesLiveData.getValue());
     }
 
     public LiveData<List<Note>> getNotesLiveData() {
         return notesLiveData;
-    }
-
-    public NotesAdapter getAdapter() {
-        return mAdapter;
     }
 
     public void handleNoteClosingAction(int action, String newNoteTitle, String newNoteBody, Note note, int position) {

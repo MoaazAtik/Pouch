@@ -3,6 +3,7 @@ package com.thewhitewings.pouch;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -27,6 +28,8 @@ import com.thewhitewings.pouch.ui.MainViewModel;
 import com.thewhitewings.pouch.ui.NotesAdapter;
 import com.thewhitewings.pouch.ui.RecyclerTouchListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,8 +38,9 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
-    private NotesAdapter mAdapter;
+    private NotesAdapter adapter;
     private MainViewModel vm;
+    private LiveData<List<Note>> notesLiveData;
 
     private int bomKnocks = 0;
     private boolean bomTimeoutStarted = false;
@@ -48,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         vm = new ViewModelProvider(this).get(MainViewModel.class);
+        notesLiveData = vm.getNotesLiveData();
 
         setupRecyclerView();
         setupListeners();
@@ -57,17 +62,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        mAdapter = vm.getAdapter();
+        adapter = new NotesAdapter(new ArrayList<>());
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
-        binding.recyclerView.setAdapter(mAdapter);
+        binding.recyclerView.setAdapter(adapter);
 
         RecyclerTouchListener recyclerTouchListener = new RecyclerTouchListener(
                 this, binding.recyclerView, new RecyclerTouchListener.TouchListener() {
             @Override
             public void onClick(View view, int position) {
-                openNote(Objects.requireNonNull(vm.getNotesLiveData().getValue()).get(position), position);
+                openNote(Objects.requireNonNull(notesLiveData.getValue()).get(position), position);
             }
 
             @Override
@@ -105,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewModelObservers() {
-        vm.getNotesLiveData().observe(this, notes -> {
-            mAdapter.setNotes(notes);
+        notesLiveData.observe(this, notes -> {
+            adapter.setNotes(notes);
             toggleEmptyNotes();
         });
     }
@@ -157,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void toggleEmptyNotes() {
-        if (!Objects.requireNonNull(vm.getNotesLiveData().getValue()).isEmpty()) {
+        if (!Objects.requireNonNull(notesLiveData.getValue()).isEmpty()) {
             binding.emptyNotesView.setVisibility(View.GONE);
         } else {
             binding.emptyNotesView.setVisibility(View.VISIBLE);
