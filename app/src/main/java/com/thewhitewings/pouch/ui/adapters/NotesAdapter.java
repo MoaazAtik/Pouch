@@ -1,17 +1,15 @@
-package com.thewhitewings.pouch.ui;
+package com.thewhitewings.pouch.ui.adapters;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.databinding.NoteRvItemBinding;
-import com.thewhitewings.pouch.ui.adapters.NotesDiffCallback;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

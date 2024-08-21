@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -26,10 +25,9 @@ import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.databinding.ActivityBoxOfMysteriesBinding;
 import com.google.android.material.snackbar.Snackbar;
 import com.thewhitewings.pouch.ui.BoxOfMysteriesViewModel;
-import com.thewhitewings.pouch.ui.NotesAdapter;
-import com.thewhitewings.pouch.ui.RecyclerTouchListener;
+import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
+import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 

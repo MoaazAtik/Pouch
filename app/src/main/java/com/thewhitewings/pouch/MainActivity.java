@@ -25,10 +25,9 @@ import android.widget.SearchView;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.databinding.ActivityMainBinding;
 import com.thewhitewings.pouch.ui.MainViewModel;
-import com.thewhitewings.pouch.ui.NotesAdapter;
-import com.thewhitewings.pouch.ui.RecyclerTouchListener;
+import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
+import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutorService;
