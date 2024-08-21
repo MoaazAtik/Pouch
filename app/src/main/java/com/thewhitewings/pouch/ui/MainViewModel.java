@@ -86,12 +86,16 @@ public class MainViewModel extends AndroidViewModel {
 
     public void updateNote(String noteTitle, String noteBody, int position) {
         List<Note> currentNotes = notesLiveData.getValue();
-        Note n = Objects.requireNonNull(currentNotes).get(position);
-        if (n != null) {
-            n.setNoteTitle(noteTitle);
-            n.setNoteBody(noteBody);
-            n.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
-            databaseHelper.updateNote(n);
+        Note oldNote = Objects.requireNonNull(currentNotes).get(position);
+        if (oldNote != null) {
+            Note updatedNote = new Note();
+            updatedNote.setId(oldNote.getId());
+            updatedNote.setNoteTitle(noteTitle);
+            updatedNote.setNoteBody(noteBody);
+            updatedNote.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
+
+            databaseHelper.updateNote(updatedNote);
+            currentNotes.set(position, updatedNote);
             notesLiveData.postValue(currentNotes);
         }
     }

@@ -18,8 +18,8 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
 
     private static final String TAG = "RecyclerTouchListener";
 
-    private TouchListener touchListener;
-    private GestureDetector gestureDetector;
+    private final TouchListener touchListener;
+    private final GestureDetector gestureDetector;
 
     public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final TouchListener touchListener) {
         super(0, ItemTouchHelper.START);
@@ -32,7 +32,7 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
                     public boolean onSingleTapUp(MotionEvent e) {
                         View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
                         if (childView != null)
-                            touchListener.onClick(childView, recyclerView.getChildAdapterPosition(childView));
+                            touchListener.onClick(recyclerView.getChildAdapterPosition(childView));
                         return true;
                     }
                 }
@@ -65,7 +65,7 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
 
 
     public interface TouchListener {
-        void onClick(View view, int position);
+        void onClick(int position);
 
         void onSwiped(int position);
     }

@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRecyclerView() {
-        adapter = new NotesAdapter(new ArrayList<>());
+        adapter = new NotesAdapter();
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerTouchListener recyclerTouchListener = new RecyclerTouchListener(
                 this, binding.recyclerView, new RecyclerTouchListener.TouchListener() {
             @Override
-            public void onClick(View view, int position) {
+            public void onClick(int position) {
                 openNote(Objects.requireNonNull(notesLiveData.getValue()).get(position), position);
             }
 

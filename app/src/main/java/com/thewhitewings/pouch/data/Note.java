@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.data;
 
 import androidx.annotation.NonNull;
+import java.util.Objects;
 
 public class Note {
 
@@ -19,6 +20,13 @@ public class Note {
         this.timestamp = timestamp;
     }
 
+    public Note(Note note) {
+        this.id = note.id;
+        this.noteTitle = note.noteTitle;
+        this.noteBody = note.noteBody;
+        this.timestamp = note.timestamp;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -28,6 +36,13 @@ public class Note {
                 ", noteBody='" + noteBody + '\'' +
                 ", timestamp='" + timestamp + '\'' +
                 '}';
+    }
+
+    public boolean equalContent(@NonNull Note note) {
+        return id == note.id &&
+                Objects.equals(noteTitle, note.noteTitle) &&
+                Objects.equals(noteBody, note.noteBody) &&
+                Objects.equals(timestamp, note.timestamp);
     }
 
     public int getId() {
