@@ -214,7 +214,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param dateTime (Optional) Provide date and/or time to format.
      * @return Formatted date or time.
      */
-    public String getFormattedDateTime(int usage, String dateTime) {
+    public static String getFormattedDateTime(int usage, String dateTime) {
 
         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date date;

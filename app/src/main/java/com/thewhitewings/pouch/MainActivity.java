@@ -22,7 +22,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 
+import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.Note;
+import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.databinding.ActivityMainBinding;
 import com.thewhitewings.pouch.ui.MainViewModel;
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
@@ -50,8 +52,10 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        vm = new ViewModelProvider(this).get(MainViewModel.class);
-        notesLiveData = vm.getNotesLiveData();
+        NotesRepository repository = ((PouchApplication) getApplication()).getNotesRepository();
+        vm = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
+
+        notesLiveData = vm.notesLiveData;
 
         setupRecyclerView();
         setupListeners();
@@ -123,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
             Bundle argsBundle = new Bundle();
             argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(Constants.COLUMN_TIMESTAMP, vm.databaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, DatabaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
             noteFragment.setArguments(argsBundle);
         }
 
