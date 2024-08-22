@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.ui;
 
 import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.data.DatabaseChangeListener;
 import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.NoteFragment.DataPassListener;
@@ -26,10 +27,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.TimeZone;
 
-public class BoxOfMysteriesViewModel extends AndroidViewModel {
+public class BoxOfMysteriesViewModel extends AndroidViewModel implements DatabaseChangeListener {
 
     private static final String TAG = "BoxOfMysteriesViewModel";
-
     public DatabaseHelper databaseHelper;
     private final MutableLiveData<List<Note>> notesLiveData;
 
@@ -42,6 +42,13 @@ public class BoxOfMysteriesViewModel extends AndroidViewModel {
                 Constants.BOM_DATABASE_VERSION
         );
         notesLiveData = new MutableLiveData<>(databaseHelper.getAllNotes());
+        databaseHelper.setDatabaseChangeListener(this);
+    }
+
+    @Override
+    public void onDatabaseChanged() {
+        // Update LiveData with the latest notes when a change happens
+        notesLiveData.postValue(databaseHelper.getAllNotes());
     }
 
     public LiveData<List<Note>> getNotesLiveData() {
@@ -57,11 +64,11 @@ public class BoxOfMysteriesViewModel extends AndroidViewModel {
                 break;
             case Constants.ACTION_UPDATE:
                 if (note != null && (!note.getNoteBody().equals(newNoteBody) || !note.getNoteTitle().equals(newNoteTitle))) {
-                    updateNote(newNoteTitle, newNoteBody, position);
+                    updateNote(newNoteTitle, newNoteBody, note);
                 }
                 break;
             case Constants.ACTION_DELETE:
-                deleteNote(position);
+                deleteNote(note);
                 break;
             default:
                 break;
@@ -76,44 +83,21 @@ public class BoxOfMysteriesViewModel extends AndroidViewModel {
     }
 
     public void createNote(String noteTitle, String noteBody) {
-        long id = databaseHelper.insertNote(noteTitle, noteBody);
-        Note n = databaseHelper.getNote(id);
-        if (n != null) {
-            List<Note> currentNotes = notesLiveData.getValue();
-            if (currentNotes != null) {
-                currentNotes.add(0, n);
-                notesLiveData.postValue(currentNotes);
-            }
-        }
+        databaseHelper.insertNote(noteTitle, noteBody);
     }
 
-    public void updateNote(String noteTitle, String noteBody, int position) {
-        List<Note> currentNotes = notesLiveData.getValue();
-        Note oldNote = Objects.requireNonNull(currentNotes).get(position);
-        if (oldNote != null) {
-            Note updatedNote = new Note();
-            updatedNote.setId(oldNote.getId());
-            updatedNote.setNoteTitle(noteTitle);
-            updatedNote.setNoteBody(noteBody);
-            updatedNote.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
+    public void updateNote(String newNoteTitle, String noteBody, Note oldNote) {
+        Note updatedNote = new Note();
+        updatedNote.setId(oldNote.getId());
+        updatedNote.setNoteTitle(newNoteTitle);
+        updatedNote.setNoteBody(noteBody);
+        updatedNote.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
 
-            databaseHelper.updateNote(updatedNote);
-            currentNotes.set(position, updatedNote);
-            notesLiveData.postValue(currentNotes);
-        }
+        databaseHelper.updateNote(updatedNote);
     }
 
-    public void deleteNote(int position) {
-        List<Note> currentNotes = notesLiveData.getValue();
-        Note note = Objects.requireNonNull(currentNotes).get(position);
-        if (note != null) {
-            // deleting the note from Database
-            databaseHelper.deleteNote(note);
-            // removing the note from the Notes List
-            currentNotes.remove(note);
-            // notify the observers
-            notesLiveData.postValue(currentNotes);
-        }
+    public void deleteNote(Note note) {
+        databaseHelper.deleteNote(note);
     }
 
     public void searchNotes(String query) {

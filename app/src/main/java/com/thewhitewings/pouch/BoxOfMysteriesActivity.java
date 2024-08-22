@@ -85,7 +85,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(int position) {
-                vm.deleteNote(position);
+                vm.deleteNote(Objects.requireNonNull(notesLiveData.getValue()).get(position));
             }
         });
 

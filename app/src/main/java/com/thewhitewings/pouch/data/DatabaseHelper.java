@@ -20,6 +20,7 @@ import java.util.TimeZone;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
+    private DatabaseChangeListener databaseChangeListener;
 
     /**
      * Constructor of DatabaseHelper
@@ -30,6 +31,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
         super(context, databaseName, null, databaseVersion);
+    }
+
+    public void setDatabaseChangeListener(DatabaseChangeListener listener) {
+        this.databaseChangeListener = listener;
     }
 
     /*
@@ -72,8 +77,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Constants.COLUMN_NOTE_TITLE, noteTitle);
         values.put(Constants.COLUMN_NOTE_BODY, noteBody);
 
-        long id = db.insert(Constants.TABLE_NAME, null, values);
+        long id = db.insert(
+                Constants.TABLE_NAME,
+                null,
+                values
+        );
         db.close();
+
+        // Notify the observers
+        if (databaseChangeListener != null)
+            databaseChangeListener.onDatabaseChanged();
         return id;
     }
 
@@ -151,23 +164,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Update the given note in Database
      *
      * @param note to be updated
-     * @return the number of rows affected
      */
-    public int updateNote(Note note) {
+    public void updateNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
         values.put(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
         // Convert timestamp to UTC for Storing in Database
         values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(Constants.LOCAL_TO_UTC, note.getTimestamp()));
 
-        return db.update(
-                Constants.TABLE_NAME,
-                values,
-                Constants.COLUMN_ID + " = ? ",
-                new String[]{String.valueOf(note.getId())}
+        db.update(
+            Constants.TABLE_NAME,
+            values,
+            Constants.COLUMN_ID + " = ? ",
+            new String[]{String.valueOf(note.getId())}
         );
+        db.close();
+
+        // Notify the observers
+        if (databaseChangeListener != null)
+            databaseChangeListener.onDatabaseChanged();
     }
 
     /**
@@ -177,14 +193,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     public void deleteNote(Note note) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         db.delete(
                 Constants.TABLE_NAME,
                 Constants.COLUMN_ID + " = ? ",
                 new String[]{String.valueOf(note.getId())}
         );
-
         db.close();
+
+        // Notify the observers
+        if (databaseChangeListener != null)
+            databaseChangeListener.onDatabaseChanged();
     }
 
     /**
