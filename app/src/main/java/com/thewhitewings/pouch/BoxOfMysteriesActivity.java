@@ -80,7 +80,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
                 this, binding.recyclerView, new RecyclerTouchListener.TouchListener() {
             @Override
             public void onClick(int position) {
-                openNote(Objects.requireNonNull(notesLiveData.getValue()).get(position), position);
+                openNote(Objects.requireNonNull(notesLiveData.getValue()).get(position));
             }
 
             @Override
@@ -95,7 +95,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        binding.btnCreateNote.setOnClickListener(v -> openNote(null, -1));
+        binding.btnCreateNote.setOnClickListener(v -> openNote(null));
 
         binding.activityBomRoot.setOnClickListener(v -> clearFocusAndHideKeyboard(binding.svSearchNotes));
 
@@ -122,7 +122,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         });
     }
 
-    private void openNote(final Note note, final int position) {
+    private void openNote(final Note note) {
         clearFocusAndHideKeyboard(binding.svSearchNotes);
 
         NoteFragment noteFragment = new NoteFragment();
@@ -146,7 +146,7 @@ public class BoxOfMysteriesActivity extends AppCompatActivity {
         fragmentTransaction.commit();
 
         noteFragment.setDataPassListener((action, newNoteTitle, newNoteBody) -> {
-            vm.handleNoteClosingAction(action, newNoteTitle, newNoteBody, note, position);
+            vm.handleNoteClosingAction(action, newNoteTitle, newNoteBody, note);
         });
     }
 

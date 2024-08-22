@@ -4,13 +4,11 @@ import com.thewhitewings.pouch.Constants;
 import com.thewhitewings.pouch.data.DatabaseChangeListener;
 import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.Note;
-import com.thewhitewings.pouch.NoteFragment.DataPassListener;
 import com.thewhitewings.pouch.data.SortOption;
 
 import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -24,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class BoxOfMysteriesViewModel extends AndroidViewModel implements DatabaseChangeListener {
@@ -55,7 +52,7 @@ public class BoxOfMysteriesViewModel extends AndroidViewModel implements Databas
         return notesLiveData;
     }
 
-    public void handleNoteClosingAction(int action, String newNoteTitle, String newNoteBody, Note note, int position) {
+    public void handleNoteClosingAction(int action, String newNoteTitle, String newNoteBody, Note note) {
         switch (action) {
             case Constants.ACTION_CREATE:
                 if (!TextUtils.isEmpty(newNoteBody) || !TextUtils.isEmpty(newNoteTitle)) {
@@ -83,7 +80,7 @@ public class BoxOfMysteriesViewModel extends AndroidViewModel implements Databas
     }
 
     public void createNote(String noteTitle, String noteBody) {
-        databaseHelper.insertNote(noteTitle, noteBody);
+        databaseHelper.createNote(noteTitle, noteBody);
     }
 
     public void updateNote(String newNoteTitle, String noteBody, Note oldNote) {

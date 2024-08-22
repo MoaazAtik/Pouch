@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 this, binding.recyclerView, new RecyclerTouchListener.TouchListener() {
             @Override
             public void onClick(int position) {
-                openNote(Objects.requireNonNull(notesLiveData.getValue()).get(position), position);
+                openNote(Objects.requireNonNull(notesLiveData.getValue()).get(position));
             }
 
             @Override
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        binding.btnCreateNote.setOnClickListener(v -> openNote(null, -1));
+        binding.btnCreateNote.setOnClickListener(v -> openNote(null));
 
         binding.activityMainRoot.setOnClickListener(v -> clearFocusAndHideKeyboard(binding.svSearchNotes));
 
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void openNote(final Note note, final int position) {
+    private void openNote(final Note note) {
         clearFocusAndHideKeyboard(binding.svSearchNotes);
 
         NoteFragment noteFragment = new NoteFragment();
@@ -138,9 +138,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_container_note, noteFragment);
         fragmentTransaction.commit();
 
-        noteFragment.setDataPassListener((action, newNoteTitle, newNoteBody) -> {
-            vm.handleNoteClosingAction(action, newNoteTitle, newNoteBody, note, position);
-        });
+        noteFragment.setDataPassListener((action, newNoteTitle, newNoteBody) ->
+                vm.handleNoteClosingAction(action, newNoteTitle, newNoteBody, note)
+        );
     }
 
     void clearFocusAndHideKeyboard(View view) {

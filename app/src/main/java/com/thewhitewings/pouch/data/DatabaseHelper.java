@@ -69,15 +69,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param noteTitle of the new note
      * @param noteBody  of the new note
-     * @return the Row/Note ID of the newly inserted row, or -1 if an error occurred
      */
-    public long insertNote(String noteTitle, String noteBody) {
+    public void createNote(String noteTitle, String noteBody) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_NOTE_TITLE, noteTitle);
         values.put(Constants.COLUMN_NOTE_BODY, noteBody);
 
-        long id = db.insert(
+        db.insert(
                 Constants.TABLE_NAME,
                 null,
                 values
@@ -87,7 +86,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // Notify the observers
         if (databaseChangeListener != null)
             databaseChangeListener.onDatabaseChanged();
-        return id;
     }
 
     /**

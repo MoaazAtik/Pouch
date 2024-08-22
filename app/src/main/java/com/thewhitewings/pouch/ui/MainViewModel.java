@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.TimeZone;
 
 public class MainViewModel extends AndroidViewModel implements DatabaseChangeListener {
@@ -52,7 +51,7 @@ public class MainViewModel extends AndroidViewModel implements DatabaseChangeLis
         return notesLiveData;
     }
 
-    public void handleNoteClosingAction(int action, String newNoteTitle, String newNoteBody, Note note, int position) {
+    public void handleNoteClosingAction(int action, String newNoteTitle, String newNoteBody, Note note) {
         switch (action) {
             case Constants.ACTION_CREATE:
                 if (!TextUtils.isEmpty(newNoteBody) || !TextUtils.isEmpty(newNoteTitle)) {
@@ -81,7 +80,7 @@ public class MainViewModel extends AndroidViewModel implements DatabaseChangeLis
 
 
     public void createNote(String noteTitle, String noteBody) {
-        databaseHelper.insertNote(noteTitle, noteBody);
+        databaseHelper.createNote(noteTitle, noteBody);
     }
 
     public void updateNote(String newNoteTitle, String noteBody, Note oldNote) {
