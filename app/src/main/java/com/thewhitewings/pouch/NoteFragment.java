@@ -15,8 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.thewhitewings.pouch.ui.BoxOfMysteriesViewModel;
-
 public class NoteFragment extends Fragment {
 
     private static final String TAG = "NoteFragment";
@@ -47,14 +45,8 @@ public class NoteFragment extends Fragment {
         // Clear Focus of EditText's and Hide Soft keyboard when Root layout is clicked
         view.getRootView()
                 .setOnClickListener(v -> {
-                    String hostActivityName = requireActivity().getClass().getName();
-                    if (hostActivityName.equals(MainActivity.class.getName())) {
-                        ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
-                        ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
-                    } else if (hostActivityName.equals(BoxOfMysteriesActivity.class.getName())) {
-                        ((BoxOfMysteriesActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
-                        ((BoxOfMysteriesActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
-                    }
+                    ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
+                    ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
                 });
 
         //btnBack
@@ -174,7 +166,7 @@ public class NoteFragment extends Fragment {
 
 
     /**
-     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity} or {@link BoxOfMysteriesViewModel}.
+     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity}.
      */
     public interface DataPassListener {
         /**
