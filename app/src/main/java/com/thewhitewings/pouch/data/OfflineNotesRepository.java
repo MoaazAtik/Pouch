@@ -9,13 +9,18 @@ import java.util.List;
 
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
 
-    private final DatabaseHelper databaseHelper;
+    private final DatabaseHelper mainDatabaseHelper;
+    private final DatabaseHelper bomDatabaseHelper;
+    private DatabaseHelper currentZoneDatabaseHelper;
     private final MutableLiveData<List<Note>> notesLiveData;
 
-    public OfflineNotesRepository(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
-        this.notesLiveData = new MutableLiveData<>(databaseHelper.getAllNotes());
-        databaseHelper.setDatabaseChangeListener(this);
+    public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper) {
+        this.mainDatabaseHelper = mainDatabaseHelper;
+        this.bomDatabaseHelper = bomDatabaseHelper;
+        currentZoneDatabaseHelper = mainDatabaseHelper;
+        notesLiveData = new MutableLiveData<>(currentZoneDatabaseHelper.getAllNotes());
+        mainDatabaseHelper.setDatabaseChangeListener(this);
+        bomDatabaseHelper.setDatabaseChangeListener(this);
     }
 
     @Override
@@ -25,7 +30,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
 
     @Override
     public void createNote(String noteTitle, String noteBody) {
-        databaseHelper.createNote(noteTitle, noteBody);
+        currentZoneDatabaseHelper.createNote(noteTitle, noteBody);
     }
 
     @Override
@@ -34,19 +39,28 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         updatedNote.setId(oldNote.getId());
         updatedNote.setNoteTitle(newNoteTitle);
         updatedNote.setNoteBody(noteBody);
-        updatedNote.setTimestamp(databaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
+        updatedNote.setTimestamp(currentZoneDatabaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
 
-        databaseHelper.updateNote(updatedNote);
+        currentZoneDatabaseHelper.updateNote(updatedNote);
     }
 
     @Override
     public void deleteNote(Note note) {
-        databaseHelper.deleteNote(note);
+        currentZoneDatabaseHelper.deleteNote(note);
     }
 
     @Override
     public void onDatabaseChanged() {
-        notesLiveData.postValue(databaseHelper.getAllNotes());
+        notesLiveData.postValue(currentZoneDatabaseHelper.getAllNotes());
+    }
+
+    public void toggleZone() {
+        if (currentZoneDatabaseHelper == mainDatabaseHelper)
+            currentZoneDatabaseHelper = bomDatabaseHelper;
+        else
+            currentZoneDatabaseHelper = mainDatabaseHelper;
+
+        notesLiveData.postValue(currentZoneDatabaseHelper.getAllNotes());
     }
 }
 

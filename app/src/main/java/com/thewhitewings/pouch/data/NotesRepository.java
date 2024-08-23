@@ -12,4 +12,6 @@ public interface NotesRepository {
     void updateNote(String newNoteTitle, String noteBody, Note oldNote);
 
     void deleteNote(Note note);
+
+    void toggleZone();
 }

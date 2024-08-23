@@ -1,5 +1,6 @@
 package com.thewhitewings.pouch;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -11,8 +12,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.content.Intent;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,7 +24,9 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
+import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
@@ -39,9 +44,10 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
-    private NotesAdapter adapter;
     private MainViewModel vm;
+    private NotesAdapter adapter;
     private LiveData<List<Note>> notesLiveData;
+    private LiveData<Constants.Zone> currentZone;
 
     private int bomKnocks = 0;
     private boolean bomTimeoutStarted = false;
@@ -56,10 +62,12 @@ public class MainActivity extends AppCompatActivity {
         vm = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
 
         notesLiveData = vm.notesLiveData;
+        currentZone =  vm.getCurrentZoneLiveData();
 
         setupRecyclerView();
         setupListeners();
         setupViewModelObservers();
+        setupBackPressingBehaviour();
 
         showBtnRevealBom();
     }
@@ -115,7 +123,23 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewModelObservers() {
         notesLiveData.observe(this, notes -> {
             adapter.setNotes(notes);
-            toggleEmptyNotes();
+            toggleZoneNameVisibility();
+        });
+        currentZone.observe(this, zone -> {
+            if (zone == Constants.Zone.BOX_OF_MYSTERIES)
+                goToBoxOfMysteries();
+            else goToMainZone();
+        });
+    }
+
+    private void setupBackPressingBehaviour() {
+        getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                if (currentZone.getValue() == Constants.Zone.BOX_OF_MYSTERIES)
+                    vm.toggleZone();
+                else finish();
+            }
         });
     }
 
@@ -164,12 +188,11 @@ public class MainActivity extends AppCompatActivity {
         popupMenu.show();
     }
 
-    private void toggleEmptyNotes() {
-        if (!Objects.requireNonNull(notesLiveData.getValue()).isEmpty()) {
-            binding.emptyNotesView.setVisibility(View.GONE);
-        } else {
-            binding.emptyNotesView.setVisibility(View.VISIBLE);
-        }
+    private void toggleZoneNameVisibility() {
+        if (!Objects.requireNonNull(notesLiveData.getValue()).isEmpty())
+            binding.txtZoneName.setVisibility(View.GONE);
+        else
+            binding.txtZoneName.setVisibility(View.VISIBLE);
     }
 
     private void showBtnRevealBom() {
@@ -196,10 +219,10 @@ public class MainActivity extends AppCompatActivity {
                         runOnUiThread(() -> binding.btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
                     } else if (bomKnocks == 5) {
                         handler.postDelayed(() -> {
-                            startActivity(new Intent(MainActivity.this, BoxOfMysteriesActivity.class));
                             bomTimeoutStarted = false;
                             bomKnocks = 0;
-                            binding.btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
+
+                            vm.toggleZone();
                         }, 500);
                         break;
                     }
@@ -214,5 +237,107 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void goToBoxOfMysteries() {
+        binding.btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
+        binding.btnRevealBom.setVisibility(View.GONE);
+
+        modifyLogo();
+        modifyZoneName();
+
+        binding.lvRevealScreen.setAnimation(R.raw.reveal_screen_black);
+        binding.lvRevealScreen.setSpeed(0.5f);
+        binding.lvRevealScreen.playAnimation();
+
+        binding.lvRevealLoader.setVisibility(View.VISIBLE);
+        binding.lvRevealLoader.playAnimation();
+        new Handler(Looper.getMainLooper())
+                .postDelayed(
+                        () -> binding.lvRevealLoader.setVisibility(View.GONE),
+                        2000
+                );
+
+        Snackbar.make(binding.activityMainRoot, getString(R.string.bom_revealing_message), Snackbar.LENGTH_LONG)
+                .show();
+    }
+
+    private void goToMainZone() {
+        binding.btnRevealBom.setVisibility(View.VISIBLE);
+
+        modifyLogo();
+        modifyZoneName();
+
+        binding.lvRevealScreen.setAnimation(R.raw.reveal_screen_red);
+        binding.lvRevealScreen.setSpeed(1f);
+        binding.lvRevealScreen.playAnimation();
+    }
+
+    private void modifyLogo() {
+        int initialColor;
+        int finalColor;
+
+        /*
+        note that the currentZone here represents the updated value which is the destination you just arrived
+         */
+        if (currentZone.getValue() == Constants.Zone.BOX_OF_MYSTERIES) {
+            initialColor = getResources().getColor(R.color.md_theme_light_primaryContainer, null);
+            finalColor = getResources().getColor(R.color.gray_logo_bom, null);
+        }
+        else {
+            initialColor = getResources().getColor(R.color.gray_logo_bom, null);
+            finalColor = getResources().getColor(R.color.md_theme_light_primaryContainer, null);
+        }
+
+        ValueAnimator tintAnimator = ValueAnimator.ofArgb(initialColor, finalColor);
+        tintAnimator.setDuration(3500);
+        tintAnimator.addUpdateListener(animator -> {
+            int animatedValue = (int) animator.getAnimatedValue();
+            binding.imgLogo.setColorFilter(animatedValue);
+        });
+        tintAnimator.start();
+    }
+
+    private void modifyZoneName() {
+        TextView txtZoneName = binding.txtZoneName;
+        String zoneName;
+        Typeface typeface;
+        float initialTextSize;
+        float finalTextSize;
+        int initialColor;
+        int finalColor;
+
+        /*
+        note that the currentZone here represents the updated value which is the destination you just arrived
+         */
+        if (currentZone.getValue() == Constants.Zone.BOX_OF_MYSTERIES) {
+            zoneName = getString(R.string.box_of_mysteries);
+            typeface = Typeface.create("cursive", Typeface.BOLD);
+            initialTextSize = 26f;
+            finalTextSize = 32f;
+            initialColor = getResources().getColor(R.color.md_theme_light_inversePrimary, null);
+            finalColor = Color.BLACK;
+        }
+        else {
+            zoneName = getString(R.string.creative_zone);
+            typeface = Typeface.create("sans-serif-light", Typeface.NORMAL);
+            initialTextSize = 32f;
+            finalTextSize = 26f;
+            initialColor = Color.BLACK;
+            finalColor = getResources().getColor(R.color.md_theme_light_inversePrimary, null);
+        }
+
+        txtZoneName.setText(zoneName);
+
+        txtZoneName.setTypeface(typeface);
+
+        ObjectAnimator textSizeAnimator = ObjectAnimator.ofFloat(txtZoneName, "textSize", initialTextSize, finalTextSize);
+        textSizeAnimator.setDuration(1000);
+        textSizeAnimator.start();
+
+        ValueAnimator colorAnimator = ValueAnimator.ofArgb(initialColor, finalColor);
+        colorAnimator.setDuration(3500);
+        colorAnimator.addUpdateListener(animator -> txtZoneName.setTextColor((int) animator.getAnimatedValue()));
+        colorAnimator.start();
     }
 }

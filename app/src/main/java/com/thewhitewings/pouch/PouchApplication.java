@@ -12,12 +12,17 @@ public class PouchApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DatabaseHelper databaseHelper = new DatabaseHelper(
+        DatabaseHelper mainDatabaseHelper = new DatabaseHelper(
                 this,
                 Constants.MAIN_DATABASE_NAME,
                 Constants.MAIN_DATABASE_VERSION
         );
-        notesRepository = new OfflineNotesRepository(databaseHelper);
+        DatabaseHelper bomDatabaseHelper = new DatabaseHelper(
+                this,
+                Constants.BOM_DATABASE_NAME,
+                Constants.BOM_DATABASE_VERSION
+        );
+        notesRepository = new OfflineNotesRepository(mainDatabaseHelper, bomDatabaseHelper);
     }
 
     public NotesRepository getNotesRepository() {

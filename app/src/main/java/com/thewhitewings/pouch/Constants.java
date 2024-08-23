@@ -32,4 +32,9 @@ public class Constants {
     public static final int SORT_Z_A = 1;
     public static final int SORT_OLDEST_FIRST = 2;
     public static final int SORT_NEWEST_FIRST = 3;
+
+    public enum Zone {
+        MAIN,
+        BOX_OF_MYSTERIES
+    }
 }

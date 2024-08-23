@@ -8,6 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="gray_logo_bom">#B76A6A6A</color>
+
     <!--    Material Theme Colors  -->
     <color name="seed">#410006</color>
     <color name="md_theme_light_primary">#9C4141</color>

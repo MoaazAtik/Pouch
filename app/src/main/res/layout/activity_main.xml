@@ -29,7 +29,7 @@
         android:layout_height="32dp"
         android:layout_marginEnd="30dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:contentDescription="Sort notes"
+        android:contentDescription="@string/sort_notes"
         app:layout_constraintBottom_toBottomOf="@id/sv_search_notes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/sv_search_notes"
@@ -41,7 +41,7 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:layout_marginTop="330dp"
-        android:contentDescription="Logo"
+        android:contentDescription="@string/the_white_wings_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -69,11 +69,12 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/empty_notes_view"
+        android:id="@+id/txt_zone_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-light"
-        android:text="Creative Zone"
+        android:gravity="center"
+        android:text="@string/creative_zone"
         android:textColor="?attr/colorPrimaryInverse"
         android:textSize="26sp"
         app:layout_constraintBottom_toTopOf="@id/img_logo"
@@ -85,7 +86,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:contentDescription="Add new note"
+        android:contentDescription="@string/add_new_note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/btn_add_note" />
@@ -124,5 +125,17 @@
         app:lottie_rawRes="@raw/reveal_screen_red"
         app:lottie_speed="1"
         tools:visibility="gone" />
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:id="@+id/lv_reveal_loader"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        app:layout_constraintBottom_toBottomOf="@id/img_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/img_logo"
+        app:lottie_rawRes="@raw/reveal_loader"
+        app:lottie_speed="0.6"
+        android:visibility="gone" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

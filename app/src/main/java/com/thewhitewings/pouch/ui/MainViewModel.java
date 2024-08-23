@@ -1,12 +1,11 @@
 package com.thewhitewings.pouch.ui;
 
-import android.app.Application;
 import android.text.TextUtils;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -17,9 +16,6 @@ import com.thewhitewings.pouch.data.SortOption;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -30,10 +26,24 @@ public class MainViewModel extends ViewModel {
     private static final String TAG = "MainViewModel";
     private final NotesRepository repository;
     public final LiveData<List<Note>> notesLiveData;
+    private final MutableLiveData<Constants.Zone> currentZoneLiveData;
 
     public MainViewModel(NotesRepository repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
+        this.currentZoneLiveData = new MutableLiveData<>(Constants.Zone.MAIN);
+    }
+
+    public LiveData<Constants.Zone> getCurrentZoneLiveData() {
+        return currentZoneLiveData;
+    }
+
+    public void toggleZone() {
+        currentZoneLiveData.postValue(
+                currentZoneLiveData.getValue() == Constants.Zone.MAIN ? Constants.Zone.BOX_OF_MYSTERIES : Constants.Zone.MAIN
+        );
+
+        repository.toggleZone();
     }
 
 

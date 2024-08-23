@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Pouch</string>
+    <string name="creative_zone">Creative Zone</string>
+    <string name="box_of_mysteries">Box\nof\nMysteries</string>
+    <string name="sort_notes">Sort notes</string>
+    <string name="the_white_wings_logo">Logo</string>
+    <string name="add_new_note">Add new note</string>
+    <string name="bom_revealing_message">Box of Mysteries is revealed</string>
 </resources>
