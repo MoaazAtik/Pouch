@@ -125,7 +125,9 @@ public class MainActivity extends AppCompatActivity {
             adapter.setNotes(notes);
             toggleZoneNameVisibility();
         });
+
         currentZone.observe(this, zone -> {
+            clearFocusAndHideKeyboard(binding.svSearchNotes);
             if (zone == Constants.Zone.BOX_OF_MYSTERIES)
                 goToBoxOfMysteries();
             else goToMainZone();

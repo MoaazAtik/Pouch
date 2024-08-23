@@ -203,6 +203,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             databaseChangeListener.onDatabaseChanged();
     }
 
+    public List<Note> searchNotes(String query) {
+        List<Note> filteredNotes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selection = "noteTitle LIKE ? OR noteBody LIKE ?";
+        String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%"};
+        String orderBy = "timestamp DESC";
+
+        Cursor cursor = db.query(
+                Constants.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                orderBy);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
+                int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
+                int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
+                int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
+                note.setId(cursor.getInt(i1));
+                note.setNoteTitle(cursor.getString(i2));
+                note.setNoteBody(cursor.getString(i3));
+                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+
+                filteredNotes.add(note);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return filteredNotes;
+    }
+
+
     /**
      * Get Formatted date and time. The Basic format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
      * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.

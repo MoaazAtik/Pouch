@@ -50,8 +50,17 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
+    public void searchNotes(String query) {
+        updateNotesLiveData(currentZoneDatabaseHelper.searchNotes(query));
+    }
+
+    @Override
     public void onDatabaseChanged() {
-        notesLiveData.postValue(currentZoneDatabaseHelper.getAllNotes());
+        updateNotesLiveData(currentZoneDatabaseHelper.getAllNotes());
+    }
+
+    private void updateNotesLiveData(List<Note> notes) {
+        notesLiveData.postValue(notes);
     }
 
     public void toggleZone() {
@@ -60,7 +69,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         else
             currentZoneDatabaseHelper = mainDatabaseHelper;
 
-        notesLiveData.postValue(currentZoneDatabaseHelper.getAllNotes());
+        updateNotesLiveData(currentZoneDatabaseHelper.getAllNotes());
     }
 }
 

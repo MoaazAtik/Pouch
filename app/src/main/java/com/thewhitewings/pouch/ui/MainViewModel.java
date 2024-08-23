@@ -88,34 +88,7 @@ public class MainViewModel extends ViewModel {
     }
 
     public void searchNotes(String query) {
-//        List<Note> allNotes = databaseHelper.getAllNotes();
-//        if (query.isEmpty()) {
-//            notesLiveData.postValue(allNotes);
-//        } else {
-//            List<Note> filteredNotes = new ArrayList<>();
-//            String filterPattern = query.toLowerCase().trim();
-//
-//            for (Note note : allNotes) {
-//                String noteTitle = note.getNoteTitle();
-//                String noteBody = note.getNoteBody();
-//                boolean matchTitle = false;
-//                boolean matchBody;
-//
-//                if (noteTitle != null) {
-//                    matchTitle = noteTitle.toLowerCase().contains(filterPattern);
-//                }
-//                if (matchTitle) {
-//                    filteredNotes.add(note);
-//                } else if (noteBody != null) {
-//                    matchBody = noteBody.toLowerCase().contains(filterPattern);
-//                    if (matchBody) {
-//                        filteredNotes.add(note);
-//                    }
-//                }
-//            }
-//
-//            notesLiveData.setValue(filteredNotes);
-//        }
+        repository.searchNotes(query);
     }
 
     public void sortNotes(SortOption sortOption) {

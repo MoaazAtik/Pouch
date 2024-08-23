@@ -13,5 +13,7 @@ public interface NotesRepository {
 
     void deleteNote(Note note);
 
+    void searchNotes(String query);
+
     void toggleZone();
 }
