@@ -2,6 +2,8 @@ package com.thewhitewings.pouch.data;
 
 import androidx.lifecycle.LiveData;
 
+import com.thewhitewings.pouch.Constants;
+
 import java.util.List;
 
 public interface NotesRepository {
@@ -13,7 +15,13 @@ public interface NotesRepository {
 
     void deleteNote(Note note);
 
-    void searchNotes(String query);
+    void searchNotes(String searchQuery, SortOption sortOption);
 
-    void toggleZone();
+    void sortNotes(SortOption sortOption);
+
+    void toggleZone(Constants.Zone newZone);
+
+    void saveSortOption(SortOption sortOption, Constants.Zone zone);
+
+    SortOption getSortOption(Constants.Zone zone);
 }

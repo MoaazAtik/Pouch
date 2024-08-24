@@ -27,11 +27,15 @@ public class MainViewModel extends ViewModel {
     private final NotesRepository repository;
     public final LiveData<List<Note>> notesLiveData;
     private final MutableLiveData<Constants.Zone> currentZoneLiveData;
+    private SortOption sortOption;
+    private String searchQuery;
 
     public MainViewModel(NotesRepository repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
         this.currentZoneLiveData = new MutableLiveData<>(Constants.Zone.MAIN);
+        this.sortOption = repository.getSortOption(Constants.Zone.MAIN);
+        this.searchQuery = "";
     }
 
     public LiveData<Constants.Zone> getCurrentZoneLiveData() {
@@ -43,7 +47,7 @@ public class MainViewModel extends ViewModel {
                 currentZoneLiveData.getValue() == Constants.Zone.MAIN ? Constants.Zone.BOX_OF_MYSTERIES : Constants.Zone.MAIN
         );
 
-        repository.toggleZone();
+        repository.toggleZone(currentZoneLiveData.getValue());
     }
 
 
@@ -88,74 +92,18 @@ public class MainViewModel extends ViewModel {
     }
 
     public void searchNotes(String query) {
-        repository.searchNotes(query);
+        searchQuery = query;
+        repository.searchNotes(query, sortOption);
     }
 
     public void sortNotes(SortOption sortOption) {
-//        List<Note> allNotes = notesLiveData.getValue();
-//        if (allNotes != null) {
-//            switch (sortOption) {
-//                case A_Z:
-//                    allNotes.sort((o1, o2) -> {
-//                        String o1NoteTitle = o1.getNoteTitle();
-//                        String o2NoteTitle = o2.getNoteTitle();
-//                        if (o1NoteTitle == null) o1NoteTitle = "";
-//                        if (o2NoteTitle == null) o2NoteTitle = "";
-//                        return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
-//                    });
-//                    break;
-//                case Z_A:
-//                    allNotes.sort((o1, o2) -> {
-//                        String o1NoteTitle = o1.getNoteTitle();
-//                        String o2NoteTitle = o2.getNoteTitle();
-//                        if (o1NoteTitle == null) o1NoteTitle = "";
-//                        if (o2NoteTitle == null) o2NoteTitle = "";
-//                        return (o1NoteTitle + o1.getNoteBody()).compareToIgnoreCase(o2NoteTitle + o2.getNoteBody());
-//                    });
-//                    Collections.reverse(allNotes);
-//                    break;
-//                case OLDEST_FIRST:
-//                    allNotes.sort((o1, o2) -> Long.compare(
-//                            getTimeInMillis(o1.getTimestamp()),
-//                            getTimeInMillis(o2.getTimestamp())
-//                    ));
-//                    break;
-//                case NEWEST_FIRST:
-//                    allNotes.sort(new Comparator<Note>() {
-//                        @Override
-//                        public int compare(Note o1, Note o2) {
-//                            return Long.compare(
-//                                    getTimeInMillis(o1.getTimestamp()),
-//                                    getTimeInMillis(o2.getTimestamp())
-//                            );
-//                        }
-//                    });
-//                    Collections.reverse(allNotes);
-//                    break;
-//            }
-//            notesLiveData.postValue(allNotes);
-//        }
-    }
+        this.sortOption = sortOption;
+        repository.saveSortOption(sortOption, currentZoneLiveData.getValue());
 
-    /**
-     * Convert Date Time String to Time in Milliseconds
-     *
-     * @param dateTime to convert
-     * @return time in millis
-     */
-    private long getTimeInMillis(String dateTime) {
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-        Date date;
-        long dateMs;
-        try {
-            date = sdFormat.parse(dateTime);
-            dateMs = date.getTime();
-        } catch (ParseException e) {
-            Log.d(TAG, "getTimeInMillis: catch e " + e);
-            throw new RuntimeException(e);
-        }
-        return dateMs;
+        if (searchQuery.isEmpty())
+            repository.sortNotes(sortOption);
+        else
+            repository.searchNotes(searchQuery, sortOption);
     }
 
 

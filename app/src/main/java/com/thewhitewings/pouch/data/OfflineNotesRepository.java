@@ -12,15 +12,18 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     private final DatabaseHelper mainDatabaseHelper;
     private final DatabaseHelper bomDatabaseHelper;
     private DatabaseHelper currentZoneDatabaseHelper;
+    private final PouchPreferences pouchPreferences;
     private final MutableLiveData<List<Note>> notesLiveData;
 
-    public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper) {
+    public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
         this.mainDatabaseHelper = mainDatabaseHelper;
         this.bomDatabaseHelper = bomDatabaseHelper;
         currentZoneDatabaseHelper = mainDatabaseHelper;
-        notesLiveData = new MutableLiveData<>(currentZoneDatabaseHelper.getAllNotes());
+        this.pouchPreferences = pouchPreferences;
+
         mainDatabaseHelper.setDatabaseChangeListener(this);
         bomDatabaseHelper.setDatabaseChangeListener(this);
+        notesLiveData = new MutableLiveData<>(currentZoneDatabaseHelper.getAllNotes());
     }
 
     @Override
@@ -50,8 +53,17 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void searchNotes(String query) {
-        updateNotesLiveData(currentZoneDatabaseHelper.searchNotes(query));
+    public void searchNotes(String searchQuery, SortOption sortOption) {
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.searchNotes(searchQuery, sortOption)
+        );
+    }
+
+    @Override
+    public void sortNotes(SortOption sortOption) {
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.sortNotes(sortOption)
+        );
     }
 
     @Override
@@ -59,15 +71,26 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         updateNotesLiveData(currentZoneDatabaseHelper.getAllNotes());
     }
 
+    @Override
+    public void saveSortOption(SortOption sortOption, Constants.Zone zone) {
+        pouchPreferences.saveSortOption(sortOption, zone);
+    }
+
+    @Override
+    public SortOption getSortOption(Constants.Zone zone) {
+        return pouchPreferences.getSortOption(zone);
+    }
+
     private void updateNotesLiveData(List<Note> notes) {
         notesLiveData.postValue(notes);
     }
 
-    public void toggleZone() {
-        if (currentZoneDatabaseHelper == mainDatabaseHelper)
+    public void toggleZone(Constants.Zone newZone) {
+        if (newZone == Constants.Zone.BOX_OF_MYSTERIES) {
             currentZoneDatabaseHelper = bomDatabaseHelper;
-        else
+        } else {
             currentZoneDatabaseHelper = mainDatabaseHelper;
+        }
 
         updateNotesLiveData(currentZoneDatabaseHelper.getAllNotes());
     }

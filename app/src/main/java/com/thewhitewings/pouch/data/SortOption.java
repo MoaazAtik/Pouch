@@ -33,4 +33,18 @@ public enum SortOption {
         Log.e(TAG, "Invalid menuItemId: " + menuItemId, new IllegalArgumentException());
         return null; // Or throw an exception if preferred
     }
+
+    public String toSqlString() {
+        switch (this) {
+            case A_Z:
+                return "noteTitle COLLATE NOCASE ASC, noteBody COLLATE NOCASE ASC";
+            case Z_A:
+                return "noteTitle COLLATE NOCASE DESC, noteBody COLLATE NOCASE DESC";
+            case OLDEST_FIRST:
+                return "timestamp ASC";
+            case NEWEST_FIRST:
+            default:
+                return "timestamp DESC";
+        }
+    }
 }

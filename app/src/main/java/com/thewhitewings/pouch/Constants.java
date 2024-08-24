@@ -37,4 +37,9 @@ public class Constants {
         MAIN,
         BOX_OF_MYSTERIES
     }
+
+    // Preferences
+    public static final String PREFERENCES_NAME = "userPreferences";
+    public static final String MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY = "mainZoneSortOption";
+    public static final String BOM_ZONE_SORT_OPTION_PREFERENCE_KEY = "bomZoneSortOption";
 }
