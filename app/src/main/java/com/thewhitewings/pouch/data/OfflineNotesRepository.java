@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.thewhitewings.pouch.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
@@ -14,6 +15,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     private DatabaseHelper currentZoneDatabaseHelper;
     private final PouchPreferences pouchPreferences;
     private final MutableLiveData<List<Note>> notesLiveData;
+    private Constants.Zone currentZone;
 
     public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
         this.mainDatabaseHelper = mainDatabaseHelper;
@@ -23,7 +25,14 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
 
         mainDatabaseHelper.setDatabaseChangeListener(this);
         bomDatabaseHelper.setDatabaseChangeListener(this);
-        notesLiveData = new MutableLiveData<>(currentZoneDatabaseHelper.getAllNotes());
+
+        currentZone = Constants.Zone.MAIN;
+        notesLiveData = new MutableLiveData<>(new ArrayList<>());
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.getAllNotes(
+                        pouchPreferences.getSortOption(currentZone)
+                )
+        );
     }
 
     @Override
@@ -68,7 +77,11 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
 
     @Override
     public void onDatabaseChanged() {
-        updateNotesLiveData(currentZoneDatabaseHelper.getAllNotes());
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.getAllNotes(
+                        pouchPreferences.getSortOption(currentZone)
+                )
+        );
     }
 
     @Override
@@ -86,13 +99,19 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     public void toggleZone(Constants.Zone newZone) {
-        if (newZone == Constants.Zone.BOX_OF_MYSTERIES) {
+        if (currentZone == Constants.Zone.MAIN) {
+            currentZone = Constants.Zone.BOX_OF_MYSTERIES;
             currentZoneDatabaseHelper = bomDatabaseHelper;
         } else {
+            currentZone = Constants.Zone.MAIN;
             currentZoneDatabaseHelper = mainDatabaseHelper;
         }
 
-        updateNotesLiveData(currentZoneDatabaseHelper.getAllNotes());
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.getAllNotes(
+                        pouchPreferences.getSortOption(currentZone)
+                )
+        );
     }
 }
 

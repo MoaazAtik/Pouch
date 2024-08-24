@@ -130,12 +130,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @return all Notes in Database
      */
     public List<Note> getAllNotes() {
-        List<Note> notes = new ArrayList<>();
-
-        String selectQueryStatement = "SELECT * FROM " + Constants.TABLE_NAME + " ORDER BY " + Constants.COLUMN_TIMESTAMP + " DESC";
-
+        List<Note> allNotes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQueryStatement, null);
+
+        String orderBy = "timestamp DESC";
+
+        Cursor cursor = db.query(
+                Constants.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                orderBy);
 
         if (cursor.moveToFirst()) {
             do {
@@ -149,13 +156,45 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setNoteBody(cursor.getString(i3));
                 note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
 
-                notes.add(note);
+                allNotes.add(note);
             } while (cursor.moveToNext());
         }
-
         cursor.close();
-        db.close();
-        return notes;
+        return allNotes;
+    }
+
+    public List<Note> getAllNotes(SortOption sortOption) {
+        List<Note> allNotes = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String orderBy = sortOption.toSqlString();
+
+        Cursor cursor = db.query(
+                Constants.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                orderBy);
+
+        if (cursor.moveToFirst()) {
+            do {
+                Note note = new Note();
+                int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
+                int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
+                int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
+                int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
+                note.setId(cursor.getInt(i1));
+                note.setNoteTitle(cursor.getString(i2));
+                note.setNoteBody(cursor.getString(i3));
+                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+
+                allNotes.add(note);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return allNotes;
     }
 
     /**
