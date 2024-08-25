@@ -17,7 +17,7 @@ public interface NotesRepository {
 
     void searchNotes(String searchQuery, SortOption sortOption);
 
-    void sortNotes(SortOption sortOption);
+    void sortNotes(SortOption sortOption, String searchQuery);
 
     void toggleZone(Constants.Zone newZone);
 

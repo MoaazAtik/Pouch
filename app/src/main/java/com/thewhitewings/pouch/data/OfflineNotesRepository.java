@@ -69,9 +69,11 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void sortNotes(SortOption sortOption) {
+    public void sortNotes(SortOption sortOption, String searchQuery) {
         updateNotesLiveData(
-                currentZoneDatabaseHelper.sortNotes(sortOption)
+                searchQuery.isEmpty() ?
+                        currentZoneDatabaseHelper.getAllNotes(sortOption) :
+                        currentZoneDatabaseHelper.searchNotes(searchQuery, sortOption)
         );
     }
 

@@ -167,8 +167,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Note> allNotes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String orderBy = sortOption.toSqlString();
-
         Cursor cursor = db.query(
                 Constants.TABLE_NAME,
                 null,
@@ -176,7 +174,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                orderBy);
+                sortOption.toSqlString());
 
         if (cursor.moveToFirst()) {
             do {
@@ -276,39 +274,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return filteredNotes;
-    }
-
-    public List<Note> sortNotes(SortOption sortOption) {
-        List<Note> sortedNotes = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                Constants.TABLE_NAME,
-                null,  // Columns (null means all columns)
-                null,  // No selection criteria
-                null,  // No selection args
-                null,  // No group by
-                null,  // No having
-                sortOption.toSqlString()  // Sorting
-        );
-
-        if (cursor.moveToFirst()) {
-            do {
-                Note note = new Note();
-                int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
-                int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
-                int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
-                int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
-                note.setId(cursor.getInt(i1));
-                note.setNoteTitle(cursor.getString(i2));
-                note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
-
-                sortedNotes.add(note);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return sortedNotes;
     }
 
 

@@ -100,10 +100,7 @@ public class MainViewModel extends ViewModel {
         this.sortOption = sortOption;
         repository.saveSortOption(sortOption, currentZoneLiveData.getValue());
 
-        if (searchQuery.isEmpty())
-            repository.sortNotes(sortOption);
-        else
-            repository.searchNotes(searchQuery, sortOption);
+        repository.sortNotes(sortOption, searchQuery);
     }
 
 
