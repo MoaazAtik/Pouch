@@ -4,9 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
@@ -14,130 +11,89 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+
+import com.thewhitewings.pouch.data.Note;
+import com.thewhitewings.pouch.data.NotesRepository;
+import com.thewhitewings.pouch.databinding.FragmentNoteBinding;
+import com.thewhitewings.pouch.ui.NoteViewModel;
 
 public class NoteFragment extends Fragment {
 
-    private static final String TAG = "NoteFragment";
+    private FragmentNoteBinding binding;
+    private NoteViewModel noteViewModel;
+    private LiveData<Note> noteLiveData;
 
-    private ImageButton btnBack, btnDelete;
-    private EditText etNoteTitle, etNoteBody;
-    private TextView txtTimestamp;
-    private DataPassListener dataPassListener;
-    private boolean isNewNote;
-
-    @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Inflate a custom layout for the fragment
-        View view = inflater.inflate(R.layout.fragment_note, container, false);
-
-        // Initialize the UI elements
-        btnBack = view.findViewById(R.id.btn_back);
-        btnDelete = view.findViewById(R.id.btn_delete);
-        etNoteTitle = view.findViewById(R.id.et_note_title);
-        etNoteBody = view.findViewById(R.id.et_note_body);
-        txtTimestamp = view.findViewById(R.id.txt_timestamp);
-
-        setIsNewNote();
-        if (!isNewNote)
-            initializeNote();
-
-        // Clear Focus of EditText's and Hide Soft keyboard when Root layout is clicked
-        view.getRootView()
-                .setOnClickListener(v -> {
-                    ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteTitle);
-                    ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(etNoteBody);
-                });
-
-        //btnBack
-        /*
-        When updating note, note values would be passed to fragment. When nothing is passed it means I am creating a new note.
-         */
-        btnBack.setOnClickListener(v ->
-                closeNote(
-                        isNewNote ? Constants.ACTION_CREATE : Constants.ACTION_UPDATE
-                )
-        );
-
-        //btnDelete
-        btnDelete.setOnClickListener(v ->
-                closeNote(
-                        !isNewNote ? Constants.ACTION_DELETE : Constants.ACTION_CLOSE_ONLY
-                )
-        );
-
-        /*
-        It's used so dataPassListener would survive Configuration changes.
-        Otherwise, it would be null after config changes, therefore, onDataPass() won't be called when closing note fragment.
-         */
-        setRetainInstance(true);
-
-        return view;
+        binding = FragmentNoteBinding.inflate(inflater, container, false);
+        return binding.getRoot();
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // Handle device's back button pressing
+        NotesRepository repository = ((PouchApplication) requireActivity().getApplication()).getNotesRepository();
+        noteViewModel = new ViewModelProvider(this, new NoteViewModel.NoteViewModelFactory(repository)).get(NoteViewModel.class);
+
+        noteViewModel.initializeNote(getArguments());
+        noteLiveData = noteViewModel.getNoteLiveData();
+
+        setupListeners();
+        setupViewModelObservers();
+    }
+
+    private void setupListeners() {
+        binding.getRoot().setOnClickListener(v -> {
+            ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(binding.etNoteTitle);
+            ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(binding.etNoteBody);
+        });
+
+        binding.btnBack.setOnClickListener(v -> {
+            noteViewModel.createOrUpdateNote(
+                    binding.etNoteTitle.getText().toString(),
+                    binding.etNoteBody.getText().toString()
+            );
+            closeNote();
+        });
+
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                closeNote(
-                        getArguments() == null ? Constants.ACTION_CREATE : Constants.ACTION_UPDATE
+                noteViewModel.createOrUpdateNote(
+                        binding.etNoteTitle.getText().toString(),
+                        binding.etNoteBody.getText().toString()
                 );
+                closeNote();
             }
+        });
+
+        binding.btnDelete.setOnClickListener(v -> {
+            noteViewModel.deleteNote();
+            closeNote();
         });
     }
 
-    /**
-     * Figure out if this is a new note or not, and assign {@link #isNewNote}.
-     */
-    private void setIsNewNote() {
-        isNewNote = getArguments() == null;
+    private void setupViewModelObservers() {
+        noteLiveData.observe(getViewLifecycleOwner(), note -> {
+            binding.etNoteTitle.setText(note.getNoteTitle());
+            binding.etNoteBody.setText(note.getNoteBody());
+            binding.txtTimestamp.setText(getString(R.string.edited_timestamp, note.getTimestamp()));
+        });
     }
 
-    /**
-     * Get and fill screen fields with corresponding note values when updating the note after calling {@link #setIsNewNote()}.
-     */
-    private void initializeNote() {
-        Bundle argsBundle = getArguments();
 
-        String noteTitle = argsBundle.getString(Constants.COLUMN_NOTE_TITLE);
-        String noteBody = argsBundle.getString(Constants.COLUMN_NOTE_BODY);
-        String timestamp = argsBundle.getString(Constants.COLUMN_TIMESTAMP);
-
-        etNoteTitle.setText(noteTitle);
-        etNoteBody.setText(noteBody);
-        txtTimestamp.setText("Edited " + timestamp);
-    }
-
-    /**
-     * Close note fragment. Pass wanted action and note values with {@link DataPassListener#onDataPass(int, String, String)} then Navigate back to the Activity.
-     *
-     * @param action Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
-     */
-    private void closeNote(int action) {
-        // Get note values from corresponding fields
-        String noteTitle = etNoteTitle.getText().toString();
-        String noteBody = etNoteBody.getText().toString();
-
-        // Pass wanted action and note values
-        if (dataPassListener != null) {
-            dataPassListener.onDataPass(
-                    action,
-                    noteTitle,
-                    noteBody
-            );
-        }
-
+    private void closeNote() {
         /*
+        // Clear focus to prevent issues with SearchView focus in MainActivity
         Needed for back arrow and device's back button so the focus won't be automatically passed to Sv Search note.
          */
-        etNoteTitle.clearFocus();
-        etNoteBody.clearFocus();
+        binding.etNoteTitle.clearFocus();
+        binding.etNoteBody.clearFocus();
 
-        // Get the FragmentManager
+        // Navigate back (remove the fragment)
         FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
         // Begin a fragment transaction
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -155,31 +111,9 @@ public class NoteFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    /**
-     * Initialize DataPassListener
-     *
-     * @param listener DataPassListener
-     */
-    public void setDataPassListener(DataPassListener listener) {
-        this.dataPassListener = listener;
-    }
-
-
-    /**
-     * Interface used to pass data and action from {@link NoteFragment} to {@link MainActivity}.
-     */
-    public interface DataPassListener {
-        /**
-         * Pass data and action
-         *
-         * @param action    Wanted action to handle the note: {@link Constants#ACTION_CLOSE_ONLY}, {@link Constants#ACTION_CREATE}, {@link Constants#ACTION_UPDATE}, or {@link Constants#ACTION_DELETE}
-         * @param noteTitle .
-         * @param noteBody  .
-         */
-        void onDataPass(
-                int action,
-                String noteTitle,
-                String noteBody
-        );
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;  // Avoid memory leaks
     }
 }

@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         NoteFragment noteFragment = new NoteFragment();
         if (note != null) {
             Bundle argsBundle = new Bundle();
+            argsBundle.putInt(Constants.COLUMN_ID, note.getId());
             argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
             argsBundle.putString(Constants.COLUMN_TIMESTAMP, DatabaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
@@ -167,10 +168,6 @@ public class MainActivity extends AppCompatActivity {
         );
         fragmentTransaction.replace(R.id.fragment_container_note, noteFragment);
         fragmentTransaction.commit();
-
-        noteFragment.setDataPassListener((action, newNoteTitle, newNoteBody) ->
-                vm.handleNoteClosingAction(action, newNoteTitle, newNoteBody, note)
-        );
     }
 
     void clearFocusAndHideKeyboard(View view) {
