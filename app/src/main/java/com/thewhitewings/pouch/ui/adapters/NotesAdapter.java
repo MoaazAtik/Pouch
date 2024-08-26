@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.ui.adapters;
 
-import android.util.Log;
+import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -10,13 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.databinding.NoteRvItemBinding;
+import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
 
@@ -62,29 +60,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public void bind(Note note) {
             binding.txtNoteTitleRv.setText(note.getNoteTitle());
             binding.txtNoteBodyRv.setText(note.getNoteBody());
-            binding.txtTimestampRv.setText(formatDate(note.getTimestamp()));
+            binding.txtTimestampRv.setText(getFormattedDateTime(DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT, (note.getTimestamp())));
         }
     }
 
-    /**
-     * Format timestamp to 'MMM d' format
-     * input: 2018-02-21 00:15:42 "yyyy-MM-dd HH:mm:ss"
-     * output: Feb 21 "MMM d"
-     *
-     * @param dateString provided date as String
-     * @return date as string after formatting
-     */
-    private String formatDate(String dateString) {
-        try {
-            SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-            Date date = sdFormat.parse(dateString);
-
-            sdFormat = new SimpleDateFormat("MMM d", Locale.getDefault());
-            return sdFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-            Log.e(TAG, "formatDate: catch e ", e);
-            return "";
-        }
-    }
 }

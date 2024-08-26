@@ -1,21 +1,19 @@
 package com.thewhitewings.pouch.data;
 
+import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -115,7 +113,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(i1),
                     cursor.getString(i2),
                     cursor.getString(i3),
-                    getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4))
+                    getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4))
             );
         }
 
@@ -154,7 +152,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 allNotes.add(note);
             } while (cursor.moveToNext());
@@ -186,7 +184,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 allNotes.add(note);
             } while (cursor.moveToNext());
@@ -206,7 +204,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
         values.put(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
         // Convert timestamp to UTC for Storing in Database
-        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(Constants.LOCAL_TO_UTC, note.getTimestamp()));
+        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(DateTimeFormatType.LOCAL_TO_UTC, note.getTimestamp()));
+
 
         db.update(
             Constants.TABLE_NAME,
@@ -267,69 +266,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 filteredNotes.add(note);
             } while (cursor.moveToNext());
         }
         cursor.close();
         return filteredNotes;
-    }
-
-
-    /**
-     * Get Formatted date and time. The Basic format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
-     * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
-     *
-     * @param usage    {@link Constants#UTC_TO_LOCAL}: Date and time from UTC to Local Time Zone for Retrieving,
-     *                 {@link Constants#LOCAL_TO_UTC}: Date and time from Local Time Zone to UTC for Storing in Database,
-     *                 {@link Constants#CURRENT_LOCAL}: Current date and time in Local Time Zone for Storing in Notes List.
-     *                 {@link Constants#FORMATTING_LOCAL}: Formatted Date in Local Time Zone for Retrieving in Note Fragment. "MMM d, yyyy" = Feb 4, 2024
-     * @param dateTime (Optional) Provide date and/or time to format.
-     * @return Formatted date or time.
-     */
-    public static String getFormattedDateTime(int usage, String dateTime) {
-
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date;
-
-        switch (usage) {
-            case Constants.UTC_TO_LOCAL:
-                try {
-                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    date = sdFormat.parse(dateTime);
-                    sdFormat.setTimeZone(TimeZone.getDefault());
-                    return sdFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: catch e case UTC_TO_LOCAL ", e);
-                    return "e " + dateTime;
-                }
-            case Constants.LOCAL_TO_UTC:
-                try {
-                    date = sdFormat.parse(dateTime);
-                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    return sdFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case LOCAL_TO_UTC ", e);
-                    return "e " + dateTime;
-                }
-            case Constants.CURRENT_LOCAL:
-                date = new Date();
-                return sdFormat.format(date);
-            case Constants.FORMATTING_LOCAL:
-                try {
-                    date = sdFormat.parse(dateTime);
-                    sdFormat.applyPattern("MMM d, yyyy");
-                    return sdFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case FORMATTING_LOCAL ", e);
-                    return "e " + dateTime;
-                }
-        }
-        return null;
     }
 
 

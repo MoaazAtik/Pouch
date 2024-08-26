@@ -1,15 +1,19 @@
 package com.thewhitewings.pouch.data;
 
+import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
 
+    private static final String TAG = "OfflineNotesRepository";
     private final DatabaseHelper mainDatabaseHelper;
     private final DatabaseHelper bomDatabaseHelper;
     private DatabaseHelper currentZoneDatabaseHelper;
@@ -51,7 +55,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         updatedNote.setId(oldNote.getId());
         updatedNote.setNoteTitle(newNoteTitle);
         updatedNote.setNoteBody(noteBody);
-        updatedNote.setTimestamp(currentZoneDatabaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
+        updatedNote.setTimestamp(getFormattedDateTime(DateTimeFormatType.CURRENT_LOCAL, null));
 
         currentZoneDatabaseHelper.updateNote(updatedNote);
     }

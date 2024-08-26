@@ -1,5 +1,7 @@
 package com.thewhitewings.pouch;
 
+import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
+
 import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -27,13 +29,13 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.databinding.ActivityMainBinding;
 import com.thewhitewings.pouch.ui.MainViewModel;
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener;
+import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
 import java.util.List;
 import java.util.Objects;
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
             argsBundle.putInt(Constants.COLUMN_ID, note.getId());
             argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(Constants.COLUMN_TIMESTAMP, DatabaseHelper.getFormattedDateTime(Constants.FORMATTING_LOCAL, note.getTimestamp()));
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT, note.getTimestamp()));
             noteFragment.setArguments(argsBundle);
         }
 
