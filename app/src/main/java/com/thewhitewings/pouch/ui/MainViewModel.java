@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.Zone;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.data.SortOption;
@@ -19,25 +19,25 @@ public class MainViewModel extends ViewModel {
     private static final String TAG = "MainViewModel";
     private final NotesRepository repository;
     public final LiveData<List<Note>> notesLiveData;
-    private final MutableLiveData<Constants.Zone> currentZoneLiveData;
+    private final MutableLiveData<Zone> currentZoneLiveData;
     private SortOption sortOption;
     private String searchQuery;
 
     public MainViewModel(NotesRepository repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
-        this.currentZoneLiveData = new MutableLiveData<>(Constants.Zone.MAIN);
-        this.sortOption = repository.getSortOption(Constants.Zone.MAIN);
+        this.currentZoneLiveData = new MutableLiveData<>(Zone.MAIN);
+        this.sortOption = repository.getSortOption(Zone.MAIN);
         this.searchQuery = "";
     }
 
-    public LiveData<Constants.Zone> getCurrentZoneLiveData() {
+    public LiveData<Zone> getCurrentZoneLiveData() {
         return currentZoneLiveData;
     }
 
     public void toggleZone() {
         currentZoneLiveData.postValue(
-                currentZoneLiveData.getValue() == Constants.Zone.MAIN ? Constants.Zone.BOX_OF_MYSTERIES : Constants.Zone.MAIN
+                currentZoneLiveData.getValue() == Zone.MAIN ? Zone.BOX_OF_MYSTERIES : Zone.MAIN
         );
 
         repository.toggleZone(currentZoneLiveData.getValue());

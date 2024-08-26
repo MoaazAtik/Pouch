@@ -5,7 +5,7 @@ import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.Zone;
 import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     private DatabaseHelper currentZoneDatabaseHelper;
     private final PouchPreferences pouchPreferences;
     private final MutableLiveData<List<Note>> notesLiveData;
-    private Constants.Zone currentZone;
+    private Zone currentZone;
 
     public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
         this.mainDatabaseHelper = mainDatabaseHelper;
@@ -30,7 +30,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         mainDatabaseHelper.setDatabaseChangeListener(this);
         bomDatabaseHelper.setDatabaseChangeListener(this);
 
-        currentZone = Constants.Zone.MAIN;
+        currentZone = Zone.MAIN;
         notesLiveData = new MutableLiveData<>(new ArrayList<>());
         updateNotesLiveData(
                 currentZoneDatabaseHelper.getAllNotes(
@@ -91,12 +91,12 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void saveSortOption(SortOption sortOption, Constants.Zone zone) {
+    public void saveSortOption(SortOption sortOption, Zone zone) {
         pouchPreferences.saveSortOption(sortOption, zone);
     }
 
     @Override
-    public SortOption getSortOption(Constants.Zone zone) {
+    public SortOption getSortOption(Zone zone) {
         return pouchPreferences.getSortOption(zone);
     }
 
@@ -104,12 +104,12 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         notesLiveData.postValue(notes);
     }
 
-    public void toggleZone(Constants.Zone newZone) {
-        if (currentZone == Constants.Zone.MAIN) {
-            currentZone = Constants.Zone.BOX_OF_MYSTERIES;
+    public void toggleZone(Zone newZone) {
+        if (currentZone == Zone.MAIN) {
+            currentZone = Zone.BOX_OF_MYSTERIES;
             currentZoneDatabaseHelper = bomDatabaseHelper;
         } else {
-            currentZone = Constants.Zone.MAIN;
+            currentZone = Zone.MAIN;
             currentZoneDatabaseHelper = mainDatabaseHelper;
         }
 

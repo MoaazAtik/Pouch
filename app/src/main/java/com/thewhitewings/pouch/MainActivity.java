@@ -36,6 +36,7 @@ import com.thewhitewings.pouch.ui.MainViewModel;
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener;
 import com.thewhitewings.pouch.utils.DateTimeFormatType;
+import com.thewhitewings.pouch.utils.Zone;
 
 import java.util.List;
 import java.util.Objects;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private MainViewModel vm;
     private NotesAdapter adapter;
     private LiveData<List<Note>> notesLiveData;
-    private LiveData<Constants.Zone> currentZone;
+    private LiveData<Zone> currentZone;
 
     private int bomKnocks = 0;
     private boolean bomTimeoutStarted = false;
@@ -130,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentZone.observe(this, zone -> {
             clearFocusAndHideKeyboard(binding.svSearchNotes);
-            if (zone == Constants.Zone.BOX_OF_MYSTERIES)
+            if (zone == Zone.BOX_OF_MYSTERIES)
                 goToBoxOfMysteries();
             else goToMainZone();
         });
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
-                if (currentZone.getValue() == Constants.Zone.BOX_OF_MYSTERIES)
+                if (currentZone.getValue() == Zone.BOX_OF_MYSTERIES)
                     vm.toggleZone();
                 else finish();
             }
@@ -281,7 +282,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         note that the currentZone here represents the updated value which is the destination you just arrived
          */
-        if (currentZone.getValue() == Constants.Zone.BOX_OF_MYSTERIES) {
+        if (currentZone.getValue() == Zone.BOX_OF_MYSTERIES) {
             initialColor = getResources().getColor(R.color.md_theme_light_primaryContainer, null);
             finalColor = getResources().getColor(R.color.gray_logo_bom, null);
         }
@@ -311,7 +312,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         note that the currentZone here represents the updated value which is the destination you just arrived
          */
-        if (currentZone.getValue() == Constants.Zone.BOX_OF_MYSTERIES) {
+        if (currentZone.getValue() == Zone.BOX_OF_MYSTERIES) {
             zoneName = getString(R.string.box_of_mysteries);
             typeface = Typeface.create("cursive", Typeface.BOLD);
             initialTextSize = 26f;

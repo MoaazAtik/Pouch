@@ -2,7 +2,7 @@ package com.thewhitewings.pouch.data;
 
 import androidx.lifecycle.LiveData;
 
-import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.Zone;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ public interface NotesRepository {
 
     void sortNotes(SortOption sortOption, String searchQuery);
 
-    void toggleZone(Constants.Zone newZone);
+    void toggleZone(Zone newZone);
 
-    void saveSortOption(SortOption sortOption, Constants.Zone zone);
+    void saveSortOption(SortOption sortOption, Zone zone);
 
-    SortOption getSortOption(Constants.Zone zone);
+    SortOption getSortOption(Zone zone);
 }

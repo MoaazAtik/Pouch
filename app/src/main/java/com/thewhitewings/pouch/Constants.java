@@ -15,28 +15,28 @@ public class Constants {
     public static final String COLUMN_NOTE_BODY = "NoteBody";
     public static final String COLUMN_TIMESTAMP = "Timestamp";
 
-    // Note Actions
-    public static final int ACTION_CLOSE_ONLY = -1;
-    public static final int ACTION_CREATE = 0;
-    public static final int ACTION_UPDATE = 1;
-    public static final int ACTION_DELETE = 2;
-
-    // Date Time Formatting
-    public static final int UTC_TO_LOCAL = 0;
-    public static final int LOCAL_TO_UTC = 1;
-    public static final int CURRENT_LOCAL = 2;
-    public static final int FORMATTING_LOCAL = 3;
-
-    // Sorting parameters
-    public static final int SORT_A_Z = 0;
-    public static final int SORT_Z_A = 1;
-    public static final int SORT_OLDEST_FIRST = 2;
-    public static final int SORT_NEWEST_FIRST = 3;
-
-    public enum Zone {
-        MAIN,
-        BOX_OF_MYSTERIES
-    }
+//    // Note Actions
+//    public static final int ACTION_CLOSE_ONLY = -1;
+//    public static final int ACTION_CREATE = 0;
+//    public static final int ACTION_UPDATE = 1;
+//    public static final int ACTION_DELETE = 2;
+//
+//    // Date Time Formatting
+//    public static final int UTC_TO_LOCAL = 0;
+//    public static final int LOCAL_TO_UTC = 1;
+//    public static final int CURRENT_LOCAL = 2;
+//    public static final int FORMATTING_LOCAL = 3;
+//
+//    // Sorting parameters
+//    public static final int SORT_A_Z = 0;
+//    public static final int SORT_Z_A = 1;
+//    public static final int SORT_OLDEST_FIRST = 2;
+//    public static final int SORT_NEWEST_FIRST = 3;
+//
+//    public enum Zone {
+//        MAIN,
+//        BOX_OF_MYSTERIES
+//    }
 
     // Preferences
     public static final String PREFERENCES_NAME = "userPreferences";
