@@ -9,6 +9,7 @@ public class Constants {
     // Name and Version of Database of BoxOfMysteries
     public static final int BOM_DATABASE_VERSION = 1;
     public static final String BOM_DATABASE_NAME = "bom_db";
+    // Common
     public static final String TABLE_NAME = "Notes";
     public static final String COLUMN_ID = "ID";
     public static final String COLUMN_NOTE_TITLE = "NoteTitle";

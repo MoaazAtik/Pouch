@@ -11,7 +11,6 @@ import android.util.Log;
 import com.thewhitewings.pouch.utils.Zone;
 
 
-
 public class PouchPreferences {
 
     private static final String TAG = "PouchPreferences";
@@ -28,7 +27,7 @@ public class PouchPreferences {
         preferences.edit()
                 .putString(sortOptionKey, sortOption.name())
                 .apply();
-        Log.d(TAG, "saveSortOption: sortOption " + sortOption.name());
+        Log.i(TAG, "Changed sort option preference to " + sortOption.name() + " for zone " + zone.name() + ".");
     }
 
     public SortOption getSortOption(Zone zone) {
@@ -36,7 +35,6 @@ public class PouchPreferences {
                 zone == Zone.MAIN ? MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
 
         String savedSortOption = preferences.getString(sortOptionKey, SortOption.NEWEST_FIRST.name());
-        Log.d(TAG, "getSortOption: sortOption " + savedSortOption);
         return SortOption.valueOf(savedSortOption);
     }
 }
