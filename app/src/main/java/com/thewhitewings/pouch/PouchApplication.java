@@ -6,6 +6,7 @@ import com.thewhitewings.pouch.data.DatabaseHelper;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.data.OfflineNotesRepository;
 import com.thewhitewings.pouch.data.PouchPreferences;
+import com.thewhitewings.pouch.utils.Constants;
 
 public class PouchApplication extends Application {
     private NotesRepository notesRepository;

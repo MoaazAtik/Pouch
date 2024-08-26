@@ -1,8 +1,8 @@
 package com.thewhitewings.pouch.data;
 
-import static com.thewhitewings.pouch.Constants.BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
-import static com.thewhitewings.pouch.Constants.MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY;
-import static com.thewhitewings.pouch.Constants.PREFERENCES_NAME;
+import static com.thewhitewings.pouch.utils.Constants.BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
+import static com.thewhitewings.pouch.utils.Constants.MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY;
+import static com.thewhitewings.pouch.utils.Constants.PREFERENCES_NAME;
 
 import android.content.Context;
 import android.content.SharedPreferences;

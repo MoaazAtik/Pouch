@@ -35,6 +35,7 @@ import com.thewhitewings.pouch.databinding.ActivityMainBinding;
 import com.thewhitewings.pouch.ui.MainViewModel;
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener;
+import com.thewhitewings.pouch.utils.Constants;
 import com.thewhitewings.pouch.utils.DateTimeFormatType;
 import com.thewhitewings.pouch.utils.Zone;
 

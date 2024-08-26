@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
 
-import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.Constants;
 import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
 import java.util.ArrayList;
