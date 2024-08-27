@@ -220,7 +220,7 @@ public class MainActivity extends AppCompatActivity {
                         bomKnocks = 0;
                         break;
                     } else if (bomKnocks == 4) {
-                        runOnUiThread(() -> binding.btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed));
+                        runOnUiThread(() -> binding.btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed_word));
                     } else if (bomKnocks == 5) {
                         handler.postDelayed(() -> {
                             bomTimeoutStarted = false;

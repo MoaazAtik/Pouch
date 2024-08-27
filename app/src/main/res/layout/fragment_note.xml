@@ -31,7 +31,7 @@
         android:contentDescription="@string/delete_note_description"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_delete"
+        app:srcCompat="@drawable/trash"
         app:tint="?attr/colorPrimaryInverse" />
 
     <EditText
