@@ -135,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
             if (zone == Zone.BOX_OF_MYSTERIES)
                 goToBoxOfMysteries();
             else goToCreativeZone();
+            binding.svSearchNotes.setQuery("", false);
         });
     }
 
