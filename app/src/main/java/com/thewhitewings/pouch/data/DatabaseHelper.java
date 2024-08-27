@@ -24,8 +24,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Constructor of DatabaseHelper
      *
      * @param context         of App or Activity
-     * @param databaseName    {@link Constants#MAIN_DATABASE_NAME} for the default database of Main Activity or {@link Constants#BOM_DATABASE_NAME} for the Box of Mysteries database
-     * @param databaseVersion {@link Constants#MAIN_DATABASE_VERSION} for the default database of Main Activity or {@link Constants#BOM_DATABASE_VERSION} for the Box of Mysteries database
+     * @param databaseName    {@link Constants#CREATIVE_DATABASE_NAME} for the default database of Main Activity or {@link Constants#BOM_DATABASE_NAME} for the Box of Mysteries database
+     * @param databaseVersion {@link Constants#CREATIVE_DATABASE_VERSION} for the default database of Main Activity or {@link Constants#BOM_DATABASE_VERSION} for the Box of Mysteries database
      */
     public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
         super(context, databaseName, null, databaseVersion);
@@ -280,7 +280,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Transfer data from Old table to New Table for the Common columns and Renamed columns.
      * It doesn't transfer data of columns that no longer exist in New table.
      * <p>
-     * Note: 1. When upgrading or downgrading the database, modify {@link Constants#MAIN_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.<P>
+     * Note: 1. When upgrading or downgrading the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.<P>
      * 2. When renaming columns, modify {@link #setAndGetColumnMappings()}.
      *
      * @param db to be upgraded or downgraded

@@ -1,7 +1,7 @@
 package com.thewhitewings.pouch.data;
 
 import static com.thewhitewings.pouch.utils.Constants.BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
-import static com.thewhitewings.pouch.utils.Constants.MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY;
+import static com.thewhitewings.pouch.utils.Constants.CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY;
 import static com.thewhitewings.pouch.utils.Constants.PREFERENCES_NAME;
 
 import android.content.Context;
@@ -22,7 +22,7 @@ public class PouchPreferences {
 
     public void saveSortOption(SortOption sortOption, Zone zone) {
         String sortOptionKey =
-                zone == Zone.MAIN ? MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
+                zone == Zone.CREATIVE ? CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
 
         preferences.edit()
                 .putString(sortOptionKey, sortOption.name())
@@ -32,7 +32,7 @@ public class PouchPreferences {
 
     public SortOption getSortOption(Zone zone) {
         String sortOptionKey =
-                zone == Zone.MAIN ? MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
+                zone == Zone.CREATIVE ? CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
 
         String savedSortOption = preferences.getString(sortOptionKey, SortOption.NEWEST_FIRST.name());
         return SortOption.valueOf(savedSortOption);

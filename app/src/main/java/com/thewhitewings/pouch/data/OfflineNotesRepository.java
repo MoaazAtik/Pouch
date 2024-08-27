@@ -14,23 +14,23 @@ import java.util.List;
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
 
     private static final String TAG = "OfflineNotesRepository";
-    private final DatabaseHelper mainDatabaseHelper;
+    private final DatabaseHelper creativeDatabaseHelper;
     private final DatabaseHelper bomDatabaseHelper;
     private DatabaseHelper currentZoneDatabaseHelper;
     private final PouchPreferences pouchPreferences;
     private final MutableLiveData<List<Note>> notesLiveData;
     private Zone currentZone;
 
-    public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
-        this.mainDatabaseHelper = mainDatabaseHelper;
+    public OfflineNotesRepository(DatabaseHelper creativeDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
+        this.creativeDatabaseHelper = creativeDatabaseHelper;
         this.bomDatabaseHelper = bomDatabaseHelper;
-        currentZoneDatabaseHelper = mainDatabaseHelper;
+        currentZoneDatabaseHelper = creativeDatabaseHelper;
         this.pouchPreferences = pouchPreferences;
 
-        mainDatabaseHelper.setDatabaseChangeListener(this);
+        creativeDatabaseHelper.setDatabaseChangeListener(this);
         bomDatabaseHelper.setDatabaseChangeListener(this);
 
-        currentZone = Zone.MAIN;
+        currentZone = Zone.CREATIVE;
         notesLiveData = new MutableLiveData<>(new ArrayList<>());
         updateNotesLiveData(
                 currentZoneDatabaseHelper.getAllNotes(
@@ -105,12 +105,12 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     public void toggleZone(Zone newZone) {
-        if (currentZone == Zone.MAIN) {
+        if (currentZone == Zone.CREATIVE) {
             currentZone = Zone.BOX_OF_MYSTERIES;
             currentZoneDatabaseHelper = bomDatabaseHelper;
         } else {
-            currentZone = Zone.MAIN;
-            currentZoneDatabaseHelper = mainDatabaseHelper;
+            currentZone = Zone.CREATIVE;
+            currentZoneDatabaseHelper = creativeDatabaseHelper;
         }
 
         updateNotesLiveData(

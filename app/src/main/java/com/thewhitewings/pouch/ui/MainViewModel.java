@@ -26,8 +26,8 @@ public class MainViewModel extends ViewModel {
     public MainViewModel(NotesRepository repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
-        this.currentZoneLiveData = new MutableLiveData<>(Zone.MAIN);
-        this.sortOption = repository.getSortOption(Zone.MAIN);
+        this.currentZoneLiveData = new MutableLiveData<>(Zone.CREATIVE);
+        this.sortOption = repository.getSortOption(Zone.CREATIVE);
         this.searchQuery = "";
     }
 
@@ -37,7 +37,7 @@ public class MainViewModel extends ViewModel {
 
     public void toggleZone() {
         currentZoneLiveData.postValue(
-                currentZoneLiveData.getValue() == Zone.MAIN ? Zone.BOX_OF_MYSTERIES : Zone.MAIN
+                currentZoneLiveData.getValue() == Zone.CREATIVE ? Zone.BOX_OF_MYSTERIES : Zone.CREATIVE
         );
 
         repository.toggleZone(currentZoneLiveData.getValue());

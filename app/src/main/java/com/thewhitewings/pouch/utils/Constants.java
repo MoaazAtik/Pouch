@@ -3,10 +3,10 @@ package com.thewhitewings.pouch.utils;
 public class Constants {
 
     // Databases
-    // Name and Version of Database of MainActivity
-    public static final int MAIN_DATABASE_VERSION = 3;
-    public static final String MAIN_DATABASE_NAME = "notes_db";
-    // Name and Version of Database of BoxOfMysteries
+    // Name and Version of Database of Creative zone
+    public static final int CREATIVE_DATABASE_VERSION = 3;
+    public static final String CREATIVE_DATABASE_NAME = "notes_db";
+    // Name and Version of Database of BoxOfMysteries zone
     public static final int BOM_DATABASE_VERSION = 1;
     public static final String BOM_DATABASE_NAME = "bom_db";
     // Common
@@ -18,6 +18,6 @@ public class Constants {
 
     // Preferences
     public static final String PREFERENCES_NAME = "userPreferences";
-    public static final String MAIN_ZONE_SORT_OPTION_PREFERENCE_KEY = "mainZoneSortOption";
+    public static final String CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY = "mainZoneSortOption";
     public static final String BOM_ZONE_SORT_OPTION_PREFERENCE_KEY = "bomZoneSortOption";
 }

@@ -14,10 +14,10 @@ public class PouchApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        DatabaseHelper mainDatabaseHelper = new DatabaseHelper(
+        DatabaseHelper creativeDatabaseHelper = new DatabaseHelper(
                 this,
-                Constants.MAIN_DATABASE_NAME,
-                Constants.MAIN_DATABASE_VERSION
+                Constants.CREATIVE_DATABASE_NAME,
+                Constants.CREATIVE_DATABASE_VERSION
         );
         DatabaseHelper bomDatabaseHelper = new DatabaseHelper(
                 this,
@@ -26,7 +26,7 @@ public class PouchApplication extends Application {
         );
         PouchPreferences pouchPreferences = new PouchPreferences(this);
 
-        notesRepository = new OfflineNotesRepository(mainDatabaseHelper, bomDatabaseHelper, pouchPreferences);
+        notesRepository = new OfflineNotesRepository(creativeDatabaseHelper, bomDatabaseHelper, pouchPreferences);
     }
 
     public NotesRepository getNotesRepository() {

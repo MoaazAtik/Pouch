@@ -1,6 +1,6 @@
 package com.thewhitewings.pouch.utils;
 
 public enum Zone {
-    MAIN,
+    CREATIVE,
     BOX_OF_MYSTERIES
 }

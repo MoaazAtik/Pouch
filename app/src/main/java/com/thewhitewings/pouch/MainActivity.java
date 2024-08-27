@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             clearFocusAndHideKeyboard(binding.svSearchNotes);
             if (zone == Zone.BOX_OF_MYSTERIES)
                 goToBoxOfMysteries();
-            else goToMainZone();
+            else goToCreativeZone();
         });
     }
 
@@ -265,7 +265,7 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void goToMainZone() {
+    private void goToCreativeZone() {
         binding.btnRevealBom.setVisibility(View.VISIBLE);
 
         modifyLogo();
