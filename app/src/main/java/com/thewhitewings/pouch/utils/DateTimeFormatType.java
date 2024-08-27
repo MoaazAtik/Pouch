@@ -1,6 +1,6 @@
 package com.thewhitewings.pouch.utils;
 
-import com.thewhitewings.pouch.NoteFragment;
+import com.thewhitewings.pouch.ui.NoteFragment;
 
 public enum DateTimeFormatType {
 

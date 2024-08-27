@@ -97,7 +97,7 @@
         android:layout_height="match_parent"
         android:elevation="7dp"
         tools:layout="@layout/fragment_note"
-        tools:name="com.thewhitewings.pouch.NoteFragment"
+        tools:name="com.thewhitewings.pouch.ui.NoteFragment"
         tools:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatButton

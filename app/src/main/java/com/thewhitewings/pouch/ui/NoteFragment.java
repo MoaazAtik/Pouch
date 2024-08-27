@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,10 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.thewhitewings.pouch.PouchApplication;
+import com.thewhitewings.pouch.R;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.databinding.FragmentNoteBinding;
-import com.thewhitewings.pouch.ui.NoteViewModel;
 
 public class NoteFragment extends Fragment {
 

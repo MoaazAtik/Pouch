@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch;
+package com.thewhitewings.pouch.ui;
 
 import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 
@@ -29,10 +29,11 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.thewhitewings.pouch.PouchApplication;
+import com.thewhitewings.pouch.R;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.databinding.ActivityMainBinding;
-import com.thewhitewings.pouch.ui.MainViewModel;
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter;
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener;
 import com.thewhitewings.pouch.utils.Constants;
