@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
-    private MainViewModel vm;
+    private MainViewModel viewModel;
     private NotesAdapter adapter;
     private LiveData<List<Note>> notesLiveData;
     private LiveData<Zone> currentZone;
@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NotesRepository repository = ((PouchApplication) getApplication()).getNotesRepository();
-        vm = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
 
-        notesLiveData = vm.notesLiveData;
-        currentZone =  vm.getCurrentZoneLiveData();
+        notesLiveData = viewModel.notesLiveData;
+        currentZone =  viewModel.getCurrentZoneLiveData();
 
         setupRecyclerView();
         setupListeners();
@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(int position) {
-                vm.deleteNote(Objects.requireNonNull(notesLiveData.getValue()).get(position));
+                viewModel.deleteNote(Objects.requireNonNull(notesLiveData.getValue()).get(position));
             }
         });
 
@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                vm.searchNotes(newText);
+                viewModel.searchNotes(newText);
                 return false;
             }
         });
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void handleOnBackPressed() {
                 if (currentZone.getValue() == Zone.BOX_OF_MYSTERIES)
-                    vm.toggleZone();
+                    viewModel.toggleZone();
                 else finish();
             }
         });
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater menuInflater = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
-            vm.handleSortOption(item.getItemId());
+            viewModel.handleSortOption(item.getItemId());
             return true;
         });
         popupMenu.show();
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
                             bomTimeoutStarted = false;
                             bomKnocks = 0;
 
-                            vm.toggleZone();
+                            viewModel.toggleZone();
                         }, 500);
                         break;
                     }
