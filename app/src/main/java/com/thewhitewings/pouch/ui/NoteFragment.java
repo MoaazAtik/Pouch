@@ -49,6 +49,12 @@ public class NoteFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        setupBackPressingBehaviour();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         if (noteLiveData.getValue() != null)
@@ -68,38 +74,12 @@ public class NoteFragment extends Fragment {
             ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(binding.etNoteBody);
         });
 
-        binding.btnBack.setOnClickListener(v -> {
-            noteViewModel.createOrUpdateNote(
-                    binding.etNoteTitle.getText().toString(),
-                    binding.etNoteBody.getText().toString()
-            );
-            closeNote();
-        });
+        binding.btnBack.setOnClickListener(v -> handleNavigationBack());
 
         binding.btnDelete.setOnClickListener(v -> {
             noteViewModel.deleteNote();
             closeNote();
         });
-    }
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
-            @Override
-            public void handleOnBackPressed() {
-                noteViewModel.createOrUpdateNote(
-                        binding.etNoteTitle.getText().toString(),
-                        binding.etNoteBody.getText().toString()
-                );
-                closeNote();
-            }
-        };
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-
-        Log.d(TAG, "LifecycleOwner: " + getViewLifecycleOwner());
-        Log.d(TAG, "LifecycleOwner state: " + getViewLifecycleOwner().getLifecycle().getCurrentState());
-        Log.d(TAG, "Activity state: " + requireActivity().getLifecycle().getCurrentState());
     }
 
     private void setupViewModelObservers() {
@@ -110,10 +90,27 @@ public class NoteFragment extends Fragment {
         });
     }
 
+    private void setupBackPressingBehaviour() {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                handleNavigationBack();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
+    }
+
+    private void handleNavigationBack() {
+        noteViewModel.createOrUpdateNote(
+                binding.etNoteTitle.getText().toString(),
+                binding.etNoteBody.getText().toString()
+        );
+        closeNote();
+    }
 
     private void closeNote() {
-        /*
         // Clear focus to prevent issues with SearchView focus in MainActivity
+        /*
         Needed for back arrow and device's back button so the focus won't be automatically passed to Sv Search note.
          */
         binding.etNoteTitle.clearFocus();
