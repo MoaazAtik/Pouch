@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -14,24 +15,30 @@ import com.thewhitewings.pouch.data.NotesRepository;
 
 public class NoteViewModel extends ViewModel {
 
+    private static final String TAG = "NoteViewModel";
     private final NotesRepository notesRepository;
-    private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>();
+    private Note oldNote;
+    private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>(); // represents state of note
 
     public NoteViewModel(NotesRepository repository) {
         this.notesRepository = repository;
     }
 
     public void initializeNote(Bundle args) {
-        if (args == null)
+        if (args == null) // creating new note
             return;
 
+        if (noteLiveData.getValue() != null) // updating existing note - after configuration change
+            return;
+
+        // updating existing note - first initialization
         int id = args.getInt(Constants.COLUMN_ID);
         String noteTitle = args.getString(Constants.COLUMN_NOTE_TITLE);
         String noteBody = args.getString(Constants.COLUMN_NOTE_BODY);
         String timestamp = args.getString(Constants.COLUMN_TIMESTAMP);
-        updateNoteLiveData(
-                new Note(id, noteTitle, noteBody, timestamp)
-        ); // else it should stay null
+
+        oldNote = new Note(id, noteTitle, noteBody, timestamp);
+        updateNoteLiveData(oldNote);
     }
 
     public void updateNoteLiveData(Note note) {
@@ -44,11 +51,9 @@ public class NoteViewModel extends ViewModel {
 
 
     public void createOrUpdateNote(String newNoteTitle, String newNoteBody) {
-        Note note = noteLiveData.getValue();
-
-        if (note == null && (!newNoteTitle.isEmpty() || !newNoteBody.isEmpty()))
+        if (oldNote == null && (!newNoteTitle.isEmpty() || !newNoteBody.isEmpty()))
             createNote(newNoteTitle, newNoteBody);
-        else if (note != null && (!note.getNoteBody().equals(newNoteBody) || !note.getNoteTitle().equals(newNoteTitle)))
+        else if (oldNote != null && (!oldNote.getNoteBody().equals(newNoteBody) || !oldNote.getNoteTitle().equals(newNoteTitle)))
             updateNote(newNoteTitle, newNoteBody);
     }
 

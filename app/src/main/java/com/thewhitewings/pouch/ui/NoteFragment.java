@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.thewhitewings.pouch.databinding.FragmentNoteBinding;
 
 public class NoteFragment extends Fragment {
 
+    private static final String TAG = "NoteFragment";
     private FragmentNoteBinding binding;
     private NoteViewModel noteViewModel;
     private LiveData<Note> noteLiveData;
@@ -44,6 +46,20 @@ public class NoteFragment extends Fragment {
 
         setupListeners();
         setupViewModelObservers();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (noteLiveData.getValue() != null)
+            noteViewModel.updateNoteLiveData(
+                    new Note(
+                            noteLiveData.getValue().getId(),
+                            binding.etNoteTitle.getText().toString(),
+                            binding.etNoteBody.getText().toString(),
+                            noteLiveData.getValue().getTimestamp()
+                    )
+            );
     }
 
     private void setupListeners() {
