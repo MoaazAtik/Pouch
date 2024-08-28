@@ -76,7 +76,16 @@ public class NoteFragment extends Fragment {
             closeNote();
         });
 
-        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), new OnBackPressedCallback(true) {
+        binding.btnDelete.setOnClickListener(v -> {
+            noteViewModel.deleteNote();
+            closeNote();
+        });
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {
                 noteViewModel.createOrUpdateNote(
@@ -85,12 +94,12 @@ public class NoteFragment extends Fragment {
                 );
                 closeNote();
             }
-        });
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
 
-        binding.btnDelete.setOnClickListener(v -> {
-            noteViewModel.deleteNote();
-            closeNote();
-        });
+        Log.d(TAG, "LifecycleOwner: " + getViewLifecycleOwner());
+        Log.d(TAG, "LifecycleOwner state: " + getViewLifecycleOwner().getLifecycle().getCurrentState());
+        Log.d(TAG, "Activity state: " + requireActivity().getLifecycle().getCurrentState());
     }
 
     private void setupViewModelObservers() {
