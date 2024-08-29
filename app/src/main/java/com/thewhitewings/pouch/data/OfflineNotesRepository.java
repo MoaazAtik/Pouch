@@ -11,14 +11,29 @@ import com.thewhitewings.pouch.utils.DateTimeFormatType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Offline Notes Repository Class
+ */
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
 
     private static final String TAG = "OfflineNotesRepository";
+
+    // database helper that interacts with the database of the creative zone
     private final DatabaseHelper creativeDatabaseHelper;
+
+    // database helper that interacts with the database of the box of mysteries zone
     private final DatabaseHelper bomDatabaseHelper;
+
+    // database helper that interacts with the current zone database
     private DatabaseHelper currentZoneDatabaseHelper;
+
+    // pouch preferences
     private final PouchPreferences pouchPreferences;
+
+    // live data of notes
     private final MutableLiveData<List<Note>> notesLiveData;
+
+    // current zone
     private Zone currentZone;
 
     public OfflineNotesRepository(DatabaseHelper creativeDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
@@ -100,10 +115,16 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         return pouchPreferences.getSortOption(zone);
     }
 
+    /**
+     * Updates the notes live data with the given list of notes.
+     *
+     * @param notes the new list of notes
+     */
     private void updateNotesLiveData(List<Note> notes) {
         notesLiveData.postValue(notes);
     }
 
+    @Override
     public void toggleZone(Zone newZone) {
         if (currentZone == Zone.CREATIVE) {
             currentZone = Zone.BOX_OF_MYSTERIES;

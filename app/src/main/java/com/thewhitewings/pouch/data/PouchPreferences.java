@@ -10,7 +10,9 @@ import android.util.Log;
 
 import com.thewhitewings.pouch.utils.Zone;
 
-
+/**
+ * A class that interacts with the SharedPreferences of the app.
+ */
 public class PouchPreferences {
 
     private static final String TAG = "PouchPreferences";
@@ -20,6 +22,12 @@ public class PouchPreferences {
         preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 
+    /**
+     * Save the Sort Option in SharedPreferences
+     *
+     * @param sortOption to be saved
+     * @param zone       current zone
+     */
     public void saveSortOption(SortOption sortOption, Zone zone) {
         String sortOptionKey =
                 zone == Zone.CREATIVE ? CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;
@@ -30,6 +38,12 @@ public class PouchPreferences {
         Log.i(TAG, "Changed sort option preference to " + sortOption.name() + " for zone " + zone.name() + ".");
     }
 
+    /**
+     * Get the Sort Option from SharedPreferences
+     *
+     * @param zone current zone
+     * @return Sort Option
+     */
     public SortOption getSortOption(Zone zone) {
         String sortOptionKey =
                 zone == Zone.CREATIVE ? CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY : BOM_ZONE_SORT_OPTION_PREFERENCE_KEY;

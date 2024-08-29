@@ -4,6 +4,12 @@ import android.util.Log;
 
 import com.thewhitewings.pouch.R;
 
+/**
+ * Sort Option Enum
+ * <p>
+ * Used to sort the notes
+ * </p>
+ */
 public enum SortOption {
     A_Z(R.id.menu_option_a_z),
     Z_A(R.id.menu_option_z_a),
@@ -12,6 +18,7 @@ public enum SortOption {
 
     private static final String TAG = "SortOption";
 
+    // The id of the corresponding item in the sorting pop-up menu
     private final int menuItemId;
 
     SortOption(int menuItemId) {
@@ -22,7 +29,12 @@ public enum SortOption {
         return menuItemId;
     }
 
-    // Static method to map menuItemId to SortOption
+    /**
+     * Get the {@link SortOption} that corresponds to the given menu item id
+     *
+     * @param menuItemId The id of the corresponding item in the sorting pop-up menu
+     * @return The {@link SortOption} that corresponds to the given menu item id
+     */
     public static SortOption fromMenuItemId(int menuItemId) {
         for (SortOption option : values()) {
             if (option.menuItemId == menuItemId) {
@@ -34,6 +46,11 @@ public enum SortOption {
         return null; // Or throw an exception if preferred
     }
 
+    /**
+     * Used by {@link DatabaseHelper} to sort the notes
+     *
+     * @return The SQL string to be used for database query
+     */
     public String toSqlString() {
         switch (this) {
             case A_Z:
