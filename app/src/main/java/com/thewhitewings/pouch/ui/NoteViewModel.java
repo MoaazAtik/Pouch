@@ -17,13 +17,23 @@ public class NoteViewModel extends ViewModel {
 
     private static final String TAG = "NoteViewModel";
     private final NotesRepository notesRepository;
+
+    // the note that is opened for updating purpose
     private Note oldNote;
-    private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>(); // represents state of note
+
+    // represents updated state of the currently opened note
+    private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>();
 
     public NoteViewModel(NotesRepository repository) {
         this.notesRepository = repository;
     }
 
+    /**
+     * Initialize the note LiveData and {@link #oldNote} with the provided arguments.
+     * It is needed for the first initialization when a note is opened for updating.
+     *
+     * @param args the arguments bundle passed from the activity containing the note data
+     */
     public void initializeNote(Bundle args) {
         if (args == null) // creating new note
             return;
@@ -41,15 +51,31 @@ public class NoteViewModel extends ViewModel {
         updateNoteLiveData(oldNote);
     }
 
+    /**
+     * Update the note LiveData with the provided note.
+     *
+     * @param note the note with updated data
+     */
     public void updateNoteLiveData(Note note) {
         noteLiveData.setValue(note);
     }
 
+    /**
+     * Get the note LiveData.
+     *
+     * @return the note LiveData
+     */
     public LiveData<Note> getNoteLiveData() {
         return noteLiveData;
     }
 
 
+    /**
+     * Create or update the note based on the provided data.
+     *
+     * @param newNoteTitle the new title of the note
+     * @param newNoteBody  the new body of the note
+     */
     public void createOrUpdateNote(String newNoteTitle, String newNoteBody) {
         if (oldNote == null && (!newNoteTitle.isEmpty() || !newNoteBody.isEmpty()))
             createNote(newNoteTitle, newNoteBody);
@@ -57,20 +83,38 @@ public class NoteViewModel extends ViewModel {
             updateNote(newNoteTitle, newNoteBody);
     }
 
-    public void createNote(String noteTitle, String noteBody) {
+    /**
+     * Create a new note with the provided title and body.
+     *
+     * @param noteTitle the title of the new note
+     * @param noteBody  the body of the new note
+     */
+    private void createNote(String noteTitle, String noteBody) {
         notesRepository.createNote(noteTitle, noteBody);
     }
 
-    public void updateNote(String noteTitle, String noteBody) {
+    /**
+     * Update the existing note with the provided title and body.
+     *
+     * @param noteTitle the new title of the note
+     * @param noteBody  the new body of the note
+     */
+    private void updateNote(String noteTitle, String noteBody) {
         notesRepository.updateNote(noteTitle, noteBody, noteLiveData.getValue());
     }
 
+    /**
+     * Delete the currently opened note.
+     */
     public void deleteNote() {
         if (noteLiveData.getValue() != null)
             notesRepository.deleteNote(noteLiveData.getValue());
     }
 
 
+    /**
+     * Factory class for creating instances of {@link NoteViewModel}.
+     */
     public static class NoteViewModelFactory implements ViewModelProvider.Factory {
         private final NotesRepository repository;
 
@@ -87,5 +131,4 @@ public class NoteViewModel extends ViewModel {
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
     }
-
 }

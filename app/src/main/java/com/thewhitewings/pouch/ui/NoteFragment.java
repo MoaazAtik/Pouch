@@ -68,6 +68,9 @@ public class NoteFragment extends Fragment {
             );
     }
 
+    /**
+     * Sets up the listeners for the UI elements.
+     */
     private void setupListeners() {
         binding.getRoot().setOnClickListener(v -> {
             ((MainActivity) requireActivity()).clearFocusAndHideKeyboard(binding.etNoteTitle);
@@ -82,6 +85,9 @@ public class NoteFragment extends Fragment {
         });
     }
 
+    /**
+     * Sets up the observers for the ViewModel's LiveData.
+     */
     private void setupViewModelObservers() {
         noteLiveData.observe(getViewLifecycleOwner(), note -> {
             binding.etNoteTitle.setText(note.getNoteTitle());
@@ -90,6 +96,17 @@ public class NoteFragment extends Fragment {
         });
     }
 
+    /**
+     * Sets up the back pressing behaviour for the fragment.
+     * <p>
+     * <strong>Note:</strong>
+     * </p>
+     * <p>
+     * It should not be called before {@link #onResume()}.
+     * Otherwise, after a configuration change, it will interfere with the {@link OnBackPressedCallback} of the activity,
+     * thus, the fragment will not be able to handle the back press.
+     * </p>
+     */
     private void setupBackPressingBehaviour() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
@@ -100,6 +117,9 @@ public class NoteFragment extends Fragment {
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
     }
 
+    /**
+     * Handles the back navigation.
+     */
     private void handleNavigationBack() {
         noteViewModel.createOrUpdateNote(
                 binding.etNoteTitle.getText().toString(),
@@ -108,6 +128,9 @@ public class NoteFragment extends Fragment {
         closeNote();
     }
 
+    /**
+     * Close the note.
+     */
     private void closeNote() {
         // Clear focus to prevent issues with SearchView focus in MainActivity
         /*

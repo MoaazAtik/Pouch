@@ -31,10 +31,18 @@ public class MainViewModel extends ViewModel {
         this.searchQuery = "";
     }
 
+    /**
+     * Get the current zone live data.
+     *
+     * @return the current zone live data
+     */
     public LiveData<Zone> getCurrentZoneLiveData() {
         return currentZoneLiveData;
     }
 
+    /**
+     * Toggle the current zone.
+     */
     public void toggleZone() {
         currentZoneLiveData.postValue(
                 currentZoneLiveData.getValue() == Zone.CREATIVE ? Zone.BOX_OF_MYSTERIES : Zone.CREATIVE
@@ -44,22 +52,42 @@ public class MainViewModel extends ViewModel {
     }
 
 
-    public void handleSortOption(int menuItemId) {
+    /**
+     * Handle the selection of a sort option from the popup menu.
+     *
+     * @param menuItemId the id of the selected popup menu item
+     */
+    public void handleSortOptionSelection(int menuItemId) {
         SortOption selectedOption = SortOption.fromMenuItemId(menuItemId);
         if (selectedOption != null) {
             sortNotes(selectedOption);
         }
     }
 
+    /**
+     * Delete a note.
+     *
+     * @param note the note to be deleted
+     */
     public void deleteNote(Note note) {
         repository.deleteNote(note);
     }
 
+    /**
+     * Search notes based on the given query and the current sort option.
+     *
+     * @param query the search query that represents a part of a note's title and/or body
+     */
     public void searchNotes(String query) {
         searchQuery = query;
         repository.searchNotes(query, sortOption);
     }
 
+    /**
+     * Sort notes based on the given sort option.
+     *
+     * @param sortOption the sort option to be used for sorting the notes
+     */
     public void sortNotes(SortOption sortOption) {
         this.sortOption = sortOption;
         repository.saveSortOption(sortOption, currentZoneLiveData.getValue());
@@ -68,6 +96,9 @@ public class MainViewModel extends ViewModel {
     }
 
 
+    /**
+     * Factory class for creating instances of {@link MainViewModel}.
+     */
     public static class MainViewModelFactory implements ViewModelProvider.Factory {
         private final NotesRepository repository;
 

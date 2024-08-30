@@ -21,7 +21,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -55,7 +54,10 @@ public class MainActivity extends AppCompatActivity {
     private LiveData<List<Note>> notesLiveData;
     private LiveData<Zone> currentZone;
 
+    // Count of how many times the Box of mysteries reveal button has been pressed (knocked)
     private int bomKnocks = 0;
+
+    // Boolean of whether the timeout for revealing the Box of mysteries has started
     private boolean bomTimeoutStarted = false;
 
     @Override
@@ -68,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
 
         notesLiveData = viewModel.notesLiveData;
-        currentZone =  viewModel.getCurrentZoneLiveData();
+        currentZone = viewModel.getCurrentZoneLiveData();
 
         setupRecyclerView();
         setupListeners();
@@ -78,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
         showBtnRevealBom();
     }
 
+    /**
+     * Sets up the RecyclerView for displaying notes.
+     */
     private void setupRecyclerView() {
         adapter = new NotesAdapter();
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
@@ -103,6 +108,9 @@ public class MainActivity extends AppCompatActivity {
         binding.recyclerView.addOnItemTouchListener(recyclerTouchListener);
     }
 
+    /**
+     * Sets up listeners for the UI elements.
+     */
     private void setupListeners() {
         binding.btnCreateNote.setOnClickListener(v -> openNote(null));
 
@@ -126,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
         binding.btnRevealBom.setOnClickListener(v -> revealBoxOfMysteries());
     }
 
+    /**
+     * Sets up observers for the ViewModel's LiveData.
+     */
     private void setupViewModelObservers() {
         notesLiveData.observe(this, notes -> {
             adapter.setNotes(notes);
@@ -141,6 +152,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Sets up the back pressing behaviour for the activity.
+     */
     private void setupBackPressingBehaviour() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
             @Override
@@ -152,6 +166,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Opens a note in the fragment container.
+     *
+     * @param note the note to be opened, or {@code null} if a new note should be created
+     */
     private void openNote(final Note note) {
         clearFocusAndHideKeyboard(binding.svSearchNotes);
 
@@ -177,23 +196,34 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    /**
+     * Clears the focus from the given view and hides the soft keyboard.
+     *
+     * @param view the view to clear focus from
+     */
     void clearFocusAndHideKeyboard(View view) {
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         view.clearFocus();
     }
 
+    /**
+     * Shows and sets up the sorting popup menu to sort the notes in the RecyclerView.
+     */
     private void showSortingPopupMenu() {
         PopupMenu popupMenu = new PopupMenu(this, binding.btnSort);
         MenuInflater menuInflater = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
-            viewModel.handleSortOption(item.getItemId());
+            viewModel.handleSortOptionSelection(item.getItemId());
             return true;
         });
         popupMenu.show();
     }
 
+    /**
+     * Toggles the visibility of the zone name text view.
+     */
     private void toggleZoneNameVisibility() {
         if (!Objects.requireNonNull(notesLiveData.getValue()).isEmpty())
             binding.txtZoneName.setVisibility(View.GONE);
@@ -201,10 +231,16 @@ public class MainActivity extends AppCompatActivity {
             binding.txtZoneName.setVisibility(View.VISIBLE);
     }
 
+    /**
+     * Makes the reveal Box of mysteries button interactable.
+     */
     private void showBtnRevealBom() {
         new Handler().postDelayed(() -> binding.btnRevealBom.setVisibility(View.VISIBLE), 1500);
     }
 
+    /**
+     * Handles the logic for revealing the Box of mysteries.
+     */
     private void revealBoxOfMysteries() {
         bomKnocks++;
         Handler handler = new Handler(Looper.getMainLooper());
@@ -245,6 +281,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Makes the needed changes to the UI for navigating to the Box of mysteries zone.
+     */
     private void goToBoxOfMysteries() {
         binding.btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
         binding.btnRevealBom.setVisibility(View.GONE);
@@ -268,6 +307,9 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    /**
+     * Makes the needed changes to the UI for navigating to the Creative zone.
+     */
     private void goToCreativeZone() {
         binding.btnRevealBom.setVisibility(View.VISIBLE);
 
@@ -279,6 +321,9 @@ public class MainActivity extends AppCompatActivity {
         binding.lvRevealScreen.playAnimation();
     }
 
+    /**
+     * Modifies the logo image view for navigating to a different zone.
+     */
     private void modifyLogo() {
         int initialColor;
         int finalColor;
@@ -289,8 +334,7 @@ public class MainActivity extends AppCompatActivity {
         if (currentZone.getValue() == Zone.BOX_OF_MYSTERIES) {
             initialColor = getResources().getColor(R.color.md_theme_light_primaryContainer, null);
             finalColor = getResources().getColor(R.color.gray_logo_bom, null);
-        }
-        else {
+        } else {
             initialColor = getResources().getColor(R.color.gray_logo_bom, null);
             finalColor = getResources().getColor(R.color.md_theme_light_primaryContainer, null);
         }
@@ -304,6 +348,9 @@ public class MainActivity extends AppCompatActivity {
         tintAnimator.start();
     }
 
+    /**
+     * Modifies the zone name text view for navigating to a different zone.
+     */
     private void modifyZoneName() {
         TextView txtZoneName = binding.txtZoneName;
         String zoneName;
@@ -323,8 +370,7 @@ public class MainActivity extends AppCompatActivity {
             finalTextSize = 32f;
             initialColor = getResources().getColor(R.color.md_theme_light_inversePrimary, null);
             finalColor = Color.BLACK;
-        }
-        else {
+        } else {
             zoneName = getString(R.string.creative_zone);
             typeface = Typeface.create("sans-serif-light", Typeface.NORMAL);
             initialTextSize = 32f;
