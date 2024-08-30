@@ -8,6 +8,10 @@ import com.thewhitewings.pouch.data.Note;
 
 import java.util.List;
 
+/**
+ * Callback class for calculating the diff between two lists of Note objects.
+ * It is used to efficiently update the RecyclerView items when the data changes.
+ */
 public class NotesDiffCallback extends DiffUtil.Callback {
 
     private static final String TAG = "NotesDiffCallback";

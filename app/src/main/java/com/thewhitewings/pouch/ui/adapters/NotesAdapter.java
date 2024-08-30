@@ -16,13 +16,22 @@ import com.thewhitewings.pouch.utils.DateTimeFormatType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Adapter class for Notes RecyclerView
+ */
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder> {
 
     private static final String TAG = "NotesAdapter";
     private final List<Note> notesList = new ArrayList<>();
 
-    public NotesAdapter() {}
+    public NotesAdapter() {
+    }
 
+    /**
+     * Sets the notes list and updates the adapter with the new list of notes using DiffUtil
+     *
+     * @param newNotesList the new list of notes
+     */
     public void setNotes(List<Note> newNotesList) {
         DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new NotesDiffCallback(notesList, newNotesList));
         notesList.clear();
@@ -48,6 +57,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         return (notesList != null) ? notesList.size() : 0;
     }
 
+    /**
+     * ViewHolder class for Notes RecyclerView
+     */
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final NoteRvItemBinding binding;
@@ -57,6 +69,11 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
             this.binding = binding;
         }
 
+        /**
+         * Binds the note data to the view holder
+         *
+         * @param note the note to bind
+         */
         public void bind(Note note) {
             binding.txtNoteTitleRv.setText(note.getNoteTitle());
             binding.txtNoteBodyRv.setText(note.getNoteBody());

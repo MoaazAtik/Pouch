@@ -15,9 +15,9 @@ import com.thewhitewings.pouch.utils.DateTimeFormatType;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Database Helper Class
- */
+///**
+// * Database Helper Class
+// */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
@@ -49,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * {@inheritDoc}
      * </p>
      * <p>
-     * <em>Note:</em> Create data Table on app's First Run, or after Clearing Storage related to the app, or when onCreate is called Explicitly by upgradeOrDowngrade()
+     * <strong>Note:</strong> Create data Table on app's First Run, or after Clearing Storage related to the app, or when onCreate is called Explicitly by upgradeOrDowngrade()
      * </p>
      *
      * @param db The database.
@@ -310,10 +310,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * <p>
      * It doesn't transfer data of columns that no longer exist in New table.
      * </p>
+     * <strong>Notes:</strong>
      * <ul>
-     * <em>Notes:</em>
-     * <li>When upgrading or downgrading the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.</li>
-     * <li>When renaming columns, modify the column mappings by calling {@link #setAndGetColumnMappings()}.</li>
+     *     <li>When upgrading or downgrading the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.</li>
+     *     <li>When renaming columns, modify the column mappings by calling {@link #setAndGetColumnMappings()}.</li>
      * </ul>
      *
      * @param db to be upgraded or downgraded
