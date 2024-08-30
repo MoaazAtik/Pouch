@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.utils;
 
 import static com.thewhitewings.pouch.utils.DateTimeFormatType.*;
+
 import android.util.Log;
 
 import java.text.ParseException;
@@ -18,11 +19,13 @@ public class DateTimeUtils {
      * yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19
      */
     public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
     /**
      * Medium length format for date and time.
      * "MMM d, yyyy" = Feb 4, 2024
      */
     public static final String MEDIUM_LENGTH_FORMAT = "MMM d, yyyy";
+
     /**
      * Short length format for date and time.
      * "MMM d" = Feb 4
@@ -31,11 +34,15 @@ public class DateTimeUtils {
 
 
     /**
-     * Get formatted date and time based on the format type. The Basic format is {@link #DEFAULT_FORMAT} <p>
-     * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
+     * Get formatted date and time based on the provided {@link DateTimeFormatType}.
+     * <p>
+     * The Default format is {@link #DEFAULT_FORMAT}.
+     * </p>
+     * <strong>Note:</strong>
+     * Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
      *
      * @param formatType {@link DateTimeFormatType} type of formatting to apply.
-     * @param dateTime Optional. Date/time string to format.
+     * @param dateTime   Optional. Date/time string to format.
      * @return Formatted date/time string.
      */
     public static String getFormattedDateTime(DateTimeFormatType formatType, String dateTime) {
@@ -78,7 +85,7 @@ public class DateTimeUtils {
                     formattedDateTime = sdFormat.format(date);
                     return formattedDateTime;
                 } catch (ParseException e) {
-                    Log.e(TAG, "Error parsing date " +  LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT, e);
+                    Log.e(TAG, "Error parsing date " + LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT, e);
                     return "Error " + dateTime;
                 }
 
@@ -89,7 +96,7 @@ public class DateTimeUtils {
                     formattedDateTime = sdFormat.format(date);
                     return formattedDateTime;
                 } catch (ParseException e) {
-                    Log.e(TAG, "Error parsing date " +  LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT, e);
+                    Log.e(TAG, "Error parsing date " + LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT, e);
                     return "Error " + dateTime;
                 }
 
