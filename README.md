@@ -90,13 +90,16 @@ Click the image below to watch the full app demo on YouTube ⬇️
 <br>
 
 ## Main Files 📁
- - [BoxOfMysteriesActivity.java](app/src/main/java/com/thewhitewings/pouch/BoxOfMysteriesActivity.java)
- - [BoxOfMysteriesVM.java](app/src/main/java/com/thewhitewings/pouch/BoxOfMysteriesVM.java)
- - [activity_box_of_mysteries.xml](app/src/main/res/layout/activity_box_of_mysteries.xml)<br><br>
- - [MainActivity.java](app/src/main/java/com/thewhitewings/pouch/MainActivity.java)
- - [MainActivityVM.java](app/src/main/java/com/thewhitewings/pouch/MainActivityVM.java)
+ - [MainActivity.java](app/src/main/java/com/thewhitewings/pouch/ui/MainActivity.java)
+ - [MainViewModel.java](app/src/main/java/com/thewhitewings/pouch/ui/MainViewModel.java)
  - [activity_main.xml](app/src/main/res/layout/activity_main.xml)<br><br>
- - [DatabaseHelper.java](app/src/main/java/com/thewhitewings/pouch/DatabaseHelper.java)
+ - [NoteFragment.java](app/src/main/java/com/thewhitewings/pouch/ui/NoteFragment.java)
+ - [NoteViewModel.java](app/src/main/java/com/thewhitewings/pouch/ui/NoteViewModel.java)
+ - [fragment_note.xml](app/src/main/res/layout/fragment_note.xml)<br><br>
+ - [OfflineNotesRepository.java](app/src/main/java/com/thewhitewings/pouch/data/OfflineNotesRepository.java)
+ - [DatabaseHelper.java](app/src/main/java/com/thewhitewings/pouch/data/DatabaseHelper.java)
+ - [PouchApplication.java](app/src/main/java/com/thewhitewings/pouch/PouchApplication.java)<br><br>
+ - [DateTimeUtils.java](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.java)
 
 <br></br>
 Carry your World of Creative Ideas and Valuable Notes in your Magical **Pouch** 🪄
