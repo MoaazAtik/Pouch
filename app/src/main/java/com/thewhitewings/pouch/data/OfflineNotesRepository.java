@@ -1,32 +1,51 @@
 package com.thewhitewings.pouch.data;
 
+import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.Zone;
+import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Offline Notes Repository Class
+ */
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
 
-    private final DatabaseHelper mainDatabaseHelper;
-    private final DatabaseHelper bomDatabaseHelper;
-    private DatabaseHelper currentZoneDatabaseHelper;
-    private final PouchPreferences pouchPreferences;
-    private final MutableLiveData<List<Note>> notesLiveData;
-    private Constants.Zone currentZone;
+    private static final String TAG = "OfflineNotesRepository";
 
-    public OfflineNotesRepository(DatabaseHelper mainDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
-        this.mainDatabaseHelper = mainDatabaseHelper;
+    // database helper that interacts with the database of the creative zone
+    private final DatabaseHelper creativeDatabaseHelper;
+
+    // database helper that interacts with the database of the box of mysteries zone
+    private final DatabaseHelper bomDatabaseHelper;
+
+    // database helper that interacts with the current zone database
+    private DatabaseHelper currentZoneDatabaseHelper;
+
+    // pouch preferences
+    private final PouchPreferences pouchPreferences;
+
+    // live data of notes
+    private final MutableLiveData<List<Note>> notesLiveData;
+
+    // current zone
+    private Zone currentZone;
+
+    public OfflineNotesRepository(DatabaseHelper creativeDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
+        this.creativeDatabaseHelper = creativeDatabaseHelper;
         this.bomDatabaseHelper = bomDatabaseHelper;
-        currentZoneDatabaseHelper = mainDatabaseHelper;
+        currentZoneDatabaseHelper = creativeDatabaseHelper;
         this.pouchPreferences = pouchPreferences;
 
-        mainDatabaseHelper.setDatabaseChangeListener(this);
+        creativeDatabaseHelper.setDatabaseChangeListener(this);
         bomDatabaseHelper.setDatabaseChangeListener(this);
 
-        currentZone = Constants.Zone.MAIN;
+        currentZone = Zone.CREATIVE;
         notesLiveData = new MutableLiveData<>(new ArrayList<>());
         updateNotesLiveData(
                 currentZoneDatabaseHelper.getAllNotes(
@@ -46,12 +65,12 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void updateNote(String newNoteTitle, String noteBody, Note oldNote) {
+    public void updateNote(String newNoteTitle, String newNoteBody, Note oldNote) {
         Note updatedNote = new Note();
         updatedNote.setId(oldNote.getId());
         updatedNote.setNoteTitle(newNoteTitle);
-        updatedNote.setNoteBody(noteBody);
-        updatedNote.setTimestamp(currentZoneDatabaseHelper.getFormattedDateTime(Constants.CURRENT_LOCAL, null));
+        updatedNote.setNoteBody(newNoteBody);
+        updatedNote.setTimestamp(getFormattedDateTime(DateTimeFormatType.CURRENT_LOCAL, null));
 
         currentZoneDatabaseHelper.updateNote(updatedNote);
     }
@@ -69,9 +88,11 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void sortNotes(SortOption sortOption) {
+    public void sortNotes(SortOption sortOption, String searchQuery) {
         updateNotesLiveData(
-                currentZoneDatabaseHelper.sortNotes(sortOption)
+                searchQuery.isEmpty() ?
+                        currentZoneDatabaseHelper.getAllNotes(sortOption) :
+                        currentZoneDatabaseHelper.searchNotes(searchQuery, sortOption)
         );
     }
 
@@ -85,26 +106,32 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void saveSortOption(SortOption sortOption, Constants.Zone zone) {
+    public void saveSortOption(SortOption sortOption, Zone zone) {
         pouchPreferences.saveSortOption(sortOption, zone);
     }
 
     @Override
-    public SortOption getSortOption(Constants.Zone zone) {
+    public SortOption getSortOption(Zone zone) {
         return pouchPreferences.getSortOption(zone);
     }
 
+    /**
+     * Updates the notes live data with the given list of notes.
+     *
+     * @param notes the new list of notes
+     */
     private void updateNotesLiveData(List<Note> notes) {
         notesLiveData.postValue(notes);
     }
 
-    public void toggleZone(Constants.Zone newZone) {
-        if (currentZone == Constants.Zone.MAIN) {
-            currentZone = Constants.Zone.BOX_OF_MYSTERIES;
+    @Override
+    public void toggleZone(Zone newZone) {
+        if (currentZone == Zone.CREATIVE) {
+            currentZone = Zone.BOX_OF_MYSTERIES;
             currentZoneDatabaseHelper = bomDatabaseHelper;
         } else {
-            currentZone = Constants.Zone.MAIN;
-            currentZoneDatabaseHelper = mainDatabaseHelper;
+            currentZone = Zone.CREATIVE;
+            currentZoneDatabaseHelper = creativeDatabaseHelper;
         }
 
         updateNotesLiveData(

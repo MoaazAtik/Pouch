@@ -12,13 +12,13 @@
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_margin="30dp"
-        android:background="@drawable/search_box"
+        android:background="@drawable/bg_search_box"
         android:fontFamily="@font/mulish_regular"
         android:iconifiedByDefault="false"
         android:inputType="textCapSentences|textMultiLine"
         android:queryBackground="@android:color/transparent"
         android:queryHint="Search notes"
-        android:searchIcon="@drawable/search_icon"
+        android:searchIcon="@drawable/magnifier"
         app:layout_constraintEnd_toStartOf="@id/btn_sort"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="@id/sv_search_notes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/sv_search_notes"
-        app:srcCompat="@drawable/ic_sort"
+        app:srcCompat="@drawable/sort"
         app:tint="?attr/colorPrimaryInverse" />
 
     <ImageView
@@ -45,7 +45,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/logo_the_white_wings" />
 
     <FrameLayout
         android:id="@+id/frame_rv"
@@ -89,7 +89,7 @@
         android:contentDescription="@string/add_new_note"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/btn_add_note" />
+        app:srcCompat="@drawable/plus" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container_note"
@@ -97,7 +97,7 @@
         android:layout_height="match_parent"
         android:elevation="7dp"
         tools:layout="@layout/fragment_note"
-        tools:name="com.thewhitewings.pouch.NoteFragment"
+        tools:name="com.thewhitewings.pouch.ui.NoteFragment"
         tools:visibility="gone" />
 
     <androidx.appcompat.widget.AppCompatButton

@@ -1,22 +1,23 @@
 package com.thewhitewings.pouch.data;
 
+import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-import android.util.Log;
 
-import com.thewhitewings.pouch.Constants;
+import com.thewhitewings.pouch.utils.Constants;
+import com.thewhitewings.pouch.utils.DateTimeFormatType;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
+///**
+// * Database Helper Class
+// */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
@@ -26,19 +27,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Constructor of DatabaseHelper
      *
      * @param context         of App or Activity
-     * @param databaseName    {@link Constants#MAIN_DATABASE_NAME} for the default database of Main Activity or {@link Constants#BOM_DATABASE_NAME} for the Box of Mysteries database
-     * @param databaseVersion {@link Constants#MAIN_DATABASE_VERSION} for the default database of Main Activity or {@link Constants#BOM_DATABASE_VERSION} for the Box of Mysteries database
+     * @param databaseName    {@link Constants#CREATIVE_DATABASE_NAME} for database of the creative zone or {@link Constants#BOM_DATABASE_NAME} for database of Box of Mysteries zone
+     * @param databaseVersion {@link Constants#CREATIVE_DATABASE_VERSION} for database of the creative zone or {@link Constants#BOM_DATABASE_VERSION} for database of Box of Mysteries zone
      */
     public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
         super(context, databaseName, null, databaseVersion);
     }
 
+    /**
+     * Set the listener to be notified when the database changes.
+     *
+     * @param listener the listener to be set
+     */
     public void setDatabaseChangeListener(DatabaseChangeListener listener) {
         this.databaseChangeListener = listener;
     }
 
-    /*
-    create data Table on app's First Run, or after Clearing Storage related to the app, or when onCreate is called Explicitly by upgradeOrDowngrade()
+    /**
+     * Create Database Table.
+     * <p>
+     * {@inheritDoc}
+     * </p>
+     * <p>
+     * <strong>Note:</strong> Create data Table on app's First Run, or after Clearing Storage related to the app, or when onCreate is called Explicitly by upgradeOrDowngrade()
+     * </p>
+     *
+     * @param db The database.
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -65,7 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
-     * Insert new note to Database
+     * Create a new Note in Database
      *
      * @param noteTitle of the new note
      * @param noteBody  of the new note
@@ -115,7 +129,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     cursor.getInt(i1),
                     cursor.getString(i2),
                     cursor.getString(i3),
-                    getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4))
+                    getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4))
             );
         }
 
@@ -125,7 +139,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get all Notes from Database
+     * Get all Notes from Database organized by timestamp in descending order.
      *
      * @return all Notes in Database
      */
@@ -154,7 +168,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 allNotes.add(note);
             } while (cursor.moveToNext());
@@ -163,11 +177,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return allNotes;
     }
 
+    /**
+     * Get all Notes from Database organized by given {@link SortOption}.
+     *
+     * @param sortOption to be used for sorting
+     * @return all Notes in Database
+     */
     public List<Note> getAllNotes(SortOption sortOption) {
         List<Note> allNotes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String orderBy = sortOption.toSqlString();
 
         Cursor cursor = db.query(
                 Constants.TABLE_NAME,
@@ -176,7 +194,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                orderBy);
+                sortOption.toSqlString());
 
         if (cursor.moveToFirst()) {
             do {
@@ -188,7 +206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 allNotes.add(note);
             } while (cursor.moveToNext());
@@ -208,13 +226,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
         values.put(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
         // Convert timestamp to UTC for Storing in Database
-        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(Constants.LOCAL_TO_UTC, note.getTimestamp()));
+        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(DateTimeFormatType.LOCAL_TO_UTC, note.getTimestamp()));
+
 
         db.update(
-            Constants.TABLE_NAME,
-            values,
-            Constants.COLUMN_ID + " = ? ",
-            new String[]{String.valueOf(note.getId())}
+                Constants.TABLE_NAME,
+                values,
+                Constants.COLUMN_ID + " = ? ",
+                new String[]{String.valueOf(note.getId())}
         );
         db.close();
 
@@ -242,6 +261,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             databaseChangeListener.onDatabaseChanged();
     }
 
+    /**
+     * Search Notes by Note title or body
+     *
+     * @param searchQuery Note title and/or body
+     * @param sortOption  to be used for sorting the results
+     * @return List of Notes that match the search query
+     */
     public List<Note> searchNotes(String searchQuery, SortOption sortOption) {
         List<Note> filteredNotes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -269,7 +295,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 note.setId(cursor.getInt(i1));
                 note.setNoteTitle(cursor.getString(i2));
                 note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
+                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
 
                 filteredNotes.add(note);
             } while (cursor.moveToNext());
@@ -278,102 +304,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return filteredNotes;
     }
 
-    public List<Note> sortNotes(SortOption sortOption) {
-        List<Note> sortedNotes = new ArrayList<>();
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                Constants.TABLE_NAME,
-                null,  // Columns (null means all columns)
-                null,  // No selection criteria
-                null,  // No selection args
-                null,  // No group by
-                null,  // No having
-                sortOption.toSqlString()  // Sorting
-        );
-
-        if (cursor.moveToFirst()) {
-            do {
-                Note note = new Note();
-                int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
-                int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
-                int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
-                int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
-                note.setId(cursor.getInt(i1));
-                note.setNoteTitle(cursor.getString(i2));
-                note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(Constants.UTC_TO_LOCAL, cursor.getString(i4)));
-
-                sortedNotes.add(note);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return sortedNotes;
-    }
-
-
-    /**
-     * Get Formatted date and time. The Basic format is yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19 <p>
-     * Note: Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
-     *
-     * @param usage    {@link Constants#UTC_TO_LOCAL}: Date and time from UTC to Local Time Zone for Retrieving,
-     *                 {@link Constants#LOCAL_TO_UTC}: Date and time from Local Time Zone to UTC for Storing in Database,
-     *                 {@link Constants#CURRENT_LOCAL}: Current date and time in Local Time Zone for Storing in Notes List.
-     *                 {@link Constants#FORMATTING_LOCAL}: Formatted Date in Local Time Zone for Retrieving in Note Fragment. "MMM d, yyyy" = Feb 4, 2024
-     * @param dateTime (Optional) Provide date and/or time to format.
-     * @return Formatted date or time.
-     */
-    public static String getFormattedDateTime(int usage, String dateTime) {
-
-        SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date date;
-
-        switch (usage) {
-            case Constants.UTC_TO_LOCAL:
-                try {
-                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    date = sdFormat.parse(dateTime);
-                    sdFormat.setTimeZone(TimeZone.getDefault());
-                    return sdFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: catch e case UTC_TO_LOCAL ", e);
-                    return "e " + dateTime;
-                }
-            case Constants.LOCAL_TO_UTC:
-                try {
-                    date = sdFormat.parse(dateTime);
-                    sdFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
-                    return sdFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case LOCAL_TO_UTC ", e);
-                    return "e " + dateTime;
-                }
-            case Constants.CURRENT_LOCAL:
-                date = new Date();
-                return sdFormat.format(date);
-            case Constants.FORMATTING_LOCAL:
-                try {
-                    date = sdFormat.parse(dateTime);
-                    sdFormat.applyPattern("MMM d, yyyy");
-                    return sdFormat.format(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                    Log.e(TAG, "getFormattedDateTime: case FORMATTING_LOCAL ", e);
-                    return "e " + dateTime;
-                }
-        }
-        return null;
-    }
-
 
     /**
      * Transfer data from Old table to New Table for the Common columns and Renamed columns.
-     * It doesn't transfer data of columns that no longer exist in New table.
      * <p>
-     * Note: 1. When upgrading or downgrading the database, modify {@link Constants#MAIN_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.<P>
-     * 2. When renaming columns, modify {@link #setAndGetColumnMappings()}.
+     * It doesn't transfer data of columns that no longer exist in New table.
+     * </p>
+     * <strong>Notes:</strong>
+     * <ul>
+     *     <li>When upgrading or downgrading the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.</li>
+     *     <li>When renaming columns, modify the column mappings by calling {@link #setAndGetColumnMappings()}.</li>
+     * </ul>
      *
      * @param db to be upgraded or downgraded
      */
@@ -432,11 +373,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get Names of Columns of a Table
+     * Get the names of columns in a table.
      *
      * @param db        database where Table is stored
      * @param tableName to get its columns
-     * @return list of columns names
+     * @return list of column names
      */
     private List<String> getTableColumns(SQLiteDatabase db, String tableName) {
         List<String> columns = new ArrayList<>();
@@ -457,8 +398,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Set and Get column mappings. It is used for Renaming Columns.
-     * I need to populate this list with new column mappings.
+     * Set and Get column mappings.
+     * To Rename a table's Columns, you need to create a new Column Mapping and populate this list with the new column mappings.
      *
      * @return list of Column Mappings which have Old and New names of Renamed Columns.
      */
@@ -470,11 +411,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // A class to hold column mapping information to be used when Renaming Columns
+    /**
+     * A class to hold column mapping information to be used when Renaming Columns
+     */
     private class ColumnMapping {
         public String oldColumnName;
         public String newColumnName;
 
+        /**
+         * Constructor of ColumnMapping
+         *
+         * @param oldColumnName the old name of the column
+         * @param newColumnName the new name of the column
+         */
         public ColumnMapping(String oldColumnName, String newColumnName) {
             this.oldColumnName = oldColumnName;
             this.newColumnName = newColumnName;

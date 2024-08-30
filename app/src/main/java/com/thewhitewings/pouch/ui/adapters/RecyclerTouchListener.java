@@ -11,8 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * This class is used by the Recycle View to handle item interactions.
- * It includes: 1. Callback of ItemTouchHelper to handle item Swipes. <p>
- * 2. OnItemTouchListener with GestureDetector to handle item Clicks.
+ * It listens to item interactions and notifies the caller of the touch event.
+ * <p>
+ * It includes:
+ * </p>
+ * <ul>
+ *     <li>1. Callback of ItemTouchHelper to handle item Swipes.</li>
+ *     <li>2. OnItemTouchListener with GestureDetector to handle item Clicks.</li>
+ * </ul>
  */
 public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implements RecyclerView.OnItemTouchListener {
 
@@ -29,9 +35,10 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
                 context,
                 new GestureDetector.SimpleOnGestureListener() {
                     @Override
-                    public boolean onSingleTapUp(MotionEvent e) {
+                    public boolean onSingleTapUp(@NonNull MotionEvent e) {
                         View childView = recyclerView.findChildViewUnder(e.getX(), e.getY());
                         if (childView != null)
+                            // Notify the touch listener of the click event
                             touchListener.onClick(recyclerView.getChildAdapterPosition(childView));
                         return true;
                     }
@@ -40,13 +47,14 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
     }
 
     @Override
-    public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
+        // Pass the motion event to the gesture detector to handle clicks
         gestureDetector.onTouchEvent(e);
         return false;
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    public void onTouchEvent(@NonNull RecyclerView rv, @NonNull MotionEvent e) {
     }
 
     @Override
@@ -60,13 +68,29 @@ public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implem
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        // Notify the touch listener of the swipe event
         touchListener.onSwiped(viewHolder.getAdapterPosition());
     }
 
 
+    /**
+     * This interface is used to notify the caller of the touch event, i.e., the activity,
+     * to handle Click and Swipe events of the Recycle View items.
+     */
     public interface TouchListener {
+
+        /**
+         * Called when an item is clicked.
+         *
+         * @param position of the item that was clicked
+         */
         void onClick(int position);
 
+        /**
+         * Called when an item is swiped.
+         *
+         * @param position of the item that was swiped
+         */
         void onSwiped(int position);
     }
 

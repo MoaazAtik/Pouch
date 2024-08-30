@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.data;
 
 import androidx.annotation.NonNull;
+
 import java.util.Objects;
 
 public class Note {
@@ -38,6 +39,12 @@ public class Note {
                 '}';
     }
 
+    /**
+     * Checks if two notes are equal based on their content.
+     *
+     * @param note The note to compare with.
+     * @return True if the notes are equal, false otherwise.
+     */
     public boolean equalContent(@NonNull Note note) {
         return id == note.id &&
                 Objects.equals(noteTitle, note.noteTitle) &&
