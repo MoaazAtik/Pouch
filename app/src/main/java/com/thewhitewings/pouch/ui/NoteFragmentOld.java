@@ -1,7 +1,6 @@
 package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.databinding.FragmentNoteBinding;
 
-public class NoteFragment extends Fragment {
+public class NoteFragmentOld extends Fragment {
 
     private static final String TAG = "NoteFragment";
     private FragmentNoteBinding binding;
