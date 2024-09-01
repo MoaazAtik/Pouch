@@ -13,9 +13,9 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,7 +37,7 @@ import java.util.concurrent.Executors
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private lateinit var viewModel: MainViewModel
+    private val viewModel by viewModels<MainViewModel> { MainViewModel.Factory }
     private val adapter: NotesAdapter = NotesAdapter()
     private lateinit var notesLiveData: LiveData<List<Note>>
     private lateinit var currentZone: LiveData<Zone>
@@ -52,8 +52,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        viewModel = ViewModelProvider(this, MainViewModel.Factory)[MainViewModel::class.java]
 
         notesLiveData = viewModel.notesLiveData
         currentZone = viewModel.getCurrentZoneLiveData()
