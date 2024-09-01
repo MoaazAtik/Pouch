@@ -67,7 +67,7 @@ public class MainActivityOld extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NotesRepository repository = ((PouchApplication) getApplication()).getNotesRepository();
-        viewModel = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(this, new MainViewModelOld.MainViewModelFactory(repository)).get(MainViewModel.class);
 
         notesLiveData = viewModel.notesLiveData;
         currentZone = viewModel.getCurrentZoneLiveData();

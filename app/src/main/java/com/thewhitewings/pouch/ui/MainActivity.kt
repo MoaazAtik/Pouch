@@ -22,11 +22,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
-import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.databinding.ActivityMainBinding
-import com.thewhitewings.pouch.ui.MainViewModel.MainViewModelFactory
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener.TouchListener
@@ -55,11 +53,10 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val repository = (application as PouchApplication).notesRepository
-        viewModel = ViewModelProvider(this, MainViewModelFactory(repository))[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, MainViewModel.Factory)[MainViewModel::class.java]
 
         notesLiveData = viewModel.notesLiveData
-        currentZone = viewModel.currentZoneLiveData
+        currentZone = viewModel.getCurrentZoneLiveData()
 
         setupRecyclerView()
         setupListeners()

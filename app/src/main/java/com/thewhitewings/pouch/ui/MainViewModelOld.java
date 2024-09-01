@@ -6,15 +6,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thewhitewings.pouch.utils.Zone;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.data.SortOption;
+import com.thewhitewings.pouch.utils.Zone;
 
 import java.util.List;
 
 
-public class MainViewModel extends ViewModel {
+public class MainViewModelOld extends ViewModel {
 
     private static final String TAG = "MainViewModel";
     private final NotesRepository repository;
@@ -23,7 +23,7 @@ public class MainViewModel extends ViewModel {
     private SortOption sortOption;
     private String searchQuery;
 
-    public MainViewModel(NotesRepository repository) {
+    public MainViewModelOld(NotesRepository repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
         this.currentZoneLiveData = new MutableLiveData<>(Zone.CREATIVE);
@@ -97,7 +97,7 @@ public class MainViewModel extends ViewModel {
 
 
     /**
-     * Factory class for creating instances of {@link MainViewModel}.
+     * Factory class for creating instances of {@link MainViewModelOld}.
      */
     public static class MainViewModelFactory implements ViewModelProvider.Factory {
         private final NotesRepository repository;
@@ -109,8 +109,8 @@ public class MainViewModel extends ViewModel {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(MainViewModel.class)) {
-                return (T) new MainViewModel(repository);
+            if (modelClass.isAssignableFrom(MainViewModelOld.class)) {
+                return (T) new MainViewModelOld(repository);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }
