@@ -2,18 +2,6 @@ package com.thewhitewings.pouch.ui;
 
 import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -27,6 +15,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.thewhitewings.pouch.PouchApplication;
@@ -45,7 +45,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivityOld extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     private ActivityMainBinding binding;
