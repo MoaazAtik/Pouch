@@ -1,6 +1,6 @@
 package com.thewhitewings.pouch.utils;
 
-public class Constants {
+public class ConstantsOld {
 
     // Databases
     // Name and Version of Database of Creative zone
