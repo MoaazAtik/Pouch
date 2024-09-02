@@ -11,7 +11,7 @@ import com.thewhitewings.pouch.utils.Constants;
 /**
  * The main application class for the Pouch app.
  */
-public class PouchApplication extends Application {
+public class PouchApplicationOld extends Application {
 
     // The notes repository of the app
     private NotesRepository notesRepository;
