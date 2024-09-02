@@ -70,7 +70,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         updatedNote.setId(oldNote.getId());
         updatedNote.setNoteTitle(newNoteTitle);
         updatedNote.setNoteBody(newNoteBody);
-        updatedNote.setTimestamp(getFormattedDateTime(DateTimeFormatType.CURRENT_LOCAL, null));
+        updatedNote.setTimestamp(getFormattedDateTime(DateTimeFormatType.CURRENT_LOCAL, ""));
 
         currentZoneDatabaseHelper.updateNote(updatedNote);
     }

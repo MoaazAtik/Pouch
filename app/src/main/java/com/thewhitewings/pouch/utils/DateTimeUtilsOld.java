@@ -1,6 +1,9 @@
 package com.thewhitewings.pouch.utils;
 
-import static com.thewhitewings.pouch.utils.DateTimeFormatType.*;
+import static com.thewhitewings.pouch.utils.DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT;
+import static com.thewhitewings.pouch.utils.DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT;
+import static com.thewhitewings.pouch.utils.DateTimeFormatType.LOCAL_TO_UTC;
+import static com.thewhitewings.pouch.utils.DateTimeFormatType.UTC_TO_LOCAL;
 
 import android.util.Log;
 
@@ -10,7 +13,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.TimeZone;
 
-public class DateTimeUtils {
+public class DateTimeUtilsOld {
 
     private static final String TAG = "DateTimeUtils";
 
