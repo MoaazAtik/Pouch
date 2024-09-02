@@ -2,7 +2,7 @@ package com.thewhitewings.pouch.utils;
 
 import com.thewhitewings.pouch.ui.NoteFragment;
 
-public enum DateTimeFormatType {
+public enum DateTimeFormatTypeOld {
 
     /**
      * Date and time from UTC to Local Time Zone for Retrieving.
