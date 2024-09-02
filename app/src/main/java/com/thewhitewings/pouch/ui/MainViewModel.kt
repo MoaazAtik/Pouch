@@ -11,6 +11,7 @@ import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.NotesRepository
 import com.thewhitewings.pouch.data.SortOption
+import com.thewhitewings.pouch.data.fromMenuItemId
 import com.thewhitewings.pouch.utils.Zone
 
 class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() {
@@ -55,7 +56,7 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      * @param menuItemId the id of the selected popup menu item
      */
     fun handleSortOptionSelection(menuItemId: Int) {
-        val selectedOption = SortOption.fromMenuItemId(menuItemId)
+        val selectedOption = fromMenuItemId(menuItemId)
         if (selectedOption != null) {
             sortNotes(selectedOption)
         }

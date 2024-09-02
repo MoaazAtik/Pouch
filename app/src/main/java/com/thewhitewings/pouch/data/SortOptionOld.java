@@ -10,7 +10,7 @@ import com.thewhitewings.pouch.R;
  * Used to sort the notes
  * </p>
  */
-public enum SortOption {
+public enum SortOptionOld {
     A_Z(R.id.menu_option_a_z),
     Z_A(R.id.menu_option_z_a),
     OLDEST_FIRST(R.id.menu_option_o),
@@ -21,7 +21,7 @@ public enum SortOption {
     // The id of the corresponding item in the sorting pop-up menu
     private final int menuItemId;
 
-    SortOption(int menuItemId) {
+    SortOptionOld(int menuItemId) {
         this.menuItemId = menuItemId;
     }
 
@@ -30,13 +30,13 @@ public enum SortOption {
     }
 
     /**
-     * Get the {@link SortOption} that corresponds to the given menu item id
+     * Get the {@link SortOptionOld} that corresponds to the given menu item id
      *
      * @param menuItemId The id of the corresponding item in the sorting pop-up menu
-     * @return The {@link SortOption} that corresponds to the given menu item id
+     * @return The {@link SortOptionOld} that corresponds to the given menu item id
      */
-    public static SortOption fromMenuItemId(int menuItemId) {
-        for (SortOption option : values()) {
+    public static SortOptionOld fromMenuItemId(int menuItemId) {
+        for (SortOptionOld option : values()) {
             if (option.menuItemId == menuItemId) {
                 return option;
             }

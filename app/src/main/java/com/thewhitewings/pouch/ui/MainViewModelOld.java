@@ -58,10 +58,10 @@ public class MainViewModelOld extends ViewModel {
      * @param menuItemId the id of the selected popup menu item
      */
     public void handleSortOptionSelection(int menuItemId) {
-        SortOption selectedOption = SortOption.fromMenuItemId(menuItemId);
-        if (selectedOption != null) {
-            sortNotes(selectedOption);
-        }
+//        SortOption selectedOption = SortOption.fromMenuItemId(menuItemId);
+//        if (selectedOption != null) {
+//            sortNotes(selectedOption);
+//        }
     }
 
     /**

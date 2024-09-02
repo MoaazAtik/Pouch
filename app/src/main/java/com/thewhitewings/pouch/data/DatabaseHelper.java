@@ -1,5 +1,6 @@
 package com.thewhitewings.pouch.data;
 
+import static com.thewhitewings.pouch.data.SortOptionKt.toSqlString;
 import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 
 import android.content.ContentValues;
@@ -15,9 +16,9 @@ import com.thewhitewings.pouch.utils.DateTimeFormatType;
 import java.util.ArrayList;
 import java.util.List;
 
-///**
-// * Database Helper Class
-// */
+/**
+ * Database Helper Class
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
@@ -194,7 +195,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null,
                 null,
                 null,
-                sortOption.toSqlString());
+                toSqlString(sortOption));
 
         if (cursor.moveToFirst()) {
             do {
@@ -274,7 +275,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String selection = "noteTitle LIKE ? OR noteBody LIKE ?";
         String[] selectionArgs = new String[]{"%" + searchQuery + "%", "%" + searchQuery + "%"};
-        String orderBy = sortOption.toSqlString();
+        String orderBy = toSqlString(sortOption);
 
         Cursor cursor = db.query(
                 Constants.TABLE_NAME,
