@@ -4,24 +4,24 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
-public class Note {
+public class NoteOld {
 
     private int id;
     private String noteTitle;
     private String noteBody;
     private String timestamp;
 
-    public Note() {
+    public NoteOld() {
     }
 
-    public Note(int id, String noteTitle, String noteBody, String timestamp) {
+    public NoteOld(int id, String noteTitle, String noteBody, String timestamp) {
         this.id = id;
         this.noteTitle = noteTitle;
         this.noteBody = noteBody;
         this.timestamp = timestamp;
     }
 
-    public Note(Note note) {
+    public NoteOld(NoteOld note) {
         this.id = note.id;
         this.noteTitle = note.noteTitle;
         this.noteBody = note.noteBody;
@@ -45,7 +45,7 @@ public class Note {
      * @param note The note to compare with.
      * @return True if the notes are equal, false otherwise.
      */
-    public boolean equalContent(@NonNull Note note) {
+    public boolean equalContent(@NonNull NoteOld note) {
         return id == note.id &&
                 Objects.equals(noteTitle, note.noteTitle) &&
                 Objects.equals(noteBody, note.noteBody) &&

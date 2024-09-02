@@ -40,7 +40,7 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         val noteBody = args.getString(Constants.COLUMN_NOTE_BODY)
         val timestamp = args.getString(Constants.COLUMN_TIMESTAMP)
 
-        oldNote = Note(id, noteTitle, noteBody, timestamp)
+        oldNote = Note(id, noteTitle!!, noteBody!!, timestamp!!)
         updateNoteLiveData(oldNote)
     }
 

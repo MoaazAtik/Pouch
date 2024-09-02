@@ -161,15 +161,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Note note = new Note();
                 int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
                 int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
                 int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
                 int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
-                note.setId(cursor.getInt(i1));
-                note.setNoteTitle(cursor.getString(i2));
-                note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
+                Note note = new Note(
+                        cursor.getInt(i1),
+                        cursor.getString(i2),
+                        cursor.getString(i3),
+                        getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4))
+                );
 
                 allNotes.add(note);
             } while (cursor.moveToNext());
@@ -199,15 +200,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Note note = new Note();
                 int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
                 int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
                 int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
                 int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
-                note.setId(cursor.getInt(i1));
-                note.setNoteTitle(cursor.getString(i2));
-                note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
+                Note note = new Note(
+                        cursor.getInt(i1),
+                        cursor.getString(i2),
+                        cursor.getString(i3),
+                        getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4))
+                );
 
                 allNotes.add(note);
             } while (cursor.moveToNext());
@@ -288,15 +290,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                Note note = new Note();
                 int i1 = cursor.getColumnIndex(Constants.COLUMN_ID);
                 int i2 = cursor.getColumnIndex(Constants.COLUMN_NOTE_TITLE);
                 int i3 = cursor.getColumnIndex(Constants.COLUMN_NOTE_BODY);
                 int i4 = cursor.getColumnIndex(Constants.COLUMN_TIMESTAMP);
-                note.setId(cursor.getInt(i1));
-                note.setNoteTitle(cursor.getString(i2));
-                note.setNoteBody(cursor.getString(i3));
-                note.setTimestamp(getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4)));
+                Note note = new Note(
+                        cursor.getInt(i1),
+                        cursor.getString(i2),
+                        cursor.getString(i3),
+                        getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, cursor.getString(i4))
+                );
 
                 filteredNotes.add(note);
             } while (cursor.moveToNext());
