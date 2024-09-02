@@ -3,7 +3,7 @@ package com.thewhitewings.pouch.utils;
 /**
  * Enum representing the available zones in the app.
  */
-public enum Zone {
+public enum ZoneOld {
 
     /**
      * Represents the Creative zone.
