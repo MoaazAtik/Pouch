@@ -6,17 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModelProvider
-import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.databinding.FragmentNoteBinding
-import com.thewhitewings.pouch.ui.NoteViewModel.NoteViewModelFactory
 
 class NoteFragment : Fragment() {
     private lateinit var binding: FragmentNoteBinding
-    private lateinit var noteViewModel: NoteViewModel
+    private val noteViewModel by viewModels<NoteViewModel> { NoteViewModel.Factory }
     private lateinit var noteLiveData: LiveData<Note?>
 
     override fun onCreateView(
@@ -31,12 +29,8 @@ class NoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val repository = (requireActivity().application as PouchApplication).notesRepository
-        noteViewModel =
-            ViewModelProvider(this, NoteViewModelFactory(repository))[NoteViewModel::class.java]
-
         noteViewModel.initializeNote(arguments)
-        noteLiveData = noteViewModel.noteLiveData
+        noteLiveData = noteViewModel.getNoteLiveData()
 
         setupListeners()
         setupViewModelObservers()

@@ -1,7 +1,6 @@
 package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -9,11 +8,11 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thewhitewings.pouch.utils.Constants;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
+import com.thewhitewings.pouch.utils.Constants;
 
-public class NoteViewModel extends ViewModel {
+public class NoteViewModelOld extends ViewModel {
 
     private static final String TAG = "NoteViewModel";
     private final NotesRepository notesRepository;
@@ -24,7 +23,7 @@ public class NoteViewModel extends ViewModel {
     // represents updated state of the currently opened note
     private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>();
 
-    public NoteViewModel(NotesRepository repository) {
+    public NoteViewModelOld(NotesRepository repository) {
         this.notesRepository = repository;
     }
 
@@ -113,7 +112,7 @@ public class NoteViewModel extends ViewModel {
 
 
     /**
-     * Factory class for creating instances of {@link NoteViewModel}.
+     * Factory class for creating instances of {@link NoteViewModelOld}.
      */
     public static class NoteViewModelFactory implements ViewModelProvider.Factory {
         private final NotesRepository repository;
@@ -125,8 +124,8 @@ public class NoteViewModel extends ViewModel {
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-            if (modelClass.isAssignableFrom(NoteViewModel.class)) {
-                return (T) new NoteViewModel(repository);
+            if (modelClass.isAssignableFrom(NoteViewModelOld.class)) {
+                return (T) new NoteViewModelOld(repository);
             }
             throw new IllegalArgumentException("Unknown ViewModel class");
         }

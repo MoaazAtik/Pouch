@@ -38,7 +38,7 @@ public class NoteFragmentOld extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         NotesRepository repository = ((PouchApplication) requireActivity().getApplication()).getNotesRepository();
-        noteViewModel = new ViewModelProvider(this, new NoteViewModel.NoteViewModelFactory(repository)).get(NoteViewModel.class);
+        noteViewModel = new ViewModelProvider(this, new NoteViewModelOld.NoteViewModelFactory(repository)).get(NoteViewModel.class);
 
         noteViewModel.initializeNote(getArguments());
         noteLiveData = noteViewModel.getNoteLiveData();
