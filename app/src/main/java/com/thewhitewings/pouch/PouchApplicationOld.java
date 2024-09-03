@@ -35,10 +35,10 @@ public class PouchApplicationOld extends Application {
         );
 
         // Initialize the preferences of the app
-        PouchPreferences pouchPreferences = new PouchPreferences(this);
+//        PouchPreferences pouchPreferences = new PouchPreferences(this);
 
         // Initialize the notes repository with the database helpers and preferences
-        notesRepository = new OfflineNotesRepository(creativeDatabaseHelper, bomDatabaseHelper, pouchPreferences);
+//        notesRepository = new OfflineNotesRepository(creativeDatabaseHelper, bomDatabaseHelper, pouchPreferences);
     }
 
     /**

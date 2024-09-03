@@ -13,12 +13,12 @@ import com.thewhitewings.pouch.utils.Zone;
 /**
  * A class that interacts with the SharedPreferences of the app.
  */
-public class PouchPreferences {
+public class PouchPreferencesOld {
 
     private static final String TAG = "PouchPreferences";
     private final SharedPreferences preferences;
 
-    public PouchPreferences(Context context) {
+    public PouchPreferencesOld(Context context) {
         preferences = context.getSharedPreferences(PREFERENCES_NAME, Context.MODE_PRIVATE);
     }
 

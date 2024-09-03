@@ -108,7 +108,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
 
     @Override
     public void saveSortOption(SortOption sortOption, Zone zone) {
-        pouchPreferences.saveSortOption(sortOption, zone);
+        pouchPreferences.saveSortOptionBlocking(sortOption, zone);
     }
 
     @Override
