@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.thewhitewings.pouch.data.DatabaseHelper
+import com.thewhitewings.pouch.data.NoteDatabase
 import com.thewhitewings.pouch.data.NotesRepository
 import com.thewhitewings.pouch.data.OfflineNotesRepository
 import com.thewhitewings.pouch.data.PouchPreferences
@@ -31,25 +32,25 @@ class PouchApplication : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Initialize the database helper of the Creative zone
-        val creativeDatabaseHelper = DatabaseHelper(
-            this,
-            Constants.CREATIVE_DATABASE_NAME,
-            Constants.CREATIVE_DATABASE_VERSION
-        )
+        // Initialize the database of the Creative zone
+        val creativeDatabase: NoteDatabase by lazy {
+            NoteDatabase.getDatabase(this, Constants.CREATIVE_DATABASE_NAME)
+        }
 
-        // Initialize the database helper of the Box of mysteries zone
-        val bomDatabaseHelper = DatabaseHelper(
-            this,
-            Constants.BOM_DATABASE_NAME,
-            Constants.BOM_DATABASE_VERSION
-        )
+        // Initialize the database of the Box of mysteries zone
+        val bomDatabase: NoteDatabase by lazy {
+                NoteDatabase.getDatabase(this, Constants.BOM_DATABASE_NAME)
+        }
 
         // Initialize the preferences of the app
         val pouchPreferences = PouchPreferences(dataStore)
 
         // Initialize the notes repository with the database helpers and preferences
         notesRepository =
-            OfflineNotesRepository(creativeDatabaseHelper, bomDatabaseHelper, pouchPreferences)
+            OfflineNotesRepository(
+                creativeDatabase.noteDao(),
+                bomDatabase.noteDao(),
+                pouchPreferences
+            )
     }
 }

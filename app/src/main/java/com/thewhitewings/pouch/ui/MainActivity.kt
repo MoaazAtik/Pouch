@@ -7,6 +7,7 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -15,7 +16,10 @@ import android.widget.SearchView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,6 +28,7 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
+import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.databinding.ActivityMainBinding
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener
@@ -32,6 +37,14 @@ import com.thewhitewings.pouch.utils.Constants
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.last
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import java.util.Objects
 import java.util.concurrent.Executors
 
@@ -39,8 +52,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel> { MainViewModel.Factory }
     private val adapter: NotesAdapter = NotesAdapter()
-    private lateinit var notesLiveData: LiveData<List<Note>>
-    private lateinit var currentZone: LiveData<Zone>
+    private lateinit var notesFlow: Flow<List<Note>>
+    private lateinit var currentZone: StateFlow<Zone>
 
     // Count of how many times the Box of mysteries reveal button has been pressed (knocked)
     private var bomKnocks = 0
@@ -53,8 +66,8 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        notesLiveData = viewModel.notesLiveData
-        currentZone = viewModel.getCurrentZoneLiveData()
+        notesFlow = viewModel.notesFlow
+        currentZone = viewModel.getCurrentZoneFlow()
 
         setupRecyclerView()
         setupListeners()
@@ -77,15 +90,19 @@ class MainActivity : AppCompatActivity() {
         val recyclerTouchListener = RecyclerTouchListener(
             this, binding.recyclerView, object : TouchListener {
                 override fun onClick(position: Int) {
-                    openNote(
-                            notesLiveData.value!![position]
-                    )
+                    lifecycleScope.launch {
+                        openNote(
+                                notesFlow.last()[position]
+                        )
+                    }
                 }
 
                 override fun onSwiped(position: Int) {
-                    viewModel.deleteNote(
-                            notesLiveData.value!![position]
-                    )
+                    lifecycleScope.launch {
+                        viewModel.deleteNote(
+                            notesFlow.last()[position]
+                        )
+                    }
                 }
             })
 
@@ -112,7 +129,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.searchNotes(newText)
+                viewModel.updateSearchQuery(newText)
                 return false
             }
         })
@@ -126,16 +143,28 @@ class MainActivity : AppCompatActivity() {
      * Sets up observers for the ViewModel's LiveData.
      */
     private fun setupViewModelObservers() {
-        notesLiveData.observe(this) { notes: List<Note>? ->
-            adapter.setNotes(notes)
-            toggleZoneNameVisibility()
+        /*
+        Note: Each flow should be collected in a separate coroutine. Otherwise, only the last flow will be collected.
+         */
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                notesFlow.collectLatest { notes ->
+                    Log.d(TAG, "setupViewModelObservers: notesFlow: notes changed")
+                    adapter.setNotes(notes)
+                    toggleZoneNameVisibility(notes.isEmpty())
+                }
+            }
         }
-
-        currentZone.observe(this) { zone: Zone ->
-            clearFocusAndHideKeyboard(binding.svSearchNotes)
-            if (zone == Zone.BOX_OF_MYSTERIES) goToBoxOfMysteries()
-            else goToCreativeZone()
-            binding.svSearchNotes.setQuery("", false)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                currentZone.collectLatest { zone: Zone ->
+                    Log.d(TAG, "setupViewModelObservers: zone changed to $zone")
+                    clearFocusAndHideKeyboard(binding.svSearchNotes)
+                    if (zone == Zone.BOX_OF_MYSTERIES) goToBoxOfMysteries()
+                    else goToCreativeZone()
+                    binding.svSearchNotes.setQuery("", false)
+                }
+            }
         }
     }
 
@@ -215,10 +244,10 @@ class MainActivity : AppCompatActivity() {
     /**
      * Toggles the visibility of the zone name text view.
      */
-    private fun toggleZoneNameVisibility() {
-        if (notesLiveData.value!!.isNotEmpty())
-            binding.txtZoneName.visibility = View.GONE
-        else binding.txtZoneName.visibility = View.VISIBLE
+    private fun toggleZoneNameVisibility(isEmptyList: Boolean) {
+        binding.txtZoneName.visibility =
+            if (isEmptyList) View.VISIBLE
+            else View.GONE
     }
 
     /**

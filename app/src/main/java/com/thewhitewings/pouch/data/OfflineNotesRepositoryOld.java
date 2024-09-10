@@ -5,8 +5,8 @@ import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.thewhitewings.pouch.utils.Zone;
 import com.thewhitewings.pouch.utils.DateTimeFormatType;
+import com.thewhitewings.pouch.utils.Zone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Offline Notes Repository Class
  */
-public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
+public class OfflineNotesRepositoryOld implements NotesRepositoryOld, DatabaseChangeListener {
 
     private static final String TAG = "OfflineNotesRepository";
 
@@ -36,7 +36,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     // current zone
     private Zone currentZone;
 
-    public OfflineNotesRepository(DatabaseHelper creativeDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
+    public OfflineNotesRepositoryOld(DatabaseHelper creativeDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
         this.creativeDatabaseHelper = creativeDatabaseHelper;
         this.bomDatabaseHelper = bomDatabaseHelper;
         currentZoneDatabaseHelper = creativeDatabaseHelper;
@@ -49,7 +49,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         notesLiveData = new MutableLiveData<>(new ArrayList<>());
         updateNotesLiveData(
                 currentZoneDatabaseHelper.getAllNotes(
-                        pouchPreferences.getSortOption(currentZone)
+//                        pouchPreferences.getSortOption(currentZone)
                 )
         );
     }
@@ -101,7 +101,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     public void onDatabaseChanged() {
         updateNotesLiveData(
                 currentZoneDatabaseHelper.getAllNotes(
-                        pouchPreferences.getSortOption(currentZone)
+//                        pouchPreferences.getSortOption(currentZone)
                 )
         );
     }
@@ -113,7 +113,8 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
 
     @Override
     public SortOption getSortOption(Zone zone) {
-        return pouchPreferences.getSortOption(zone);
+//        return pouchPreferences.getSortOption(zone);
+        return SortOption.Z_A;
     }
 
     /**
@@ -137,7 +138,7 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
 
         updateNotesLiveData(
                 currentZoneDatabaseHelper.getAllNotes(
-                        pouchPreferences.getSortOption(currentZone)
+//                        pouchPreferences.getSortOption(currentZone)
                 )
         );
     }

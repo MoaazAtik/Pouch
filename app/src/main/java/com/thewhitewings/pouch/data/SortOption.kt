@@ -6,6 +6,7 @@ import com.thewhitewings.pouch.data.SortOption.A_Z
 import com.thewhitewings.pouch.data.SortOption.NEWEST_FIRST
 import com.thewhitewings.pouch.data.SortOption.OLDEST_FIRST
 import com.thewhitewings.pouch.data.SortOption.Z_A
+import com.thewhitewings.pouch.utils.Constants
 
 private const val TAG = "SortOption"
 
@@ -50,9 +51,9 @@ fun fromMenuItemId(menuItemId: Int): SortOption? {
  */
 fun SortOption.toSqlString(): String {
     return when (this) {
-        A_Z -> "noteTitle COLLATE NOCASE ASC, noteBody COLLATE NOCASE ASC"
-        Z_A -> "noteTitle COLLATE NOCASE DESC, noteBody COLLATE NOCASE DESC"
-        OLDEST_FIRST -> "timestamp ASC"
-        NEWEST_FIRST -> "timestamp DESC"
+        A_Z -> "${Constants.COLUMN_NOTE_TITLE} COLLATE NOCASE ASC, ${Constants.COLUMN_NOTE_BODY} COLLATE NOCASE ASC"
+        Z_A -> "${Constants.COLUMN_NOTE_TITLE} COLLATE NOCASE DESC, ${Constants.COLUMN_NOTE_BODY} COLLATE NOCASE DESC"
+        OLDEST_FIRST -> "${Constants.COLUMN_TIMESTAMP} ASC"
+        NEWEST_FIRST -> "${Constants.COLUMN_TIMESTAMP} DESC"
     }
 }

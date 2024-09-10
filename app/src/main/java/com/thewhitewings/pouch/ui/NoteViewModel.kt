@@ -6,12 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.NotesRepository
 import com.thewhitewings.pouch.utils.Constants
+import kotlinx.coroutines.launch
 
 class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
 
@@ -93,7 +95,9 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      * @param noteBody  the body of the new note
      */
     private fun createNote(noteTitle: String, noteBody: String) {
-        notesRepository.createNote(noteTitle, noteBody)
+        viewModelScope.launch {
+            notesRepository.createNote(noteTitle, noteBody)
+        }
     }
 
     /**
@@ -103,14 +107,18 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      * @param noteBody  the new body of the note
      */
     private fun updateNote(noteTitle: String, noteBody: String) {
-        notesRepository.updateNote(noteTitle, noteBody, noteLiveData.value)
+        viewModelScope.launch {
+            notesRepository.updateNote(noteTitle, noteBody, noteLiveData.value!!)
+        }
     }
 
     /**
      * Delete the currently opened note.
      */
     fun deleteNote() {
-        if (noteLiveData.value != null) notesRepository.deleteNote(noteLiveData.value)
+        viewModelScope.launch {
+            notesRepository.deleteNote(noteLiveData.value!!)
+        }
     }
 
 

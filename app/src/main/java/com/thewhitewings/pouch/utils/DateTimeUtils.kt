@@ -42,7 +42,7 @@ object DateTimeUtils {
      * @return Formatted date/time string.
      */
     @JvmStatic
-    fun getFormattedDateTime(formatType: DateTimeFormatType, dateTime: String): String {
+    fun getFormattedDateTime(formatType: DateTimeFormatType, dateTime: String = ""): String {
         val sdFormat = SimpleDateFormat(DEFAULT_FORMAT, Locale.getDefault())
         val date: Date?
         val formattedDateTime: String
@@ -71,6 +71,13 @@ object DateTimeUtils {
                     Log.e(TAG, "Error parsing date ${DateTimeFormatType.LOCAL_TO_UTC}", e)
                     return "Error $dateTime"
                 }
+            }
+
+            DateTimeFormatType.CURRENT_UTC -> {
+                date = Date()
+                sdFormat.timeZone = TimeZone.getTimeZone("UTC")
+                formattedDateTime = sdFormat.format(date)
+                return formattedDateTime
             }
 
             DateTimeFormatType.CURRENT_LOCAL -> {

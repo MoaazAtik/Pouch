@@ -10,12 +10,13 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
+import com.thewhitewings.pouch.data.NotesRepositoryOld;
 import com.thewhitewings.pouch.utils.Constants;
 
 public class NoteViewModelOld extends ViewModel {
 
     private static final String TAG = "NoteViewModel";
-    private final NotesRepository notesRepository;
+    private final NotesRepositoryOld notesRepository;
 
     // the note that is opened for updating purpose
     private Note oldNote;
@@ -23,7 +24,7 @@ public class NoteViewModelOld extends ViewModel {
     // represents updated state of the currently opened note
     private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>();
 
-    public NoteViewModelOld(NotesRepository repository) {
+    public NoteViewModelOld(NotesRepositoryOld repository) {
         this.notesRepository = repository;
     }
 
@@ -115,9 +116,9 @@ public class NoteViewModelOld extends ViewModel {
      * Factory class for creating instances of {@link NoteViewModelOld}.
      */
     public static class NoteViewModelFactory implements ViewModelProvider.Factory {
-        private final NotesRepository repository;
+        private final NotesRepositoryOld repository;
 
-        public NoteViewModelFactory(NotesRepository repository) {
+        public NoteViewModelFactory(NotesRepositoryOld repository) {
             this.repository = repository;
         }
 

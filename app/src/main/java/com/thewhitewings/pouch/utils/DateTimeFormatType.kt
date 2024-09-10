@@ -17,6 +17,13 @@ enum class DateTimeFormatType {
     LOCAL_TO_UTC,
 
     /**
+     * Current date and time in UTC for Storing in Database.
+     * [DateTimeUtils.DEFAULT_FORMAT]
+     * "yyyy-MM-dd HH:mm:ss" = 2024-01-02 16:16:19
+     */
+    CURRENT_UTC,
+
+    /**
      * Current date and time in Local Time Zone for Storing in Notes List.
      * [DateTimeUtils.DEFAULT_FORMAT]
      * "yyyy-MM-dd HH:mm:ss" = 2024-01-02 19:16:19

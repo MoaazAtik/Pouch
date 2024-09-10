@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Interface for the Notes Repository
  */
-public interface NotesRepository {
+public interface NotesRepositoryOld {
 
     /**
      * Get all notes from the database

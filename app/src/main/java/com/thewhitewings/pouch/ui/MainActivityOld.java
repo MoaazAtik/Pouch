@@ -66,18 +66,18 @@ public class MainActivityOld extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        NotesRepository repository = ((PouchApplication) getApplication()).getNotesRepository();
-        viewModel = new ViewModelProvider(this, new MainViewModelOld.MainViewModelFactory(repository)).get(MainViewModel.class);
-
-        notesLiveData = viewModel.notesLiveData;
-        currentZone = viewModel.getCurrentZoneLiveData();
-
-        setupRecyclerView();
-        setupListeners();
-        setupViewModelObservers();
-        setupBackPressingBehaviour();
-
-        showBtnRevealBom();
+//        NotesRepository repository = ((PouchApplication) getApplication()).getNotesRepository();
+//        viewModel = new ViewModelProvider(this, new MainViewModelOld.MainViewModelFactory(repository)).get(MainViewModel.class);
+//
+//        notesLiveData = viewModel.notesLiveData;
+//        currentZone = viewModel.getCurrentZoneLiveData();
+//
+//        setupRecyclerView();
+//        setupListeners();
+//        setupViewModelObservers();
+//        setupBackPressingBehaviour();
+//
+//        showBtnRevealBom();
     }
 
     /**
@@ -124,7 +124,7 @@ public class MainActivityOld extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                viewModel.searchNotes(newText);
+//                viewModel.searchNotes(newText);
                 return false;
             }
         });

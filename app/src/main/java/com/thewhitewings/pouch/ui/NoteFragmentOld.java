@@ -37,14 +37,14 @@ public class NoteFragmentOld extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NotesRepository repository = ((PouchApplication) requireActivity().getApplication()).getNotesRepository();
-        noteViewModel = new ViewModelProvider(this, new NoteViewModelOld.NoteViewModelFactory(repository)).get(NoteViewModel.class);
-
-        noteViewModel.initializeNote(getArguments());
-        noteLiveData = noteViewModel.getNoteLiveData();
-
-        setupListeners();
-        setupViewModelObservers();
+//        NotesRepository repository = ((PouchApplication) requireActivity().getApplication()).getNotesRepository();
+//        noteViewModel = new ViewModelProvider(this, new NoteViewModelOld.NoteViewModelFactory(repository)).get(NoteViewModel.class);
+//
+//        noteViewModel.initializeNote(getArguments());
+//        noteLiveData = noteViewModel.getNoteLiveData();
+//
+//        setupListeners();
+//        setupViewModelObservers();
     }
 
     @Override

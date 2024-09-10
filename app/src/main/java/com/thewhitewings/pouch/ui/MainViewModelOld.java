@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
+import com.thewhitewings.pouch.data.NotesRepositoryOld;
 import com.thewhitewings.pouch.data.SortOption;
 import com.thewhitewings.pouch.utils.Zone;
 
@@ -17,13 +18,13 @@ import java.util.List;
 public class MainViewModelOld extends ViewModel {
 
     private static final String TAG = "MainViewModel";
-    private final NotesRepository repository;
+    private final NotesRepositoryOld repository;
     public final LiveData<List<Note>> notesLiveData;
     private final MutableLiveData<Zone> currentZoneLiveData;
     private SortOption sortOption;
     private String searchQuery;
 
-    public MainViewModelOld(NotesRepository repository) {
+    public MainViewModelOld(NotesRepositoryOld repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
         this.currentZoneLiveData = new MutableLiveData<>(Zone.CREATIVE);
@@ -100,9 +101,9 @@ public class MainViewModelOld extends ViewModel {
      * Factory class for creating instances of {@link MainViewModelOld}.
      */
     public static class MainViewModelFactory implements ViewModelProvider.Factory {
-        private final NotesRepository repository;
+        private final NotesRepositoryOld repository;
 
-        public MainViewModelFactory(NotesRepository repository) {
+        public MainViewModelFactory(NotesRepositoryOld repository) {
             this.repository = repository;
         }
 

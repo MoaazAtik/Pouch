@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+
+    alias(libs.plugins.google.devtools.ksp)
 }
 
 android {
@@ -68,8 +70,16 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
     // DataStore
     implementation(libs.androidx.datastore.preferences)
+
+    // Room core library
+    implementation(libs.androidx.room.runtime)
+    // Kotlin Symbol Processing (KSP) for Kotlin annotation processing
+    ksp(libs.androidx.room.compiler)
+    // Kotlin Extensions and Coroutines support for Room (optional)
+    implementation(libs.androidx.room.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
