@@ -39,7 +39,6 @@ class PouchPreferences(
     fun getSortOptionFlow(zone: Zone): Flow<SortOption> {
         val sortOptionKey = getSortOptionKey(zone)
 
-        Log.d(TAG, "getSortOptionFlow: $sortOptionKey")
         return dataStore.data
             .catch {
                 if (it is IOException) {

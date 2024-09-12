@@ -11,4 +11,8 @@
     <string name="note_title_hint">Title</string>
     <string name="note_body_hint">Note...</string>
     <string name="edited_timestamp">Edited %1$s</string>
+    <string name="sort_option_a_z">A ► Z</string>
+    <string name="sort_option_z_a">Z ► A</string>
+    <string name="sort_option_oldest_first">Oldest</string>
+    <string name="sort_option_newest_first">Newest</string>
 </resources>

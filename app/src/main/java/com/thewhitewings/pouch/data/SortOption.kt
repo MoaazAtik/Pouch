@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.data
 
 import android.util.Log
+import androidx.annotation.StringRes
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.SortOption.A_Z
 import com.thewhitewings.pouch.data.SortOption.NEWEST_FIRST
@@ -19,29 +20,30 @@ enum class SortOption(
     /**
      * The id of the corresponding item in the sorting pop-up menu
      */
-    val menuItemId: Int
+    val id: Int,
+    @StringRes val label: Int
 ) {
-    A_Z(R.id.menu_option_a_z),
-    Z_A(R.id.menu_option_z_a),
-    OLDEST_FIRST(R.id.menu_option_o),
-    NEWEST_FIRST(R.id.menu_option_n)
+    A_Z(id = 0, label = R.string.sort_option_a_z),
+    Z_A(id = 1, label = R.string.sort_option_z_a),
+    OLDEST_FIRST(id = 2, label = R.string.sort_option_oldest_first),
+    NEWEST_FIRST(id = 3, label = R.string.sort_option_newest_first)
 }
 
 /**
  * Get the [SortOption] that corresponds to the given menu item id
  *
- * @param menuItemId The id of the corresponding item in the sorting pop-up menu
+ * @param sortOptionId The id of the corresponding item in the sorting pop-up menu
  * @return The [SortOption] that corresponds to the given menu item id
  */
-fun fromMenuItemId(menuItemId: Int): SortOption? {
+fun getSortOptionFromId(sortOptionId: Int): SortOption {
     for (option in SortOption.entries) {
-        if (option.menuItemId == menuItemId) {
+        if (option.id == sortOptionId) {
             return option
         }
     }
 
-    Log.e(TAG, "Invalid menuItemId: $menuItemId", IllegalArgumentException())
-    return null // Or throw an exception if preferred
+    Log.e(TAG, "Invalid sortOptionId: $sortOptionId", IllegalArgumentException())
+    return NEWEST_FIRST
 }
 
 /**
@@ -52,7 +54,7 @@ fun fromMenuItemId(menuItemId: Int): SortOption? {
 fun SortOption.toSqlString(): String {
     return when (this) {
         A_Z -> "${Constants.COLUMN_NOTE_TITLE} COLLATE NOCASE ASC, ${Constants.COLUMN_NOTE_BODY} COLLATE NOCASE ASC"
-        Z_A -> "${Constants.COLUMN_NOTE_TITLE} COLLATE NOCASE DESC, ${Constants.COLUMN_NOTE_BODY} COLLATE NOCASE DESC"
+        Z_A -> "note_title COLLATE NOCASE DESC, note_body COLLATE NOCASE DESC"
         OLDEST_FIRST -> "${Constants.COLUMN_TIMESTAMP} ASC"
         NEWEST_FIRST -> "${Constants.COLUMN_TIMESTAMP} DESC"
     }

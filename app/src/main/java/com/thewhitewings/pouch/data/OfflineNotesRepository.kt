@@ -43,39 +43,6 @@ class OfflineNotesRepository(
         currentZoneDao.deleteNote(note)
     }
 
-//    @OptIn(ExperimentalCoroutinesApi::class)
-//    override fun getNotesFlow(
-//        sortOptionFlow: Flow<SortOption>,
-//        searchQueryFlow: Flow<String>,
-//        currentZoneFlow: Flow<Zone>
-//    ): Flow<List<Note>> {
-//
-//        return combine(sortOptionFlow, searchQueryFlow, currentZoneFlow) { sortOption, searchQuery, zone ->
-//            Triple(sortOption, searchQuery, zone)
-//        }.flatMapLatest { (sortOption, searchQuery, zone) ->
-//
-//            // Select the appropriate DAO based on the current zone
-//            currentZoneDao =
-//                if (zone == Zone.CREATIVE)
-//                    creativeNoteDao
-//                else bomNoteDao
-//
-//            Log.d(TAG, "getNotesFlow: zone $zone, sortOption $sortOption, searchQuery $searchQuery, searchQuery.isEmpty() ${searchQuery.isEmpty()}")
-//            Log.d(TAG, "sortOption.toSqlString() ${sortOption.toSqlString()}")
-//            currentZoneDao.getAllNotes(sortOption.toSqlString()).map { notes ->
-//                notes.forEach { note ->
-//                    Log.d(TAG, "   note $note")
-//                }
-//            }
-//
-//            // Fetch notes from the selected DAO based on the sortOption and searchQuery
-//            if (searchQuery.isEmpty())
-//                currentZoneDao.getAllNotes(sortOption.toSqlString())
-//            else
-//                currentZoneDao.searchNotes(searchQuery, sortOption.toSqlString())
-//        }
-//    }
-
     override fun toggleZone() {
         currentZoneDao =
             if (currentZoneDao == creativeNoteDao)
@@ -84,17 +51,16 @@ class OfflineNotesRepository(
     }
 
     override fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>> {
-        return currentZoneDao.getAllNotes(sortOption.toSqlString())
+        return currentZoneDao.getAllNotes(sortOption.name)
     }
 
     override fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>> {
-        return currentZoneDao.searchNotes(searchQuery, sortOption.toSqlString())
+        return currentZoneDao.searchNotes(searchQuery, sortOption.name)
     }
 
     override suspend fun saveSortOption(sortOption: SortOption, zone: Zone) { // rename to changeSortOption
         pouchPreferences.saveSortOption(sortOption, zone)
     }
-//    override val sortOptionFlow: Flow<SortOption> = pouchPreferences.sortOptionFlow
 
     override fun getSortOptionFlow(zone: Zone): Flow<SortOption> {
         return pouchPreferences.getSortOptionFlow(zone)

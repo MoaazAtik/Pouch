@@ -45,34 +45,32 @@ fun PouchNavHost(
 
             HomeScreen(
                 homeUiState = homeUiState,
-                navigateToNewNote = { navController.navigate(NoteDestination.route) },
-                navigateToNoteUpdate = {
-                    navController.navigate("${NoteDestination.route}/${it}")
-                },
-//                onSearchNotes = { searchQuery -> viewModel.updateSearchQuery(searchQuery) },
-                onSearchNotes = viewModel::updateSearchQuery ,
-                onSortNotes = { menuItemId -> viewModel.handleSortOptionSelection(menuItemId) },
-                onToggleZone = { viewModel.toggleZone() }
+                navigateToCreateNote = { navController.navigate(NoteDestination.route) }, // Empty fields
+                navigateToEditNote = { noteId -> navController.navigate("${NoteDestination.route}/$noteId") }, // Pass noteId
+                onSearchNotes = viewModel::updateSearchQuery,
+                onSortNotes = viewModel::updateSortOption,
+                onToggleZone = viewModel::toggleZone
             )
         }
-//        composable(
-//            route = NoteDestination.route,
-//            arguments = listOf(navArgument(NoteDestination.noteIdArg) {
-//                type = NavType.IntType
-//            })
-//        ) {
-//            val viewModel: NoteViewModel = viewModel(factory = NoteViewModel.Factory)
-//            val noteUiState by viewModel.noteUiState.collectAsState()
-//
-//            NoteScreen(
-//                noteUiState = noteUiState,
-//                navigateBack = { navController.popBackStack() },
-//                onNavigateUp = { navController.navigateUp() },
-//                onNoteDelete = { TODO() },
-//                onNoteTitleChange = { TODO() },
-//                onNoteBodyChange = { TODO() }
-//            )
-//        }
+        composable(
+//            route = "${NoteDestination.route}/{noteId}", // gpt
+            route = NoteDestination.routeWithArgs, // or this from inventory app ?
+            arguments = listOf(navArgument(NoteDestination.noteIdArg) {
+                type = NavType.IntType
+            })
+        ) {
+            val viewModel: NoteViewModel = viewModel(factory = NoteViewModel.Factory)
+            val noteUiState by viewModel.noteUiState.collectAsState()
+
+            NoteScreen(
+                noteUiState = noteUiState,
+                navigateBack = { navController.popBackStack() },
+                onNavigateUp = { navController.navigateUp() },
+                onNoteDelete = { TODO() },
+                onNoteTitleChange = { TODO() },
+                onNoteBodyChange = { TODO() }
+            )
+        }
 
 //        composable(
 //            route = ItemDetailsDestination.routeWithArgs,

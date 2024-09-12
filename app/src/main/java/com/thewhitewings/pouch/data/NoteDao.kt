@@ -14,11 +14,22 @@ interface NoteDao {
     @Insert
     suspend fun insert(note: Note)
 
-    @Query("""
+    @Query(
+        """
         SELECT * FROM ${Constants.TABLE_NAME}
-        ORDER BY :sortOptionSqlClause
-        """)
-    fun getAllNotes(sortOptionSqlClause: String): Flow<List<Note>>
+        ORDER BY 
+            CASE WHEN :sortOptionName = 'A_Z' THEN note_title END COLLATE NOCASE ASC,
+            CASE WHEN :sortOptionName = 'A_Z' THEN note_body END COLLATE NOCASE ASC,
+            
+            CASE WHEN :sortOptionName = 'Z_A' THEN note_title END COLLATE NOCASE DESC,
+            CASE WHEN :sortOptionName = 'Z_A' THEN note_body END COLLATE NOCASE DESC,
+            
+            CASE WHEN :sortOptionName = 'OLDEST_FIRST' THEN timestamp END ASC,
+            
+            CASE WHEN :sortOptionName = 'NEWEST_FIRST' THEN timestamp END DESC
+        """
+    )
+    fun getAllNotes(sortOptionName: String): Flow<List<Note>>
 
     @Update
     suspend fun updateNote(note: Note)
@@ -30,7 +41,16 @@ interface NoteDao {
         SELECT * FROM ${Constants.TABLE_NAME}
         WHERE ${Constants.COLUMN_NOTE_TITLE} LIKE '%' || :searchQuery || '%' 
         OR ${Constants.COLUMN_NOTE_BODY} LIKE '%' || :searchQuery || '%'
-        ORDER BY :sortOptionSqlClause
+        ORDER BY 
+            CASE WHEN :sortOptionName = 'A_Z' THEN note_title END COLLATE NOCASE ASC,
+            CASE WHEN :sortOptionName = 'A_Z' THEN note_body END COLLATE NOCASE ASC,
+            
+            CASE WHEN :sortOptionName = 'Z_A' THEN note_title END COLLATE NOCASE DESC,
+            CASE WHEN :sortOptionName = 'Z_A' THEN note_body END COLLATE NOCASE DESC,
+            
+            CASE WHEN :sortOptionName = 'OLDEST_FIRST' THEN timestamp END ASC,
+            
+            CASE WHEN :sortOptionName = 'NEWEST_FIRST' THEN timestamp END DESC
         """)
-    fun searchNotes(searchQuery: String, sortOptionSqlClause: String): Flow<List<Note>>
+    fun searchNotes(searchQuery: String, sortOptionName: String): Flow<List<Note>>
 }

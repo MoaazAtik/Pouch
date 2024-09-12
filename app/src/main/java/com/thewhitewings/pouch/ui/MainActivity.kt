@@ -18,12 +18,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -35,7 +33,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.thewhitewings.pouch.PouchApp
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
-import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.databinding.ActivityMainBinding
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener
@@ -47,13 +44,9 @@ import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.last
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import java.util.Objects
 import java.util.concurrent.Executors
 
 class MainActivity : ComponentActivity() {
@@ -254,7 +247,7 @@ class MainActivity : ComponentActivity() {
         val menuInflater = popupMenu.menuInflater
         menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.menu)
         popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-            viewModel.handleSortOptionSelection(item.itemId)
+            viewModel.updateSortOption(item.itemId)
             true
         }
         popupMenu.show()
