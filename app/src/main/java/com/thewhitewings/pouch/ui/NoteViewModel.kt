@@ -13,6 +13,8 @@ import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.NotesRepository
 import com.thewhitewings.pouch.utils.Constants
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
@@ -22,6 +24,14 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
 
     // represents updated state of the currently opened note
     private val noteLiveData = MutableLiveData<Note?>()
+
+    private val _noteUiState = MutableStateFlow(NoteUiState())
+    val noteUiState = _noteUiState.asStateFlow()
+
+    data class NoteUiState(
+        val noteTitle: String = "",
+        val noteBody: String = ""
+    )
 
     /**
      * Initialize the note LiveData and [oldNote] with the provided arguments.

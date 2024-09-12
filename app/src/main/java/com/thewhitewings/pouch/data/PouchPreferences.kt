@@ -56,23 +56,23 @@ class PouchPreferences(
             }
     }
 
-    var zone: Zone = Zone.CREATIVE
-
-    val sortOptionFlow: Flow<SortOption> =
-        dataStore.data
-        .catch {
-            if (it is IOException) {
-                Log.e(TAG, "Error reading preferences.", it)
-                emit(emptyPreferences())
-            } else {
-                throw it
-            }
-        }
-        .map { preference ->
-            SortOption.valueOf(
-                preference[getSortOptionKey(zone)] ?: DEFAULT_SORT_OPTION.name
-            )
-        }
+//    var zone: Zone = Zone.CREATIVE
+//
+//    val sortOptionFlow: Flow<SortOption> =
+//        dataStore.data
+//        .catch {
+//            if (it is IOException) {
+//                Log.e(TAG, "Error reading preferences.", it)
+//                emit(emptyPreferences())
+//            } else {
+//                throw it
+//            }
+//        }
+//        .map { preference ->
+//            SortOption.valueOf(
+//                preference[getSortOptionKey(zone)] ?: DEFAULT_SORT_OPTION.name
+//            )
+//        }
 
     fun getSortOption(zone: Zone): SortOption {
         return runBlocking { // todo maybe using this run blocking will fix the issue

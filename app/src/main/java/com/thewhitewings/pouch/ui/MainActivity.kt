@@ -13,9 +13,15 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.PopupMenu
 import android.widget.SearchView
+import androidx.activity.ComponentActivity
 import androidx.activity.OnBackPressedCallback
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Surface
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +32,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
+import com.thewhitewings.pouch.PouchApp
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.SortOption
@@ -33,6 +40,7 @@ import com.thewhitewings.pouch.databinding.ActivityMainBinding
 import com.thewhitewings.pouch.ui.adapters.NotesAdapter
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener
 import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener.TouchListener
+import com.thewhitewings.pouch.ui.theme.PouchTheme
 import com.thewhitewings.pouch.utils.Constants
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
@@ -48,7 +56,7 @@ import kotlinx.coroutines.launch
 import java.util.Objects
 import java.util.concurrent.Executors
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel> { MainViewModel.Factory }
     private val adapter: NotesAdapter = NotesAdapter()
@@ -62,19 +70,30 @@ class MainActivity : AppCompatActivity() {
     private var bomTimeoutStarted = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        setContent {
+            PouchTheme {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    PouchApp()
+                }
+            }
+        }
 
-        notesFlow = viewModel.notesFlow
-        currentZone = viewModel.getCurrentZoneFlow()
-
-        setupRecyclerView()
-        setupListeners()
-        setupViewModelObservers()
-        setupBackPressingBehaviour()
-
-        showBtnRevealBom()
+//        binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
+//
+//        notesFlow = viewModel.notesFlow
+//        currentZone = viewModel.getCurrentZoneFlow()
+//
+//        setupRecyclerView()
+//        setupListeners()
+//        setupViewModelObservers()
+//        setupBackPressingBehaviour()
+//
+//        showBtnRevealBom()
     }
 
     /**
@@ -129,7 +148,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                viewModel.updateSearchQuery(newText)
+//                viewModel.updateSearchQuery(newText)
                 return false
             }
         })
@@ -204,7 +223,7 @@ class MainActivity : AppCompatActivity() {
             noteFragment.arguments = argsBundle
         }
 
-        val fragmentManager = supportFragmentManager
+//        val fragmentManager = supportFragmentManager
         val fragmentTransaction = fragmentManager.beginTransaction()
         fragmentTransaction.setCustomAnimations(
             androidx.fragment.R.animator.fragment_fade_enter,
@@ -212,7 +231,7 @@ class MainActivity : AppCompatActivity() {
             androidx.fragment.R.animator.fragment_close_enter,
             androidx.fragment.R.animator.fragment_fade_exit
         )
-        fragmentTransaction.replace(R.id.fragment_container_note, noteFragment)
+//        fragmentTransaction.replace(R.id.fragment_container_note, noteFragment)
         fragmentTransaction.commit()
     }
 

@@ -32,7 +32,13 @@ interface NotesRepository {
      */
     suspend fun deleteNote(note: Note)
 
-    fun getNotesFlow(sortOptionFlow: Flow<SortOption>, searchQueryFlow: Flow<String>, currentZoneFlow: Flow<Zone>): Flow<List<Note>>
+//    fun getNotesFlow(sortOptionFlow: Flow<SortOption>, searchQueryFlow: Flow<String>, currentZoneFlow: Flow<Zone>): Flow<List<Note>>
+
+    fun toggleZone()
+
+    fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>>
+
+    fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>>
 
     /**
      * Save the Sort Option in SharedPreferences
@@ -42,7 +48,7 @@ interface NotesRepository {
      */
     suspend fun saveSortOption(sortOption: SortOption, zone: Zone)
 
-    val sortOptionFlow: Flow<SortOption>
+//    val sortOptionFlow: Flow<SortOption>
 
     fun getSortOptionFlow(zone: Zone): Flow<SortOption>
 }
