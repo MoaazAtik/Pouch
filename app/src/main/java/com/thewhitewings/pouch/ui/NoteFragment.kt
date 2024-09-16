@@ -29,28 +29,28 @@ class NoteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        noteViewModel.initializeNote(arguments)
-        noteLiveData = noteViewModel.getNoteLiveData()
-
-        setupListeners()
-        setupViewModelObservers()
+//        noteViewModel.initializeNote(arguments)
+//        noteLiveData = noteViewModel.getNoteLiveData()
+//
+//        setupListeners()
+//        setupViewModelObservers()
     }
 
     override fun onResume() {
         super.onResume()
-        setupBackPressingBehaviour()
+//        setupPressingBehaviour()
     }
 
     override fun onPause() {
         super.onPause()
-        if (noteLiveData.value != null) noteViewModel.updateNoteLiveData(
-            Note(
-                noteLiveData.value!!.id,
-                binding.etNoteTitle.text.toString(),
-                binding.etNoteBody.text.toString(),
-                noteLiveData.value!!.timestamp
-            )
-        )
+//        if (noteLiveData.value != null) noteViewModel.updateNoteLiveData(
+//            Note(
+//                noteLiveData.value!!.id,
+//                binding.etNoteTitle.text.toString(),
+//                binding.etNoteBody.text.toString(),
+//                noteLiveData.value!!.timestamp
+//            )
+//        )
     }
 
     /**
@@ -79,7 +79,7 @@ class NoteFragment : Fragment() {
         noteLiveData.observe(viewLifecycleOwner) { note: Note? ->
             binding.etNoteTitle.setText(note!!.noteTitle)
             binding.etNoteBody.setText(note.noteBody)
-            binding.txtTimestamp.text = getString(R.string.edited_timestamp, note.timestamp)
+//            binding.txtTimestamp.text = getString(R.string.edited_timestamp, note.timestamp)
         }
     }
 
@@ -106,10 +106,10 @@ class NoteFragment : Fragment() {
      * Handles the back navigation.
      */
     private fun handleNavigationBack() {
-        noteViewModel.createOrUpdateNote(
-            binding.etNoteTitle.text.toString(),
-            binding.etNoteBody.text.toString()
-        )
+//        noteViewModel.createOrUpdateNote(
+//            binding.etNoteTitle.text.toString(),
+//            binding.etNoteBody.text.toString()
+//        )
         closeNote()
     }
 

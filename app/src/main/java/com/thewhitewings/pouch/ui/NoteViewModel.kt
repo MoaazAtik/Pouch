@@ -1,36 +1,42 @@
 package com.thewhitewings.pouch.ui
 
-import android.os.Bundle
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.NotesRepository
-import com.thewhitewings.pouch.utils.Constants
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+class NoteViewModel(
+    private val notesRepository: NotesRepository,
+//    private val args: Bundle? = null,
+//    savedStateHandle: SavedStateHandle? = null
+//    savedStateHandle: SavedStateHandle // gpt // todo move upwards
+    val savedStateHandle: SavedStateHandle // gpt // todo move upwards
+) : ViewModel() {
+
+    init {
+        initializeNote()
+    }
 
     // the note that is opened for updating purpose
     private var oldNote: Note? = null
-
-    // represents updated state of the currently opened note
-    private val noteLiveData = MutableLiveData<Note?>()
 
     private val _noteUiState = MutableStateFlow(NoteUiState())
     val noteUiState = _noteUiState.asStateFlow()
 
     data class NoteUiState(
-        val noteTitle: String = "",
-        val noteBody: String = ""
+        val note: Note = Note(timestamp = ""),
     )
 
     /**
@@ -39,41 +45,21 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      *
      * @param args the arguments bundle passed from the activity containing the note data
      */
-    fun initializeNote(args: Bundle?) {
-        if (args == null) // creating new note
-            return
+    private fun initializeNote() {
+        val noteId: Int = savedStateHandle[NoteDestination.noteIdArg] ?: return
 
-        if (noteLiveData.value != null) // updating existing note - after configuration change
-            return
-
-        // updating existing note - first initialization
-        val id = args.getInt(Constants.COLUMN_ID)
-        val noteTitle = args.getString(Constants.COLUMN_NOTE_TITLE)
-        val noteBody = args.getString(Constants.COLUMN_NOTE_BODY)
-        val timestamp = args.getString(Constants.COLUMN_TIMESTAMP)
-
-        oldNote = Note(id, noteTitle!!, noteBody!!, timestamp!!)
-        updateNoteLiveData(oldNote)
+        viewModelScope.launch {
+            notesRepository.getNoteById(noteId)
+                .collect { note ->
+                    if (note != null) {
+                        _noteUiState.value = _noteUiState.value.copy(
+                            note = note
+                        )
+                        oldNote = note
+                    }
+                }
+        }
     }
-
-    /**
-     * Update the note LiveData with the provided note.
-     *
-     * @param note the note with updated data
-     */
-    fun updateNoteLiveData(note: Note?) {
-        noteLiveData.value = note
-    }
-
-    /**
-     * Get the note LiveData.
-     *
-     * @return the note LiveData
-     */
-    fun getNoteLiveData(): LiveData<Note?> {
-        return noteLiveData
-    }
-
 
     /**
      * Create or update the note based on the provided data.
@@ -81,21 +67,17 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      * @param newNoteTitle the new title of the note
      * @param newNoteBody  the new body of the note
      */
-    fun createOrUpdateNote(newNoteTitle: String, newNoteBody: String) {
-        if (oldNote == null &&
-            (newNoteTitle.isNotEmpty() || newNoteBody.isNotEmpty())
-        )
-            createNote(
-                newNoteTitle,
-                newNoteBody
-            )
-        else if (oldNote != null &&
-            (oldNote!!.noteBody != newNoteBody || oldNote!!.noteTitle != newNoteTitle)
-        )
-            updateNote(
-                newNoteTitle,
-                newNoteBody
-            )
+    fun createOrUpdateNote() {
+        with(_noteUiState.value.note) {
+            if (oldNote == null) {
+                if (noteTitle.isNotEmpty() || noteBody.isNotEmpty())
+                    createNote()
+            } else if (!oldNote?.noteBody.equals(noteBody) ||
+                !oldNote?.noteTitle.equals(noteTitle)
+            ) {
+                updateNote()
+            }
+        }
     }
 
     /**
@@ -104,9 +86,9 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      * @param noteTitle the title of the new note
      * @param noteBody  the body of the new note
      */
-    private fun createNote(noteTitle: String, noteBody: String) {
+    private fun createNote() {
         viewModelScope.launch {
-            notesRepository.createNote(noteTitle, noteBody)
+            notesRepository.createNote(_noteUiState.value.note)
         }
     }
 
@@ -116,9 +98,9 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      * @param noteTitle the new title of the note
      * @param noteBody  the new body of the note
      */
-    private fun updateNote(noteTitle: String, noteBody: String) {
+    private fun updateNote() {
         viewModelScope.launch {
-            notesRepository.updateNote(noteTitle, noteBody, noteLiveData.value!!)
+            notesRepository.updateNote(_noteUiState.value.note)
         }
     }
 
@@ -127,13 +109,29 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
      */
     fun deleteNote() {
         viewModelScope.launch {
-            notesRepository.deleteNote(noteLiveData.value!!)
+            notesRepository.deleteNote(_noteUiState.value.note)
+        }
+    }
+
+    fun updateNoteTitle(title: String) {
+        _noteUiState.update {
+            it.copy(
+                note = it.note.copy(noteTitle = title)
+            )
+        }
+    }
+
+    fun updateNoteBody(body: String) {
+        _noteUiState.update {
+            it.copy(
+                note = it.note.copy(noteBody = body)
+            )
         }
     }
 
 
     companion object {
-        private const val TAG = "MainViewModel"
+        private const val TAG = "NoteViewModel"
 
         /**
          * Factory for [NoteViewModel] that takes [NotesRepository] as a dependency
@@ -142,7 +140,10 @@ class NoteViewModel(private val notesRepository: NotesRepository) : ViewModel() 
             initializer {
                 val application = (this[APPLICATION_KEY] as PouchApplication)
                 val notesRepository = application.notesRepository
-                NoteViewModel(notesRepository = notesRepository)
+                NoteViewModel(
+                    notesRepository = notesRepository,
+                    savedStateHandle = this.createSavedStateHandle()
+                )
             }
         }
     }

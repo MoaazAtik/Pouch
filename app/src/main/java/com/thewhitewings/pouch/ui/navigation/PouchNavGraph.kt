@@ -1,10 +1,12 @@
 package com.thewhitewings.pouch.ui.navigation
 
 
+import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -23,6 +25,7 @@ import com.thewhitewings.pouch.ui.MainViewModel
 import com.thewhitewings.pouch.ui.NoteDestination
 import com.thewhitewings.pouch.ui.NoteScreen
 import com.thewhitewings.pouch.ui.NoteViewModel
+import com.thewhitewings.pouch.utils.Zone
 
 /**
  * Provides Navigation graph for the application.
@@ -45,7 +48,11 @@ fun PouchNavHost(
 
             HomeScreen(
                 homeUiState = homeUiState,
-                navigateToCreateNote = { navController.navigate(NoteDestination.route) }, // Empty fields
+                navigateBack = {
+                    if (homeUiState.zone == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
+                    else (navController.context as? Activity)?.finish()
+                },
+                navigateToCreateNote = { navController.navigate("${NoteDestination.route}/0") }, // Empty fields
                 navigateToEditNote = { noteId -> navController.navigate("${NoteDestination.route}/$noteId") }, // Pass noteId
                 onSearchNotes = viewModel::updateSearchQuery,
                 onSortNotes = viewModel::updateSortOption,
@@ -53,10 +60,10 @@ fun PouchNavHost(
             )
         }
         composable(
-//            route = "${NoteDestination.route}/{noteId}", // gpt
-            route = NoteDestination.routeWithArgs, // or this from inventory app ?
+            route = NoteDestination.routeWithArgs,
             arguments = listOf(navArgument(NoteDestination.noteIdArg) {
                 type = NavType.IntType
+                defaultValue = 0
             })
         ) {
             val viewModel: NoteViewModel = viewModel(factory = NoteViewModel.Factory)
@@ -64,11 +71,11 @@ fun PouchNavHost(
 
             NoteScreen(
                 noteUiState = noteUiState,
-                navigateBack = { navController.popBackStack() },
-                onNavigateUp = { navController.navigateUp() },
-                onNoteDelete = { TODO() },
-                onNoteTitleChange = { TODO() },
-                onNoteBodyChange = { TODO() }
+                navigateBack = { viewModel.createOrUpdateNote(); navController.popBackStack() },
+                onNavigateUp = { viewModel.createOrUpdateNote(); navController.navigateUp() },
+                onNoteDelete = { viewModel.deleteNote(); navController.popBackStack() },
+                onNoteTitleChange = { viewModel.updateNoteTitle(it) },
+                onNoteBodyChange = { viewModel.updateNoteBody(it) }
             )
         }
 

@@ -14,7 +14,7 @@ interface NotesRepository {
      * @param noteTitle Title of the note
      * @param noteBody  Body of the note
      */
-    suspend fun createNote(noteTitle: String, noteBody: String)
+    suspend fun createNote(note: Note)
 
     /**
      * Update an existing note in the database
@@ -23,7 +23,7 @@ interface NotesRepository {
      * @param newNoteBody  New body of the note
      * @param oldNote      Old note to be updated
      */
-    suspend fun updateNote(newNoteTitle: String, newNoteBody: String, oldNote: Note)
+    suspend fun updateNote(updatedNote: Note)
 
     /**
      * Delete a note from the database
@@ -32,7 +32,7 @@ interface NotesRepository {
      */
     suspend fun deleteNote(note: Note)
 
-//    fun getNotesFlow(sortOptionFlow: Flow<SortOption>, searchQueryFlow: Flow<String>, currentZoneFlow: Flow<Zone>): Flow<List<Note>>
+    fun getNoteById(noteId: Int): Flow<Note?>
 
     fun toggleZone()
 

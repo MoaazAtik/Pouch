@@ -1,5 +1,6 @@
 package com.thewhitewings.pouch.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -69,6 +70,7 @@ object HomeDestination : NavigationDestination {
 @Composable
 fun HomeScreen(
     homeUiState: MainViewModel.HomeUiState,
+    navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
@@ -115,6 +117,7 @@ fun HomeScreen(
                 .padding(innerPadding),
             contentPadding = innerPadding,
         )
+        BackHandler(onBack = navigateBack)
     }
 }
 
@@ -128,6 +131,25 @@ private fun HomeBody(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        if (homeUiState.notesList.isEmpty()) {
+            Text(
+                text = stringResource(if (homeUiState.zone == Zone.CREATIVE) R.string.creative_zone else R.string.box_of_mysteries),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.padding(contentPadding),
+            )
+        }
+        Image(
+            painter = painterResource(R.drawable.logo_the_white_wings),
+            contentDescription = stringResource(R.string.the_white_wings_logo)
+        )
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier,
@@ -193,22 +215,6 @@ private fun HomeBody(
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_small))
         )
     }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        if (homeUiState.notesList.isEmpty()) {
-            Text(
-                text = stringResource(if (homeUiState.zone == Zone.CREATIVE) R.string.creative_zone else R.string.box_of_mysteries),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(contentPadding),
-            )
-        }
-        Image(painter = painterResource(R.drawable.logo_the_white_wings), contentDescription = "")
-    }
 }
 
 @Composable
@@ -252,7 +258,10 @@ private fun NotesListItem(
                 style = MaterialTheme.typography.titleLarge,
             )
             Text(
-                text = DateTimeUtils.getFormattedDateTime(DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT, note.timestamp),
+                text = DateTimeUtils.getFormattedDateTime(
+                    DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+                    note.timestamp
+                ),
                 style = MaterialTheme.typography.titleMedium
             )
             Text(
@@ -263,9 +272,31 @@ private fun NotesListItem(
     }
 }
 
+@Preview
+@Composable
+private fun HomeScreenPreview() {
+    PouchTheme {
+        HomeScreen(
+            homeUiState = MainViewModel.HomeUiState(
+                notesList = listOf(
+                    Note(1, "Game", "Note body", "Apr 23"),
+                    Note(2, "Pen", "200.0", "30"),
+                    Note(3, "TV", "300.0", "50")
+                )
+            ),
+            navigateBack = {},
+            navigateToCreateNote = {},
+            navigateToEditNote = {},
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {}
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
-fun HomeBodyPreview() {
+private fun HomeBodyPreview() {
     PouchTheme {
         HomeBody(
             homeUiState = MainViewModel.HomeUiState(
@@ -285,7 +316,7 @@ fun HomeBodyPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun HomeBodyEmptyListPreview() {
+private fun HomeBodyEmptyListPreview() {
     PouchTheme {
         HomeBody(
             homeUiState = MainViewModel.HomeUiState(notesList = listOf()),
@@ -299,7 +330,7 @@ fun HomeBodyEmptyListPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun NotesListItemPreview() {
+private fun NotesListItemPreview() {
     PouchTheme {
         NotesListItem(
             Note(1, "Game", "Note body", "Apr 23"),

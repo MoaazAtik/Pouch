@@ -23,24 +23,45 @@ class OfflineNotesRepository(
 
     private var currentZoneDao: NoteDao = creativeNoteDao
 
-    override suspend fun createNote(noteTitle: String, noteBody: String) {
+    override suspend fun createNote(note: Note) {
         currentZoneDao.insert(
-            Note(noteTitle = noteTitle, noteBody = noteBody)
+            with(note) {
+                Note(
+                    noteTitle = noteTitle,
+                    noteBody = noteBody,
+                )
+            }
         )
     }
 
-    override suspend fun updateNote(newNoteTitle: String, newNoteBody: String, oldNote: Note) {
-        val updatedNote = oldNote.copy(
-            noteTitle = newNoteTitle,
-            noteBody = newNoteBody,
-            timestamp = getFormattedDateTime(DateTimeFormatType.CURRENT_UTC)
+    override suspend fun updateNote(updatedNote: Note) {
+        currentZoneDao.updateNote(
+            with(updatedNote) {
+                Note(
+                    id = id,
+                    noteTitle = noteTitle,
+                    noteBody = noteBody,
+                    timestamp = getFormattedDateTime(DateTimeFormatType.CURRENT_UTC)
+                )
+            }
         )
-
-        currentZoneDao.updateNote(updatedNote)
     }
 
     override suspend fun deleteNote(note: Note) {
         currentZoneDao.deleteNote(note)
+    }
+
+    override fun getNoteById(noteId: Int): Flow<Note?> {
+        return currentZoneDao.getNoteById(noteId).map { note ->
+            note?.let {
+                Note(
+                    id = it.id,
+                    noteTitle = it.noteTitle,
+                    noteBody = it.noteBody,
+                    timestamp = getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, it.timestamp)
+                )
+            }
+        }
     }
 
     override fun toggleZone() {
@@ -58,7 +79,10 @@ class OfflineNotesRepository(
         return currentZoneDao.searchNotes(searchQuery, sortOption.name)
     }
 
-    override suspend fun saveSortOption(sortOption: SortOption, zone: Zone) { // rename to changeSortOption
+    override suspend fun saveSortOption(
+        sortOption: SortOption,
+        zone: Zone
+    ) { // rename to changeSortOption
         pouchPreferences.saveSortOption(sortOption, zone)
     }
 
