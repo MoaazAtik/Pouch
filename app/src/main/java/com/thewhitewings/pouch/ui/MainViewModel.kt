@@ -18,6 +18,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -34,7 +35,13 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
 
     init {
         viewModelScope.launch {
-            notesRepository.getSortOptionFlow(_homeUiState.value.zone)
+            // Collect zone changes and fetch the corresponding sortOption for that zone
+            _homeUiState.map { it.zone }
+                .distinctUntilChanged()
+                .flatMapLatest { zone ->
+                    notesRepository.getSortOptionFlow(zone)
+                }
+                .distinctUntilChanged()
                 .collect { sortOption ->
                     _homeUiState.update {
                         it.copy(sortOption = sortOption)
@@ -43,10 +50,15 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
 
         viewModelScope.launch {
+            // Combine sortOption and searchQuery to determine the flow of notes to collect
             combine(
-                _homeUiState.map { it.sortOption },
-                _homeUiState.map { it.searchQuery },
-            ) { sortOption, searchQuery ->
+                _homeUiState.map { it.sortOption }
+                    .distinctUntilChanged(),
+                _homeUiState.map { it.searchQuery }
+                    .distinctUntilChanged(),
+                _homeUiState.map { it.zone }
+                    .distinctUntilChanged()
+            ) { sortOption, searchQuery, _ ->
                 Pair(sortOption, searchQuery)
             }
                 .flatMapLatest { (sortOption, searchQuery) ->
@@ -79,15 +91,14 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
 
     fun toggleZone() {
         notesRepository.toggleZone()
-        viewModelScope.launch {
-            val newZone =
-                if (_homeUiState.value.zone == Zone.CREATIVE)
-                    Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
+        val newZone =
+            if (_homeUiState.value.zone == Zone.CREATIVE)
+                Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
 
+        viewModelScope.launch {
             _homeUiState.update {
                 it.copy(
                     zone = newZone,
-                    sortOption = notesRepository.getSortOptionFlow(newZone).first(),
                     searchQuery = ""
                 )
             }

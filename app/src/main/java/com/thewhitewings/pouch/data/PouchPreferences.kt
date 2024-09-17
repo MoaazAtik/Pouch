@@ -55,30 +55,6 @@ class PouchPreferences(
             }
     }
 
-//    var zone: Zone = Zone.CREATIVE
-//
-//    val sortOptionFlow: Flow<SortOption> =
-//        dataStore.data
-//        .catch {
-//            if (it is IOException) {
-//                Log.e(TAG, "Error reading preferences.", it)
-//                emit(emptyPreferences())
-//            } else {
-//                throw it
-//            }
-//        }
-//        .map { preference ->
-//            SortOption.valueOf(
-//                preference[getSortOptionKey(zone)] ?: DEFAULT_SORT_OPTION.name
-//            )
-//        }
-
-    fun getSortOption(zone: Zone): SortOption {
-        return runBlocking { // todo maybe using this run blocking will fix the issue
-            getSortOptionFlow(zone).firstOrNull() ?: DEFAULT_SORT_OPTION
-        }
-    }
-
     /**
      * Save the [SortOption] preference in DataStore
      *
@@ -88,16 +64,8 @@ class PouchPreferences(
     suspend fun saveSortOption(sortOption: SortOption, zone: Zone) {
         val sortOptionKey = getSortOptionKey(zone)
         Log.d(TAG, "saveSortOption: $sortOption , zone $zone")
-//        this.zone = zone
         dataStore.edit { preference ->
             preference[sortOptionKey] = sortOption.name
-        }
-    }
-
-    // Old. not used
-    fun saveSortOptionBlocking(sortOption: SortOption, zone: Zone) {
-        runBlocking {
-            saveSortOption(sortOption, zone)
         }
     }
 
