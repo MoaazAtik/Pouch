@@ -34,9 +34,6 @@ import com.thewhitewings.pouch.PouchApp
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.databinding.ActivityMainBinding
-import com.thewhitewings.pouch.ui.adapters.NotesAdapter
-import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener
-import com.thewhitewings.pouch.ui.adapters.RecyclerTouchListener.TouchListener
 import com.thewhitewings.pouch.ui.theme.PouchTheme
 import com.thewhitewings.pouch.utils.Constants
 import com.thewhitewings.pouch.utils.DateTimeFormatType
@@ -52,7 +49,7 @@ import java.util.concurrent.Executors
 class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<MainViewModel> { MainViewModel.Factory }
-    private val adapter: NotesAdapter = NotesAdapter()
+//    private val adapter: NotesAdapter = NotesAdapter()
     private lateinit var notesFlow: Flow<List<Note>>
     private lateinit var currentZone: StateFlow<Zone>
 
@@ -92,36 +89,36 @@ class MainActivity : ComponentActivity() {
     /**
      * Sets up the RecyclerView for displaying notes.
      */
-    private fun setupRecyclerView() {
-        val mLayoutManager: RecyclerView.LayoutManager =
-            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-        binding.recyclerView.layoutManager = mLayoutManager
-        binding.recyclerView.itemAnimator = DefaultItemAnimator()
-        binding.recyclerView.adapter = adapter
-
-        val recyclerTouchListener = RecyclerTouchListener(
-            this, binding.recyclerView, object : TouchListener {
-                override fun onClick(position: Int) {
-                    lifecycleScope.launch {
-                        openNote(
-                                notesFlow.last()[position]
-                        )
-                    }
-                }
-
-                override fun onSwiped(position: Int) {
-                    lifecycleScope.launch {
-                        viewModel.deleteNote(
-                            notesFlow.last()[position]
-                        )
-                    }
-                }
-            })
-
-        val itemTouchHelper = ItemTouchHelper(recyclerTouchListener)
-        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-        binding.recyclerView.addOnItemTouchListener(recyclerTouchListener)
-    }
+//    private fun setupRecyclerView() {
+//        val mLayoutManager: RecyclerView.LayoutManager =
+//            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
+//        binding.recyclerView.layoutManager = mLayoutManager
+//        binding.recyclerView.itemAnimator = DefaultItemAnimator()
+//        binding.recyclerView.adapter = adapter
+//
+//        val recyclerTouchListener = RecyclerTouchListener(
+//            this, binding.recyclerView, object : TouchListener {
+//                override fun onClick(position: Int) {
+//                    lifecycleScope.launch {
+//                        openNote(
+//                                notesFlow.last()[position]
+//                        )
+//                    }
+//                }
+//
+//                override fun onSwiped(position: Int) {
+//                    lifecycleScope.launch {
+//                        viewModel.deleteNote(
+//                            notesFlow.last()[position]
+//                        )
+//                    }
+//                }
+//            })
+//
+//        val itemTouchHelper = ItemTouchHelper(recyclerTouchListener)
+//        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
+//        binding.recyclerView.addOnItemTouchListener(recyclerTouchListener)
+//    }
 
     /**
      * Sets up listeners for the UI elements.
@@ -162,7 +159,7 @@ class MainActivity : ComponentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 notesFlow.collectLatest { notes ->
                     Log.d(TAG, "setupViewModelObservers: notesFlow: notes changed")
-                    adapter.setNotes(notes)
+//                    adapter.setNotes(notes)
                     toggleZoneNameVisibility(notes.isEmpty())
                 }
             }

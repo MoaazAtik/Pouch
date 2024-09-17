@@ -225,7 +225,7 @@ private fun NotesList(
     modifier: Modifier = Modifier
 ) {
     LazyVerticalStaggeredGrid(
-        columns = StaggeredGridCells.Fixed(2),
+        columns = StaggeredGridCells.Adaptive(140.dp),
         contentPadding = contentPadding,
         modifier = modifier
     ) {
@@ -235,6 +235,7 @@ private fun NotesList(
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
                     .clickable { onItemClick(note) }
+                    .animateItem()
             )
         }
     }
