@@ -30,129 +30,34 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow()
 
-//    init {
-//        viewModelScope.launch {
-////            val sortOption = notesRepository.getSortOptionFlow(Zone.CREATIVE).first()
-////            val notesList = notesRepository.getAllNotesStream(sortOption).first()
-////            _homeUiState.update {
-////                it.copy(
-////                    notesList = notesList,
-////                    sortOption = sortOption
-////                )
-////            }
-//
-//            notesRepository.getSortOptionFlow(Zone.CREATIVE)
-//                .collect { sortOption ->
-//                    Log.d(TAG, "collecting sort option")
-//                    _homeUiState.update {
-//                        it.copy(
-//                            sortOption = sortOption
-//                        )
-//                    }
-//                }
-//        }
-//
-//        Log.d(TAG, "before notes stream")
-//        viewModelScope.launch {
-//            notesRepository.getAllNotesStream(_homeUiState.value.sortOption)
-//                .collect { noteList ->
-//                    Log.d(TAG, "collecting notes: _homeUiState.value.sortOption ${_homeUiState.value.sortOption}")
-//                    _homeUiState.update {
-//                        it.copy(
-//                            notesList = noteList
-//                        )
-//                    }
-//                }
-//        }
-//        Log.d(TAG, "after notes stream")
-//    }
-
-//    init {
-//        viewModelScope.launch {
-//            notesRepository.getSortOptionFlow(_homeUiState.value.zone)
-//                .collect { sortOption ->
-//                    Log.d(TAG, "collecting sort option $sortOption")
-//                    _homeUiState.update {
-//                        it.copy(
-//                            sortOption = sortOption
-//                        )
-//                    }
-//                }
-//        }
-//        viewModelScope.launch {
-//            combine(
-//                _homeUiState.map { it.sortOption },
-//                _homeUiState.map { it.searchQuery },
-//                _homeUiState.map { it.zone }
-//            ) { sortOption, searchQuery, zone ->
-//                Triple(sortOption, searchQuery, zone)
-//            }
-//                .flatMapLatest { (sortOption, searchQuery, zone) ->
-//                    Log.d(TAG, "flat map sortOption $sortOption, searchQuery $searchQuery, zone $zone")
-//                    if (searchQuery.isEmpty()) {
-//                        notesRepository.getAllNotesStream(sortOption, )
-//                    } else {
-//                        notesRepository.searchNotesStream(searchQuery, sortOption, )
-//                    }
-//                }
-//                .collect { notesList ->
-//                    Log.d(TAG, "collecting notes: sortOption: ${_homeUiState.value.sortOption} " +
-//                            "zone: ${_homeUiState.value.zone} " +
-//                            "searchQuery: ${_homeUiState.value.searchQuery}")
-//                    if (_homeUiState.value.notesList.isNotEmpty()) {
-//                        Log.d(TAG, "new note ${_homeUiState.value.notesList.first()}")
-//                    }
-//                    _homeUiState.update { it.copy(notesList = notesList) }
-//                }
-//        }
-//    }
-
     init {
-        viewModelScope.launch {
-            _homeUiState.map { it.zone }
-                .collect { zone ->
-                    Log.d(TAG, "collecting zone $zone")
-                    _homeUiState.update {
-                        it.copy(
-                            sortOption = notesRepository.getSortOptionFlow(zone).first()
-                            // todo move this to toggleZone below
-                        )
-                    }
-                }
-        }
         viewModelScope.launch {
             notesRepository.getSortOptionFlow(_homeUiState.value.zone)
                 .collect { sortOption ->
-                    Log.d(TAG, "collecting sort option $sortOption")
                     _homeUiState.update {
-                        it.copy(
-                            sortOption = sortOption
-                        )
+                        it.copy(sortOption = sortOption)
                     }
                 }
         }
+
         viewModelScope.launch {
             combine(
                 _homeUiState.map { it.sortOption },
                 _homeUiState.map { it.searchQuery },
-                // zone is collected above -> it updates the sort option -> triggers the combine
             ) { sortOption, searchQuery ->
                 Pair(sortOption, searchQuery)
             }
                 .flatMapLatest { (sortOption, searchQuery) ->
-                    Log.d(TAG, "flat map sortOption $sortOption, searchQuery $searchQuery")
-                    //todo fix it is called twice
                     if (searchQuery.isEmpty()) {
-                        notesRepository.getAllNotesStream(sortOption, )
+                        notesRepository.getAllNotesStream(sortOption)
                     } else {
-                        notesRepository.searchNotesStream(searchQuery, sortOption, )
+                        notesRepository.searchNotesStream(searchQuery, sortOption)
                     }
                 }
                 .collect { notesList ->
-                    Log.d(TAG, "collecting notes: sortOption: ${_homeUiState.value.sortOption} " +
-                            "zone: ${_homeUiState.value.zone} " +
-                            "searchQuery: ${_homeUiState.value.searchQuery}")
-                    _homeUiState.update { it.copy(notesList = notesList) }
+                    _homeUiState.update {
+                        it.copy(notesList = notesList)
+                    }
                 }
         }
     }
@@ -167,19 +72,14 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
     fun toggleZone() {
         notesRepository.toggleZone()
         viewModelScope.launch {
-//            val notesList =
-//                getNotesList(
-//                    _homeUiState.value.searchQuery,
-//                    _homeUiState.value.sortOption
-//                )
+            val newZone =
+                if (_homeUiState.value.zone == Zone.CREATIVE)
+                    Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
 
             _homeUiState.update {
                 it.copy(
-//                    notesList = notesList,
-                    zone =
-                    if (_homeUiState.value.zone == Zone.CREATIVE)
-                        Zone.BOX_OF_MYSTERIES
-                    else Zone.CREATIVE,
+                    zone = newZone,
+                    sortOption = notesRepository.getSortOptionFlow(newZone).first(),
                     searchQuery = ""
                 )
             }
@@ -188,21 +88,8 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
 
     fun updateSortOption(sortOptionId: Int) {
         val sortOption = getSortOptionFromId(sortOptionId)
-
         viewModelScope.launch {
             notesRepository.saveSortOption(sortOption, _homeUiState.value.zone)
-//            val notesList =
-//                getNotesList(
-//                    _homeUiState.value.searchQuery,
-//                    sortOption
-//                )
-
-//            _homeUiState.update {
-//                it.copy(
-//                    notesList = notesList,
-//                    sortOption = sortOption
-//                )
-//            }
         }
     }
 
@@ -219,34 +106,8 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
 
     fun updateSearchQuery(newQuery: String) {
         _homeUiState.update {
-            it.copy(
-                searchQuery = newQuery
-            )
+            it.copy(searchQuery = newQuery)
         }
-//        viewModelScope.launch {
-//            val notesList =
-//                getNotesList(
-//                    _homeUiState.value.searchQuery,
-//                    _homeUiState.value.sortOption
-//                )
-//
-//            _homeUiState.update {
-//                it.copy(
-//                    notesList = notesList
-//                )
-//            }
-//        }
-    }
-
-    private suspend fun getNotesList(searchQuery: String, sortOption: SortOption): List<Note> {
-        val deferred =
-            viewModelScope.async {
-                if (searchQuery.isEmpty())
-                    notesRepository.getAllNotesStream(sortOption).first()
-                else
-                    notesRepository.searchNotesStream(searchQuery, sortOption).first()
-            }
-        return deferred.await()
     }
 
     companion object {
