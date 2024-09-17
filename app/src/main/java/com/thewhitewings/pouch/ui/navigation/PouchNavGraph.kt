@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -21,7 +20,7 @@ import androidx.navigation.navArgument
 //import com.example.inventory.ui.item.ItemEntryScreen
 import com.thewhitewings.pouch.ui.HomeDestination
 import com.thewhitewings.pouch.ui.HomeScreen
-import com.thewhitewings.pouch.ui.MainViewModel
+import com.thewhitewings.pouch.ui.HomeViewModel
 import com.thewhitewings.pouch.ui.NoteDestination
 import com.thewhitewings.pouch.ui.NoteScreen
 import com.thewhitewings.pouch.ui.NoteViewModel
@@ -43,7 +42,7 @@ fun PouchNavHost(
         composable(
             route = HomeDestination.route
         ) {
-            val viewModel: MainViewModel = viewModel(factory = MainViewModel.Factory)
+            val viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
             val homeUiState by viewModel.homeUiState.collectAsState()
 
             HomeScreen(

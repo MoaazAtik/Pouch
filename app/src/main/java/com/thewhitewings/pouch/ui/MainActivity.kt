@@ -24,11 +24,6 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.DefaultItemAnimator
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.thewhitewings.pouch.PouchApp
 import com.thewhitewings.pouch.R
@@ -42,13 +37,12 @@ import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.last
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel by viewModels<MainViewModel> { MainViewModel.Factory }
+    private val viewModel by viewModels<HomeViewModel> { HomeViewModel.Factory }
 //    private val adapter: NotesAdapter = NotesAdapter()
     private lateinit var notesFlow: Flow<List<Note>>
     private lateinit var currentZone: StateFlow<Zone>

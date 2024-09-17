@@ -1,6 +1,5 @@
 package com.thewhitewings.pouch.ui
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -14,21 +13,19 @@ import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.data.getSortOptionFromId
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private const val TAG = "MainViewModel"
+private const val TAG = "HomeViewModel"
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() {
+class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() {
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow()
@@ -121,13 +118,13 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
     companion object {
 
         /**
-         * Factory for [MainViewModel] that takes [NotesRepository] as a dependency
+         * Factory for [HomeViewModel] that takes [NotesRepository] as a dependency
          */
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application = (this[APPLICATION_KEY] as PouchApplication)
                 val notesRepository = application.notesRepository
-                MainViewModel(notesRepository = notesRepository)
+                HomeViewModel(notesRepository = notesRepository)
             }
         }
     }

@@ -69,7 +69,7 @@ object HomeDestination : NavigationDestination {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    homeUiState: MainViewModel.HomeUiState,
+    homeUiState: HomeViewModel.HomeUiState,
     navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
@@ -123,7 +123,7 @@ fun HomeScreen(
 
 @Composable
 private fun HomeBody(
-    homeUiState: MainViewModel.HomeUiState,
+    homeUiState: HomeViewModel.HomeUiState,
     onItemClick: (Int) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
@@ -278,7 +278,7 @@ private fun NotesListItem(
 private fun HomeScreenPreview() {
     PouchTheme {
         HomeScreen(
-            homeUiState = MainViewModel.HomeUiState(
+            homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", "Apr 23"),
                     Note(2, "Pen", "200.0", "30"),
@@ -300,7 +300,7 @@ private fun HomeScreenPreview() {
 private fun HomeBodyPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = MainViewModel.HomeUiState(
+            homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", "Apr 23"),
                     Note(2, "Pen", "200.0", "30"),
@@ -320,7 +320,7 @@ private fun HomeBodyPreview() {
 private fun HomeBodyEmptyListPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = MainViewModel.HomeUiState(notesList = listOf()),
+            homeUiState = HomeViewModel.HomeUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
