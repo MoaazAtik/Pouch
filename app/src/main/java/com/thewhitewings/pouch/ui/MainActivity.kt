@@ -40,16 +40,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
+private const val TAG = "MainActivity"
+
 class MainActivity : ComponentActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel by viewModels<HomeViewModel> { HomeViewModel.Factory }
-//    private val adapter: NotesAdapter = NotesAdapter()
-    private lateinit var notesFlow: Flow<List<Note>>
     private lateinit var currentZone: StateFlow<Zone>
 
     // Count of how many times the Box of mysteries reveal button has been pressed (knocked)
     private var bomKnocks = 0
-
     // Boolean of whether the timeout for revealing the Box of mysteries has started
     private var bomTimeoutStarted = false
 
@@ -66,192 +65,9 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-//        binding = ActivityMainBinding.inflate(layoutInflater)
-//        setContentView(binding.root)
-//
-//        notesFlow = viewModel.notesFlow
-//        currentZone = viewModel.getCurrentZoneFlow()
-//
-//        setupRecyclerView()
-//        setupListeners()
-//        setupViewModelObservers()
-//        setupBackPressingBehaviour()
-//
 //        showBtnRevealBom()
     }
 
-    /**
-     * Sets up the RecyclerView for displaying notes.
-     */
-//    private fun setupRecyclerView() {
-//        val mLayoutManager: RecyclerView.LayoutManager =
-//            StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
-//        binding.recyclerView.layoutManager = mLayoutManager
-//        binding.recyclerView.itemAnimator = DefaultItemAnimator()
-//        binding.recyclerView.adapter = adapter
-//
-//        val recyclerTouchListener = RecyclerTouchListener(
-//            this, binding.recyclerView, object : TouchListener {
-//                override fun onClick(position: Int) {
-//                    lifecycleScope.launch {
-//                        openNote(
-//                                notesFlow.last()[position]
-//                        )
-//                    }
-//                }
-//
-//                override fun onSwiped(position: Int) {
-//                    lifecycleScope.launch {
-//                        viewModel.deleteNote(
-//                            notesFlow.last()[position]
-//                        )
-//                    }
-//                }
-//            })
-//
-//        val itemTouchHelper = ItemTouchHelper(recyclerTouchListener)
-//        itemTouchHelper.attachToRecyclerView(binding.recyclerView)
-//        binding.recyclerView.addOnItemTouchListener(recyclerTouchListener)
-//    }
-
-    /**
-     * Sets up listeners for the UI elements.
-     */
-    private fun setupListeners() {
-        binding.btnCreateNote.setOnClickListener { openNote(null) }
-
-        binding.activityMainRoot.setOnClickListener {
-            clearFocusAndHideKeyboard(
-                binding.svSearchNotes
-            )
-        }
-
-        binding.svSearchNotes.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String): Boolean {
-//                viewModel.updateSearchQuery(newText)
-                return false
-            }
-        })
-
-        binding.btnSort.setOnClickListener { showSortingPopupMenu() }
-
-        binding.btnRevealBom.setOnClickListener { revealBoxOfMysteries() }
-    }
-
-    /**
-     * Sets up observers for the ViewModel's LiveData.
-     */
-    private fun setupViewModelObservers() {
-        /*
-        Note: Each flow should be collected in a separate coroutine. Otherwise, only the last flow will be collected.
-         */
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                notesFlow.collectLatest { notes ->
-                    Log.d(TAG, "setupViewModelObservers: notesFlow: notes changed")
-//                    adapter.setNotes(notes)
-                    toggleZoneNameVisibility(notes.isEmpty())
-                }
-            }
-        }
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                currentZone.collectLatest { zone: Zone ->
-                    Log.d(TAG, "setupViewModelObservers: zone changed to $zone")
-                    clearFocusAndHideKeyboard(binding.svSearchNotes)
-                    if (zone == Zone.BOX_OF_MYSTERIES) goToBoxOfMysteries()
-                    else goToCreativeZone()
-                    binding.svSearchNotes.setQuery("", false)
-                }
-            }
-        }
-    }
-
-    /**
-     * Sets up the back pressing behaviour for the activity.
-     */
-    private fun setupBackPressingBehaviour() {
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (currentZone.value == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
-                else finish()
-            }
-        })
-    }
-
-    /**
-     * Opens a note in the fragment container.
-     *
-     * @param note the note to be opened, or `null` if a new note should be created
-     */
-    private fun openNote(note: Note?) {
-        clearFocusAndHideKeyboard(binding.svSearchNotes)
-
-        val noteFragment = NoteFragment()
-        if (note != null) {
-            val argsBundle = Bundle()
-            argsBundle.putInt(Constants.COLUMN_ID, note.id)
-            argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.noteTitle)
-            argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.noteBody)
-            argsBundle.putString(
-                Constants.COLUMN_TIMESTAMP,
-                DateTimeUtils.getFormattedDateTime(
-                    DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
-                    note.timestamp
-                )
-            )
-            noteFragment.arguments = argsBundle
-        }
-
-//        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
-        fragmentTransaction.setCustomAnimations(
-            androidx.fragment.R.animator.fragment_fade_enter,
-            androidx.fragment.R.animator.fragment_fade_exit,
-            androidx.fragment.R.animator.fragment_close_enter,
-            androidx.fragment.R.animator.fragment_fade_exit
-        )
-//        fragmentTransaction.replace(R.id.fragment_container_note, noteFragment)
-        fragmentTransaction.commit()
-    }
-
-    /**
-     * Clears the focus from the given view and hides the soft keyboard.
-     *
-     * @param view the view to clear focus from
-     */
-    fun clearFocusAndHideKeyboard(view: View) {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(view.windowToken, 0)
-        view.clearFocus()
-    }
-
-    /**
-     * Shows and sets up the sorting popup menu to sort the notes in the RecyclerView.
-     */
-    private fun showSortingPopupMenu() {
-        val popupMenu = PopupMenu(this, binding.btnSort)
-        val menuInflater = popupMenu.menuInflater
-        menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.menu)
-        popupMenu.setOnMenuItemClickListener { item: MenuItem ->
-            viewModel.updateSortOption(item.itemId)
-            true
-        }
-        popupMenu.show()
-    }
-
-    /**
-     * Toggles the visibility of the zone name text view.
-     */
-    private fun toggleZoneNameVisibility(isEmptyList: Boolean) {
-        binding.txtZoneName.visibility =
-            if (isEmptyList) View.VISIBLE
-            else View.GONE
-    }
 
     /**
      * Makes the reveal Box of mysteries button interactable.
@@ -423,7 +239,4 @@ class MainActivity : ComponentActivity() {
         colorAnimator.start()
     }
 
-    companion object {
-        private const val TAG = "MainActivity"
-    }
 }
