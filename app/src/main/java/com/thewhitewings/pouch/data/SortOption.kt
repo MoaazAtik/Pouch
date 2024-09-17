@@ -45,17 +45,3 @@ fun getSortOptionFromId(sortOptionId: Int): SortOption {
     Log.e(TAG, "Invalid sortOptionId: $sortOptionId", IllegalArgumentException())
     return NEWEST_FIRST
 }
-
-/**
- * Used by [DatabaseHelper] to sort the notes
- *
- * @return The SQL string to be used for database query
- */
-fun SortOption.toSqlString(): String {
-    return when (this) {
-        A_Z -> "${Constants.COLUMN_NOTE_TITLE} COLLATE NOCASE ASC, ${Constants.COLUMN_NOTE_BODY} COLLATE NOCASE ASC"
-        Z_A -> "note_title COLLATE NOCASE DESC, note_body COLLATE NOCASE DESC"
-        OLDEST_FIRST -> "${Constants.COLUMN_TIMESTAMP} ASC"
-        NEWEST_FIRST -> "${Constants.COLUMN_TIMESTAMP} DESC"
-    }
-}

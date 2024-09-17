@@ -1,5 +1,6 @@
 package com.thewhitewings.pouch.ui
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -57,6 +58,8 @@ import com.thewhitewings.pouch.ui.theme.PouchTheme
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
+
+private const val TAG = "HomeScreen"
 
 object HomeDestination : NavigationDestination {
     override val route = "home"

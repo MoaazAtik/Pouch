@@ -8,36 +8,21 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.PopupMenu
-import android.widget.SearchView
 import androidx.activity.ComponentActivity
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.google.android.material.snackbar.Snackbar
 import com.thewhitewings.pouch.PouchApp
 import com.thewhitewings.pouch.R
-import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.databinding.ActivityMainBinding
 import com.thewhitewings.pouch.ui.theme.PouchTheme
-import com.thewhitewings.pouch.utils.Constants
-import com.thewhitewings.pouch.utils.DateTimeFormatType
-import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
 private const val TAG = "MainActivity"

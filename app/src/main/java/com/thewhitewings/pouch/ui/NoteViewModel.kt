@@ -17,12 +17,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val TAG = "NoteViewModel"
+
 class NoteViewModel(
-    private val notesRepository: NotesRepository,
-//    private val args: Bundle? = null,
-//    savedStateHandle: SavedStateHandle? = null
-//    savedStateHandle: SavedStateHandle // gpt // todo move upwards
-    val savedStateHandle: SavedStateHandle // gpt // todo move upwards
+    private val savedStateHandle: SavedStateHandle,
+    private val notesRepository: NotesRepository
 ) : ViewModel() {
 
     init {
@@ -35,16 +34,6 @@ class NoteViewModel(
     private val _noteUiState = MutableStateFlow(NoteUiState())
     val noteUiState = _noteUiState.asStateFlow()
 
-    data class NoteUiState(
-        val note: Note = Note(timestamp = ""),
-    )
-
-    /**
-     * Initialize the note LiveData and [oldNote] with the provided arguments.
-     * It is needed for the first initialization when a note is opened for updating.
-     *
-     * @param args the arguments bundle passed from the activity containing the note data
-     */
     private fun initializeNote() {
         val noteId: Int = savedStateHandle[NoteDestination.noteIdArg] ?: return
 
@@ -61,12 +50,6 @@ class NoteViewModel(
         }
     }
 
-    /**
-     * Create or update the note based on the provided data.
-     *
-     * @param newNoteTitle the new title of the note
-     * @param newNoteBody  the new body of the note
-     */
     fun createOrUpdateNote() {
         with(_noteUiState.value.note) {
             if (oldNote == null) {
@@ -80,24 +63,12 @@ class NoteViewModel(
         }
     }
 
-    /**
-     * Create a new note with the provided title and body.
-     *
-     * @param noteTitle the title of the new note
-     * @param noteBody  the body of the new note
-     */
     private fun createNote() {
         viewModelScope.launch {
             notesRepository.createNote(_noteUiState.value.note)
         }
     }
 
-    /**
-     * Update the existing note with the provided title and body.
-     *
-     * @param noteTitle the new title of the note
-     * @param noteBody  the new body of the note
-     */
     private fun updateNote() {
         viewModelScope.launch {
             notesRepository.updateNote(_noteUiState.value.note)
@@ -129,9 +100,12 @@ class NoteViewModel(
         }
     }
 
+    data class NoteUiState(
+        val note: Note = Note(timestamp = ""),
+    )
+
 
     companion object {
-        private const val TAG = "NoteViewModel"
 
         /**
          * Factory for [NoteViewModel] that takes [NotesRepository] as a dependency
@@ -141,8 +115,8 @@ class NoteViewModel(
                 val application = (this[APPLICATION_KEY] as PouchApplication)
                 val notesRepository = application.notesRepository
                 NoteViewModel(
-                    notesRepository = notesRepository,
-                    savedStateHandle = this.createSavedStateHandle()
+                    savedStateHandle = this.createSavedStateHandle(),
+                    notesRepository = notesRepository
                 )
             }
         }

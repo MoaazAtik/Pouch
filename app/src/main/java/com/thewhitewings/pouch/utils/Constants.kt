@@ -11,7 +11,6 @@ object Constants {
     const val BOM_DATABASE_VERSION: Int = 1 // (old)
     const val BOM_DATABASE_NAME: String = "bom_db"
 
-
     // Common database constants
     // version 2 (current)
     const val CREATIVE_AND_BOM_DATABASE_VERSION: Int = 2
@@ -31,9 +30,4 @@ object Constants {
     const val COLUMN_NOTE_TITLE_VERSION_3: String = "NoteTitle"
     const val COLUMN_NOTE_BODY_VERSION_3: String = "NoteBody"
     const val COLUMN_TIMESTAMP_VERSION_3: String = "Timestamp"
-
-    // Preferences
-    const val PREFERENCES_NAME: String = "userPreferences"
-    const val CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY: String = "mainZoneSortOption"
-    const val BOM_ZONE_SORT_OPTION_PREFERENCE_KEY: String = "bomZoneSortOption"
 }

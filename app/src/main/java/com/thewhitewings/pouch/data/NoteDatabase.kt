@@ -26,7 +26,7 @@ abstract class NoteDatabase : RoomDatabase() {
         fun getDatabase(
             context: Context,
             databaseName: String
-        ): NoteDatabase { // database name for a specific zone
+        ): NoteDatabase {
 
             var currentDatabase: NoteDatabase? =
                 if (databaseName == CREATIVE_DATABASE_NAME) CreativeDatabase else BomDatabase

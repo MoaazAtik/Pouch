@@ -4,10 +4,7 @@ import android.util.Log
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime
 import com.thewhitewings.pouch.utils.Zone
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 
 private const val TAG = "OfflineNotesRepository"
@@ -82,7 +79,7 @@ class OfflineNotesRepository(
     override suspend fun saveSortOption(
         sortOption: SortOption,
         zone: Zone
-    ) { // rename to changeSortOption
+    ) {
         pouchPreferences.saveSortOption(sortOption, zone)
     }
 

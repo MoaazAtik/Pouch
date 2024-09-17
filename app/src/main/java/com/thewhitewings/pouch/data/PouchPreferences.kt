@@ -9,10 +9,10 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.runBlocking
 import java.io.IOException
+
+private const val TAG = "PouchPreferences"
 
 /**
  * A class that interacts with the DataStore of the app and stores user preferences
@@ -26,8 +26,20 @@ class PouchPreferences(
             stringPreferencesKey("creative_zone_sort_option")
         val BOM_ZONE_SORT_OPTION_PREFERENCE_KEY = stringPreferencesKey("bom_zone_sort_option")
         val DEFAULT_SORT_OPTION by lazy { SortOption.NEWEST_FIRST }
+    }
 
-        const val TAG = "PouchPreferences"
+    /**
+     * Save the [SortOption] preference in DataStore
+     *
+     * @param sortOption preference to be saved
+     * @param zone       current [Zone]
+     */
+    suspend fun saveSortOption(sortOption: SortOption, zone: Zone) {
+        val sortOptionKey = getSortOptionKey(zone)
+        Log.d(TAG, "saveSortOption: $sortOption , zone $zone")
+        dataStore.edit { preference ->
+            preference[sortOptionKey] = sortOption.name
+        }
     }
 
     /**
@@ -53,20 +65,6 @@ class PouchPreferences(
                     preference[sortOptionKey] ?: DEFAULT_SORT_OPTION.name
                 )
             }
-    }
-
-    /**
-     * Save the [SortOption] preference in DataStore
-     *
-     * @param sortOption preference to be saved
-     * @param zone       current [Zone]
-     */
-    suspend fun saveSortOption(sortOption: SortOption, zone: Zone) {
-        val sortOptionKey = getSortOptionKey(zone)
-        Log.d(TAG, "saveSortOption: $sortOption , zone $zone")
-        dataStore.edit { preference ->
-            preference[sortOptionKey] = sortOption.name
-        }
     }
 
     /**

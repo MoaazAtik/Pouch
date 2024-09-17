@@ -1,6 +1,5 @@
 package com.thewhitewings.pouch.ui.navigation
 
-
 import android.app.Activity
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -12,12 +11,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-//import com.example.inventory.ui.item.ItemDetailsDestination
-//import com.example.inventory.ui.item.ItemDetailsScreen
-//import com.example.inventory.ui.item.ItemEditDestination
-//import com.example.inventory.ui.item.ItemEditScreen
-//import com.example.inventory.ui.item.ItemEntryDestination
-//import com.example.inventory.ui.item.ItemEntryScreen
 import com.thewhitewings.pouch.ui.HomeDestination
 import com.thewhitewings.pouch.ui.HomeScreen
 import com.thewhitewings.pouch.ui.HomeViewModel
@@ -39,6 +32,7 @@ fun PouchNavHost(
         startDestination = HomeDestination.route,
         modifier = modifier
     ) {
+        // Home Screen
         composable(
             route = HomeDestination.route
         ) {
@@ -51,13 +45,15 @@ fun PouchNavHost(
                     if (homeUiState.zone == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
                     else (navController.context as? Activity)?.finish()
                 },
-                navigateToCreateNote = { navController.navigate("${NoteDestination.route}/0") }, // Empty fields
-                navigateToEditNote = { noteId -> navController.navigate("${NoteDestination.route}/$noteId") }, // Pass noteId
+                navigateToCreateNote = { navController.navigate("${NoteDestination.route}/0") },
+                navigateToEditNote = { noteId -> navController.navigate("${NoteDestination.route}/$noteId") },
                 onSearchNotes = viewModel::updateSearchQuery,
                 onSortNotes = viewModel::updateSortOption,
                 onToggleZone = viewModel::toggleZone
             )
         }
+
+        // Note Screen
         composable(
             route = NoteDestination.routeWithArgs,
             arguments = listOf(navArgument(NoteDestination.noteIdArg) {
@@ -77,28 +73,5 @@ fun PouchNavHost(
                 onNoteBodyChange = { viewModel.updateNoteBody(it) }
             )
         }
-
-//        composable(
-//            route = ItemDetailsDestination.routeWithArgs,
-//            arguments = listOf(navArgument(ItemDetailsDestination.itemIdArg) {
-//                type = NavType.IntType
-//            })
-//        ) {
-//            ItemDetailsScreen(
-//                navigateToEditItem = { navController.navigate("${ItemEditDestination.route}/$it") },
-//                navigateBack = { navController.navigateUp() }
-//            )
-//        }
-//        composable(
-//            route = ItemEditDestination.routeWithArgs,
-//            arguments = listOf(navArgument(ItemEditDestination.itemIdArg) {
-//                type = NavType.IntType
-//            })
-//        ) {
-//            ItemEditScreen(
-//                navigateBack = { navController.popBackStack() },
-//                onNavigateUp = { navController.navigateUp() }
-//            )
-//        }
     }
 }

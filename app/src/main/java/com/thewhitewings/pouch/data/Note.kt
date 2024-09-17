@@ -10,10 +10,6 @@ import com.thewhitewings.pouch.utils.Constants.COLUMN_NOTE_BODY
 import com.thewhitewings.pouch.utils.Constants.COLUMN_TIMESTAMP
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
-import com.thewhitewings.pouch.utils.DateTimeUtils.DEFAULT_FORMAT
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 @Entity(tableName = TABLE_NAME)
 data class Note(
@@ -30,27 +26,4 @@ data class Note(
 
     @ColumnInfo(name = COLUMN_TIMESTAMP)
     val timestamp: String = DateTimeUtils.getFormattedDateTime(DateTimeFormatType.CURRENT_UTC)
-){
-
-    override fun toString(): String {
-        return "Note{" +
-                "id=" + id +
-                ", noteTitle='" + noteTitle + '\'' +
-                ", noteBody='" + noteBody + '\'' +
-                ", timestamp='" + timestamp + '\'' +
-                '}'
-    }
-
-    /**
-     * Checks if two notes are equal based on their content.
-     *
-     * @param note The note to compare with.
-     * @return True if the notes are equal, false otherwise.
-     */
-    fun equalContent(note: Note): Boolean {
-        return id == note.id &&
-                noteTitle == note.noteTitle &&
-                noteBody == note.noteBody &&
-                timestamp == note.timestamp
-    }
-}
+)
