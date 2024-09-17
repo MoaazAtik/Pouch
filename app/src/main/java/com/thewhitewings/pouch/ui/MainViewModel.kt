@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+private const val TAG = "MainViewModel"
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() {
 
@@ -62,12 +64,18 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
     }
 
-    data class HomeUiState(
-        val notesList: List<Note> = emptyList(),
-        val zone: Zone = Zone.CREATIVE,
-        val sortOption: SortOption = SortOption.NEWEST_FIRST,
-        val searchQuery: String = ""
-    )
+    fun updateSearchQuery(newQuery: String) {
+        _homeUiState.update {
+            it.copy(searchQuery = newQuery)
+        }
+    }
+
+    fun updateSortOption(sortOptionId: Int) {
+        val sortOption = getSortOptionFromId(sortOptionId)
+        viewModelScope.launch {
+            notesRepository.saveSortOption(sortOption, _homeUiState.value.zone)
+        }
+    }
 
     fun toggleZone() {
         notesRepository.toggleZone()
@@ -86,32 +94,20 @@ class MainViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
     }
 
-    fun updateSortOption(sortOptionId: Int) {
-        val sortOption = getSortOptionFromId(sortOptionId)
-        viewModelScope.launch {
-            notesRepository.saveSortOption(sortOption, _homeUiState.value.zone)
-        }
-    }
-
-    /**
-     * Delete a note.
-     *
-     * @param note the note to be deleted
-     */
     fun deleteNote(note: Note) {
         viewModelScope.launch {
             notesRepository.deleteNote(note)
         }
     }
 
-    fun updateSearchQuery(newQuery: String) {
-        _homeUiState.update {
-            it.copy(searchQuery = newQuery)
-        }
-    }
+    data class HomeUiState(
+        val notesList: List<Note> = emptyList(),
+        val zone: Zone = Zone.CREATIVE,
+        val sortOption: SortOption = SortOption.NEWEST_FIRST,
+        val searchQuery: String = ""
+    )
 
     companion object {
-        private const val TAG = "MainViewModel"
 
         /**
          * Factory for [MainViewModel] that takes [NotesRepository] as a dependency
