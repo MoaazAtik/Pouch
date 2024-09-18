@@ -1,13 +1,13 @@
 package com.thewhitewings.pouch.ui
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -17,13 +17,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -54,7 +54,11 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -180,13 +184,11 @@ private fun HomeBody(
                 ),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            OutlinedTextField(
+            SearchNotesTextField(
                 value = homeUiState.searchQuery,
                 onValueChange = { onSearchNotes(it) },
-                leadingIcon = {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
-                },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .weight(1f)
             )
 
             var expandedSortMenu by remember { mutableStateOf(false) }
@@ -239,6 +241,41 @@ private fun HomeBody(
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_small))
         )
     }
+}
+
+@Composable
+fun SearchNotesTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = { onValueChange(it) },
+        leadingIcon = {
+            Icon(imageVector = Icons.Default.Search, contentDescription = "")
+        },
+        modifier = modifier
+            .background(
+                color = Color.White
+            )
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.inversePrimary,
+                shape = RoundedCornerShape(10.dp)
+            ),
+        shape = RoundedCornerShape(10.dp),
+        textStyle = TextStyle(
+            fontSize = 16.sp,
+            fontFamily = FontFamily(Font(R.font.mulish_regular))
+        ),
+        placeholder = { Text(stringResource(R.string.search_notes_hint)) },
+        keyboardOptions = KeyboardOptions(
+            capitalization = KeyboardCapitalization.Sentences,
+            imeAction = ImeAction.Search
+        ),
+        maxLines = Int.MAX_VALUE
+    )
 }
 
 @Composable

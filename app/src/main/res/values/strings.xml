@@ -8,6 +8,7 @@
     <string name="bom_revealing_message">Box of Mysteries is revealed</string>
     <string name="back_description">Back and save or discard note</string>
     <string name="delete_note_description">Delete Note</string>
+    <string name="search_notes_hint">Search notes</string>
     <string name="note_title_hint">Title</string>
     <string name="note_body_hint">Note...</string>
     <string name="timestamp_edited">Edited %1$s</string>
