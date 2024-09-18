@@ -3,7 +3,10 @@ package com.thewhitewings.pouch.ui
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.indication
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,13 +19,16 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -43,6 +49,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.BlendMode
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
@@ -55,6 +66,7 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.ui.theme.PouchTheme
+import com.thewhitewings.pouch.ui.theme.backgroundLight
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
@@ -205,12 +217,16 @@ private fun HomeBody(
                 }
             }
         }
-        Button(
-            onClick = onToggleZone,
-            modifier = Modifier
-        ) {
-            Text(text = "Toggle Zone")
-        }
+            Button(
+                onClick = onToggleZone,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+                modifier =
+                    if (!homeUiState.isBomRevealed)
+                        Modifier.size(width = 80.dp, height = 20.dp)
+
+                    else
+                        Modifier.size(width = 0.dp, height = 20.dp)
+            ){}
         NotesList(
             notesList = homeUiState.notesList,
             onItemClick = { onItemClick(it.id) },
@@ -276,7 +292,7 @@ private fun NotesListItem(
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
     PouchTheme {
@@ -298,7 +314,7 @@ private fun HomeScreenPreview() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun HomeBodyPreview() {
     PouchTheme {
@@ -318,7 +334,7 @@ private fun HomeBodyPreview() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun HomeBodyEmptyListPreview() {
     PouchTheme {
@@ -332,7 +348,7 @@ private fun HomeBodyEmptyListPreview() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun NotesListItemPreview() {
     PouchTheme {

@@ -13,6 +13,7 @@ import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.data.getSortOptionFromId
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -29,6 +30,9 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
 
     private val _homeUiState = MutableStateFlow(HomeUiState())
     val homeUiState = _homeUiState.asStateFlow()
+
+    private var bomKnocks = 0
+    private var bomTimeoutStarted = false
 
     init {
         viewModelScope.launch {
@@ -92,13 +96,12 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
             if (_homeUiState.value.zone == Zone.CREATIVE)
                 Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
 
-        viewModelScope.launch {
-            _homeUiState.update {
-                it.copy(
-                    zone = newZone,
-                    searchQuery = ""
-                )
-            }
+        _homeUiState.update {
+            it.copy(
+                zone = newZone,
+                searchQuery = "",
+                isBomRevealed = !it.isBomRevealed
+            )
         }
     }
 
@@ -108,11 +111,45 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
     }
 
+    fun revealBoxOfMysteries() {
+        bomKnocks++
+        if (!bomTimeoutStarted) {
+            viewModelScope.launch {
+                startBoxRevealTimeout()
+            }
+        }
+    }
+
+    private suspend fun startBoxRevealTimeout() {
+        bomTimeoutStarted = true
+        val timeoutKnocking = 7_000L // 7 seconds timeout
+        val startKnockingTime = System.currentTimeMillis()
+
+        while (bomTimeoutStarted) {
+            val elapsedKnockingTime = System.currentTimeMillis() - startKnockingTime
+
+            if (elapsedKnockingTime >= timeoutKnocking) {
+                bomTimeoutStarted = false
+                bomKnocks = 0
+                break
+            } else if (bomKnocks == 5) {
+                delay(500) // wait 500ms before completing the reveal
+                bomTimeoutStarted = false
+                bomKnocks = 0
+                toggleZone()
+                break
+            }
+
+            delay(200) // Wait for 200ms before checking again
+        }
+    }
+
     data class HomeUiState(
         val notesList: List<Note> = emptyList(),
         val zone: Zone = Zone.CREATIVE,
         val sortOption: SortOption = SortOption.NEWEST_FIRST,
-        val searchQuery: String = ""
+        val searchQuery: String = "",
+        val isBomRevealed: Boolean = false
     )
 
     companion object {

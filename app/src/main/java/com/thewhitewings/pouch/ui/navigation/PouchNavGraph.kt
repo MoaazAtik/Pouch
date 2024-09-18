@@ -49,7 +49,7 @@ fun PouchNavHost(
                 navigateToEditNote = { noteId -> navController.navigate("${NoteDestination.route}/$noteId") },
                 onSearchNotes = viewModel::updateSearchQuery,
                 onSortNotes = viewModel::updateSortOption,
-                onToggleZone = viewModel::toggleZone
+                onToggleZone = viewModel::revealBoxOfMysteries
             )
         }
 
