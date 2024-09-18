@@ -25,8 +25,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -49,6 +47,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
@@ -193,37 +192,11 @@ private fun HomeBody(
                     .weight(1f)
             )
 
-            var expandedSortMenu by remember { mutableStateOf(false) }
-            Box {
-                IconButton(
-                    onClick = {
-                        focusManager.clearFocus()
-                        expandedSortMenu = !expandedSortMenu
-                    }
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.sort),
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-                DropdownMenu(
-                    expanded = expandedSortMenu,
-                    onDismissRequest = { expandedSortMenu = false }) {
-
-                    SortOption.entries.forEach { sortOption ->
-                        DropdownMenuItem(
-                            text = {
-                                Text(text = stringResource(sortOption.label))
-                            },
-                            onClick = {
-                                onSortNotes(sortOption.id)
-                                expandedSortMenu = false
-                            }
-                        )
-                    }
-                }
-            }
+            SortNotesButton(
+                onSortNotes = onSortNotes,
+                focusManager = focusManager,
+                modifier = Modifier
+            )
         }
         Button(
             onClick = {
@@ -255,7 +228,11 @@ fun SearchNotesTextField(
         value = value,
         onValueChange = { onValueChange(it) },
         leadingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = "")
+            Icon(
+                painter = painterResource(R.drawable.magnifier),
+                contentDescription = "",
+                tint = MaterialTheme.colorScheme.inversePrimary
+            )
         },
         trailingIcon = {
             if (value.isNotEmpty()) {
@@ -281,13 +258,58 @@ fun SearchNotesTextField(
             fontSize = 16.sp,
             fontFamily = FontFamily(Font(R.font.mulish_regular))
         ),
-        placeholder = { Text(stringResource(R.string.search_notes_hint)) },
+        placeholder = {
+            Text(
+                text = stringResource(R.string.search_notes_hint),
+                color = Color.Gray
+            )
+        },
         keyboardOptions = KeyboardOptions(
             capitalization = KeyboardCapitalization.Sentences,
             imeAction = ImeAction.Search
         ),
         maxLines = Int.MAX_VALUE
     )
+}
+
+@Composable
+fun SortNotesButton(
+    onSortNotes: (sortOptionId: Int) -> Unit,
+    focusManager: FocusManager,
+    modifier: Modifier = Modifier
+) {
+    var expandedSortMenu by remember { mutableStateOf(false) }
+
+    Box {
+        IconButton(
+            onClick = {
+                focusManager.clearFocus()
+                expandedSortMenu = !expandedSortMenu
+            }
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.sort),
+                contentDescription = stringResource(R.string.sort_notes),
+                tint = MaterialTheme.colorScheme.inversePrimary
+            )
+        }
+        DropdownMenu(
+            expanded = expandedSortMenu,
+            onDismissRequest = { expandedSortMenu = false }) {
+
+            SortOption.entries.forEach { sortOption ->
+                DropdownMenuItem(
+                    text = {
+                        Text(text = stringResource(sortOption.label))
+                    },
+                    onClick = {
+                        onSortNotes(sortOption.id)
+                        expandedSortMenu = false
+                    }
+                )
+            }
+        }
+    }
 }
 
 @Composable
