@@ -11,11 +11,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_app_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.Pouch"
+        android:theme="@style/Theme.Pouch"
         tools:targetApi="34">
         <activity
             android:name=".ui.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.Pouch">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

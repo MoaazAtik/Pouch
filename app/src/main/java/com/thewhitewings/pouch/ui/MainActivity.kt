@@ -41,7 +41,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            PouchTheme {
+            PouchTheme(dynamicColor = false) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                 ) {

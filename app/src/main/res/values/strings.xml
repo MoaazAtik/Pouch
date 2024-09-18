@@ -11,6 +11,7 @@
     <string name="note_title_hint">Title</string>
     <string name="note_body_hint">Note...</string>
     <string name="timestamp_edited">Edited %1$s</string>
+    <string name="timestamp_not_formatted">2024-04-23 19:16:15</string>
     <string name="timestamp_medium_sample">Apr 23, 2024</string>
     <string name="timestamp_short_sample">Apr 23</string>
     <string name="sort_option_a_z">A ► Z</string>

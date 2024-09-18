@@ -1,12 +1,9 @@
 package com.thewhitewings.pouch.ui
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,13 +17,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -49,27 +47,23 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.thewhitewings.pouch.ui.navigation.NavigationDestination
+import androidx.compose.ui.unit.sp
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.SortOption
+import com.thewhitewings.pouch.ui.navigation.NavigationDestination
 import com.thewhitewings.pouch.ui.theme.PouchTheme
-import com.thewhitewings.pouch.ui.theme.backgroundLight
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
@@ -132,8 +126,7 @@ fun HomeScreen(
             onToggleZone = onToggleZone,
             modifier = modifier
                 .fillMaxSize()
-                .padding(innerPadding),
-            contentPadding = innerPadding,
+                .padding(innerPadding)
         )
         BackHandler(onBack = navigateBack)
     }
@@ -146,8 +139,7 @@ private fun HomeBody(
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
-    modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
 
@@ -160,13 +152,17 @@ private fun HomeBody(
             Text(
                 text = stringResource(if (homeUiState.zone == Zone.CREATIVE) R.string.creative_zone else R.string.box_of_mysteries),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(contentPadding),
+                fontSize = 26.sp,
+                fontFamily = FontFamily.SansSerif,
+                color = MaterialTheme.colorScheme.inversePrimary
             )
         }
         Image(
             painter = painterResource(R.drawable.logo_the_white_wings),
-            contentDescription = stringResource(R.string.the_white_wings_logo)
+            contentDescription = stringResource(R.string.the_white_wings_logo),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.inversePrimary),
+            modifier = Modifier
+                .size(140.dp)
         )
     }
 
@@ -188,7 +184,7 @@ private fun HomeBody(
                 value = homeUiState.searchQuery,
                 onValueChange = { onSearchNotes(it) },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.Menu, contentDescription = "")
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
                 },
                 modifier = Modifier.weight(1f)
             )
@@ -202,7 +198,7 @@ private fun HomeBody(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Default.Menu,
+                        painter = painterResource(R.drawable.sort),
                         contentDescription = "",
                         tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -240,7 +236,6 @@ private fun HomeBody(
         NotesList(
             notesList = homeUiState.notesList,
             onItemClick = { onItemClick(it.id) },
-            contentPadding = contentPadding,
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_small))
         )
     }
@@ -250,12 +245,10 @@ private fun HomeBody(
 private fun NotesList(
     notesList: List<Note>,
     onItemClick: (Note) -> Unit,
-    contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(140.dp),
-        contentPadding = contentPadding,
         modifier = modifier
     ) {
         items(items = notesList, key = { it.id }) { note ->

@@ -12,6 +12,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,6 +33,8 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.ui.navigation.NavigationDestination
 import com.thewhitewings.pouch.ui.theme.PouchTheme
+import com.thewhitewings.pouch.utils.DateTimeFormatType
+import com.thewhitewings.pouch.utils.DateTimeUtils
 
 object NoteDestination : NavigationDestination {
     override val route = "note"
@@ -100,7 +103,7 @@ fun NoteScreenBody(
             }
             IconButton(onClick = onNoteDelete) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Default.ExitToApp,
+                    imageVector = Icons.Default.Delete,
                     contentDescription = stringResource(R.string.delete_note_description)
                 )
             }
@@ -134,18 +137,23 @@ fun NoteScreenBody(
                 keyboardType = KeyboardType.Text
             )
         )
-        if (noteUiState.note.timestamp.isNotEmpty())
+        if (noteUiState.note.timestamp.isNotEmpty()) {
+            val formattedTimestamp = DateTimeUtils.getFormattedDateTime(
+                DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
+                noteUiState.note.timestamp
+            )
             Text(
-                text = stringResource(R.string.timestamp_edited, noteUiState.note.timestamp),
+                text = stringResource(R.string.timestamp_edited, formattedTimestamp),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodyMedium,
             )
+        }
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 fun NoteScreenPreview() {
     PouchTheme {
@@ -168,8 +176,7 @@ fun NoteScreenWithTimestampPreview() {
             noteUiState = NoteViewModel.NoteUiState(
                 Note(
                     timestamp = stringResource(
-                        R.string.timestamp_edited,
-                        R.string.timestamp_edited
+                        R.string.timestamp_not_formatted
                     )
                 )
             ),
