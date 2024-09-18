@@ -54,7 +54,10 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -146,6 +149,8 @@ private fun HomeBody(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
+    val focusManager = LocalFocusManager.current
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -191,7 +196,10 @@ private fun HomeBody(
             var expandedSortMenu by remember { mutableStateOf(false) }
             Box {
                 IconButton(
-                    onClick = { expandedSortMenu = !expandedSortMenu }
+                    onClick = {
+                        focusManager.clearFocus()
+                        expandedSortMenu = !expandedSortMenu
+                    }
                 ) {
                     Icon(
                         imageVector = Icons.Default.Menu,
@@ -217,16 +225,18 @@ private fun HomeBody(
                 }
             }
         }
-            Button(
-                onClick = onToggleZone,
-                colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-                modifier =
-                    if (!homeUiState.isBomRevealed)
-                        Modifier.size(width = 80.dp, height = 20.dp)
-
-                    else
-                        Modifier.size(width = 0.dp, height = 20.dp)
-            ){}
+        Button(
+            onClick = {
+                focusManager.clearFocus()
+                onToggleZone()
+            },
+            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+            modifier =
+            if (!homeUiState.isBomRevealed)
+                Modifier.size(width = 80.dp, height = 20.dp)
+            else
+                Modifier.size(width = 0.dp, height = 20.dp)
+        ) {}
         NotesList(
             notesList = homeUiState.notesList,
             onItemClick = { onItemClick(it.id) },
