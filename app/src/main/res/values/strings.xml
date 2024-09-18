@@ -9,6 +9,7 @@
     <string name="back_description">Back and save or discard note</string>
     <string name="delete_note_description">Delete Note</string>
     <string name="search_notes_hint">Search notes</string>
+    <string name="clear_search_notes_hint">Clear search notes</string>
     <string name="note_title_hint">Title</string>
     <string name="note_body_hint">Note...</string>
     <string name="timestamp_edited">Edited %1$s</string>
