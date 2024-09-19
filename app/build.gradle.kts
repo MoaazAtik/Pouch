@@ -60,6 +60,7 @@ dependencies {
 
     // Lottie Animations
     implementation("com.airbnb.android:lottie:6.3.0")
+    implementation (libs.lottie.compose)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.fragment.ktx)

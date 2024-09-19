@@ -1,7 +1,15 @@
 package com.thewhitewings.pouch.ui
 
+import android.content.Context
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RawRes
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,6 +26,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
@@ -38,11 +47,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +64,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.dimensionResource
@@ -60,6 +74,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
@@ -67,14 +82,19 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.ui.navigation.NavigationDestination
 import com.thewhitewings.pouch.ui.theme.PouchTheme
+import com.thewhitewings.pouch.ui.theme.grayLogoBom
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
+import kotlinx.coroutines.delay
 
 private const val TAG = "HomeScreen"
 
@@ -99,6 +119,7 @@ fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
 //        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -125,6 +146,7 @@ fun HomeScreen(
                 )
             }
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         HomeBody(
             homeUiState = homeUiState,
@@ -137,6 +159,73 @@ fun HomeScreen(
                 .padding(innerPadding)
         )
         BackHandler(onBack = navigateBack)
+
+        ShowAnimations(
+            zone = homeUiState.zone,
+            snackbarHostState = snackbarHostState,
+            context = LocalContext.current
+        )
+    }
+}
+
+@Composable
+fun ShowAnimations(
+    zone: Zone,
+    snackbarHostState: SnackbarHostState,
+    context: Context,
+    modifier: Modifier = Modifier
+) {
+    when (zone) {
+        Zone.CREATIVE -> {
+            RevealScreenAnimation(R.raw.reveal_screen_red, 1f)
+        }
+
+        Zone.BOX_OF_MYSTERIES -> {
+            RevealScreenAnimation(R.raw.reveal_screen_black, 0.5f)
+
+            var revealLoaderVisible by remember { mutableStateOf(true) }
+            RevealLoaderAnimation(visible = revealLoaderVisible)
+            LaunchedEffect(revealLoaderVisible) {
+                delay(2_000)
+                revealLoaderVisible = false
+            }
+
+            LaunchedEffect(Unit) {
+                snackbarHostState.showSnackbar(context.getString(R.string.bom_revealing_message))
+            }
+        }
+    }
+}
+
+@Composable
+fun RevealScreenAnimation(
+    @RawRes animationResId: Int,
+    speed: Float,
+    modifier: Modifier = Modifier
+) {
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animationResId))
+    LottieAnimation(
+        composition,
+        contentScale = ContentScale.FillBounds,
+        speed = speed
+    )
+}
+
+@Composable
+fun RevealLoaderAnimation(
+    visible: Boolean,
+    modifier: Modifier = Modifier
+) {
+    if (visible) {
+        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.reveal_loader))
+        LottieAnimation(
+            composition,
+            modifier = modifier
+                .fillMaxSize()
+                .wrapContentSize(align = Alignment.Center)
+                .size(200.dp),
+            speed = 0.6f
+        )
     }
 }
 
@@ -152,26 +241,16 @@ private fun HomeBody(
     val focusManager = LocalFocusManager.current
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(align = Alignment.Center)
+            .animateContentSize(animationSpec = spring(stiffness = Spring.StiffnessMedium)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (homeUiState.notesList.isEmpty()) {
-            Text(
-                text = stringResource(if (homeUiState.zone == Zone.CREATIVE) R.string.creative_zone else R.string.box_of_mysteries),
-                textAlign = TextAlign.Center,
-                fontSize = 26.sp,
-                fontFamily = FontFamily.SansSerif,
-                color = MaterialTheme.colorScheme.primaryContainer
-            )
-        }
-        Image(
-            painter = painterResource(R.drawable.logo_the_white_wings),
-            contentDescription = stringResource(R.string.the_white_wings_logo),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primaryContainer),
-            modifier = Modifier
-                .size(140.dp)
-        )
+        if (homeUiState.notesList.isEmpty())
+            ZoneText(currentZone = homeUiState.zone)
+        LogoImage(currentZone = homeUiState.zone)
     }
 
     Column(
@@ -383,6 +462,78 @@ private fun NotesListItem(
         }
     }
 }
+
+@Composable
+fun LogoImage(currentZone: Zone) {
+    val targetColor =
+        if (currentZone == Zone.BOX_OF_MYSTERIES) grayLogoBom
+        else MaterialTheme.colorScheme.primaryContainer
+
+    // Animate the color change from currentColor to finalColor
+    val animatedColor by animateColorAsState(
+        targetValue = targetColor,
+        animationSpec = tween(durationMillis = 3500),
+        label = "LogoColorAnimation"
+    )
+
+    // Display the logo with the animated color filter
+    Image(
+        painter = painterResource(R.drawable.logo_the_white_wings),
+        contentDescription = stringResource(R.string.the_white_wings_logo),
+        modifier = Modifier
+            .size(140.dp),
+        colorFilter = ColorFilter.tint(animatedColor)
+    )
+}
+
+@Composable
+fun ZoneText(currentZone: Zone) {
+    // Determine values based on the current zone
+    val zoneName: String
+    val typeface: FontFamily
+    val fontWeight: FontWeight
+    val targetTextSize: Float
+    val targetTextColor: Color
+
+    if (currentZone == Zone.BOX_OF_MYSTERIES) {
+        zoneName = stringResource(id = R.string.box_of_mysteries)
+        typeface = FontFamily.Cursive
+        fontWeight = FontWeight.Bold
+        targetTextSize = 32f
+        targetTextColor = Color.Black
+    } else {
+        zoneName = stringResource(id = R.string.creative_zone)
+        typeface = FontFamily.SansSerif
+        fontWeight = FontWeight.Light
+        targetTextSize = 26f
+        targetTextColor = MaterialTheme.colorScheme.primaryContainer
+    }
+
+    // Animate the text size
+    val animatedTextSize by animateFloatAsState(
+        targetValue = targetTextSize,
+        animationSpec = tween(durationMillis = 1000),
+        label = "ZoneNameTextSizeAnimation"
+    )
+
+    // Animate the color change
+    val animatedTextColor by animateColorAsState(
+        targetValue = targetTextColor,
+        animationSpec = tween(durationMillis = 4500),
+        label = "ZoneNameColorAnimation"
+    )
+
+    // Display the animated text
+    Text(
+        text = zoneName,
+        fontFamily = typeface,
+        fontWeight = fontWeight,
+        fontSize = animatedTextSize.sp,
+        color = animatedTextColor,
+        textAlign = TextAlign.Center
+    )
+}
+
 
 @Preview(showBackground = true)
 @Composable
