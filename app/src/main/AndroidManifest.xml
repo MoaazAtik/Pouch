@@ -14,7 +14,7 @@
         android:theme="@style/Theme.Pouch"
         tools:targetApi="34">
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:theme="@style/Theme.Pouch">
             <intent-filter>
