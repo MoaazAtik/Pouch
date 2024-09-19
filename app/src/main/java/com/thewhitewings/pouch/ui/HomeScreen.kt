@@ -1,5 +1,6 @@
 package com.thewhitewings.pouch.ui
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -36,9 +37,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -61,6 +63,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -159,13 +162,13 @@ private fun HomeBody(
                 textAlign = TextAlign.Center,
                 fontSize = 26.sp,
                 fontFamily = FontFamily.SansSerif,
-                color = MaterialTheme.colorScheme.inversePrimary
+                color = MaterialTheme.colorScheme.primaryContainer
             )
         }
         Image(
             painter = painterResource(R.drawable.logo_the_white_wings),
             contentDescription = stringResource(R.string.the_white_wings_logo),
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.inversePrimary),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primaryContainer),
             modifier = Modifier
                 .size(140.dp)
         )
@@ -224,14 +227,14 @@ fun SearchNotesTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = { onValueChange(it) },
         leadingIcon = {
             Icon(
                 painter = painterResource(R.drawable.magnifier),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.inversePrimary
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
             )
         },
         trailingIcon = {
@@ -246,13 +249,18 @@ fun SearchNotesTextField(
         },
         modifier = modifier
             .background(
-                color = Color.White
+                color = Color.White,
+                shape = RoundedCornerShape(10.dp)
             )
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.inversePrimary,
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
                 shape = RoundedCornerShape(10.dp)
             ),
+        colors = TextFieldDefaults.colors(
+            unfocusedIndicatorColor = Color.Transparent,
+            focusedIndicatorColor = Color.Transparent
+        ),
         shape = RoundedCornerShape(10.dp),
         textStyle = TextStyle(
             fontSize = 16.sp,
@@ -290,7 +298,7 @@ fun SortNotesButton(
             Icon(
                 painter = painterResource(R.drawable.sort),
                 contentDescription = stringResource(R.string.sort_notes),
-                tint = MaterialTheme.colorScheme.inversePrimary
+                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
             )
         }
         DropdownMenu(
@@ -341,26 +349,36 @@ private fun NotesListItem(
 ) {
     Card(
         modifier = modifier,
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
     ) {
         Column(
-            modifier = Modifier.padding(dimensionResource(R.dimen.padding_large)),
+            modifier = Modifier
+                .padding(
+                    horizontal = dimensionResource(R.dimen.padding_medium),
+                    vertical = dimensionResource(R.dimen.padding_10)
+                ),
             verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
         ) {
             Text(
                 text = note.noteTitle,
                 style = MaterialTheme.typography.titleLarge,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
             )
             Text(
                 text = DateTimeUtils.getFormattedDateTime(
                     DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
                     note.timestamp
                 ),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.inversePrimary,
+                fontSize = 14.sp
             )
             Text(
                 text = note.noteBody,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.bodyMedium,
+                maxLines = 6,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }
@@ -369,7 +387,32 @@ private fun NotesListItem(
 @Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
-    PouchTheme {
+    PouchTheme(dynamicColor = false) {
+        HomeScreen(
+            homeUiState = HomeViewModel.HomeUiState(
+                notesList = listOf(
+                    Note(1, "Game", "Note body", "Apr 23"),
+                    Note(2, "Pen", "200.0", "30"),
+                    Note(3, "TV", "300.0", "50")
+                )
+            ),
+            navigateBack = {},
+            navigateToCreateNote = {},
+            navigateToEditNote = {},
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Composable
+private fun HomeScreenNightPreview() {
+    PouchTheme(dynamicColor = false) {
         HomeScreen(
             homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
@@ -418,6 +461,30 @@ private fun HomeBodyEmptyListPreview() {
             onSortNotes = {},
             onToggleZone = {},
             onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+private fun SearchNotesPreview() {
+    PouchTheme(dynamicColor = false) {
+        SearchNotesTextField(
+            value = "",
+            onValueChange = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
+@Composable
+private fun SearchNotesNightPreview() {
+    PouchTheme(dynamicColor = false) {
+        SearchNotesTextField(
+            value = "",
+            onValueChange = {}
         )
     }
 }
