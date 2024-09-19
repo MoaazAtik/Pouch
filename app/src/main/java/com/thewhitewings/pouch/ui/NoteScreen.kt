@@ -1,5 +1,6 @@
 package com.thewhitewings.pouch.ui
 
+import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -19,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -81,8 +84,8 @@ fun NoteScreenBody(
     Column(
         modifier = modifier
             .padding(
-                start = dimensionResource(R.dimen.padding_medium),
-                end = dimensionResource(R.dimen.padding_medium),
+                start = dimensionResource(R.dimen.padding_small),
+                end = dimensionResource(R.dimen.padding_small),
                 top = dimensionResource(R.dimen.padding_medium),
                 bottom = dimensionResource(R.dimen.padding_small)
             )
@@ -94,17 +97,23 @@ fun NoteScreenBody(
         ) {
             BackHandler(onBack = navigateBack)
             IconButton(
-                onClick = onNavigateUp
+                onClick = onNavigateUp,
+                modifier = Modifier.padding(start = dimensionResource(R.dimen.padding_small))
             ) {
                 Icon(
                     imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                    contentDescription = stringResource(R.string.back_description)
+                    contentDescription = stringResource(R.string.back_description),
+                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                 )
             }
-            IconButton(onClick = onNoteDelete) {
+            IconButton(
+                onClick = onNoteDelete,
+                modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_medium))
+            ) {
                 Icon(
                     imageVector = Icons.Default.Delete,
-                    contentDescription = stringResource(R.string.delete_note_description)
+                    contentDescription = stringResource(R.string.delete_note_description),
+                    tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                 )
             }
         }
@@ -113,13 +122,23 @@ fun NoteScreenBody(
             onValueChange = onNoteTitleChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = dimensionResource(R.dimen.padding_extra_large))
-                .background(Color.Transparent),
-            placeholder = { Text(stringResource(R.string.note_title_hint)) },
+                .padding(top = dimensionResource(R.dimen.padding_large)),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent
+            ),
+            placeholder = {
+                Text(
+                    stringResource(R.string.note_title_hint),
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.titleLarge
+                )
+            },
             textStyle = MaterialTheme.typography.titleLarge,
             keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
-                keyboardType = KeyboardType.Text
+                capitalization = KeyboardCapitalization.Sentences
             )
         )
         TextField(
@@ -127,14 +146,24 @@ fun NoteScreenBody(
             onValueChange = onNoteBodyChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = dimensionResource(R.dimen.padding_small))
                 .background(Color.Transparent)
                 .weight(1f),
-            placeholder = { Text(stringResource(R.string.note_body_hint)) },
+            placeholder = {
+                Text(
+                    stringResource(R.string.note_body_hint),
+                    color = Color.Gray,
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            },
             textStyle = MaterialTheme.typography.bodyLarge,
             keyboardOptions = KeyboardOptions(
-                capitalization = KeyboardCapitalization.Sentences,
-                keyboardType = KeyboardType.Text
+                capitalization = KeyboardCapitalization.Sentences
+            ),
+            colors = TextFieldDefaults.colors(
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                focusedContainerColor = Color.Transparent
             )
         )
         if (noteUiState.note.timestamp.isNotEmpty()) {
@@ -148,6 +177,7 @@ fun NoteScreenBody(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
             )
         }
     }
@@ -155,8 +185,8 @@ fun NoteScreenBody(
 
 //@Preview(showBackground = true)
 @Composable
-fun NoteScreenPreview() {
-    PouchTheme {
+fun NoteScreenWithoutTimestampPreview() {
+    PouchTheme(dynamicColor = false) {
         NoteScreen(
             noteUiState = NoteViewModel.NoteUiState(),
             navigateBack = {},
@@ -170,8 +200,32 @@ fun NoteScreenPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun NoteScreenWithTimestampPreview() {
-    PouchTheme {
+fun NoteScreenPreview() {
+    PouchTheme(dynamicColor = false) {
+        NoteScreen(
+            noteUiState = NoteViewModel.NoteUiState(
+                Note(
+                    timestamp = stringResource(
+                        R.string.timestamp_not_formatted
+                    )
+                )
+            ),
+            navigateBack = {},
+            onNavigateUp = {},
+            onNoteDelete = {},
+            onNoteTitleChange = {},
+            onNoteBodyChange = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Composable
+fun NoteScreenNightPreview() {
+    PouchTheme(dynamicColor = false) {
         NoteScreen(
             noteUiState = NoteViewModel.NoteUiState(
                 Note(
