@@ -523,7 +523,7 @@ fun ZoneText(currentZone: Zone) {
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
     PouchTheme(dynamicColor = false) {
@@ -545,19 +545,24 @@ private fun HomeScreenPreview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
+//@Preview(
+//    showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
 @Composable
 private fun HomeScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
         HomeScreen(
             homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", "Apr 23"),
-                    Note(2, "Pen", "200.0", "30"),
-                    Note(3, "TV", "300.0", "50")
+                    Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
+                    Note(
+                        2,
+                        "Pen",
+                        "200.0\nStaggered",
+                        stringResource(R.string.timestamp_not_formatted)
+                    ),
+                    Note(3, "TV", "300.0", stringResource(R.string.timestamp_not_formatted))
                 )
             ),
             navigateBack = {},
@@ -577,9 +582,14 @@ private fun HomeBodyPreview() {
         HomeBody(
             homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", "Apr 23"),
-                    Note(2, "Pen", "200.0", "30"),
-                    Note(3, "TV", "300.0", "50")
+                    Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
+                    Note(
+                        2,
+                        "Pen",
+                        "200.0\nStaggered",
+                        stringResource(R.string.timestamp_not_formatted)
+                    ),
+                    Note(3, "TV", "300.0", stringResource(R.string.timestamp_not_formatted))
                 )
             ),
             onSearchNotes = {},
@@ -606,10 +616,73 @@ private fun HomeBodyEmptyListPreview() {
 
 //@Preview(showBackground = true)
 @Composable
+private fun HomeBodyBomEmptyListPreview() {
+    PouchTheme {
+        HomeBody(
+            homeUiState = HomeViewModel.HomeUiState(
+                notesList = listOf(),
+                zone = Zone.BOX_OF_MYSTERIES
+            ),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
+@Composable
+private fun HomeBodyEmptyListNightPreview() {
+    PouchTheme {
+        HomeBody(
+            homeUiState = HomeViewModel.HomeUiState(notesList = listOf()),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
+@Composable
+private fun HomeBodyBomEmptyListNightPreview() {
+    PouchTheme {
+        HomeBody(
+            homeUiState = HomeViewModel.HomeUiState(
+                notesList = listOf(),
+                zone = Zone.BOX_OF_MYSTERIES
+            ),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
 private fun SearchNotesPreview() {
     PouchTheme(dynamicColor = false) {
         SearchNotesTextField(
             value = "",
+            onValueChange = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
+private fun SearchNotesWithTextPreview() {
+    PouchTheme(dynamicColor = false) {
+        SearchNotesTextField(
+            value = "note",
             onValueChange = {}
         )
     }
@@ -633,7 +706,7 @@ private fun SearchNotesNightPreview() {
 private fun NotesListItemPreview() {
     PouchTheme {
         NotesListItem(
-            Note(1, "Game", "Note body", "Apr 23"),
+            Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted))
         )
     }
 }
