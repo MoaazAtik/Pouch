@@ -172,12 +172,12 @@ fun ShowAnimations(
         Zone.BOX_OF_MYSTERIES -> {
             RevealScreenAnimation(R.raw.reveal_screen_black, 0.5f)
 
-            var revealLoaderVisible by remember { mutableStateOf(true) }
-            RevealLoaderAnimation(visible = revealLoaderVisible)
-            LaunchedEffect(revealLoaderVisible) {
-                delay(2_000)
-                revealLoaderVisible = false
-            }
+//            var revealLoaderVisible by remember { mutableStateOf(true) }
+            RevealLoaderAnimation()
+//            LaunchedEffect(revealLoaderVisible) {
+//                delay(2_000)
+//                revealLoaderVisible = false
+//            }
 
             LaunchedEffect(Unit) {
                 snackbarHostState.showSnackbar(context.getString(R.string.bom_revealing_message))
@@ -202,20 +202,17 @@ fun RevealScreenAnimation(
 
 @Composable
 fun RevealLoaderAnimation(
-    visible: Boolean,
     modifier: Modifier = Modifier
 ) {
-    if (visible) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.reveal_loader))
-        LottieAnimation(
-            composition,
-            modifier = modifier
-                .fillMaxSize()
-                .wrapContentSize(align = Alignment.Center)
-                .size(200.dp),
-            speed = 0.6f
-        )
-    }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.reveal_loader))
+    LottieAnimation(
+        composition,
+        modifier = modifier
+            .fillMaxSize()
+            .wrapContentSize(align = Alignment.Center)
+            .size(200.dp),
+        speed = 0.6f
+    )
 }
 
 @Composable
@@ -689,7 +686,8 @@ private fun SearchNotesWithTextPreview() {
     }
 }
 
-@Preview(showBackground = true,
+@Preview(
+    showBackground = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 @Composable
