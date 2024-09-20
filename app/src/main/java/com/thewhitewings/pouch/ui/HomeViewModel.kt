@@ -150,8 +150,7 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
             it.copy(
                 zone = newZone,
                 searchQuery = "",
-                showAnimations = true,
-                isBomRevealed = !it.isBomRevealed
+                showAnimations = true
             )
         }
 
@@ -164,8 +163,7 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         val zone: Zone = Zone.CREATIVE,
         val sortOption: SortOption = SortOption.NEWEST_FIRST,
         val searchQuery: String = "",
-        val showAnimations: Boolean = true,
-        val isBomRevealed: Boolean = false
+        val showAnimations: Boolean = true
     )
 
 

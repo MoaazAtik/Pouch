@@ -273,7 +273,7 @@ private fun HomeBody(
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
             modifier =
-            if (!homeUiState.isBomRevealed)
+            if (homeUiState.zone == Zone.CREATIVE)
                 Modifier.size(width = 80.dp, height = 20.dp)
             else
                 Modifier.size(width = 0.dp, height = 20.dp)
