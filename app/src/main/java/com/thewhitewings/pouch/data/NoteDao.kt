@@ -18,6 +18,15 @@ interface NoteDao {
     @Query(
         """
         SELECT * FROM ${Constants.TABLE_NAME}
+        WHERE ${Constants.COLUMN_ID} = :noteId
+        LIMIT 1
+        """
+    )
+    fun getNoteById(noteId: Int): Flow<Note?>
+
+    @Query(
+        """
+        SELECT * FROM ${Constants.TABLE_NAME}
         ORDER BY 
             CASE WHEN :sortOptionName = 'A_Z' THEN note_title END COLLATE NOCASE ASC,
             CASE WHEN :sortOptionName = 'A_Z' THEN note_body END COLLATE NOCASE ASC,
@@ -31,21 +40,6 @@ interface NoteDao {
         """
     )
     fun getAllNotes(sortOptionName: String): Flow<List<Note>>
-
-    @Query(
-        """
-        SELECT * FROM ${Constants.TABLE_NAME}
-        WHERE ${Constants.COLUMN_ID} = :noteId
-        LIMIT 1
-        """
-    )
-    fun getNoteById(noteId: Int): Flow<Note?>
-
-    @Update
-    suspend fun updateNote(note: Note)
-
-    @Delete
-    suspend fun deleteNote(note: Note)
 
     @Query(
         """
@@ -65,4 +59,10 @@ interface NoteDao {
         """
     )
     fun searchNotes(searchQuery: String, sortOptionName: String): Flow<List<Note>>
+
+    @Update
+    suspend fun updateNote(note: Note)
+
+    @Delete
+    suspend fun deleteNote(note: Note)
 }

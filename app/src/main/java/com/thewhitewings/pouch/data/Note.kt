@@ -3,11 +3,11 @@ package com.thewhitewings.pouch.data
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.thewhitewings.pouch.utils.Constants.TABLE_NAME
 import com.thewhitewings.pouch.utils.Constants.COLUMN_ID
-import com.thewhitewings.pouch.utils.Constants.COLUMN_NOTE_TITLE
 import com.thewhitewings.pouch.utils.Constants.COLUMN_NOTE_BODY
+import com.thewhitewings.pouch.utils.Constants.COLUMN_NOTE_TITLE
 import com.thewhitewings.pouch.utils.Constants.COLUMN_TIMESTAMP
+import com.thewhitewings.pouch.utils.Constants.TABLE_NAME
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 

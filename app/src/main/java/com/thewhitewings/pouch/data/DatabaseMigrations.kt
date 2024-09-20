@@ -103,10 +103,10 @@ val MIGRATION_3_1 = object : Migration(3, 1) {
 
         /*
         new:              common:           old:
-        id                id                id
-        note_title                          noteTitle
-        note_body                           noteBody
-        timestamp         timestamp         timestamp
+        id                                  ID
+        note_title                          NoteTitle
+        note_body                           NoteBody
+        timestamp                           Timestamp
          */
 
         // - Handle renamed columns

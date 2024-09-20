@@ -90,21 +90,6 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
     }
 
-    fun toggleZone() {
-        notesRepository.toggleZone()
-        val newZone =
-            if (_homeUiState.value.zone == Zone.CREATIVE)
-                Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
-
-        _homeUiState.update {
-            it.copy(
-                zone = newZone,
-                searchQuery = "",
-                isBomRevealed = !it.isBomRevealed
-            )
-        }
-    }
-
     fun deleteNote(note: Note) {
         viewModelScope.launch {
             notesRepository.deleteNote(note)
@@ -144,6 +129,21 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
     }
 
+    fun toggleZone() {
+        notesRepository.toggleZone()
+        val newZone =
+            if (_homeUiState.value.zone == Zone.CREATIVE)
+                Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
+
+        _homeUiState.update {
+            it.copy(
+                zone = newZone,
+                searchQuery = "",
+                isBomRevealed = !it.isBomRevealed
+            )
+        }
+    }
+
 
     data class HomeUiState(
         val notesList: List<Note> = emptyList(),
@@ -167,5 +167,4 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
             }
         }
     }
-
 }

@@ -1,6 +1,5 @@
 package com.thewhitewings.pouch.ui
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -51,6 +50,22 @@ class NoteViewModel(
         }
     }
 
+    fun updateNoteTitle(title: String) {
+        _noteUiState.update {
+            it.copy(
+                note = it.note.copy(noteTitle = title)
+            )
+        }
+    }
+
+    fun updateNoteBody(body: String) {
+        _noteUiState.update {
+            it.copy(
+                note = it.note.copy(noteBody = body)
+            )
+        }
+    }
+
     fun createOrUpdateNote() {
         with(_noteUiState.value.note) {
             if (oldNote == null) {
@@ -82,22 +97,6 @@ class NoteViewModel(
     fun deleteNote() {
         viewModelScope.launch {
             notesRepository.deleteNote(_noteUiState.value.note)
-        }
-    }
-
-    fun updateNoteTitle(title: String) {
-        _noteUiState.update {
-            it.copy(
-                note = it.note.copy(noteTitle = title)
-            )
-        }
-    }
-
-    fun updateNoteBody(body: String) {
-        _noteUiState.update {
-            it.copy(
-                note = it.note.copy(noteBody = body)
-            )
         }
     }
 

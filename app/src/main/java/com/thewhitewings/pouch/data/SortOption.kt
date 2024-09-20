@@ -3,11 +3,7 @@ package com.thewhitewings.pouch.data
 import android.util.Log
 import androidx.annotation.StringRes
 import com.thewhitewings.pouch.R
-import com.thewhitewings.pouch.data.SortOption.A_Z
 import com.thewhitewings.pouch.data.SortOption.NEWEST_FIRST
-import com.thewhitewings.pouch.data.SortOption.OLDEST_FIRST
-import com.thewhitewings.pouch.data.SortOption.Z_A
-import com.thewhitewings.pouch.utils.Constants
 
 private const val TAG = "SortOption"
 

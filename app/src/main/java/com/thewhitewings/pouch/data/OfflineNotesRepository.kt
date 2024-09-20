@@ -1,6 +1,5 @@
 package com.thewhitewings.pouch.data
 
-import android.util.Log
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime
 import com.thewhitewings.pouch.utils.Zone
@@ -31,6 +30,27 @@ class OfflineNotesRepository(
         )
     }
 
+    override fun getNoteById(noteId: Int): Flow<Note?> {
+        return currentZoneDao.getNoteById(noteId).map { note ->
+            note?.let {
+                Note(
+                    id = it.id,
+                    noteTitle = it.noteTitle,
+                    noteBody = it.noteBody,
+                    timestamp = getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, it.timestamp)
+                )
+            }
+        }
+    }
+
+    override fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>> {
+        return currentZoneDao.getAllNotes(sortOption.name)
+    }
+
+    override fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>> {
+        return currentZoneDao.searchNotes(searchQuery, sortOption.name)
+    }
+
     override suspend fun updateNote(updatedNote: Note) {
         currentZoneDao.updateNote(
             with(updatedNote) {
@@ -48,34 +68,6 @@ class OfflineNotesRepository(
         currentZoneDao.deleteNote(note)
     }
 
-    override fun getNoteById(noteId: Int): Flow<Note?> {
-        return currentZoneDao.getNoteById(noteId).map { note ->
-            note?.let {
-                Note(
-                    id = it.id,
-                    noteTitle = it.noteTitle,
-                    noteBody = it.noteBody,
-                    timestamp = getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, it.timestamp)
-                )
-            }
-        }
-    }
-
-    override fun toggleZone() {
-        currentZoneDao =
-            if (currentZoneDao == creativeNoteDao)
-                bomNoteDao
-            else creativeNoteDao
-    }
-
-    override fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>> {
-        return currentZoneDao.getAllNotes(sortOption.name)
-    }
-
-    override fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>> {
-        return currentZoneDao.searchNotes(searchQuery, sortOption.name)
-    }
-
     override suspend fun saveSortOption(
         sortOption: SortOption,
         zone: Zone
@@ -87,4 +79,10 @@ class OfflineNotesRepository(
         return pouchPreferences.getSortOptionFlow(zone)
     }
 
+    override fun toggleZone() {
+        currentZoneDao =
+            if (currentZoneDao == creativeNoteDao)
+                bomNoteDao
+            else creativeNoteDao
+    }
 }

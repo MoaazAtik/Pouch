@@ -13,6 +13,12 @@ interface NotesRepository {
      */
     suspend fun createNote(note: Note)
 
+    fun getNoteById(noteId: Int): Flow<Note?>
+
+    fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>>
+
+    fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>>
+
     /**
      * Update an existing note in the database
      */
@@ -25,14 +31,6 @@ interface NotesRepository {
      */
     suspend fun deleteNote(note: Note)
 
-    fun getNoteById(noteId: Int): Flow<Note?>
-
-    fun toggleZone()
-
-    fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>>
-
-    fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>>
-
     /**
      * Save the Sort Option in DataStore
      *
@@ -42,4 +40,6 @@ interface NotesRepository {
     suspend fun saveSortOption(sortOption: SortOption, zone: Zone)
 
     fun getSortOptionFlow(zone: Zone): Flow<SortOption>
+
+    fun toggleZone()
 }
