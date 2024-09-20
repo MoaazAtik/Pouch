@@ -174,5 +174,3 @@ private fun getTableColumns(database: SupportSQLiteDatabase, tableName: String):
     }
     return columns
 }
-
-

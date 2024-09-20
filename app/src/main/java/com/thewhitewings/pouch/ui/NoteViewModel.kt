@@ -35,7 +35,8 @@ class NoteViewModel(
     val noteUiState = _noteUiState.asStateFlow()
 
     private fun initializeNote() {
-        val noteId: Int = savedStateHandle[NoteDestination.noteIdArg] ?: return
+        val noteId: Int = savedStateHandle[NoteDestination.noteIdArg]
+            ?: return
 
         viewModelScope.launch {
             notesRepository.getNoteById(noteId)
@@ -100,8 +101,9 @@ class NoteViewModel(
         }
     }
 
+
     data class NoteUiState(
-        val note: Note = Note(timestamp = ""),
+        val note: Note = Note(timestamp = "")
     )
 
 

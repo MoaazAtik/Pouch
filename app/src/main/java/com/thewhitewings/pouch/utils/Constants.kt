@@ -3,12 +3,10 @@ package com.thewhitewings.pouch.utils
 object Constants {
 
     // Databases
-    // Name and Version of Database of Creative zone
-    const val CREATIVE_DATABASE_VERSION: Int = 3 // (old)
+    // Database name of Creative zone
     const val CREATIVE_DATABASE_NAME: String = "notes_db"
 
-    // Name and Version of Database of BoxOfMysteries zone
-    const val BOM_DATABASE_VERSION: Int = 1 // (old)
+    // Database name of BoxOfMysteries zone
     const val BOM_DATABASE_NAME: String = "bom_db"
 
     // Common database constants
@@ -20,6 +18,7 @@ object Constants {
     const val COLUMN_NOTE_BODY: String = "note_body"
     const val COLUMN_TIMESTAMP: String = "timestamp"
 
+    // Deprecated database constants
     // version 1 (old)
     const val CREATIVE_AND_BOM_DATABASE_VERSION_1: Int = 1
 

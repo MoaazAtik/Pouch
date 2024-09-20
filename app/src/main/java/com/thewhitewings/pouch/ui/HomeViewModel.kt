@@ -144,6 +144,7 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         }
     }
 
+
     data class HomeUiState(
         val notesList: List<Note> = emptyList(),
         val zone: Zone = Zone.CREATIVE,
@@ -151,6 +152,7 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         val searchQuery: String = "",
         val isBomRevealed: Boolean = false
     )
+
 
     companion object {
 

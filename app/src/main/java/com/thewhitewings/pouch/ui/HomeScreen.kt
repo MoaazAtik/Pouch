@@ -106,7 +106,6 @@ object HomeDestination : NavigationDestination {
 /**
  * Entry route for Home screen
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     homeUiState: HomeViewModel.HomeUiState,
@@ -118,18 +117,9 @@ fun HomeScreen(
     onToggleZone: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-//        topBar = {
-//            PouchTopAppBar(
-//                title = stringResource(HomeDestination.titleRes),
-//                canNavigateBack = false,
-//                scrollBehavior = scrollBehavior
-//            )
-//        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = navigateToCreateNote,
