@@ -75,6 +75,17 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
                     }
                 }
         }
+
+        updateShowAnimationsStateDelayed(false)
+    }
+
+    private fun updateShowAnimationsStateDelayed(canShowAnimations: Boolean, delay: Long = 2_000) {
+        viewModelScope.launch {
+            delay(delay)
+            _homeUiState.update {
+                it.copy(showAnimations = canShowAnimations)
+            }
+        }
     }
 
     fun updateSearchQuery(newQuery: String) {
@@ -139,9 +150,12 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
             it.copy(
                 zone = newZone,
                 searchQuery = "",
+                showAnimations = true,
                 isBomRevealed = !it.isBomRevealed
             )
         }
+
+        updateShowAnimationsStateDelayed(false)
     }
 
 
@@ -150,6 +164,7 @@ class HomeViewModel(private val notesRepository: NotesRepository) : ViewModel() 
         val zone: Zone = Zone.CREATIVE,
         val sortOption: SortOption = SortOption.NEWEST_FIRST,
         val searchQuery: String = "",
+        val showAnimations: Boolean = true,
         val isBomRevealed: Boolean = false
     )
 

@@ -148,11 +148,12 @@ fun HomeScreen(
         )
         BackHandler(onBack = navigateBack)
 
-        ShowAnimations(
-            zone = homeUiState.zone,
-            snackbarHostState = snackbarHostState,
-            context = LocalContext.current
-        )
+        if (homeUiState.showAnimations)
+            ShowAnimations(
+                zone = homeUiState.zone,
+                snackbarHostState = snackbarHostState,
+                context = LocalContext.current
+            )
     }
 }
 
@@ -677,7 +678,7 @@ private fun SearchNotesPreview() {
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 private fun SearchNotesWithTextPreview() {
     PouchTheme(dynamicColor = false) {
@@ -688,9 +689,9 @@ private fun SearchNotesWithTextPreview() {
     }
 }
 
-//@Preview(showBackground = true,
-//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-//)
+@Preview(showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
 @Composable
 private fun SearchNotesNightPreview() {
     PouchTheme(dynamicColor = false) {
