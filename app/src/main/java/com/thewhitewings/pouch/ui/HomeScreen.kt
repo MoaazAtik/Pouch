@@ -178,12 +178,7 @@ fun ShowAnimations(
         Zone.BOX_OF_MYSTERIES -> {
             RevealScreenAnimation(R.raw.reveal_screen_black, 0.5f)
 
-//            var revealLoaderVisible by remember { mutableStateOf(true) }
             RevealLoaderAnimation()
-//            LaunchedEffect(revealLoaderVisible) {
-//                delay(2_000)
-//                revealLoaderVisible = false
-//            }
 
             LaunchedEffect(Unit) {
                 snackbarHostState.showSnackbar(context.getString(R.string.bom_revealing_message))
