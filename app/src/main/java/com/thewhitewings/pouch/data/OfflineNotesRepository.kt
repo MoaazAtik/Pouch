@@ -1,7 +1,6 @@
 package com.thewhitewings.pouch.data
 
 import com.thewhitewings.pouch.utils.DateTimeFormatType
-import com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -9,16 +8,38 @@ import kotlinx.coroutines.flow.map
 private const val TAG = "OfflineNotesRepository"
 
 /**
- * Offline Notes Repository Class
+ * Offline Notes Repository Class.
+ * Implementation of [NotesRepository] interface.
+ *
+ * It is the gate to interact with the Room databases and the DataStore.
  */
 class OfflineNotesRepository(
+
+    /**
+     * DAO for the Creative Zone database.
+     */
     private val creativeNoteDao: NoteDao,
+
+    /**
+     * DAO for the Box of Mysteries Zone database.
+     */
     private val bomNoteDao: NoteDao,
+
+    /**
+     * Preferences DataStore for the app.
+     */
     private val pouchPreferences: PouchPreferences
 ) : NotesRepository {
 
+    /**
+     * The DAO for the database of the zone that is currently being used.
+     */
     private var currentZoneDao: NoteDao = creativeNoteDao
 
+    /**
+     * Insert a new note into the database.
+     * @param note The note to be inserted.
+     */
     override suspend fun createNote(note: Note) {
         currentZoneDao.insert(
             with(note) {
@@ -30,44 +51,62 @@ class OfflineNotesRepository(
         )
     }
 
+    /**
+     * Get a note by its ID from the database.
+     * @param noteId The ID of the note to retrieve.
+     * @return A flow of the note with the specified ID.
+     */
     override fun getNoteById(noteId: Int): Flow<Note?> {
         return currentZoneDao.getNoteById(noteId).map { note ->
-            note?.let {
-                Note(
-                    id = it.id,
-                    noteTitle = it.noteTitle,
-                    noteBody = it.noteBody,
-                    timestamp = getFormattedDateTime(DateTimeFormatType.UTC_TO_LOCAL, it.timestamp)
-                )
-            }
+            note?.formatTimestamp(DateTimeFormatType.UTC_TO_LOCAL)
         }
     }
 
+    /**
+     * Get all notes from the database sorted by the specified sort option.
+     * @param sortOption The [SortOption] to use for sorting the notes.
+     */
     override fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>> {
-        return currentZoneDao.getAllNotes(sortOption.name)
+        return currentZoneDao.getAllNotes(sortOption.name).map { notes ->
+            notes.map { note -> note.formatTimestamp(DateTimeFormatType.UTC_TO_LOCAL) }
+        }
     }
 
+    /**
+     * Search for notes that match the specified search query and sort option.
+     * @param searchQuery The search query to use.
+     * @param sortOption  The [SortOption] to use for sorting the notes.
+     * @return A flow of a filtered and sorted list of notes.
+     */
     override fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>> {
-        return currentZoneDao.searchNotes(searchQuery, sortOption.name)
+        return currentZoneDao.searchNotes(searchQuery, sortOption.name).map { notes ->
+            notes.map { note -> note.formatTimestamp(DateTimeFormatType.UTC_TO_LOCAL) }
+        }
     }
 
+    /**
+     * Update an existing note in the database.
+     * @param updatedNote The updated note to be saved.
+     */
     override suspend fun updateNote(updatedNote: Note) {
         currentZoneDao.updateNote(
-            with(updatedNote) {
-                Note(
-                    id = id,
-                    noteTitle = noteTitle,
-                    noteBody = noteBody,
-                    timestamp = getFormattedDateTime(DateTimeFormatType.CURRENT_UTC)
-                )
-            }
+            updatedNote.formatTimestamp(DateTimeFormatType.CURRENT_UTC)
         )
     }
 
+    /**
+     * Delete a note from the database.
+     * @param note The note to be deleted.
+     */
     override suspend fun deleteNote(note: Note) {
         currentZoneDao.deleteNote(note)
     }
 
+    /**
+     * Save the [SortOption] preference in DataStore for the provided zone.
+     * @param sortOption The preference to be saved.
+     * @param zone       The current [Zone].
+     */
     override suspend fun saveSortOption(
         sortOption: SortOption,
         zone: Zone
@@ -75,10 +114,18 @@ class OfflineNotesRepository(
         pouchPreferences.saveSortOption(sortOption, zone)
     }
 
+    /**
+     * Get the [SortOption] Stream from DataStore for the provided zone.
+     * @param zone The current [Zone].
+     * @return A flow of stored sort option.
+     */
     override fun getSortOptionFlow(zone: Zone): Flow<SortOption> {
         return pouchPreferences.getSortOptionFlow(zone)
     }
 
+    /**
+     * Toggle the current [Zone].
+     */
     override fun toggleZone() {
         currentZoneDao =
             if (currentZoneDao == creativeNoteDao)

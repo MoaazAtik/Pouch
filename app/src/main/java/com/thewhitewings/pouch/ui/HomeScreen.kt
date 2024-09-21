@@ -96,6 +96,9 @@ import kotlinx.coroutines.delay
 
 private const val TAG = "HomeScreen"
 
+/**
+ * Navigation destination for Notes list screen
+ */
 object HomeDestination : NavigationDestination {
     override val route = "home"
     override val titleRes = R.string.app_name
@@ -157,6 +160,9 @@ fun HomeScreen(
     }
 }
 
+/**
+ * Animations to be displayed on each zone initialization.
+ */
 @Composable
 fun ShowAnimations(
     zone: Zone,

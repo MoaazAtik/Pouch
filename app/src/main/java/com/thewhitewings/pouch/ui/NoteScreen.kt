@@ -36,10 +36,24 @@ import com.thewhitewings.pouch.ui.theme.PouchTheme
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 
+private const val TAG = "NoteScreen"
+
+/**
+ * Navigation destination for Note screen
+ */
 object NoteDestination : NavigationDestination {
     override val route = "note"
     override val titleRes = R.string.app_name
+
+    /**
+     * Navigation argument to specify note id.
+     * Pass the note id when opening a note, or pass 0 to create a new note.
+     */
     const val noteIdArg = "noteId"
+
+    /**
+     * Route to navigate to note screen
+     */
     val routeWithArgs = "$route/{$noteIdArg}"
 }
 

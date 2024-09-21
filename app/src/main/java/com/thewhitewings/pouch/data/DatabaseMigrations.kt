@@ -111,7 +111,9 @@ val MIGRATION_3_1 = object : Migration(3, 1) {
 
         // - Handle renamed columns
         // Handle renamed id column
-        if (oldTableColumns.contains(Constants.COLUMN_ID_VERSION_3) && newTableColumns.contains(Constants.COLUMN_ID))
+        if (oldTableColumns.contains(Constants.COLUMN_ID_VERSION_3) &&
+            newTableColumns.contains(Constants.COLUMN_ID)
+        )
             db.execSQL(
                 "INSERT INTO ${Constants.TABLE_NAME} (${Constants.COLUMN_ID}) " +
                         "SELECT ${Constants.COLUMN_ID_VERSION_3} FROM $tempTableName"
@@ -140,7 +142,8 @@ val MIGRATION_3_1 = object : Migration(3, 1) {
 }
 
 /**
- * Column name mappings of renamed columns from version 3 to version 1. Map old column name to new column name.
+ * Column name mappings of renamed columns when migrating the database from version 3 to version 1.
+ * Map old column name to new column name.
  *
  * **Note:** the id column [Constants.COLUMN_ID_VERSION_3] is handled manually.
  *
@@ -161,15 +164,17 @@ val renamedColumnMappingsVersion3to1 = mapOf(
  * @param tableName The name of the table for which the columns are to be retrieved.
  * @return A linked hash set containing the column names.
  */
-private fun getTableColumns(database: SupportSQLiteDatabase, tableName: String): LinkedHashSet<String> {
+private fun getTableColumns(
+    database: SupportSQLiteDatabase,
+    tableName: String
+): LinkedHashSet<String> {
     val columns = LinkedHashSet<String>()
     val cursor = database.query("PRAGMA table_info($tableName)")
     cursor.use {
         while (cursor.moveToNext()) {
             val columnNameIndex = cursor.getColumnIndex("name")
-            if (columnNameIndex != -1) {
+            if (columnNameIndex != -1)
                 columns.add(cursor.getString(columnNameIndex))
-            }
         }
     }
     return columns

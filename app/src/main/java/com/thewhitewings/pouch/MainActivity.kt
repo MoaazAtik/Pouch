@@ -11,6 +11,9 @@ import com.thewhitewings.pouch.ui.theme.PouchTheme
 
 private const val TAG = "MainActivity"
 
+/**
+ * The only activity in the app.
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         enableEdgeToEdge()

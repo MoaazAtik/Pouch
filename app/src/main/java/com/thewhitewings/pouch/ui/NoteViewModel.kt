@@ -18,6 +18,9 @@ import kotlinx.coroutines.launch
 
 private const val TAG = "NoteViewModel"
 
+/**
+ * ViewModel to interact with the [NotesRepository]'s data source and the Note screen.
+ */
 class NoteViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val notesRepository: NotesRepository
@@ -30,9 +33,13 @@ class NoteViewModel(
     // the note that is opened for updating purpose
     private var oldNote: Note? = null
 
+    // Holds current NoteUiState
     private val _noteUiState = MutableStateFlow(NoteUiState())
     val noteUiState = _noteUiState.asStateFlow()
 
+    /**
+     * Initialize the note with the given ID when opening an existing note.
+     */
     private fun initializeNote() {
         val noteId: Int = savedStateHandle[NoteDestination.noteIdArg]
             ?: return
@@ -50,6 +57,9 @@ class NoteViewModel(
         }
     }
 
+    /**
+     * Updates the note title of the current note's state
+     */
     fun updateNoteTitle(title: String) {
         _noteUiState.update {
             it.copy(
@@ -58,6 +68,9 @@ class NoteViewModel(
         }
     }
 
+    /**
+     * Updates the note body of the current note's state
+     */
     fun updateNoteBody(body: String) {
         _noteUiState.update {
             it.copy(
@@ -66,6 +79,13 @@ class NoteViewModel(
         }
     }
 
+    /**
+     * Create a new note or update the currently opened note.
+     *
+     * To create a new note, the note title or note body must not be empty.
+     *
+     * To update a note, the note title and note body must not be the same as the old note. Otherwise, the note will not be updated, i.e., its timestamp will stay the same.
+     */
     fun createOrUpdateNote() {
         with(_noteUiState.value.note) {
             if (oldNote == null) {
@@ -79,12 +99,18 @@ class NoteViewModel(
         }
     }
 
+    /**
+     * Create a new note.
+     */
     private fun createNote() {
         viewModelScope.launch {
             notesRepository.createNote(_noteUiState.value.note)
         }
     }
 
+    /**
+     * Update an existing note.
+     */
     private fun updateNote() {
         viewModelScope.launch {
             notesRepository.updateNote(_noteUiState.value.note)
@@ -92,7 +118,7 @@ class NoteViewModel(
     }
 
     /**
-     * Delete the currently opened note.
+     * Deletes a note.
      */
     fun deleteNote() {
         viewModelScope.launch {
@@ -101,6 +127,9 @@ class NoteViewModel(
     }
 
 
+    /**
+     * UI state for the Note screen
+     */
     data class NoteUiState(
         val note: Note = Note(timestamp = "")
     )
