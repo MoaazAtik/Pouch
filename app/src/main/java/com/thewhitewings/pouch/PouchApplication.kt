@@ -11,9 +11,9 @@ import com.thewhitewings.pouch.data.OfflineNotesRepository
 import com.thewhitewings.pouch.data.PouchPreferences
 import com.thewhitewings.pouch.utils.Constants
 
-
-// The name of the stored preferences file
+// The name of the stored preference DataStore file
 private const val POUCH_PREFERENCE_NAME = "pouch_preferences"
+// The DataStore instance of the app for storing preferences
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
     name = POUCH_PREFERENCE_NAME
 )
@@ -24,7 +24,9 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
  */
 class PouchApplication : Application() {
 
-    // The notes repository of the app
+    /**
+     * The repository of the app that manages the interactions with the databases and preferences.
+     */
     lateinit var notesRepository: NotesRepository
         private set
 
@@ -41,10 +43,10 @@ class PouchApplication : Application() {
                 NoteDatabase.getDatabase(this, Constants.BOM_DATABASE_NAME)
         }
 
-        // Initialize the preferences of the app
+        // Initialize the preference DataStore of the app
         val pouchPreferences = PouchPreferences(dataStore)
 
-        // Initialize the notes repository with the database helpers and preferences
+        // Initialize the notes repository with the databases and preferences
         notesRepository =
             OfflineNotesRepository(
                 creativeDatabase.noteDao(),

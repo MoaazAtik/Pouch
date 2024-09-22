@@ -9,37 +9,60 @@ import kotlinx.coroutines.flow.Flow
 interface NotesRepository {
 
     /**
-     * Create a new note in the database
+     * Insert a new note into the database
+     * @param note The note to be inserted
      */
     suspend fun createNote(note: Note)
 
     /**
+     * Get a note by its ID
+     * @param noteId ID of the note to be retrieved
+     * @return Flow of the note with the specified ID
+     */
+    fun getNoteById(noteId: Int): Flow<Note?>
+
+    /**
+     * Get all notes from the database sorted by the specified sort option.
+     * @param sortOption The [SortOption] to be used for sorting the notes.
+     */
+    fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>>
+
+    /**
+     * Search for notes that match the specified search query and sort option from the database.
+     * @param searchQuery The search query to use.
+     * @param sortOption  The [SortOption] to be used for sorting the notes.
+     * @return A flow of a filtered and sorted list of notes.
+     */
+    fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>>
+
+    /**
      * Update an existing note in the database
+     * @param updatedNote The updated note to be saved
      */
     suspend fun updateNote(updatedNote: Note)
 
     /**
      * Delete a note from the database
-     *
      * @param note Note to be deleted
      */
     suspend fun deleteNote(note: Note)
 
-    fun getNoteById(noteId: Int): Flow<Note?>
-
-    fun toggleZone()
-
-    fun getAllNotesStream(sortOption: SortOption): Flow<List<Note>>
-
-    fun searchNotesStream(searchQuery: String, sortOption: SortOption): Flow<List<Note>>
-
     /**
-     * Save the Sort Option in DataStore
-     *
-     * @param sortOption to be saved
-     * @param zone       current zone
+     * Save the [SortOption] preference in DataStore for the provided zone
+     * @param sortOption preference to be saved
+     * @param zone       current [Zone]
      */
     suspend fun saveSortOption(sortOption: SortOption, zone: Zone)
 
+    /**
+     * Get the [SortOption] Stream from DataStore for the provided zone
+     * @param zone current [Zone]
+     * @return Flow of stored sort option
+     */
     fun getSortOptionFlow(zone: Zone): Flow<SortOption>
+
+    /**
+     * Toggle the current [Zone]
+     */
+    fun toggleZone()
 }

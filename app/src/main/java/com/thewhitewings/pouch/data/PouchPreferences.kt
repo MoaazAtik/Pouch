@@ -22,29 +22,39 @@ class PouchPreferences(
 ) {
 
     private companion object {
+
+        /**
+         * Key for the [SortOption] preference in the DataStore of the Creative Zone
+         */
         val CREATIVE_ZONE_SORT_OPTION_PREFERENCE_KEY =
             stringPreferencesKey("creative_zone_sort_option")
+
+        /**
+         * Key for the [SortOption] preference in the DataStore of the Box of Mysteries Zone
+         */
         val BOM_ZONE_SORT_OPTION_PREFERENCE_KEY = stringPreferencesKey("bom_zone_sort_option")
+
+        /**
+         * Default [SortOption] value
+         */
         val DEFAULT_SORT_OPTION by lazy { SortOption.NEWEST_FIRST }
     }
 
     /**
-     * Save the [SortOption] preference in DataStore
-     *
+     * Save the [SortOption] preference in DataStore for the provided zone
      * @param sortOption preference to be saved
      * @param zone       current [Zone]
      */
     suspend fun saveSortOption(sortOption: SortOption, zone: Zone) {
         val sortOptionKey = getSortOptionKey(zone)
-        Log.d(TAG, "saveSortOption: $sortOption , zone $zone")
+
         dataStore.edit { preference ->
             preference[sortOptionKey] = sortOption.name
         }
     }
 
     /**
-     * Get the [SortOption] Flow from DataStore
-     *
+     * Get the [SortOption] Stream from DataStore for the provided zone
      * @param zone current [Zone]
      * @return Flow of stored sort option
      */
@@ -69,7 +79,6 @@ class PouchPreferences(
 
     /**
      * Get the [SortOption] preference Key for the provided zone
-     *
      * @param zone current [Zone]
      * @return Sort Option Key related to the provided zone
      */

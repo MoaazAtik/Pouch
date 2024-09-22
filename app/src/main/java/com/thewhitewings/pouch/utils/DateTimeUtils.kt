@@ -7,23 +7,30 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+private const val TAG = "DateTimeUtils"
+
+/**
+ * Utility object for formatting date and time.
+ */
 object DateTimeUtils {
-    private const val TAG = "DateTimeUtils"
 
     /**
-     * Default format for date and time.
+     * Default format of date and time.
+     *
      * yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19
      */
     const val DEFAULT_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
 
     /**
      * Medium length format for date and time.
+     *
      * "MMM d, yyyy" = Feb 4, 2024
      */
     const val MEDIUM_LENGTH_FORMAT: String = "MMM d, yyyy"
 
     /**
      * Short length format for date and time.
+     *
      * "MMM d" = Feb 4
      */
     const val SHORT_LENGTH_FORMAT: String = "MMM d"
@@ -35,10 +42,10 @@ object DateTimeUtils {
      * The Default format is [DEFAULT_FORMAT].
      *
      * **Note:**
-     * Date and time are stored in the Database in UTC, and in Notes List in Local Time Zone.
+     * Date and time are stored in the Database in UTC, and presented to the UI in the local time zone.
      *
      * @param formatType [DateTimeFormatType] type of formatting to apply.
-     * @param dateTime   Optional. Date/time string to format.
+     * @param dateTime   (Optional) Date/time string to format.
      * @return Formatted date/time string.
      */
     @JvmStatic

@@ -41,7 +41,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,7 +51,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -98,6 +96,9 @@ import kotlinx.coroutines.delay
 
 private const val TAG = "HomeScreen"
 
+/**
+ * Navigation destination for Notes list screen
+ */
 object HomeDestination : NavigationDestination {
     override val route = "home"
     override val titleRes = R.string.app_name
@@ -106,7 +107,6 @@ object HomeDestination : NavigationDestination {
 /**
  * Entry route for Home screen
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     homeUiState: HomeViewModel.HomeUiState,
@@ -116,20 +116,11 @@ fun HomeScreen(
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-//        modifier = modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
-//        topBar = {
-//            PouchTopAppBar(
-//                title = stringResource(HomeDestination.titleRes),
-//                canNavigateBack = false,
-//                scrollBehavior = scrollBehavior
-//            )
-//        },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = navigateToCreateNote,
@@ -160,14 +151,18 @@ fun HomeScreen(
         )
         BackHandler(onBack = navigateBack)
 
-        ShowAnimations(
-            zone = homeUiState.zone,
-            snackbarHostState = snackbarHostState,
-            context = LocalContext.current
-        )
+        if (homeUiState.showAnimations)
+            ShowAnimations(
+                zone = homeUiState.zone,
+                snackbarHostState = snackbarHostState,
+                context = LocalContext.current
+            )
     }
 }
 
+/**
+ * Animations to be displayed on each zone initialization.
+ */
 @Composable
 fun ShowAnimations(
     zone: Zone,
@@ -183,12 +178,7 @@ fun ShowAnimations(
         Zone.BOX_OF_MYSTERIES -> {
             RevealScreenAnimation(R.raw.reveal_screen_black, 0.5f)
 
-            var revealLoaderVisible by remember { mutableStateOf(true) }
-            RevealLoaderAnimation(visible = revealLoaderVisible)
-            LaunchedEffect(revealLoaderVisible) {
-                delay(2_000)
-                revealLoaderVisible = false
-            }
+            RevealLoaderAnimation()
 
             LaunchedEffect(Unit) {
                 snackbarHostState.showSnackbar(context.getString(R.string.bom_revealing_message))
@@ -213,20 +203,17 @@ fun RevealScreenAnimation(
 
 @Composable
 fun RevealLoaderAnimation(
-    visible: Boolean,
     modifier: Modifier = Modifier
 ) {
-    if (visible) {
-        val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.reveal_loader))
-        LottieAnimation(
-            composition,
-            modifier = modifier
-                .fillMaxSize()
-                .wrapContentSize(align = Alignment.Center)
-                .size(200.dp),
-            speed = 0.6f
-        )
-    }
+    val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(R.raw.reveal_loader))
+    LottieAnimation(
+        composition,
+        modifier = modifier
+            .fillMaxSize()
+            .wrapContentSize(align = Alignment.Center)
+            .size(200.dp),
+        speed = 0.6f
+    )
 }
 
 @Composable
@@ -287,7 +274,7 @@ private fun HomeBody(
             },
             colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
             modifier =
-            if (!homeUiState.isBomRevealed)
+            if (homeUiState.zone == Zone.CREATIVE)
                 Modifier.size(width = 80.dp, height = 20.dp)
             else
                 Modifier.size(width = 0.dp, height = 20.dp)
@@ -535,7 +522,7 @@ fun ZoneText(currentZone: Zone) {
 }
 
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun HomeScreenPreview() {
     PouchTheme(dynamicColor = false) {
@@ -557,19 +544,24 @@ private fun HomeScreenPreview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
+//@Preview(
+//    showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
 @Composable
 private fun HomeScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
         HomeScreen(
             homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", "Apr 23"),
-                    Note(2, "Pen", "200.0", "30"),
-                    Note(3, "TV", "300.0", "50")
+                    Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
+                    Note(
+                        2,
+                        "Pen",
+                        "200.0\nStaggered",
+                        stringResource(R.string.timestamp_not_formatted)
+                    ),
+                    Note(3, "TV", "300.0", stringResource(R.string.timestamp_not_formatted))
                 )
             ),
             navigateBack = {},
@@ -589,9 +581,14 @@ private fun HomeBodyPreview() {
         HomeBody(
             homeUiState = HomeViewModel.HomeUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", "Apr 23"),
-                    Note(2, "Pen", "200.0", "30"),
-                    Note(3, "TV", "300.0", "50")
+                    Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
+                    Note(
+                        2,
+                        "Pen",
+                        "200.0\nStaggered",
+                        stringResource(R.string.timestamp_not_formatted)
+                    ),
+                    Note(3, "TV", "300.0", stringResource(R.string.timestamp_not_formatted))
                 )
             ),
             onSearchNotes = {},
@@ -618,6 +615,58 @@ private fun HomeBodyEmptyListPreview() {
 
 //@Preview(showBackground = true)
 @Composable
+private fun HomeBodyBomEmptyListPreview() {
+    PouchTheme {
+        HomeBody(
+            homeUiState = HomeViewModel.HomeUiState(
+                notesList = listOf(),
+                zone = Zone.BOX_OF_MYSTERIES
+            ),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
+@Composable
+private fun HomeBodyEmptyListNightPreview() {
+    PouchTheme {
+        HomeBody(
+            homeUiState = HomeViewModel.HomeUiState(notesList = listOf()),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
+@Composable
+private fun HomeBodyBomEmptyListNightPreview() {
+    PouchTheme {
+        HomeBody(
+            homeUiState = HomeViewModel.HomeUiState(
+                notesList = listOf(),
+                zone = Zone.BOX_OF_MYSTERIES
+            ),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onItemClick = {}
+        )
+    }
+}
+
+//@Preview(showBackground = true)
+@Composable
 private fun SearchNotesPreview() {
     PouchTheme(dynamicColor = false) {
         SearchNotesTextField(
@@ -627,9 +676,21 @@ private fun SearchNotesPreview() {
     }
 }
 
-//@Preview(showBackground = true,
-//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-//)
+@Preview(showBackground = true)
+@Composable
+private fun SearchNotesWithTextPreview() {
+    PouchTheme(dynamicColor = false) {
+        SearchNotesTextField(
+            value = "note",
+            onValueChange = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
 @Composable
 private fun SearchNotesNightPreview() {
     PouchTheme(dynamicColor = false) {
@@ -645,7 +706,7 @@ private fun SearchNotesNightPreview() {
 private fun NotesListItemPreview() {
     PouchTheme {
         NotesListItem(
-            Note(1, "Game", "Note body", "Apr 23"),
+            Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted))
         )
     }
 }

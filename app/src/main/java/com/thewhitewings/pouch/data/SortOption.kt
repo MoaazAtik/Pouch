@@ -3,11 +3,7 @@ package com.thewhitewings.pouch.data
 import android.util.Log
 import androidx.annotation.StringRes
 import com.thewhitewings.pouch.R
-import com.thewhitewings.pouch.data.SortOption.A_Z
 import com.thewhitewings.pouch.data.SortOption.NEWEST_FIRST
-import com.thewhitewings.pouch.data.SortOption.OLDEST_FIRST
-import com.thewhitewings.pouch.data.SortOption.Z_A
-import com.thewhitewings.pouch.utils.Constants
 
 private const val TAG = "SortOption"
 
@@ -18,22 +14,41 @@ private const val TAG = "SortOption"
 enum class SortOption(
 
     /**
-     * The id of the corresponding item in the sorting pop-up menu
+     * The id of the sort option to be used in the sorting pop-up menu
      */
     val id: Int,
+
+    /**
+     * The label of the sort option to be displayed in the sorting pop-up menu
+     */
     @StringRes val label: Int
 ) {
+
+    /**
+     * Alphabetical descending order.
+     */
     A_Z(id = 0, label = R.string.sort_option_a_z),
+
+    /**
+     * Alphabetical ascending order.
+     */
     Z_A(id = 1, label = R.string.sort_option_z_a),
+
+    /**
+     * Chronological descending order based on the note's timestamp, i.e., Oldest first.
+     */
     OLDEST_FIRST(id = 2, label = R.string.sort_option_oldest_first),
+
+    /**
+     * Chronological ascending order based on the note's timestamp, i.e., Newest first.
+     */
     NEWEST_FIRST(id = 3, label = R.string.sort_option_newest_first)
 }
 
 /**
  * Get the [SortOption] that corresponds to the given menu item id
- *
- * @param sortOptionId The id of the corresponding item in the sorting pop-up menu
- * @return The [SortOption] that corresponds to the given menu item id
+ * @param  sortOptionId The id of the sort option
+ * @return The [SortOption] that corresponds to the given entry id
  */
 fun getSortOptionFromId(sortOptionId: Int): SortOption {
     for (option in SortOption.entries) {

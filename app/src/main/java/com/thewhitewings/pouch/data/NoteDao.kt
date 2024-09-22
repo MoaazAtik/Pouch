@@ -9,12 +9,39 @@ import androidx.room.Update
 import com.thewhitewings.pouch.utils.Constants
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data access object (DAO) interface to access the database.
+ */
 @Dao
 interface NoteDao {
 
+    /**
+     * Insert a new note into the database.
+     * Conflict strategy is set to replace the note with the same ID if it already exists in the database.
+     * @param note The note to be inserted.
+     */
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note: Note)
 
+    /**
+     * Get a note by its ID from the database.
+     * @param noteId The ID of the note to retrieve.
+     * @return A flow of the note with the specified ID.
+     */
+    @Query(
+        """
+        SELECT * FROM ${Constants.TABLE_NAME}
+        WHERE ${Constants.COLUMN_ID} = :noteId
+        LIMIT 1
+        """
+    )
+    fun getNoteById(noteId: Int): Flow<Note?>
+
+    /**
+     * Get all notes sorted by the specified sort option from the database.
+     * @param sortOptionName The name of the [SortOption] to use.
+     * @return A flow of a sorted list of all notes in the database.
+     */
     @Query(
         """
         SELECT * FROM ${Constants.TABLE_NAME}
@@ -32,21 +59,12 @@ interface NoteDao {
     )
     fun getAllNotes(sortOptionName: String): Flow<List<Note>>
 
-    @Query(
-        """
-        SELECT * FROM ${Constants.TABLE_NAME}
-        WHERE ${Constants.COLUMN_ID} = :noteId
-        LIMIT 1
-        """
-    )
-    fun getNoteById(noteId: Int): Flow<Note?>
-
-    @Update
-    suspend fun updateNote(note: Note)
-
-    @Delete
-    suspend fun deleteNote(note: Note)
-
+    /**
+     * Search for notes that match the specified search query and sort option from the database.
+     * @param searchQuery The search query to use.
+     * @param sortOptionName The name of the [SortOption] to use.
+     * @return A flow of a filtered and sorted list of notes.
+     */
     @Query(
         """
         SELECT * FROM ${Constants.TABLE_NAME}
@@ -65,4 +83,18 @@ interface NoteDao {
         """
     )
     fun searchNotes(searchQuery: String, sortOptionName: String): Flow<List<Note>>
+
+    /**
+     * Update an existing note in the database.
+     * @param note The updated note to be saved.
+     */
+    @Update
+    suspend fun updateNote(note: Note)
+
+    /**
+     * Delete a note from the database.
+     * @param note The note to delete.
+     */
+    @Delete
+    suspend fun deleteNote(note: Note)
 }

@@ -25,13 +25,15 @@ import com.thewhitewings.pouch.utils.Zone
 @Composable
 fun PouchNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
+
     NavHost(
         navController = navController,
         startDestination = HomeDestination.route,
         modifier = modifier
     ) {
+
         // Home Screen
         composable(
             route = HomeDestination.route

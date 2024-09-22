@@ -39,7 +39,6 @@ android {
         jvmTarget = "1.8"
     }
     buildFeatures {
-        viewBinding = true
         compose = true
     }
     composeOptions {
@@ -54,16 +53,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
-    // Lottie Animations
-    implementation("com.airbnb.android:lottie:6.3.0")
-    implementation (libs.lottie.compose)
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -72,8 +62,11 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
 
-    // DataStore
-    implementation(libs.androidx.datastore.preferences)
+    // Used by themes.xml file that is needed for "?attr/colorPrimaryContainer" in drawables or other XML files
+    implementation(libs.material)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
     // Room core library
     implementation(libs.androidx.room.runtime)
@@ -82,14 +75,19 @@ dependencies {
     // Kotlin Extensions and Coroutines support for Room (optional)
     implementation(libs.androidx.room.ktx)
 
-    // Navigation
-    implementation(libs.androidx.navigation.compose)
+    // DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+    // Lottie Animations
+    implementation (libs.lottie.compose)
 
     testImplementation(libs.junit)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

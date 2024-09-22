@@ -7,6 +7,9 @@ import androidx.room.RoomDatabase
 import com.thewhitewings.pouch.utils.Constants.CREATIVE_AND_BOM_DATABASE_VERSION
 import com.thewhitewings.pouch.utils.Constants.CREATIVE_DATABASE_NAME
 
+/**
+ * Room database for the app.
+ */
 @Database(
     entities = [Note::class],
     version = CREATIVE_AND_BOM_DATABASE_VERSION,
@@ -14,15 +17,31 @@ import com.thewhitewings.pouch.utils.Constants.CREATIVE_DATABASE_NAME
 )
 abstract class NoteDatabase : RoomDatabase() {
 
+    /**
+     * Get the DAO instance for the database.
+     */
     abstract fun noteDao(): NoteDao
 
     companion object {
+
+        /**
+         * Singleton instance of the Creative Zone database.
+         */
         @Volatile
         private var CreativeDatabase: NoteDatabase? = null
 
+        /**
+         * Singleton instance of the Box of Mysteries (BOM) database.
+         */
         @Volatile
         private var BomDatabase: NoteDatabase? = null
 
+        /**
+         * Get the singleton instance of the database.
+         * @param context      The application context.
+         * @param databaseName The name of the database to open based on the current Zone.
+         * @return The singleton instance of the database that is related to the current Zone.
+         */
         fun getDatabase(
             context: Context,
             databaseName: String

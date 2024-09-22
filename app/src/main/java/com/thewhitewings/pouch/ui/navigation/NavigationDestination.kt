@@ -1,7 +1,8 @@
 package com.thewhitewings.pouch.ui.navigation
 
 /**
- * Interface to describe the navigation destinations for the app
+ * Interface to describe the navigation destinations for the app.
+ * It is implemented by each screen.
  */
 interface NavigationDestination {
 
