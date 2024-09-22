@@ -20,7 +20,7 @@ public class MainViewModel extends ViewModel {
 
     private static final String TAG = "MainViewModel";
     private final NotesRepository repository;
-    public final LiveData<List<Note>> notesLiveData;
+    private final LiveData<List<Note>> notesLiveData;
     private final MutableLiveData<Zone> currentZoneLiveData;
     private SortOption sortOption;
     private String searchQuery;
@@ -36,6 +36,15 @@ public class MainViewModel extends ViewModel {
         this.currentZoneLiveData = new MutableLiveData<>(Zone.CREATIVE);
         this.sortOption = repository.getSortOption(Zone.CREATIVE);
         this.searchQuery = "";
+    }
+
+    /**
+     * Get the notes live data.
+     *
+     * @return the notes live data
+     */
+    public LiveData<List<Note>> getNotesLiveData() {
+        return notesLiveData;
     }
 
     /**

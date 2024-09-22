@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 this,
                 new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
 
-        notesLiveData = viewModel.notesLiveData;
+        notesLiveData = viewModel.getNotesLiveData();
         currentZone = viewModel.getCurrentZoneLiveData();
 
         setupRecyclerView();

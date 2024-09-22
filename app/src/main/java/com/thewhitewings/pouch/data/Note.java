@@ -29,7 +29,8 @@ public class Note {
      * Timestamp of the note.
      * <p>
      * <strong>Note:</strong>
-     * Date and time are stored in the Database in UTC, and presented to the UI in the local time zone.
+     * Date and time are stored in the Database in UTC,
+     * and presented to the UI in the local time zone.
      * </p>
      */
     private String timestamp;
