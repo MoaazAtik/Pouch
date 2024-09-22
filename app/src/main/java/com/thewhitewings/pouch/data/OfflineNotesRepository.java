@@ -72,15 +72,22 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
+    public void createNote(String noteTitle, String noteBody) {
+        currentZoneDatabaseHelper.createNote(noteTitle, noteBody);
+        // Note: notes live data is updated automatically by the database helper
+        // when it calls onDatabaseChanged()
+    }
+
+    @Override
     public LiveData<List<Note>> getAllNotes() {
         return notesLiveData;
     }
 
     @Override
-    public void createNote(String noteTitle, String noteBody) {
-        currentZoneDatabaseHelper.createNote(noteTitle, noteBody);
-        // Note: notes live data is updated automatically by the database helper
-        // when it calls onDatabaseChanged()
+    public void searchNotes(String searchQuery, SortOption sortOption) {
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.searchNotes(searchQuery, sortOption)
+        );
     }
 
     @Override
@@ -104,27 +111,11 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void searchNotes(String searchQuery, SortOption sortOption) {
-        updateNotesLiveData(
-                currentZoneDatabaseHelper.searchNotes(searchQuery, sortOption)
-        );
-    }
-
-    @Override
     public void sortNotes(SortOption sortOption, String searchQuery) {
         updateNotesLiveData(
                 searchQuery.isEmpty() ?
                         currentZoneDatabaseHelper.getAllNotes(sortOption) :
                         currentZoneDatabaseHelper.searchNotes(searchQuery, sortOption)
-        );
-    }
-
-    @Override
-    public void onDatabaseChanged() {
-        updateNotesLiveData(
-                currentZoneDatabaseHelper.getAllNotes(
-                        pouchPreferences.getSortOption(currentZone)
-                )
         );
     }
 
@@ -136,15 +127,6 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     @Override
     public SortOption getSortOption(Zone zone) {
         return pouchPreferences.getSortOption(zone);
-    }
-
-    /**
-     * Updates the notes live data with the given list of notes.
-     *
-     * @param notes the new list of notes
-     */
-    private void updateNotesLiveData(List<Note> notes) {
-        notesLiveData.postValue(notes);
     }
 
     @Override
@@ -162,5 +144,23 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
                         pouchPreferences.getSortOption(currentZone)
                 )
         );
+    }
+
+    @Override
+    public void onDatabaseChanged() {
+        updateNotesLiveData(
+                currentZoneDatabaseHelper.getAllNotes(
+                        pouchPreferences.getSortOption(currentZone)
+                )
+        );
+    }
+
+    /**
+     * Updates the notes live data with the given list of notes.
+     *
+     * @param notes the new list of notes
+     */
+    private void updateNotesLiveData(List<Note> notes) {
+        notesLiveData.postValue(notes);
     }
 }

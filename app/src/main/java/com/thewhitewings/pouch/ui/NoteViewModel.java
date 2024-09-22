@@ -36,6 +36,24 @@ public class NoteViewModel extends ViewModel {
     }
 
     /**
+     * Get the state of note LiveData.
+     *
+     * @return the note LiveData
+     */
+    public LiveData<Note> getNoteLiveData() {
+        return noteLiveData;
+    }
+
+    /**
+     * Update the state of note LiveData with the provided note.
+     *
+     * @param note the note with updated data
+     */
+    public void updateNoteLiveData(Note note) {
+        noteLiveData.setValue(note);
+    }
+
+    /**
      * Initialize the note LiveData and {@link #oldNote} with the provided arguments.
      * It is needed for the first initialization when a note is opened for updating.
      *
@@ -56,24 +74,6 @@ public class NoteViewModel extends ViewModel {
 
         oldNote = new Note(id, noteTitle, noteBody, timestamp);
         updateNoteLiveData(oldNote);
-    }
-
-    /**
-     * Update the state of note LiveData with the provided note.
-     *
-     * @param note the note with updated data
-     */
-    public void updateNoteLiveData(Note note) {
-        noteLiveData.setValue(note);
-    }
-
-    /**
-     * Get the state of note LiveData.
-     *
-     * @return the note LiveData
-     */
-    public LiveData<Note> getNoteLiveData() {
-        return noteLiveData;
     }
 
 

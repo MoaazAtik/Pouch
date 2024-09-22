@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater menuInflater = popupMenu.getMenuInflater();
         menuInflater.inflate(R.menu.popup_menu_sort, popupMenu.getMenu());
         popupMenu.setOnMenuItemClickListener(item -> {
-            viewModel.handleSortOptionSelection(item.getItemId());
+            viewModel.sortNotes(item.getItemId());
             return true;
         });
         popupMenu.show();

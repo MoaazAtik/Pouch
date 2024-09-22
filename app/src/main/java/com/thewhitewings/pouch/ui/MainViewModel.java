@@ -56,38 +56,21 @@ public class MainViewModel extends ViewModel {
         return currentZoneLiveData;
     }
 
-    /**
-     * Toggle the current zone.
-     */
-    public void toggleZone() {
-        currentZoneLiveData.postValue(
-                currentZoneLiveData.getValue() == Zone.CREATIVE ?
-                        Zone.BOX_OF_MYSTERIES : Zone.CREATIVE
-        );
-
-        repository.toggleZone(currentZoneLiveData.getValue());
-    }
-
 
     /**
-     * Handle the selection of a sort option from the popup menu.
+     * Sort notes based on the {@link SortOption} that is selected from the popup menu.
      *
-     * @param menuItemId the id of the selected popup menu item
+     * @param menuItemId the id of the selected popup menu item that represents the sort option
      */
-    public void handleSortOptionSelection(int menuItemId) {
+    public void sortNotes(int menuItemId) {
         SortOption selectedOption = SortOption.fromMenuItemId(menuItemId);
-        if (selectedOption != null) {
-            sortNotes(selectedOption);
-        }
-    }
+        if (selectedOption == null)
+            return;
 
-    /**
-     * Delete a note.
-     *
-     * @param note the note to be deleted
-     */
-    public void deleteNote(Note note) {
-        repository.deleteNote(note);
+        this.sortOption = selectedOption;
+        repository.saveSortOption(sortOption, currentZoneLiveData.getValue());
+
+        repository.sortNotes(sortOption, searchQuery);
     }
 
     /**
@@ -101,15 +84,24 @@ public class MainViewModel extends ViewModel {
     }
 
     /**
-     * Sort notes based on the given sort option.
+     * Delete a note.
      *
-     * @param sortOption the sort option to be used for sorting the notes
+     * @param note the note to be deleted
      */
-    public void sortNotes(SortOption sortOption) {
-        this.sortOption = sortOption;
-        repository.saveSortOption(sortOption, currentZoneLiveData.getValue());
+    public void deleteNote(Note note) {
+        repository.deleteNote(note);
+    }
 
-        repository.sortNotes(sortOption, searchQuery);
+    /**
+     * Toggle the current zone.
+     */
+    public void toggleZone() {
+        currentZoneLiveData.postValue(
+                currentZoneLiveData.getValue() == Zone.CREATIVE ?
+                        Zone.BOX_OF_MYSTERIES : Zone.CREATIVE
+        );
+
+        repository.toggleZone(currentZoneLiveData.getValue());
     }
 
 
