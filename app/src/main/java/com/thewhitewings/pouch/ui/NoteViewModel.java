@@ -108,7 +108,8 @@ public class NoteViewModel extends ViewModel {
      * @param noteBody  the new body of the note
      */
     private void updateNote(String noteTitle, String noteBody) {
-        notesRepository.updateNote(noteTitle, noteBody, noteLiveData.getValue());
+        if (noteLiveData.getValue() != null)
+            notesRepository.updateNote(noteTitle, noteBody, noteLiveData.getValue().getId());
     }
 
     /**

@@ -43,9 +43,9 @@ public interface NotesRepository {
      *
      * @param newNoteTitle New title of the note
      * @param newNoteBody  New body of the note
-     * @param oldNote      Old note to be updated
+     * @param noteId       Id of the note that is being updated
      */
-    void updateNote(String newNoteTitle, String newNoteBody, Note oldNote);
+    void updateNote(String newNoteTitle, String newNoteBody, int noteId);
 
     /**
      * Delete the note from Database that has the same id as the given note.

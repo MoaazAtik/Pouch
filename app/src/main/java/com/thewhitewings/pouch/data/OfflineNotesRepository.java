@@ -84,9 +84,9 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     }
 
     @Override
-    public void updateNote(String newNoteTitle, String newNoteBody, Note oldNote) {
+    public void updateNote(String newNoteTitle, String newNoteBody, int noteId) {
         Note updatedNote = new Note();
-        updatedNote.setId(oldNote.getId());
+        updatedNote.setId(noteId);
         updatedNote.setNoteTitle(newNoteTitle);
         updatedNote.setNoteBody(newNoteBody);
         updatedNote.setTimestamp(getFormattedDateTime(DateTimeFormatType.CURRENT_LOCAL, null));
