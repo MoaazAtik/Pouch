@@ -1,9 +1,9 @@
-package com.thewhitewings.pouch.utils;
+package com.thewhitewings.pouch.utils
 
 /**
  * Enum representing the available zones in the app.
  */
-public enum Zone {
+enum class Zone {
 
     /**
      * Represents the Creative zone.
@@ -13,7 +13,7 @@ public enum Zone {
     CREATIVE,
 
     /**
-     * Represents the Box of Mysteries zone.
+     * Represents the Box of Mysteries (BOM) zone.
      * It is the hidden zone and can be accessed only in a secret way.
      * It is used to store and retrieve secrets from the box of mysteries.
      */

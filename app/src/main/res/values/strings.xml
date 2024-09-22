@@ -8,7 +8,16 @@
     <string name="bom_revealing_message">Box of Mysteries is revealed</string>
     <string name="back_description">Back and save or discard note</string>
     <string name="delete_note_description">Delete Note</string>
+    <string name="search_notes_hint">Search notes</string>
+    <string name="clear_search_notes_hint">Clear search notes</string>
     <string name="note_title_hint">Title</string>
     <string name="note_body_hint">Note...</string>
-    <string name="edited_timestamp">Edited %1$s</string>
+    <string name="timestamp_edited">Edited %1$s</string>
+    <string name="timestamp_not_formatted">2024-04-23 19:16:15</string>
+    <string name="timestamp_medium_sample">Apr 23, 2024</string>
+    <string name="timestamp_short_sample">Apr 23</string>
+    <string name="sort_option_a_z">A ► Z</string>
+    <string name="sort_option_z_a">Z ► A</string>
+    <string name="sort_option_oldest_first">Oldest</string>
+    <string name="sort_option_newest_first">Newest</string>
 </resources>
