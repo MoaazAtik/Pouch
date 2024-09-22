@@ -4,16 +4,45 @@ import androidx.annotation.NonNull;
 
 import java.util.Objects;
 
+/**
+ * Note Class.
+ * A model that represents a single row (a note) in the database.
+ */
 public class Note {
 
+    /**
+     * Primary key is the unique ID of the note.
+     */
     private int id;
+
+    /**
+     * Title of the note.
+     */
     private String noteTitle;
+
+    /**
+     * Body of the note.
+     */
     private String noteBody;
+
+    /**
+     * Timestamp of the note.
+     * <p>
+     * <strong>Note:</strong>
+     * Date and time are stored in the Database in UTC, and presented to the UI in the local time zone.
+     * </p>
+     */
     private String timestamp;
 
+    /**
+     * Default constructor.
+     */
     public Note() {
     }
 
+    /**
+     * Constructor with all fields.
+     */
     public Note(int id, String noteTitle, String noteBody, String timestamp) {
         this.id = id;
         this.noteTitle = noteTitle;
@@ -21,6 +50,9 @@ public class Note {
         this.timestamp = timestamp;
     }
 
+    /**
+     * Copy constructor.
+     */
     public Note(Note note) {
         this.id = note.id;
         this.noteTitle = note.noteTitle;
@@ -40,10 +72,10 @@ public class Note {
     }
 
     /**
-     * Checks if two notes are equal based on their content.
+     * Checks if two notes are equal based on the content of all their fields.
      *
      * @param note The note to compare with.
-     * @return True if the notes are equal, false otherwise.
+     * @return {@code true} if the notes are equal, {@code false} otherwise.
      */
     public boolean equalContent(@NonNull Note note) {
         return id == note.id &&

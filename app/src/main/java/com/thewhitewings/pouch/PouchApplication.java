@@ -10,10 +10,11 @@ import com.thewhitewings.pouch.utils.Constants;
 
 /**
  * The main application class for the Pouch app.
+ * Custom app entry point for manual dependency injection.
  */
 public class PouchApplication extends Application {
 
-    // The notes repository of the app
+    // The repository of the app that manages the interactions with the databases and preferences.
     private NotesRepository notesRepository;
 
     @Override
@@ -34,11 +35,16 @@ public class PouchApplication extends Application {
                 Constants.BOM_DATABASE_VERSION
         );
 
-        // Initialize the preferences of the app
+        // Initialize the SharedPreferences of the app
         PouchPreferences pouchPreferences = new PouchPreferences(this);
 
         // Initialize the notes repository with the database helpers and preferences
-        notesRepository = new OfflineNotesRepository(creativeDatabaseHelper, bomDatabaseHelper, pouchPreferences);
+        notesRepository =
+                new OfflineNotesRepository(
+                        creativeDatabaseHelper,
+                        bomDatabaseHelper,
+                        pouchPreferences
+                );
     }
 
     /**

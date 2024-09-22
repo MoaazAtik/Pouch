@@ -24,6 +24,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     private static final String TAG = "NotesAdapter";
     private final List<Note> notesList = new ArrayList<>();
 
+    /**
+     * Default constructor
+     */
     public NotesAdapter() {
     }
 
@@ -33,7 +36,8 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
      * @param newNotesList the new list of notes
      */
     public void setNotes(List<Note> newNotesList) {
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(new NotesDiffCallback(notesList, newNotesList));
+        DiffUtil.DiffResult diffResult =
+                DiffUtil.calculateDiff(new NotesDiffCallback(notesList, newNotesList));
         notesList.clear();
         notesList.addAll(newNotesList);
         diffResult.dispatchUpdatesTo(this);
@@ -42,7 +46,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        NoteRvItemBinding binding = NoteRvItemBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        NoteRvItemBinding binding = NoteRvItemBinding.inflate(
+                LayoutInflater.from(parent.getContext()),
+                parent,
+                false);
         return new MyViewHolder(binding);
     }
 
@@ -77,7 +84,10 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.MyViewHolder
         public void bind(Note note) {
             binding.txtNoteTitleRv.setText(note.getNoteTitle());
             binding.txtNoteBodyRv.setText(note.getNoteBody());
-            binding.txtTimestampRv.setText(getFormattedDateTime(DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT, (note.getTimestamp())));
+            binding.txtTimestampRv.setText(getFormattedDateTime(
+                    DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+                    (note.getTimestamp())
+            ));
         }
     }
 

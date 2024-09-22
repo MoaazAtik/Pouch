@@ -13,7 +13,7 @@ public enum Zone {
     CREATIVE,
 
     /**
-     * Represents the Box of Mysteries zone.
+     * Represents the Box of Mysteries (BOM) zone.
      * It is the hidden zone and can be accessed only in a secret way.
      * It is used to store and retrieve secrets from the box of mysteries.
      */

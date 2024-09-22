@@ -1,7 +1,6 @@
 package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +20,9 @@ import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.databinding.FragmentNoteBinding;
 
+/**
+ * Fragment to display a note.
+ */
 public class NoteFragment extends Fragment {
 
     private static final String TAG = "NoteFragment";
@@ -29,7 +31,11 @@ public class NoteFragment extends Fragment {
     private LiveData<Note> noteLiveData;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState
+    ) {
         binding = FragmentNoteBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -38,8 +44,13 @@ public class NoteFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NotesRepository repository = ((PouchApplication) requireActivity().getApplication()).getNotesRepository();
-        noteViewModel = new ViewModelProvider(this, new NoteViewModel.NoteViewModelFactory(repository)).get(NoteViewModel.class);
+        NotesRepository repository =
+                ((PouchApplication) requireActivity().getApplication()).getNotesRepository();
+
+        noteViewModel = new ViewModelProvider(
+                this,
+                new NoteViewModel.NoteViewModelFactory(repository)
+        ).get(NoteViewModel.class);
 
         noteViewModel.initializeNote(getArguments());
         noteLiveData = noteViewModel.getNoteLiveData();
@@ -97,15 +108,14 @@ public class NoteFragment extends Fragment {
     }
 
     /**
-     * Sets up the back pressing behaviour for the fragment.
+     * Sets up the back pressing callback for the fragment.
      * <p>
      * <strong>Note:</strong>
      * </p>
-     * <p>
      * It should not be called before {@link #onResume()}.
-     * Otherwise, after a configuration change, it will interfere with the {@link OnBackPressedCallback} of the activity,
+     * Otherwise, after a configuration change, it will interfere with
+     * the {@link OnBackPressedCallback} of the activity,
      * thus, the fragment will not be able to handle the back press.
-     * </p>
      */
     private void setupBackPressingBehaviour() {
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {

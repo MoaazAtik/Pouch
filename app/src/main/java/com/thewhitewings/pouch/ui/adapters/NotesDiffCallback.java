@@ -1,7 +1,5 @@
 package com.thewhitewings.pouch.ui.adapters;
 
-import android.util.Log;
-
 import androidx.recyclerview.widget.DiffUtil;
 
 import com.thewhitewings.pouch.data.Note;
@@ -18,6 +16,12 @@ public class NotesDiffCallback extends DiffUtil.Callback {
     private final List<Note> oldList;
     private final List<Note> newList;
 
+    /**
+     * Constructor for NotesDiffCallback
+     *
+     * @param oldList the old list of notes
+     * @param newList the new list of notes
+     */
     public NotesDiffCallback(List<Note> oldList, List<Note> newList) {
         this.oldList = oldList;
         this.newList = newList;
@@ -43,4 +47,3 @@ public class NotesDiffCallback extends DiffUtil.Callback {
         return oldList.get(oldItemPosition).equalContent(newList.get(newItemPosition));
     }
 }
-

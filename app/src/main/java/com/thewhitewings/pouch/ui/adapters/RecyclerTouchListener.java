@@ -20,14 +20,19 @@ import androidx.recyclerview.widget.RecyclerView;
  *     <li>2. OnItemTouchListener with GestureDetector to handle item Clicks.</li>
  * </ul>
  */
-public class RecyclerTouchListener extends ItemTouchHelper.SimpleCallback implements RecyclerView.OnItemTouchListener {
+public class RecyclerTouchListener
+        extends ItemTouchHelper.SimpleCallback implements RecyclerView.OnItemTouchListener {
 
     private static final String TAG = "RecyclerTouchListener";
 
     private final TouchListener touchListener;
     private final GestureDetector gestureDetector;
 
-    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final TouchListener touchListener) {
+    public RecyclerTouchListener(
+            Context context,
+            final RecyclerView recyclerView,
+            final TouchListener touchListener
+    ) {
         super(0, ItemTouchHelper.START);
         this.touchListener = touchListener;
 

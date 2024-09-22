@@ -6,14 +6,16 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thewhitewings.pouch.utils.Zone;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
 import com.thewhitewings.pouch.data.SortOption;
+import com.thewhitewings.pouch.utils.Zone;
 
 import java.util.List;
 
-
+/**
+ * ViewModel to interact with the {@link  NotesRepository}'s data source and the main activity.
+ */
 public class MainViewModel extends ViewModel {
 
     private static final String TAG = "MainViewModel";
@@ -23,6 +25,11 @@ public class MainViewModel extends ViewModel {
     private SortOption sortOption;
     private String searchQuery;
 
+    /**
+     * Constructor for {@link MainViewModel}.
+     *
+     * @param repository to be used for interacting with the data source
+     */
     public MainViewModel(NotesRepository repository) {
         this.repository = repository;
         this.notesLiveData = repository.getAllNotes();
@@ -45,7 +52,8 @@ public class MainViewModel extends ViewModel {
      */
     public void toggleZone() {
         currentZoneLiveData.postValue(
-                currentZoneLiveData.getValue() == Zone.CREATIVE ? Zone.BOX_OF_MYSTERIES : Zone.CREATIVE
+                currentZoneLiveData.getValue() == Zone.CREATIVE ?
+                        Zone.BOX_OF_MYSTERIES : Zone.CREATIVE
         );
 
         repository.toggleZone(currentZoneLiveData.getValue());

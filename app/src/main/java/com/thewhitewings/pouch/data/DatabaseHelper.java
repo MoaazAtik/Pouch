@@ -15,9 +15,9 @@ import com.thewhitewings.pouch.utils.DateTimeFormatType;
 import java.util.ArrayList;
 import java.util.List;
 
-///**
-// * Database Helper Class
-// */
+/**
+ * Database Helper Class
+ */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String TAG = "DatabaseHelper";
@@ -139,7 +139,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get all Notes from Database organized by timestamp in descending order.
+     * Get all Notes from Database sorted by timestamp in descending order.
      *
      * @return all Notes in Database
      */
@@ -178,10 +178,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get all Notes from Database organized by given {@link SortOption}.
+     * Get all Notes from Database sorted by given {@link SortOption}.
      *
      * @param sortOption to be used for sorting
-     * @return all Notes in Database
+     * @return all Notes in Database in the specified order
      */
     public List<Note> getAllNotes(SortOption sortOption) {
         List<Note> allNotes = new ArrayList<>();
@@ -216,7 +216,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Update the given note in Database
+     * Update the note in Database that has the same id as the given note.
      *
      * @param note to be updated
      */
@@ -226,8 +226,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
         values.put(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
         // Convert timestamp to UTC for Storing in Database
-        values.put(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(DateTimeFormatType.LOCAL_TO_UTC, note.getTimestamp()));
-
+        values.put(
+                Constants.COLUMN_TIMESTAMP,
+                getFormattedDateTime(DateTimeFormatType.LOCAL_TO_UTC, note.getTimestamp())
+        );
 
         db.update(
                 Constants.TABLE_NAME,
@@ -243,7 +245,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Delete the given note from Database
+     * Delete the note from Database that has the same id as the given note.
      *
      * @param note to be deleted
      */
@@ -262,11 +264,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Search Notes by Note title or body
+     * Search Notes by Note title and/or body
      *
      * @param searchQuery Note title and/or body
      * @param sortOption  to be used for sorting the results
-     * @return List of Notes that match the search query
+     * @return List of Notes that match the search query in the specified order
      */
     public List<Note> searchNotes(String searchQuery, SortOption sortOption) {
         List<Note> filteredNotes = new ArrayList<>();
@@ -306,20 +308,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
-     * Transfer data from Old table to New Table for the Common columns and Renamed columns.
+     * Handles upgrading or downgrading the database,
+     * i.e., increasing or decreasing the version number of the database.
+     * <p>
+     * Transfers data from Old table to New Table for the Common columns and Renamed columns.
      * <p>
      * It doesn't transfer data of columns that no longer exist in New table.
      * </p>
      * <strong>Notes:</strong>
      * <ul>
-     *     <li>When upgrading or downgrading the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.</li>
+     *     <li>To upgrade or downgrade the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.</li>
      *     <li>When renaming columns, modify the column mappings by calling {@link #setAndGetColumnMappings()}.</li>
      * </ul>
      *
      * @param db to be upgraded or downgraded
      */
     private void upgradeOrDowngrade(SQLiteDatabase db) {
-        // Create a temporary table with the same structure as the old table
+        // Create a temporary table with the same schema and content as the old table
         String tempTableName = Constants.TABLE_NAME + "_temp";
         db.execSQL(
                 "CREATE TABLE IF NOT EXISTS " + tempTableName +
@@ -336,7 +341,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<String> oldTableColumns = getTableColumns(db, tempTableName);
         List<String> newTableColumns = getTableColumns(db, Constants.TABLE_NAME);
 
-        // Find common columns between old and new tables. Note: Renamed columns are not added to this temporary commonColumns List
+        // Find common columns between old and new tables.
+        // Note: Renamed columns are not added to this temporary commonColumns List
         List<String> commonColumns = new ArrayList<>(oldTableColumns);
         commonColumns.retainAll(newTableColumns);
 
@@ -399,7 +405,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Set and Get column mappings.
-     * To Rename a table's Columns, you need to create a new Column Mapping and populate this list with the new column mappings.
+     * To Rename a table's Columns, you need to create a new Column Mapping
+     * and populate this list with the new column mappings.
      *
      * @return list of Column Mappings which have Old and New names of Renamed Columns.
      */
@@ -412,14 +419,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     /**
-     * A class to hold column mapping information to be used when Renaming Columns
+     * A class to hold column name mapping information to be used when Renaming Columns.
+     * <p>
+     * It maps an old column name to the new column name.
+     * </p>
      */
     private class ColumnMapping {
         public String oldColumnName;
         public String newColumnName;
 
         /**
-         * Constructor of ColumnMapping
+         * Constructor of ColumnMapping.
          *
          * @param oldColumnName the old name of the column
          * @param newColumnName the new name of the column

@@ -6,7 +6,7 @@ package com.thewhitewings.pouch.data;
 public interface DatabaseChangeListener {
 
     /**
-     * Called when the database has changed.
+     * Called when the database content has changed.
      */
     void onDatabaseChanged();
 }

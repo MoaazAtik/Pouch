@@ -1,7 +1,6 @@
 package com.thewhitewings.pouch.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -9,10 +8,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.thewhitewings.pouch.utils.Constants;
 import com.thewhitewings.pouch.data.Note;
 import com.thewhitewings.pouch.data.NotesRepository;
+import com.thewhitewings.pouch.utils.Constants;
 
+/**
+ * ViewModel to interact with the {@link NotesRepository}'s data source and the Note screen.
+ */
 public class NoteViewModel extends ViewModel {
 
     private static final String TAG = "NoteViewModel";
@@ -21,9 +23,14 @@ public class NoteViewModel extends ViewModel {
     // the note that is opened for updating purpose
     private Note oldNote;
 
-    // represents updated state of the currently opened note
+    // holds the state of the currently opened note
     private final MutableLiveData<Note> noteLiveData = new MutableLiveData<>();
 
+    /**
+     * Constructor for {@link NoteViewModel}.
+     *
+     * @param repository the repository to interact with the data source
+     */
     public NoteViewModel(NotesRepository repository) {
         this.notesRepository = repository;
     }
@@ -32,7 +39,7 @@ public class NoteViewModel extends ViewModel {
      * Initialize the note LiveData and {@link #oldNote} with the provided arguments.
      * It is needed for the first initialization when a note is opened for updating.
      *
-     * @param args the arguments bundle passed from the activity containing the note data
+     * @param args the arguments bundle passed from the activity containing the opened note data
      */
     public void initializeNote(Bundle args) {
         if (args == null) // creating new note
@@ -52,7 +59,7 @@ public class NoteViewModel extends ViewModel {
     }
 
     /**
-     * Update the note LiveData with the provided note.
+     * Update the state of note LiveData with the provided note.
      *
      * @param note the note with updated data
      */
@@ -61,7 +68,7 @@ public class NoteViewModel extends ViewModel {
     }
 
     /**
-     * Get the note LiveData.
+     * Get the state of note LiveData.
      *
      * @return the note LiveData
      */
@@ -79,7 +86,8 @@ public class NoteViewModel extends ViewModel {
     public void createOrUpdateNote(String newNoteTitle, String newNoteBody) {
         if (oldNote == null && (!newNoteTitle.isEmpty() || !newNoteBody.isEmpty()))
             createNote(newNoteTitle, newNoteBody);
-        else if (oldNote != null && (!oldNote.getNoteBody().equals(newNoteBody) || !oldNote.getNoteTitle().equals(newNoteTitle)))
+        else if (oldNote != null &&
+                (!oldNote.getNoteBody().equals(newNoteBody) || !oldNote.getNoteTitle().equals(newNoteTitle)))
             updateNote(newNoteTitle, newNoteBody);
     }
 

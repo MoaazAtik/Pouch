@@ -2,18 +2,6 @@ package com.thewhitewings.pouch.ui;
 
 import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
-
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.graphics.Color;
@@ -27,6 +15,18 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.PopupMenu;
 import android.widget.SearchView;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.thewhitewings.pouch.PouchApplication;
@@ -67,7 +67,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         NotesRepository repository = ((PouchApplication) getApplication()).getNotesRepository();
-        viewModel = new ViewModelProvider(this, new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
+        viewModel = new ViewModelProvider(
+                this,
+                new MainViewModel.MainViewModelFactory(repository)).get(MainViewModel.class);
 
         notesLiveData = viewModel.notesLiveData;
         currentZone = viewModel.getCurrentZoneLiveData();
@@ -153,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Sets up the back pressing behaviour for the activity.
+     * Sets up the back pressing behavior for the activity.
      */
     private void setupBackPressingBehaviour() {
         getOnBackPressedDispatcher().addCallback(this, new OnBackPressedCallback(true) {
@@ -180,7 +182,9 @@ public class MainActivity extends AppCompatActivity {
             argsBundle.putInt(Constants.COLUMN_ID, note.getId());
             argsBundle.putString(Constants.COLUMN_NOTE_TITLE, note.getNoteTitle());
             argsBundle.putString(Constants.COLUMN_NOTE_BODY, note.getNoteBody());
-            argsBundle.putString(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT, note.getTimestamp()));
+            argsBundle.putString(Constants.COLUMN_TIMESTAMP, getFormattedDateTime(
+                    DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
+                    note.getTimestamp()));
             noteFragment.setArguments(argsBundle);
         }
 
@@ -208,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Shows and sets up the sorting popup menu to sort the notes in the RecyclerView.
+     * Sets up and shows the sorting popup menu to sort the notes in the RecyclerView.
      */
     private void showSortingPopupMenu() {
         PopupMenu popupMenu = new PopupMenu(this, binding.btnSort);
@@ -235,11 +239,18 @@ public class MainActivity extends AppCompatActivity {
      * Makes the reveal Box of mysteries button interactable.
      */
     private void showBtnRevealBom() {
-        new Handler().postDelayed(() -> binding.btnRevealBom.setVisibility(View.VISIBLE), 1500);
+        new Handler().postDelayed(() ->
+                binding.btnRevealBom.setVisibility(View.VISIBLE), 1500);
     }
 
     /**
      * Handles the logic for revealing the Box of mysteries.
+     * <p>
+     * Starts the timeout for completing the sequence of revealing the Box of mysteries.
+     * If the sequence of revealing the Box of mysteries is completed within the timeout,
+     * the Box of mysteries will be revealed.
+     * Otherwise, the time window will be closed and the sequence will be reset.
+     * </p>
      */
     private void revealBoxOfMysteries() {
         bomKnocks++;
@@ -258,7 +269,8 @@ public class MainActivity extends AppCompatActivity {
                         bomKnocks = 0;
                         break;
                     } else if (bomKnocks == 4) {
-                        runOnUiThread(() -> binding.btnRevealBom.setBackgroundResource(R.drawable.ripple_revealed_word));
+                        runOnUiThread(() -> binding.btnRevealBom.setBackgroundResource(
+                                R.drawable.ripple_revealed_word));
                     } else if (bomKnocks == 5) {
                         handler.postDelayed(() -> {
                             bomTimeoutStarted = false;
@@ -282,7 +294,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes the needed changes to the UI for navigating to the Box of mysteries zone.
+     * Makes the required changes to the UI when navigating to the Box of mysteries zone.
      */
     private void goToBoxOfMysteries() {
         binding.btnRevealBom.setBackgroundColor(Color.TRANSPARENT);
@@ -308,7 +320,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Makes the needed changes to the UI for navigating to the Creative zone.
+     * Makes the required changes to the UI when navigating to the Creative zone.
      */
     private void goToCreativeZone() {
         binding.btnRevealBom.setVisibility(View.VISIBLE);
@@ -322,7 +334,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Modifies the logo image view for navigating to a different zone.
+     * Modifies the logo image view when navigating to a different zone.
      */
     private void modifyLogo() {
         int initialColor;
@@ -349,7 +361,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Modifies the zone name text view for navigating to a different zone.
+     * Modifies the zone name text view when navigating to a different zone.
      */
     private void modifyZoneName() {
         TextView txtZoneName = binding.txtZoneName;

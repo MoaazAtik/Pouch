@@ -5,14 +5,20 @@ import static com.thewhitewings.pouch.utils.DateTimeUtils.getFormattedDateTime;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.thewhitewings.pouch.utils.Zone;
 import com.thewhitewings.pouch.utils.DateTimeFormatType;
+import com.thewhitewings.pouch.utils.Zone;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Offline Notes Repository Class
+ * Offline Notes Repository Class.
+ * <p>
+ * Implementation of the {@link NotesRepository} interface.
+ * </p>
+ * <p>
+ * It is the gate to interact with the Room databases and the SharedPreferences.
+ * </p>
  */
 public class OfflineNotesRepository implements NotesRepository, DatabaseChangeListener {
 
@@ -36,7 +42,18 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     // current zone
     private Zone currentZone;
 
-    public OfflineNotesRepository(DatabaseHelper creativeDatabaseHelper, DatabaseHelper bomDatabaseHelper, PouchPreferences pouchPreferences) {
+    /**
+     * Constructor of OfflineNotesRepository
+     *
+     * @param creativeDatabaseHelper Database Helper of the creative zone
+     * @param bomDatabaseHelper      Database Helper of the box of mysteries zone
+     * @param pouchPreferences       Pouch Preferences
+     */
+    public OfflineNotesRepository(
+            DatabaseHelper creativeDatabaseHelper,
+            DatabaseHelper bomDatabaseHelper,
+            PouchPreferences pouchPreferences
+    ) {
         this.creativeDatabaseHelper = creativeDatabaseHelper;
         this.bomDatabaseHelper = bomDatabaseHelper;
         currentZoneDatabaseHelper = creativeDatabaseHelper;
@@ -62,6 +79,8 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
     @Override
     public void createNote(String noteTitle, String noteBody) {
         currentZoneDatabaseHelper.createNote(noteTitle, noteBody);
+        // Note: notes live data is updated automatically by the database helper
+        // when it calls onDatabaseChanged()
     }
 
     @Override
@@ -73,11 +92,15 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         updatedNote.setTimestamp(getFormattedDateTime(DateTimeFormatType.CURRENT_LOCAL, null));
 
         currentZoneDatabaseHelper.updateNote(updatedNote);
+        // Note: notes live data is updated automatically by the database helper
+        // when it calls onDatabaseChanged()
     }
 
     @Override
     public void deleteNote(Note note) {
         currentZoneDatabaseHelper.deleteNote(note);
+        // Note: notes live data is updated automatically by the database helper
+        // when it calls onDatabaseChanged()
     }
 
     @Override
@@ -141,4 +164,3 @@ public class OfflineNotesRepository implements NotesRepository, DatabaseChangeLi
         );
     }
 }
-
