@@ -1,8 +1,9 @@
 # Pouch ⭕
 
-Meet **Pouch**: Your compact creative haven. With its intuitive design, your little Pouch holds the magical world of your creative ideas and valuable notes.<br>
+Let your little **Pouch** hold the magical world of your creative ideas and valuable notes.<br>
 Capture inspiration effortlessly in the **Creative Zone** and unveil the hidden **Box of Mysteries** with a touch of enchantment.
 
+It’s available in a Modern **Kotlin with Jetpack Compose** [version](https://github.com/MoaazAtik/Pouch) and a **Java with Android Views** [version](https://github.com/MoaazAtik/Pouch/tree/java-views-version).<br>
 Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/store/apps/dev?id=6456450686494659010)
 
 <br>
@@ -12,8 +13,9 @@ Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/
  2. [Quick Start](#quick-start-)
  3. [Usage](#usage-)
  4. [Demonstration](#demonstration-)
- 5. [Utilized Technologies](#utilized-technologies-)
- 6. [Main Files](#main-files-)
+ 5. [Utilized Techniques and Technologies](#utilized-techniques-and-technologies-)
+ 6. [Upcoming Enhancements](#upcoming-enhancements-)
+ 7. [Core Files](#core-files-)
 
 <br>
 
@@ -50,7 +52,6 @@ Here's how to make the most of this space:
  - Utilize the **Search** Field at the top to swiftly locate specific notes by title or content.
  - Tap on the **Sorting** Button at the right of the search field to open a pop-up menu for sorting notes alphabetically or by creating/editing time in ascending or descending order.
  - Tap on any note to **view** its details or make **edits**.
- - Easily **remove** a note by swiping it to the left.
 
 <br>
 
@@ -72,34 +73,62 @@ Rest assured, your notes are securely stored locally on your device using SQLite
 <br>
 
 ## Demonstration 📸
-Click the image below to watch the full app demo on YouTube ⬇️
+Click the image below to watch the full app demo of the Java version on YouTube ⬇️
 
 [![Full demo](https://img.youtube.com/vi/20ExnZcRBzE/maxresdefault.jpg)](https://youtu.be/TIbixpGNFwU)
 
 <br>
 
-## Utilized Technologies 🔧
- - **Programming Language:** Java
+## Utilized Techniques and Technologies 🔧
+This app was originally developed in Java using Android Views and older libraries. Gradually, it was fully migrated to Kotlin with Jetpack Compose, adopting modern libraries and techniques along the way.
+The focus was on maintainability, scalability, and aligning with Modern App Development Principles.
 
- - **Storage:** SQLite Database for local storage of notes.
+- **Programming Language:** Kotlin (migrated from Java)
 
- - **Architecture Pattern:** Model View ViewModel (MVVM).
+- **UI**: Jetpack Compose, Navigation Component
 
- - **Development Tools:** Figma, Lottie Animations, Git, and Android Studio.
+- **Storage:** Room library for local storage of notes
+
+- **Architecture Pattern:** Model View ViewModel (MVVM) with Unidirectional Data Flow (UDF)
+
+- **Development Tools:** Figma, Lottie Animations, Git, and Android Studio
+
+- **Modern Practices:**
+  - Layered architecture and abstraction
+  - Dependency Injection (DI)
+  - Coroutines and Flows
+  - Well-documented codebase for ease of understanding and maintenance
 
 <br>
 
-## Main Files 📁
- - [MainActivity.java](app/src/main/java/com/thewhitewings/pouch/ui/MainActivity.java)
- - [MainViewModel.java](app/src/main/java/com/thewhitewings/pouch/ui/MainViewModel.java)
- - [activity_main.xml](app/src/main/res/layout/activity_main.xml)<br><br>
- - [NoteFragment.java](app/src/main/java/com/thewhitewings/pouch/ui/NoteFragment.java)
- - [NoteViewModel.java](app/src/main/java/com/thewhitewings/pouch/ui/NoteViewModel.java)
- - [fragment_note.xml](app/src/main/res/layout/fragment_note.xml)<br><br>
- - [OfflineNotesRepository.java](app/src/main/java/com/thewhitewings/pouch/data/OfflineNotesRepository.java)
- - [DatabaseHelper.java](app/src/main/java/com/thewhitewings/pouch/data/DatabaseHelper.java)
- - [PouchApplication.java](app/src/main/java/com/thewhitewings/pouch/PouchApplication.java)<br><br>
- - [DateTimeUtils.java](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.java)
+## Upcoming Enhancements 🚀
+
+- **Unit & UI Testing**: Strengthening code coverage and reliability.
+
+- **Adaptive Layout**: Support for various screen sizes.
+
+- **Recycle Bin Feature**: Temporarily storing deleted notes for 1 month.
+
+- **Architecture & Code**: Improved structure and scalability.
+
+- **UI/UX**: Smoother interface and user experience.
+
+<br>
+
+## Core Files 📁
+- [HomeScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeScreen.kt)
+- [HomeViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeViewModel.kt)
+- [NoteScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/NoteScreen.kt)
+- [NoteViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/NoteViewModel.kt)
+- [PouchNavGraph](app/src/main/java/com/thewhitewings/pouch/ui/navigation/PouchNavGraph.kt)<br><br>
+- [OfflineNotesRepository.kt](app/src/main/java/com/thewhitewings/pouch/data/OfflineNotesRepository.kt)
+- [NoteDao.kt](app/src/main/java/com/thewhitewings/pouch/data/NoteDao.kt)
+- [PouchPreferences.kt](app/src/main/java/com/thewhitewings/pouch/data/PouchPreferences.kt)
+- [DatabaseMigrations.kt](app/src/main/java/com/thewhitewings/pouch/data/DatabaseMigrations.kt)<br><br>
+- [DateTimeUtils.kt](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.kt)
+- [PouchApplication.kt](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)
+
+<br>
 
 <br></br>
 Carry your World of Creative Ideas and Valuable Notes in your Magical **Pouch** 🪄
