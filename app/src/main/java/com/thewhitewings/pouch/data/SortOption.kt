@@ -25,22 +25,22 @@ enum class SortOption(
 ) {
 
     /**
-     * Alphabetical descending order.
+     * Alphabetical ascending order.
      */
     A_Z(id = 0, label = R.string.sort_option_a_z),
 
     /**
-     * Alphabetical ascending order.
+     * Alphabetical descending order.
      */
     Z_A(id = 1, label = R.string.sort_option_z_a),
 
     /**
-     * Chronological descending order based on the note's timestamp, i.e., Oldest first.
+     * Chronological ascending order based on the note's timestamp, i.e., Oldest first.
      */
     OLDEST_FIRST(id = 2, label = R.string.sort_option_oldest_first),
 
     /**
-     * Chronological ascending order based on the note's timestamp, i.e., Newest first.
+     * Chronological descending order based on the note's timestamp, i.e., Newest first.
      */
     NEWEST_FIRST(id = 3, label = R.string.sort_option_newest_first)
 }

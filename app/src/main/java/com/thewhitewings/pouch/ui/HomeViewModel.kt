@@ -154,9 +154,9 @@ class HomeViewModel(
 
     /**
      * Starts the timeout for completing the sequence of revealing the Box of mysteries.
-     * If the sequence of revealing the Box of mysteries is completed within the timeout,
+     * If the sequence of revealing the Box of mysteries is completed before the timeout,
      * the Box of mysteries will be revealed.
-     * Otherwise, the sequence will be reset.
+     * Otherwise, the time window will be closed and the sequence will be reset.
      */
     private suspend fun startBoxRevealTimeout() {
         bomTimeoutStarted = true
