@@ -1,8 +1,9 @@
 # Pouch ⭕
 
-Meet **Pouch**: Your compact creative haven. With its intuitive design, your little Pouch holds the magical world of your creative ideas and valuable notes.<br>
+Let your little **Pouch** hold the magical world of your creative ideas and valuable notes.<br>
 Capture inspiration effortlessly in the **Creative Zone** and unveil the hidden **Box of Mysteries** with a touch of enchantment.
 
+It’s available in a Modern **Kotlin with Jetpack Compose** [version](https://github.com/MoaazAtik/Pouch) and a **Java with Android Views** [version](https://github.com/MoaazAtik/Pouch/tree/java-views-version).<br>
 Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/store/apps/dev?id=6456450686494659010)
 
 <br>
@@ -12,8 +13,8 @@ Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/
  2. [Quick Start](#quick-start-)
  3. [Usage](#usage-)
  4. [Demonstration](#demonstration-)
- 5. [Utilized Technologies](#utilized-technologies-)
- 6. [Main Files](#main-files-)
+ 5. [Utilized Techniques and Technologies](#utilized-techniques-and-technologies-)
+ 7. [Core Files](#core-files-)
 
 <br>
 
@@ -72,24 +73,34 @@ Rest assured, your notes are securely stored locally on your device using SQLite
 <br>
 
 ## Demonstration 📸
-Click the image below to watch the full app demo on YouTube ⬇️
+Click the image below to watch the full app demo of the Java version on YouTube ⬇️
 
 [![Full demo](https://img.youtube.com/vi/20ExnZcRBzE/maxresdefault.jpg)](https://youtu.be/TIbixpGNFwU)
 
 <br>
 
-## Utilized Technologies 🔧
+
+## Utilized Techniques and Technologies 🔧
+This app was originally developed in Java using Android Views and older libraries. Gradually, it was fully migrated to Kotlin with Jetpack Compose, adopting modern libraries and techniques along the way.
+The focus was on maintainability, scalability, and aligning with Modern App Development Principles.
  - **Programming Language:** Java
+
+ - **UI**: Android Views
 
  - **Storage:** SQLite Database for local storage of notes.
 
- - **Architecture Pattern:** Model View ViewModel (MVVM).
+ - **Architecture Pattern:** Model View ViewModel (MVVM) with Unidirectional Data Flow (UDF)
 
  - **Development Tools:** Figma, Lottie Animations, Git, and Android Studio.
 
+ - **Modern Practices:**
+   - Layered architecture and abstraction
+   - Dependency Injection (DI)
+   - Well-documented codebase for ease of understanding and maintenance
+
 <br>
 
-## Main Files 📁
+## Core Files 📁
  - [MainActivity.java](app/src/main/java/com/thewhitewings/pouch/ui/MainActivity.java)
  - [MainViewModel.java](app/src/main/java/com/thewhitewings/pouch/ui/MainViewModel.java)
  - [activity_main.xml](app/src/main/res/layout/activity_main.xml)<br><br>
@@ -98,8 +109,9 @@ Click the image below to watch the full app demo on YouTube ⬇️
  - [fragment_note.xml](app/src/main/res/layout/fragment_note.xml)<br><br>
  - [OfflineNotesRepository.java](app/src/main/java/com/thewhitewings/pouch/data/OfflineNotesRepository.java)
  - [DatabaseHelper.java](app/src/main/java/com/thewhitewings/pouch/data/DatabaseHelper.java)
- - [PouchApplication.java](app/src/main/java/com/thewhitewings/pouch/PouchApplication.java)<br><br>
+ - [PouchPreferences.java](app/src/main/java/com/thewhitewings/pouch/data/PouchPreferences.java)<br><br>
  - [DateTimeUtils.java](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.java)
+ - [PouchApplication.java](app/src/main/java/com/thewhitewings/pouch/PouchApplication.java)
 
 <br></br>
 Carry your World of Creative Ideas and Valuable Notes in your Magical **Pouch** 🪄
