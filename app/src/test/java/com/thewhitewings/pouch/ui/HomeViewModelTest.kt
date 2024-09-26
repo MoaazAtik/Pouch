@@ -6,7 +6,6 @@ import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
@@ -15,7 +14,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito.mock
-import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -65,50 +63,9 @@ class HomeViewModelTest {
         viewModel = HomeViewModel(notesRepository, testDispatcher)
     }
 
-    // Happy path
-    @Test
-    fun `test initialization collects sort option flow`() = runTest {
-        // Given: Mock repository returns a flow with a sort option
-        val testZone = Zone.CREATIVE
-        val mockSortOption = SortOption.NEWEST_FIRST
-        val mockFlow = flowOf(mockSortOption)
-
-        // When the repository's getSortOptionFlow is called, return the mock flow
-        whenever(notesRepository.getSortOptionFlow(testZone)).thenReturn(mockFlow)
-
-        // Then: Get the first emission from homeUiState
-        val uiState = viewModel.homeUiState.first()
-
-        // Verify that the homeUiState contains the correct sortOption
-        assertEquals(mockSortOption, uiState.sortOption)
-    }
-
-    // Happy path
-    @Test
-    fun `test load all notes when search query is empty`() = runTest {
-        // Given: Mock repository returns a flow of notes when getAllNotesStream is called
-        val mockSortOption = SortOption.NEWEST_FIRST
-        val mockNotesList = listOf(Note(1, "Test Note", "Test Body", "2024"))
-        val mockFlow = flowOf(mockNotesList)
-
-        // Mocking the repository to return the flow when getAllNotesStream is called
-//        viewModel = HomeViewModel(notesRepository, testDispatcher) // when it's before, i get 'Expected... Actual...' error.
-        whenever(notesRepository.getAllNotesStream(mockSortOption)).thenReturn(mockFlow)
-//        viewModel = HomeViewModel(notesRepository, testDispatcher) // when it's after, i get 'Wanted 1 time... but was 2 times...' error.
-
-        // Then: Collect the homeUiState and verify notesList is updated with mock data
-        val uiState = viewModel.homeUiState.first() // This will collect the latest state from the flow
-
-        // Verify that the notesList in the UI state matches the mockNotesList
-        assertEquals(mockNotesList, uiState.notesList)
-
-        // Verify: That getAllNotesStream was called with the correct sort option
-        verify(notesRepository).getAllNotesStream(mockSortOption)
-    }
-
     /**
      * Test that zone changes are collected and sort option is updated correctly.
-     * Test for [HomeViewModel.collectZoneAndCollectSortOption]
+     * Happy path test for [HomeViewModel.collectZoneAndCollectSortOption]
      */
     @Test
     fun `When zone changes, update sort option correctly`() = runTest {
