@@ -152,6 +152,19 @@ class HomeViewModel(
     }
 
     /**
+     * Updates the sort option state for testing.
+     *
+     * **Note:** This function is only for testing purposes.
+     * @param sortOptionId Id of the new sort option.
+     */
+    fun updateSortOptionStateForTesting(sortOptionId: Int) {
+        val sortOption = getSortOptionFromId(sortOptionId)
+        _homeUiState.update {
+            it.copy(sortOption = sortOption)
+        }
+    }
+
+    /**
      * Deletes a note.
      * @param note The note to delete.
      */
