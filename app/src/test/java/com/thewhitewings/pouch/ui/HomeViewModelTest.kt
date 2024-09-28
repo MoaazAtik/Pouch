@@ -6,8 +6,10 @@ import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -247,6 +249,18 @@ class HomeViewModelTest {
 
         verify(notesRepository, times(3)).getAllNotesStream(initialSortOption)
         assertEquals(expectedMockNotesList, viewModel.homeUiState.value.notesList)
+    }
+
+    /**
+     * Test that after [HomeViewModel] is initialized, the state of [HomeViewModel.HomeUiState.showAnimations] is updated correctly.
+     * Happy path for [HomeViewModel.updateShowAnimationsStateDelayed]
+     */
+    @Test
+    fun `When the view model is initialized, showAnimations is updated correctly`() = runTest {
+        // Given: the initial showAnimations state is true
+        val expectedShowAnimations = false
+        testDispatcher.scheduler.advanceUntilIdle()
+        assertEquals(expectedShowAnimations, viewModel.homeUiState.value.showAnimations)
     }
 
 }
