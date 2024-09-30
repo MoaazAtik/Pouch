@@ -6,10 +6,8 @@ import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import com.thewhitewings.pouch.utils.Zone
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -263,4 +261,149 @@ class HomeViewModelTest {
         assertEquals(expectedShowAnimations, viewModel.homeUiState.value.showAnimations)
     }
 
+    /**
+     * Test that [HomeViewModel.updateSearchQuery] updates the search query state correctly.
+     * Happy path for [HomeViewModel.updateSearchQuery]
+     */
+    @Test
+    fun `When updating search query, update search query state correctly`() =
+        runTest {
+            // Given: the initial search query is empty
+            val mockSearchQuery = "Test"
+            val expectedMockNotesList = mockInitialNotesList.reversed()
+
+            /*
+            Updating the search query will trigger the collecting of the flow of
+            notesRepository.searchNotesStream in
+            collectSortOptionSearchQueryZoneAndCollectNotesList function.
+            */
+            whenever(notesRepository.searchNotesStream(mockSearchQuery, initialSortOption))
+                .thenReturn(flowOf(expectedMockNotesList))
+
+            viewModel.updateSearchQuery(mockSearchQuery)
+            assertEquals(mockSearchQuery, viewModel.homeUiState.value.searchQuery)
+        }
+
+    /**
+     * Test that [HomeViewModel.updateSortOption] saves the sort option with [notesRepository.saveSortOption].
+     * Happy path for [HomeViewModel.updateSortOption]
+     */
+    @Test
+    fun `When updating sort option, save the sort option`() = runTest {
+        // Given: the initial sort option is NEWEST_FIRST, and search query is empty
+        val mockSortOption = SortOption.OLDEST_FIRST
+        val expectedMockNotesList = mockInitialNotesList.reversed()
+
+        /*
+        Updating the sort option with updateSortOption will trigger the collecting
+        of the flow of notesRepository.getSortOptionFlow(zone) in
+        collectZoneAndCollectSortOption function and the collecting in
+        collectSortOptionSearchQueryZoneAndCollectNotesList function.
+        */
+        whenever(notesRepository.getAllNotesStream(mockSortOption))
+            .thenReturn(flowOf(expectedMockNotesList))
+
+        viewModel.updateSortOption(mockSortOption.id)
+        verify(notesRepository).saveSortOption(mockSortOption, initialZone)
+        verify(notesRepository).getSortOptionFlow(initialZone)
+    }
+
+    /**
+     * Test that [HomeViewModel.updateSortOptionStateForTesting] updates the sort option state correctly.
+     * Happy path for [HomeViewModel.updateSortOptionStateForTesting]
+     */
+    @Test
+    fun `When updating sort option, update sort option state correctly`() = runTest {
+        // Given: the initial sort option is NEWEST_FIRST, and search query is empty
+        val mockSortOption = SortOption.OLDEST_FIRST
+        val expectedMockNotesList = mockInitialNotesList.reversed()
+
+        /*
+        Updating the sort option with updateSortOptionStateForTesting will trigger the collecting
+        of the flow of notesRepository.getSortOptionFlow(zone) in
+        collectZoneAndCollectSortOption function.
+        */
+        whenever(notesRepository.getAllNotesStream(mockSortOption))
+            .thenReturn(flowOf(expectedMockNotesList))
+
+        viewModel.updateSortOptionStateForTesting(mockSortOption.id)
+        assertEquals(mockSortOption, viewModel.homeUiState.value.sortOption)
+        verify(notesRepository).getSortOptionFlow(initialZone)
+    }
+
+    /**
+     * Test that [HomeViewModel.deleteNote] interacts with the repository to delete a note.
+     * Happy path for [HomeViewModel.deleteNote]
+     */
+    @Test
+    fun `When deleteNote is called, call deleteNote on notesRepository`() = runTest {
+        val mockNote = Note(1, "Test Note", "Test Body", "2024 1")
+        viewModel.deleteNote(mockNote)
+        verify(notesRepository).deleteNote(mockNote)
+    }
+
+    /**
+     * Test that [HomeViewModel.revealBoxOfMysteries] triggers the sequence of
+     * revealing the Box of mysteries.
+     * The zone toggles to BOX_OF_MYSTERIES after 5 times of calling revealBoxOfMysteries by calling
+     * [HomeViewModel.startBoxRevealTimeout] and then [HomeViewModel.toggleZone] gets called.
+     * Happy path for [HomeViewModel.revealBoxOfMysteries]
+     */
+    @Test
+    fun `When revealBoxOfMysteries is called 5 times, zone is toggled to BOX_OF_MYSTERIES`() =
+        runTest {
+            // Given: the initial zone is CREATIVE, and the search query is empty
+            val expectedZone = Zone.BOX_OF_MYSTERIES
+
+            repeat(5) {
+                viewModel.revealBoxOfMysteries()
+            }
+
+            whenever(notesRepository.getSortOptionFlow(expectedZone))
+                .thenReturn(flowOf(initialSortOption))
+            whenever(notesRepository.getAllNotesStream(initialSortOption))
+                .thenReturn(flowOf(mockInitialNotesList))
+
+            testDispatcher.scheduler.advanceUntilIdle()
+            assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.homeUiState.value.zone)
+        }
+
+    /**
+     * Test that [HomeViewModel.revealBoxOfMysteries] triggers the sequence of
+     * revealing the Box of mysteries.
+     * The zone doesn't toggle to BOX_OF_MYSTERIES before 5 times of calling revealBoxOfMysteries.
+     * Case: less than 5 times of calling revealBoxOfMysteries for [HomeViewModel.revealBoxOfMysteries]
+     */
+    @Test
+    fun `When revealBoxOfMysteries is called less than 5 times, zone should not change`() =
+        runTest {
+            // Given: the initial zone is CREATIVE
+            repeat(4) {
+                viewModel.revealBoxOfMysteries()
+            }
+            assertEquals(initialZone, viewModel.homeUiState.value.zone)
+        }
+
+    /**
+     * Test that [HomeViewModel.toggleZone] toggles the zone and updates the UI state correctly.
+     * Happy path for [HomeViewModel.toggleZone]
+     */
+    @Test
+    fun `When toggleZone is called, zone changes and ui state updates correctly`() = runTest {
+        // Given: the initial zone is CREATIVE
+        whenever(notesRepository.getSortOptionFlow(Zone.BOX_OF_MYSTERIES))
+            .thenReturn(flowOf(initialSortOption))
+        whenever(notesRepository.getAllNotesStream(initialSortOption))
+            .thenReturn(flowOf(mockInitialNotesList))
+
+        viewModel.toggleZone()
+        verify(notesRepository).toggleZone()
+        assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.homeUiState.value.zone)
+        assertEquals("", viewModel.homeUiState.value.searchQuery)
+        assertEquals(true, viewModel.homeUiState.value.showAnimations)
+
+        viewModel.toggleZone()
+        verify(notesRepository, times(2)).toggleZone()
+        assertEquals(Zone.CREATIVE, viewModel.homeUiState.value.zone)
+    }
 }
