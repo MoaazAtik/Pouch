@@ -80,7 +80,7 @@ dependencies {
     implementation(libs.androidx.datastore.preferences)
 
     // Lottie Animations
-    implementation (libs.lottie.compose)
+    implementation(libs.lottie.compose)
 
     // JUnit
     testImplementation(libs.junit)
@@ -89,8 +89,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
     // Mockito for Mocking dependencies
-    testImplementation (libs.mockito.core)
-    testImplementation (libs.mockito.kotlin)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
 
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

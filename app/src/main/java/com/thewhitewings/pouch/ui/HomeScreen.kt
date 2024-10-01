@@ -66,6 +66,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -92,7 +93,6 @@ import com.thewhitewings.pouch.ui.theme.grayLogoBom
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
-import kotlinx.coroutines.delay
 
 private const val TAG = "HomeScreen"
 
@@ -170,18 +170,24 @@ fun ShowAnimations(
     context: Context,
     modifier: Modifier = Modifier
 ) {
-    when (zone) {
-        Zone.CREATIVE -> {
-            RevealScreenAnimation(R.raw.reveal_screen_red, 1f)
-        }
+    Box(
+        modifier = modifier
+            .testTag(stringResource(R.string.zone_initialization_animations_tag))
+    ) {
+        // Show the appropriate animation based on the current zone
+        when (zone) {
+            Zone.CREATIVE -> {
+                RevealScreenAnimation(R.raw.reveal_screen_red, 1f)
+            }
 
-        Zone.BOX_OF_MYSTERIES -> {
-            RevealScreenAnimation(R.raw.reveal_screen_black, 0.5f)
+            Zone.BOX_OF_MYSTERIES -> {
+                RevealScreenAnimation(R.raw.reveal_screen_black, 0.5f)
 
-            RevealLoaderAnimation()
+                RevealLoaderAnimation()
 
-            LaunchedEffect(Unit) {
-                snackbarHostState.showSnackbar(context.getString(R.string.bom_revealing_message))
+                LaunchedEffect(Unit) {
+                    snackbarHostState.showSnackbar(context.getString(R.string.bom_revealing_message))
+                }
             }
         }
     }
@@ -196,6 +202,8 @@ fun RevealScreenAnimation(
     val composition by rememberLottieComposition(LottieCompositionSpec.RawRes(animationResId))
     LottieAnimation(
         composition,
+        modifier = modifier
+            .testTag(animationResId.toString()),
         contentScale = ContentScale.FillBounds,
         speed = speed
     )
@@ -209,6 +217,7 @@ fun RevealLoaderAnimation(
     LottieAnimation(
         composition,
         modifier = modifier
+            .testTag(stringResource(R.string.reveal_loader_animation_tag))
             .fillMaxSize()
             .wrapContentSize(align = Alignment.Center)
             .size(200.dp),

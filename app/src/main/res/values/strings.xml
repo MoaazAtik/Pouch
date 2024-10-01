@@ -20,4 +20,6 @@
     <string name="sort_option_z_a">Z ► A</string>
     <string name="sort_option_oldest_first">Oldest</string>
     <string name="sort_option_newest_first">Newest</string>
+    <string name="zone_initialization_animations_tag">Zone initialization animations</string>
+    <string name="reveal_loader_animation_tag">Reveal loader animation</string>
 </resources>

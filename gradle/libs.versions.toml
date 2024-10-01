@@ -15,7 +15,7 @@ lottieCompose = "6.5.2"
 
 junit = "4.13.2"
 kotlinxCoroutinesTest = "1.6.4"
-mockitoCore = "3.12.4"
+mockitoCore = "4.0.0"
 mockitoKotlin = "4.0.0"
 
 junitVersion = "1.2.1"
