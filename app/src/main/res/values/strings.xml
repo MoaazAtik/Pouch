@@ -22,4 +22,8 @@
     <string name="sort_option_newest_first">Newest</string>
     <string name="zone_initialization_animations_tag">Zone initialization animations</string>
     <string name="reveal_loader_animation_tag">Reveal loader animation</string>
+    <string name="search_notes_text_field_tag">Search notes</string>
+    <string name="sort_options_menu_tag">Sort options menu</string>
+    <string name="bom_button_tag">Box of mysteries revealing button</string>
+    <string name="notes_list_tag">Notes list</string>
 </resources>

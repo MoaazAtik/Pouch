@@ -276,18 +276,11 @@ private fun HomeBody(
                 modifier = Modifier
             )
         }
-        Button(
-            onClick = {
-                focusManager.clearFocus()
-                onToggleZone()
-            },
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-            modifier =
-            if (homeUiState.zone == Zone.CREATIVE)
-                Modifier.size(width = 80.dp, height = 20.dp)
-            else
-                Modifier.size(width = 0.dp, height = 20.dp)
-        ) {}
+        BomRevealingButton(
+            onToggleZone = onToggleZone,
+            focusManager = focusManager,
+            zone = homeUiState.zone
+        )
         NotesList(
             notesList = homeUiState.notesList,
             onItemClick = { onItemClick(it.id) },
@@ -297,7 +290,7 @@ private fun HomeBody(
 }
 
 @Composable
-fun SearchNotesTextField(
+private fun SearchNotesTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -323,6 +316,7 @@ fun SearchNotesTextField(
             }
         },
         modifier = modifier
+            .testTag(stringResource(R.string.search_notes_text_field_tag))
             .background(
                 color = Color.White,
                 shape = RoundedCornerShape(10.dp)
@@ -356,7 +350,7 @@ fun SearchNotesTextField(
 }
 
 @Composable
-fun SortNotesButton(
+private fun SortNotesButton(
     onSortNotes: (sortOptionId: Int) -> Unit,
     focusManager: FocusManager,
     modifier: Modifier = Modifier
@@ -378,7 +372,8 @@ fun SortNotesButton(
         }
         DropdownMenu(
             expanded = expandedSortMenu,
-            onDismissRequest = { expandedSortMenu = false }) {
+            onDismissRequest = { expandedSortMenu = false },
+            modifier = Modifier.testTag(stringResource(R.string.sort_options_menu_tag))) {
 
             SortOption.entries.forEach { sortOption ->
                 DropdownMenuItem(
@@ -396,6 +391,31 @@ fun SortNotesButton(
 }
 
 @Composable
+fun BomRevealingButton(
+    onToggleZone: () -> Unit,
+    focusManager: FocusManager,
+    zone: Zone,
+    modifier: Modifier = Modifier
+) {
+    Button(
+        onClick = {
+            focusManager.clearFocus()
+            onToggleZone()
+        },
+        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
+        modifier =
+        if (zone == Zone.CREATIVE)
+            modifier
+                .size(width = 80.dp, height = 20.dp)
+                .testTag(stringResource(R.string.bom_button_tag))
+        else
+            modifier
+                .size(width = 0.dp, height = 20.dp)
+                .testTag(stringResource(R.string.bom_button_tag))
+    ) {}
+}
+
+@Composable
 private fun NotesList(
     notesList: List<Note>,
     onItemClick: (Note) -> Unit,
@@ -404,6 +424,7 @@ private fun NotesList(
     LazyVerticalStaggeredGrid(
         columns = StaggeredGridCells.Adaptive(140.dp),
         modifier = modifier
+            .testTag(stringResource(R.string.notes_list_tag))
     ) {
         items(items = notesList, key = { it.id }) { note ->
             NotesListItem(
