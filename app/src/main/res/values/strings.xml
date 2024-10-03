@@ -26,4 +26,5 @@
     <string name="sort_options_menu_tag">Sort options menu</string>
     <string name="bom_button_tag">Box of mysteries revealing button</string>
     <string name="notes_list_tag">Notes list</string>
+    <string name="notes_list_item_tag">Notes list item</string>
 </resources>

@@ -2,19 +2,23 @@ package com.thewhitewings.pouch.ui
 
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
+import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onParent
-import androidx.compose.ui.test.onRoot
-import androidx.compose.ui.test.onSibling
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.unit.dp
 import com.thewhitewings.pouch.R
@@ -23,6 +27,8 @@ import com.thewhitewings.pouch.data.SortOption
 import com.thewhitewings.pouch.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.onNodeWithStringId
 import com.thewhitewings.pouch.onNodeWithTagForStringId
+import com.thewhitewings.pouch.utils.DateTimeFormatType
+import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
 import org.junit.Assert.assertEquals
 import org.junit.Rule
@@ -353,12 +359,12 @@ class HomeScreenTest {
     }
 
     /**
-     * Test that when the search notes text field is not empty, the clear button is displayed and when clicked, the text field is cleared
+     * Test that when the search notes text field is not empty, the clear button is displayed and when clicked, the text field is cleared and the clear button is not displayed anymore
      * Happy path for [SearchNotesTextField]
      */
     @Test
     fun searchNotesTextField_whenNotEmpty_showsClearButtonAndClearsText() {
-        var searchText = "Test Text"
+        var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
             HomeScreen(
                 homeUiState = HomeViewModel.HomeUiState(searchQuery = searchText),
@@ -387,6 +393,31 @@ class HomeScreenTest {
             .assertDoesNotExist()
     }
 
+    /**
+     * Test that when the search notes text field is cleared, the placeholder is displayed again
+     * Happy path for [SearchNotesTextField]
+     */
+    @Test
+    fun searchNotesTextField_afterClearingText_showsPlaceholder() {
+        var searchText by mutableStateOf("Test Text")
+        composeTestRule.setContent {
+            HomeScreen(
+                homeUiState = HomeViewModel.HomeUiState(searchQuery = searchText),
+                navigateBack = {},
+                navigateToCreateNote = {},
+                navigateToEditNote = {},
+                onSearchNotes = { searchText = it },
+                onSortNotes = {},
+                onToggleZone = {}
+            )
+        }
+
+        composeTestRule.onNodeWithTagForStringId(R.string.search_notes_text_field_tag)
+            .performTextClearance()
+
+        composeTestRule.onNodeWithStringId(R.string.search_notes_hint)
+            .assertIsDisplayed()
+    }
 
     /**
      * Test that the sort notes button is displayed and the sort options menu is not displayed initially
@@ -551,17 +582,19 @@ class HomeScreenTest {
 
     /**
      * Test that the notes list is displayed when the notes list is not empty
-     * Happy path for [HomeBody] and [NotesList]
+     * Happy path for [NotesList]
      */
     @Test
-    fun homeBody_notesListIsNotEmpty_displayNotesList() {
-        val mockNotesList = listOf(Note())
+    fun notesList_whenNotEmpty_displaysCorrectNumberOfNotes() {
+        val mockNotesList = listOf(
+            Note(1, "Title 1", "Body 1"),
+            Note(2, "Title 2", "Body 2"),
+            Note(3, "Title 3", "Body 3")
+        )
 
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(
-                    notesList = mockNotesList
-                ),
+                homeUiState = HomeViewModel.HomeUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -571,8 +604,150 @@ class HomeScreenTest {
             )
         }
 
+        // Assert: The notes list is displayed
         composeTestRule.onNodeWithTagForStringId(R.string.notes_list_tag)
             .assertIsDisplayed()
+        // Assert: The correct number of items are displayed
+        composeTestRule.onNodeWithTagForStringId(R.string.notes_list_tag)
+            .onChildren()
+            .assertCountEquals(mockNotesList.size)
+
+        // Assert that specific notes are displayed by matching their title or body
+        composeTestRule.onNodeWithText(mockNotesList[0].noteTitle)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText(mockNotesList[1].noteBody)
+            .assertIsDisplayed()
+        composeTestRule.onNodeWithText(mockNotesList[2].noteBody)
+            .assertIsDisplayed()
+    }
+
+    /**
+     * Test that when a note is clicked, the correct note is passed to the onItemClick callback
+     * Happy path for [NotesList]
+     */
+    @Test
+    fun notesList_whenNoteClicked_callsOnItemClickWithCorrectNote() {
+        val mockNotesList = listOf(
+            Note(1, "Title 1", "Body 1"),
+            Note(2, "Title 2", "Body 2"),
+            Note(3, "Title 3", "Body 3")
+        )
+
+        // Create a mock for the onItemClick callback
+        var clickedNote: Note? = null
+        val onItemClick: (Int) -> Unit = { passedNoteId ->
+            mockNotesList.forEach { note ->
+                if (note.id == passedNoteId) {
+                    clickedNote = note
+                    return@forEach
+                }
+            }
+        }
+
+        // Set the content
+        composeTestRule.setContent {
+            HomeScreen(
+                homeUiState = HomeViewModel.HomeUiState(notesList = mockNotesList),
+                navigateBack = {},
+                navigateToCreateNote = {},
+                navigateToEditNote = { passedNoteId: Int ->
+                    onItemClick(passedNoteId)
+                },
+                onSearchNotes = {},
+                onSortNotes = {},
+                onToggleZone = {}
+            )
+        }
+
+        // Action: Click on the second note
+        composeTestRule.onNodeWithText(mockNotesList[1].noteTitle)
+            .performClick()
+
+        // Assert: The correct note is passed to the onItemClick callback
+        assertEquals(mockNotesList[1], clickedNote)
+    }
+
+    /**
+     * Test that the note item is displayed correctly
+     * Happy path for [NotesListItem]
+     */
+    @Test
+    fun notesListItem_displaysNoteContentCorrectly() {
+        val mockNote = Note(
+            id = 1,
+            noteTitle = "Sample Note Title",
+            noteBody = "This is the body of the sample note."
+        )
+
+        // Set the content
+        composeTestRule.setContent {
+            HomeScreen(
+                homeUiState = HomeViewModel.HomeUiState(notesList = listOf(mockNote)),
+                navigateBack = {},
+                navigateToCreateNote = {},
+                navigateToEditNote = {},
+                onSearchNotes = {},
+                onSortNotes = {},
+                onToggleZone = {}
+            )
+        }
+
+        // Assert: Note title is displayed
+        composeTestRule.onNodeWithText(mockNote.noteTitle)
+            .assertIsDisplayed()
+
+        // Assert: Note body is displayed
+        composeTestRule.onNodeWithText(mockNote.noteBody)
+            .assertIsDisplayed()
+
+        // Assert: The formatted timestamp is displayed
+        composeTestRule.onNodeWithText(
+            DateTimeUtils.getFormattedDateTime(
+                DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+                mockNote.timestamp
+            )
+        ).assertIsDisplayed()
+    }
+
+    /**
+     * Test that when a note has an empty title and body, it is handled gracefully
+     * Case: empty title and body
+     * for [NotesListItem]
+     */
+    @Test
+    fun notesListItem_handlesEmptyNoteContentGracefully() {
+        // Given: A note with an empty title and body
+        val noteWithEmptyContent = Note()
+
+        // Set the content
+        composeTestRule.setContent {
+            HomeScreen(
+                homeUiState = HomeViewModel.HomeUiState(notesList = listOf(noteWithEmptyContent)),
+                navigateBack = {},
+                navigateToCreateNote = {},
+                navigateToEditNote = {},
+                onSearchNotes = {},
+                onSortNotes = {},
+                onToggleZone = {}
+            )
+        }
+
+        // Assert: Note item is displayed even with empty content
+        composeTestRule.onNodeWithTagForStringId(R.string.notes_list_item_tag)
+            .assertExists()
+
+        // Assert: The empty title is handled (nothing should crash)
+        composeTestRule.onAllNodesWithText("")
+            // There should be two empty text elements, title and body
+            .assertCountEquals(2)
+
+        // Assert: The formatted timestamp is still displayed correctly
+        composeTestRule.onNodeWithText(
+            DateTimeUtils.getFormattedDateTime(
+                DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+                noteWithEmptyContent.timestamp
+            )
+        ).assertIsDisplayed()
     }
 
 }

@@ -444,7 +444,7 @@ private fun NotesListItem(
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier,
+        modifier = modifier.testTag(stringResource(R.string.notes_list_item_tag)),
         elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
     ) {
         Column(
