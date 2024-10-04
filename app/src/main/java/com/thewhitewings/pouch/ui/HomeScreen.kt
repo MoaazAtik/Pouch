@@ -121,6 +121,7 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
+        modifier = modifier.testTag(stringResource(R.string.home_screen_tag)),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = navigateToCreateNote,
@@ -373,7 +374,8 @@ private fun SortNotesButton(
         DropdownMenu(
             expanded = expandedSortMenu,
             onDismissRequest = { expandedSortMenu = false },
-            modifier = Modifier.testTag(stringResource(R.string.sort_options_menu_tag))) {
+            modifier = Modifier.testTag(stringResource(R.string.sort_options_menu_tag))
+        ) {
 
             SortOption.entries.forEach { sortOption ->
                 DropdownMenuItem(
