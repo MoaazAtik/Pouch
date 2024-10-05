@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch
+package com.thewhitewings.pouch.rules
 
 import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes

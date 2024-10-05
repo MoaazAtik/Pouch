@@ -10,9 +10,9 @@ import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.thewhitewings.pouch.R
-import com.thewhitewings.pouch.onNodeWithContentDescriptionForStringId
-import com.thewhitewings.pouch.onNodeWithStringId
-import com.thewhitewings.pouch.onNodeWithTagForStringId
+import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
+import com.thewhitewings.pouch.rules.onNodeWithStringId
+import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
 import com.thewhitewings.pouch.ui.HomeDestination
 import com.thewhitewings.pouch.ui.NoteDestination
 import org.junit.Assert.assertEquals

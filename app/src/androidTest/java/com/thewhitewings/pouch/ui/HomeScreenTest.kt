@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.SortOption
-import com.thewhitewings.pouch.onNodeWithContentDescriptionForStringId
-import com.thewhitewings.pouch.onNodeWithStringId
-import com.thewhitewings.pouch.onNodeWithTagForStringId
+import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
+import com.thewhitewings.pouch.rules.onNodeWithStringId
+import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
 import com.thewhitewings.pouch.utils.DateTimeFormatType
 import com.thewhitewings.pouch.utils.DateTimeUtils
 import com.thewhitewings.pouch.utils.Zone
