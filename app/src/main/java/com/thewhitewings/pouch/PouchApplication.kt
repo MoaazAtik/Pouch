@@ -8,7 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.thewhitewings.pouch.data.NoteDatabase
 import com.thewhitewings.pouch.data.NotesRepository
 import com.thewhitewings.pouch.data.OfflineNotesRepository
-import com.thewhitewings.pouch.data.PouchPreferences
+import com.thewhitewings.pouch.data.PouchPreferencesImpl
 import com.thewhitewings.pouch.utils.Constants
 
 // The name of the stored preference DataStore file
@@ -44,7 +44,7 @@ class PouchApplication : Application() {
         }
 
         // Initialize the preference DataStore of the app
-        val pouchPreferences = PouchPreferences(dataStore)
+        val pouchPreferences = PouchPreferencesImpl(dataStore)
 
         // Initialize the notes repository with the databases and preferences
         notesRepository =
