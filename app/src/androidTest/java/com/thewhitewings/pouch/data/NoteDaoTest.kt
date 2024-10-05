@@ -2,6 +2,7 @@ package com.thewhitewings.pouch.data
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -12,7 +13,9 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class NoteDaoTest {
 
     private lateinit var database: NoteDatabase
@@ -43,14 +46,14 @@ class NoteDaoTest {
     @Test
     fun noteDao_insertAndGetNoteById_insertNoteAndRetrieveFromDatabase() = runBlocking {
         // When: Insert the note into the database
-        noteDao.insert(note1)
+        noteDao.insert(mockNote1)
 
         // Then: Collect from the Flow and check if the note was inserted correctly
-        val retrievedNote = noteDao.getNoteById(note1.id).first()
+        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
 
         // Check the retrieved note matches the inserted note
         assertNotNull(retrievedNote)
-        assertEquals(note1, retrievedNote)
+        assertEquals(mockNote1, retrievedNote)
     }
 
     /**
@@ -61,17 +64,17 @@ class NoteDaoTest {
     @Test
     fun noteDao_insertNoteDuplicate_replaceOnConflict() = runBlocking {
         // When: Insert a note into the database
-        noteDao.insert(note1)
+        noteDao.insert(mockNote1)
 
         // When: Insert a new note with the same id but different content
-        val updatedNote = note1.copy(
+        val updatedNote = mockNote1.copy(
             noteTitle = "Updated Note",
             noteBody = "Updated content."
         )
         noteDao.insert(updatedNote)
 
         // Then: Query the database and check that the note was replaced
-        val retrievedNote = noteDao.getNoteById(note1.id).first()
+        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
 
         // Check the retrieved note matches the updated note
         assertEquals(updatedNote.noteTitle, retrievedNote?.noteTitle)
@@ -171,7 +174,7 @@ class NoteDaoTest {
         val retrievedNotes = noteDao.searchNotes("Ba", SortOption.A_Z.name).first()
 
         // Then: Check if the notes containing "Ba" are returned
-        assertEquals(listOf(note2), retrievedNotes)
+        assertEquals(listOf(mockNote2), retrievedNotes)
     }
 
     /**
@@ -264,17 +267,17 @@ class NoteDaoTest {
     @Test
     fun noteDao_updateNote_noteIsUpdated() = runBlocking {
         // Given: Insert a note into the database
-        noteDao.insert(note1)
+        noteDao.insert(mockNote1)
 
         // When: Update the note with a new title and body
-        val updatedNote = note1.copy(
+        val updatedNote = mockNote1.copy(
             noteTitle = "Updated Title",
             noteBody = "Updated Body"
         )
         noteDao.updateNote(updatedNote)
 
         // Then: Check if the note is updated in the database
-        val retrievedNote = noteDao.getNoteById(note1.id).first()
+        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
 
         // Assert that the note is not null and the title and content are updated
         assertEquals(updatedNote, retrievedNote)
@@ -288,16 +291,16 @@ class NoteDaoTest {
     @Test
     fun noteDao_updateNoteNoChanges_updateNoteWithoutChanges() = runBlocking {
         // Given: Insert a note into the database
-        noteDao.insert(note1)
+        noteDao.insert(mockNote1)
 
         // When: Update the note with the same title and body
-        noteDao.updateNote(note1)
+        noteDao.updateNote(mockNote1)
 
         // Then: Retrieve the note and verify that nothing has changed
-        val retrievedNote = noteDao.getNoteById(note1.id).first()
+        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
 
         // Assert that all of the note properties are unchanged
-        assertEquals(note1, retrievedNote)
+        assertEquals(mockNote1, retrievedNote)
     }
 
     /**
@@ -310,10 +313,10 @@ class NoteDaoTest {
         // Given: Empty database
 
         // When: Trying to update a non-existent note
-        noteDao.updateNote(note1)
+        noteDao.updateNote(mockNote1)
 
         // Then: No changes should be made to the database
-        val retrievedNote = noteDao.getNoteById(note1.id).first()
+        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
 
         // Assert that the note is null
         // It should not be added to the database
@@ -327,17 +330,17 @@ class NoteDaoTest {
     @Test
     fun noteDao_deleteNote_removeNoteFromDatabase() = runBlocking {
         // Given: Insert a note into the database
-        noteDao.insert(note1)
+        noteDao.insert(mockNote1)
 
         // Ensure the note exists in the database before deletion
-        val insertedNote = noteDao.getNoteById(note1.id).first()
+        val insertedNote = noteDao.getNoteById(mockNote1.id).first()
         assertNotNull(insertedNote)
 
         // When: Delete the note
-        noteDao.deleteNote(note1)
+        noteDao.deleteNote(mockNote1)
 
         // Then: Check if the note is removed from the database
-        val deletedNote = noteDao.getNoteById(note1.id).first()
+        val deletedNote = noteDao.getNoteById(mockNote1.id).first()
         assertNull(deletedNote)
     }
 
@@ -351,16 +354,16 @@ class NoteDaoTest {
         insertThreeNotes()
 
         // When: Delete one of the notes
-        noteDao.deleteNote(note2)
+        noteDao.deleteNote(mockNote2)
 
         // Then: Verify the deleted note is no longer in the database
         val remainingNotes = noteDao.getAllNotes(SortOption.A_Z.name).first()
         assertEquals(2, remainingNotes.size) // There should be two notes left
-        assertFalse(remainingNotes.contains(note2)) // The deleted note should not be present
+        assertFalse(remainingNotes.contains(mockNote2)) // The deleted note should not be present
 
         // Ensure the remaining notes are still in the database
-        assertTrue(remainingNotes.contains(note1))
-        assertTrue(remainingNotes.contains(note3))
+        assertTrue(remainingNotes.contains(mockNote1))
+        assertTrue(remainingNotes.contains(mockNote3))
     }
 
     /**
@@ -377,7 +380,7 @@ class NoteDaoTest {
         assertEquals(0, allNotes.size)
 
         // When: Attempt to delete a non-existent note
-        noteDao.deleteNote(note1)
+        noteDao.deleteNote(mockNote1)
 
         // Then: Verify no exceptions are thrown and the database remains unchanged
         val retrievedNotes = noteDao.getAllNotes(SortOption.A_Z.name).first()
@@ -389,8 +392,8 @@ class NoteDaoTest {
      * Insert three notes with all properties different from each other into the database for testing.
      */
     private suspend fun insertThreeNotes() {
-        noteDao.insert(note1)
-        noteDao.insert(note2)
-        noteDao.insert(note3)
+        noteDao.insert(mockNote1)
+        noteDao.insert(mockNote2)
+        noteDao.insert(mockNote3)
     }
 }
