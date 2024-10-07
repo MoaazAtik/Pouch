@@ -69,7 +69,7 @@ class PouchPreferencesImpl(
     }
 
 
-    private companion object {
+    companion object {
 
         /**
          * Key for the [SortOption] preference in the DataStore of the Creative Zone

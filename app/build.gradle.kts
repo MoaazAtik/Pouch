@@ -82,6 +82,7 @@ dependencies {
     // Lottie Animations
     implementation(libs.lottie.compose)
 
+
     // JUnit
     testImplementation(libs.junit)
 
@@ -95,10 +96,16 @@ dependencies {
     // Room Testing
     testImplementation(libs.androidx.room.testing)
 
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+
+    // Mockito for Mocking dependencies
+    androidTestImplementation(libs.mockito.core)
+    androidTestImplementation(libs.mockito.kotlin)
+
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
