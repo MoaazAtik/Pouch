@@ -5,52 +5,56 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.thewhitewings.pouch.utils.Zone
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.createTestCoroutineScope
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Mockito.mock
-import org.mockito.kotlin.whenever
-import java.io.IOException
 
+private const val TEST_DATASTORE_NAME: String = "test_datastore"
+
+@OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
 class PouchPreferencesImplInstrumentedTest {
 
-    private lateinit var dataStore: DataStore<Preferences>
-    private lateinit var pouchPreferences: PouchPreferencesImpl
-
-    @Before
-    fun setUp() {
-        // Initialize context
-        val context: Context = ApplicationProvider.getApplicationContext()
-
-        // Initialize DataStore without using the 'by preferencesDataStore' delegate
-        dataStore = PreferenceDataStoreFactory.create(
-            produceFile = { context.preferencesDataStoreFile("test_datastore") }
+    private val context: Context = ApplicationProvider.getApplicationContext()
+    private val dispatcher = UnconfinedTestDispatcher()
+    private val testCoroutineScope = createTestCoroutineScope(dispatcher + Job())
+    private val dataStore: DataStore<Preferences> =
+        PreferenceDataStoreFactory.create(
+            scope = testCoroutineScope,
+            produceFile =
+            { context.preferencesDataStoreFile(TEST_DATASTORE_NAME) }
         )
 
-        // Initialize PouchPreferencesImpl with the DataStore
-        pouchPreferences = PouchPreferencesImpl(dataStore)
+    private val pouchPreferences: PouchPreferences = PouchPreferencesImpl(dataStore)
+
+    @Before
+    fun setup() {
+        Dispatchers.setMain(dispatcher)
     }
 
     @After
-    fun tearDown() {
-        // Clear the data after the test to avoid data leakage
-        runBlocking {
+    fun cleanUp() {
+        Dispatchers.resetMain()
+        runTest {
             dataStore.edit { it.clear() }
         }
+        testCoroutineScope.cancel()
     }
 
     /**
@@ -58,7 +62,7 @@ class PouchPreferencesImplInstrumentedTest {
      * Happy path for [PouchPreferencesImpl.saveSortOption]
      */
     @Test
-    fun pouchPreferences_saveSortOptionForCreativeZone_savesCorrectPreference() = runBlocking {
+    fun pouchPreferences_saveSortOptionForCreativeZone_savesCorrectPreference() = runTest {
         // Given: A sort option and zone
         val sortOption = SortOption.A_Z
         val zone = Zone.CREATIVE
@@ -80,7 +84,7 @@ class PouchPreferencesImplInstrumentedTest {
      * Happy path for [PouchPreferencesImpl.saveSortOption]
      */
     @Test
-    fun pouchPreferences_saveSortOptionForBomZone_savesCorrectPreference() = runBlocking {
+    fun pouchPreferences_saveSortOptionForBomZone_savesCorrectPreference() = runTest {
         // Given: A sort option and zone
         val sortOption = SortOption.OLDEST_FIRST
         val zone = Zone.BOX_OF_MYSTERIES
@@ -102,7 +106,7 @@ class PouchPreferencesImplInstrumentedTest {
      * Happy path for [PouchPreferencesImpl.getSortOptionFlow]
      */
     @Test
-    fun pouchPreferences_getSortOptionFlowForCreativeZone_returnsCorrectSortOption() = runBlocking {
+    fun pouchPreferences_getSortOptionFlowForCreativeZone_returnsCorrectSortOption() = runTest {
         // Given: Save a sort option for the CREATIVE zone
         val expectedSortOption = SortOption.A_Z
         dataStore.edit { preferences ->
@@ -122,7 +126,7 @@ class PouchPreferencesImplInstrumentedTest {
      * Happy path for [PouchPreferencesImpl.getSortOptionFlow]
      */
     @Test
-    fun pouchPreferences_getSortOptionFlowForBomZone_returnsCorrectSortOption() = runBlocking {
+    fun pouchPreferences_getSortOptionFlowForBomZone_returnsCorrectSortOption() = runTest {
         // Given: Save a sort option for the BOM zone
         val expectedSortOption = SortOption.OLDEST_FIRST
         dataStore.edit { preferences ->
@@ -143,7 +147,7 @@ class PouchPreferencesImplInstrumentedTest {
      * Happy path for [PouchPreferencesImpl.getSortOptionFlow]
      */
     @Test
-    fun pouchPreferences_getSortOptionFlowWhenNotSet_returnDefaultSortOption() = runBlocking {
+    fun pouchPreferences_getSortOptionFlowWhenNotSet_returnDefaultSortOption() = runTest {
         // When: Retrieve the sort option flow without setting any value in DataStore
         val retrievedSortOption = pouchPreferences.getSortOptionFlow(Zone.CREATIVE).first()
 
