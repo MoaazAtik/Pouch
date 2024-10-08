@@ -43,6 +43,28 @@ class HomeScreenTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     /**
+     * Test that the home screen is displayed correctly.
+     * Happy path for [HomeScreen]
+     */
+    @Test
+    fun homeScreen_isDisplayed() {
+        composeTestRule.setContent {
+            HomeScreen(
+                homeUiState = HomeViewModel.HomeUiState(),
+                navigateBack = {},
+                navigateToCreateNote = {},
+                navigateToEditNote = {},
+                onSearchNotes = {},
+                onSortNotes = {},
+                onToggleZone = {}
+            )
+        }
+
+        composeTestRule.onNodeWithTagForStringId(R.string.home_screen_tag)
+            .assertIsDisplayed()
+    }
+
+    /**
      * Test that the FAB is displayed on the home screen
      * Happy path for [HomeScreen]
      */
