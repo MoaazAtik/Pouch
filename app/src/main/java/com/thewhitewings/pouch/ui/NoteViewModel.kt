@@ -11,6 +11,8 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.data.Note
 import com.thewhitewings.pouch.data.NotesRepository
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -23,7 +25,8 @@ private const val TAG = "NoteViewModel"
  */
 class NoteViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val notesRepository: NotesRepository
+    private val notesRepository: NotesRepository,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
     init {
@@ -44,7 +47,7 @@ class NoteViewModel(
         val noteId: Int = savedStateHandle[NoteDestination.noteIdArg]
             ?: return
 
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             notesRepository.getNoteById(noteId)
                 .collect { note ->
                     if (note != null) {
@@ -103,7 +106,7 @@ class NoteViewModel(
      * Create a new note.
      */
     private fun createNote() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             notesRepository.createNote(_noteUiState.value.note)
         }
     }
@@ -112,7 +115,7 @@ class NoteViewModel(
      * Update an existing note.
      */
     private fun updateNote() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             notesRepository.updateNote(_noteUiState.value.note)
         }
     }
@@ -121,7 +124,7 @@ class NoteViewModel(
      * Deletes a note.
      */
     fun deleteNote() {
-        viewModelScope.launch {
+        viewModelScope.launch(dispatcher) {
             notesRepository.deleteNote(_noteUiState.value.note)
         }
     }
