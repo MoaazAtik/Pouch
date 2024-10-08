@@ -87,7 +87,8 @@ class NoteViewModel(
      *
      * To create a new note, the note title or note body must not be empty.
      *
-     * To update a note, the note title and note body must not be the same as the old note. Otherwise, the note will not be updated, i.e., its timestamp will stay the same.
+     * To update a note, the note title and note body must not be the same as the old note.
+     * Otherwise, the note will not be updated, i.e., its timestamp will stay the same.
      */
     fun createOrUpdateNote() {
         with(_noteUiState.value.note) {
