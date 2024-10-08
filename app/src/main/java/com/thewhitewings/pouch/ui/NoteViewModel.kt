@@ -29,16 +29,16 @@ class NoteViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    init {
-        initializeNote()
-    }
-
     // the note that is opened for updating purpose
     private var oldNote: Note? = null
 
     // Holds current NoteUiState
     private val _noteUiState = MutableStateFlow(NoteUiState())
     val noteUiState = _noteUiState.asStateFlow()
+
+    init {
+        initializeNote()
+    }
 
     /**
      * Initialize the note with the given ID when opening an existing note.
