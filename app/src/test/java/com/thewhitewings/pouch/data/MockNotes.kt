@@ -90,9 +90,30 @@ val newestFirstNotesLocal = oldestFirstNotesLocal.reversed()
  * It's related to [mockDateTimeLocalTimezone]
  */
 const val mockDateTimeUtcTimezone = "2024-01-02 10:00:00"
+
 /**
  * Mock date-time string in Local timezone (Europe/Istanbul) which is UTC+3.
  * It's formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the timestamp format we get from [OfflineNotesRepository].
  * It's related to [mockDateTimeUtcTimezone]
  */
 const val mockDateTimeLocalTimezone = "2024-01-02 13:00:00"
+
+/**
+ * Mock date-time string in New York timezone (America/New_York) without daylight saving time which is UTC-4.
+ * It's formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the timestamp format we get from [OfflineNotesRepository].
+ * It's related to [mockDateTimeUtcTimezone] and [mockDateTimeNewYorkTimezoneUseDayLight]
+ */
+const val mockDateTimeNewYorkTimezone = "2024-01-02 06:00:00"
+/**
+ * Mock date-time string in New York timezone (America/New_York) with daylight saving time which is UTC-5.
+ * It's formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the timestamp format we get from [OfflineNotesRepository].
+ * It's related to [mockDateTimeUtcTimezone] and [mockDateTimeNewYorkTimezone]
+ */
+const val mockDateTimeNewYorkTimezoneUseDayLight = "2024-01-02 05:00:00"
+
+/**
+ * Mock date-time string in Singapore timezone (Asia/Singapore) which is UTC+8.
+ * It's formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the timestamp format we get from [OfflineNotesRepository].
+ * It's related to [mockDateTimeUtcTimezone]
+ */
+const val mockDateTimeSingaporeTimezone = "2024-01-02 18:00:00"
