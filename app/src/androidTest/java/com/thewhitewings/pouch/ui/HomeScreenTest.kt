@@ -89,6 +89,36 @@ class HomeScreenTest {
     }
 
     /**
+     * Test that when pressing the system back button,
+     * the navigateBack callback is triggered.
+     * Happy path for system back button in [HomeScreen]
+     */
+    @Test
+    fun homeScreen_backHandler_triggersNavigateBack() {
+        var backTriggered = false
+
+        composeTestRule.setContent {
+            HomeScreen(
+                homeUiState = HomeViewModel.HomeUiState(),
+                navigateBack = { backTriggered = true },
+                navigateToCreateNote = {},
+                navigateToEditNote = {},
+                onSearchNotes = {},
+                onSortNotes = {},
+                onToggleZone = {}
+            )
+        }
+
+        // Simulate system back press
+        composeTestRule.activityRule.scenario.onActivity { activity ->
+            activity.onBackPressedDispatcher.onBackPressed()
+        }
+
+        // Verify that the navigateBack callback was triggered
+        assert(backTriggered)
+    }
+
+    /**
      * Test that animations are displayed when initializing a zone, i.e., [HomeUiState.showAnimations] is true
      * Happy path for [HomeScreen] and [ShowAnimations]
      */
