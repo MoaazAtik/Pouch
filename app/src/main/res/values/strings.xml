@@ -29,4 +29,7 @@
     <string name="notes_list_item_tag">Notes list item</string>
     <string name="home_screen_tag">Home screen</string>
     <string name="note_screen_tag">Note screen</string>
+    <string name="note_title_text_field_tag">Note title text field</string>
+    <string name="note_body_text_field_tag">Note body text field</string>
+    <string name="timestamp_in_note_screen_tag">Timestamp in note screen</string>
 </resources>

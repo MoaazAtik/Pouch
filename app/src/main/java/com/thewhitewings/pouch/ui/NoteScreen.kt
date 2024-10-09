@@ -135,6 +135,7 @@ fun NoteScreenBody(
             value = noteUiState.note.noteTitle,
             onValueChange = onNoteTitleChange,
             modifier = Modifier
+                .testTag(stringResource(R.string.note_title_text_field_tag))
                 .fillMaxWidth()
                 .padding(top = dimensionResource(R.dimen.padding_large)),
             colors = TextFieldDefaults.colors(
@@ -159,6 +160,7 @@ fun NoteScreenBody(
             value = noteUiState.note.noteBody,
             onValueChange = onNoteBodyChange,
             modifier = Modifier
+                .testTag(stringResource(R.string.note_body_text_field_tag))
                 .fillMaxWidth()
                 .background(Color.Transparent)
                 .weight(1f),
@@ -189,6 +191,7 @@ fun NoteScreenBody(
                 text = stringResource(R.string.timestamp_edited, formattedTimestamp),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
+                    .testTag(stringResource(R.string.timestamp_in_note_screen_tag))
                     .align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)

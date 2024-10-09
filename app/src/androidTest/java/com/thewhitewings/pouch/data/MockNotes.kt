@@ -29,3 +29,8 @@ val azSortedNotes = listOf(mockNote1, mockNote2, mockNote3)
 val zaSortedNotes = azSortedNotes.reversed()
 val oldestFirstNotes = listOf(mockNote1, mockNote3, mockNote2)
 val newestFirstNotes = oldestFirstNotes.reversed()
+
+/**
+ * Timestamp formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the actual timestamp format of notes in the database.
+ */
+const val mockTimestamp1 = "2024-01-02 19:16:19"
