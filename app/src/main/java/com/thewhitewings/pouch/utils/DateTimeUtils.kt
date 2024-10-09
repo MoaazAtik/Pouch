@@ -36,6 +36,8 @@ object DateTimeUtils {
     const val SHORT_LENGTH_FORMAT: String = "MMM d"
 
 
+    var isTestEnvironment = false
+
     /**
      * Get formatted date and time based on the provided [DateTimeFormatType].
      *
@@ -62,7 +64,8 @@ object DateTimeUtils {
                     formattedDateTime = date?.let { sdFormat.format(it) }.toString()
                     return formattedDateTime
                 } catch (e: ParseException) {
-                    Log.e(TAG, "Error parsing date ${DateTimeFormatType.UTC_TO_LOCAL}", e)
+                    if (!isTestEnvironment)
+                        Log.e(TAG, "Error parsing date ${DateTimeFormatType.UTC_TO_LOCAL}", e)
                     return "Error $dateTime"
                 }
             }
@@ -74,7 +77,8 @@ object DateTimeUtils {
                     formattedDateTime = date?.let { sdFormat.format(it) }.toString()
                     return formattedDateTime
                 } catch (e: ParseException) {
-                    Log.e(TAG, "Error parsing date ${DateTimeFormatType.LOCAL_TO_UTC}", e)
+                    if (!isTestEnvironment)
+                        Log.e(TAG, "Error parsing date ${DateTimeFormatType.LOCAL_TO_UTC}", e)
                     return "Error $dateTime"
                 }
             }
@@ -98,11 +102,12 @@ object DateTimeUtils {
                     formattedDateTime = date?.let { sdFormat.format(it) }.toString()
                     return formattedDateTime
                 } catch (e: ParseException) {
-                    Log.e(
-                        TAG,
-                        "Error parsing date ${DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT}",
-                        e
-                    )
+                    if (!isTestEnvironment)
+                        Log.e(
+                            TAG,
+                            "Error parsing date ${DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT}",
+                            e
+                        )
                     return "Error $dateTime"
                 }
             }
@@ -114,11 +119,12 @@ object DateTimeUtils {
                     formattedDateTime = date?.let { sdFormat.format(it) }.toString()
                     return formattedDateTime
                 } catch (e: ParseException) {
-                    Log.e(
-                        TAG,
-                        "Error parsing date ${DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT}",
-                        e
-                    )
+                    if (!isTestEnvironment)
+                        Log.e(
+                            TAG,
+                            "Error parsing date ${DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT}",
+                            e
+                        )
                     return "Error $dateTime"
                 }
             }

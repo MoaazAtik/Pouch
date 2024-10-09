@@ -82,3 +82,17 @@ val oldestFirstNotesLocal = oldestFirstNotesUtc.map { note ->
     )
 }
 val newestFirstNotesLocal = oldestFirstNotesLocal.reversed()
+
+
+/**
+ * Mock date-time string in UTC timezone.
+ * It's formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the actual timestamp format of notes in the database.
+ * It's related to [mockDateTimeLocalTimezone]
+ */
+const val mockDateTimeUtcTimezone = "2024-01-02 10:00:00"
+/**
+ * Mock date-time string in Local timezone (Europe/Istanbul) which is UTC+3.
+ * It's formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the timestamp format we get from [OfflineNotesRepository].
+ * It's related to [mockDateTimeUtcTimezone]
+ */
+const val mockDateTimeLocalTimezone = "2024-01-02 13:00:00"
