@@ -133,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.btnSort.setOnClickListener(v -> showSortingPopupMenu());
 
-        binding.btnRevealBom.setOnClickListener(v -> revealBoxOfMysteries());
+        binding.btnRevealBom.setOnClickListener(v -> knockBoxOfMysteries());
     }
 
     /**
@@ -252,7 +252,7 @@ public class MainActivity extends AppCompatActivity {
      * Otherwise, the time window will be closed and the sequence will be reset.
      * </p>
      */
-    private void revealBoxOfMysteries() {
+    private void knockBoxOfMysteries() {
         bomKnocks++;
         Handler handler = new Handler(Looper.getMainLooper());
 
@@ -276,6 +276,7 @@ public class MainActivity extends AppCompatActivity {
                             bomTimeoutStarted = false;
                             bomKnocks = 0;
 
+                            // Reveal the Box of mysteries
                             viewModel.toggleZone();
                         }, 500);
                         break;
