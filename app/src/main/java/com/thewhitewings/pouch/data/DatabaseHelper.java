@@ -28,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      *
      * @param context         of App or Activity
      * @param databaseName    {@link Constants#CREATIVE_DATABASE_NAME} for database of the creative zone or {@link Constants#BOM_DATABASE_NAME} for database of Box of Mysteries zone
-     * @param databaseVersion {@link Constants#CREATIVE_DATABASE_VERSION} for database of the creative zone or {@link Constants#BOM_DATABASE_VERSION} for database of Box of Mysteries zone
+     * @param databaseVersion {@link Constants#CREATIVE_AND_BOM_DATABASE_VERSION}
      */
     public DatabaseHelper(Context context, String databaseName, int databaseVersion) {
         super(context, databaseName, null, databaseVersion);
@@ -274,7 +274,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<Note> filteredNotes = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
-        String selection = "noteTitle LIKE ? OR noteBody LIKE ?";
+        String selection = Constants.COLUMN_NOTE_TITLE + " LIKE ? OR " + Constants.COLUMN_NOTE_BODY + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + searchQuery + "%", "%" + searchQuery + "%"};
         String orderBy = sortOption.toSqlString();
 
@@ -317,7 +317,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * </p>
      * <strong>Notes:</strong>
      * <ul>
-     *     <li>To upgrade or downgrade the database, modify {@link Constants#CREATIVE_DATABASE_VERSION} and {@link Constants#BOM_DATABASE_VERSION}.</li>
+     *     <li>To upgrade or downgrade the database, modify {@link Constants#CREATIVE_AND_BOM_DATABASE_VERSION}.</li>
      *     <li>When renaming columns, modify the column mappings by calling {@link #setAndGetColumnMappings()}.</li>
      * </ul>
      *

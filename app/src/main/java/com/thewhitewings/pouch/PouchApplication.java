@@ -25,14 +25,14 @@ public class PouchApplication extends Application {
         DatabaseHelper creativeDatabaseHelper = new DatabaseHelper(
                 this,
                 Constants.CREATIVE_DATABASE_NAME,
-                Constants.CREATIVE_DATABASE_VERSION
+                Constants.CREATIVE_AND_BOM_DATABASE_VERSION
         );
 
         // Initialize the database helper of the Box of mysteries zone
         DatabaseHelper bomDatabaseHelper = new DatabaseHelper(
                 this,
                 Constants.BOM_DATABASE_NAME,
-                Constants.BOM_DATABASE_VERSION
+                Constants.CREATIVE_AND_BOM_DATABASE_VERSION
         );
 
         // Initialize the SharedPreferences of the app

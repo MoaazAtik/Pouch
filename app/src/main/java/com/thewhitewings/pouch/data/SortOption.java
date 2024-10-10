@@ -3,6 +3,7 @@ package com.thewhitewings.pouch.data;
 import android.util.Log;
 
 import com.thewhitewings.pouch.R;
+import com.thewhitewings.pouch.utils.Constants;
 
 /**
  * Sort Option Enum
@@ -80,14 +81,14 @@ public enum SortOption {
     public String toSqlString() {
         switch (this) {
             case A_Z:
-                return "noteTitle COLLATE NOCASE ASC, noteBody COLLATE NOCASE ASC";
+                return Constants.COLUMN_NOTE_TITLE + " COLLATE NOCASE ASC, " + Constants.COLUMN_NOTE_BODY + " COLLATE NOCASE ASC";
             case Z_A:
-                return "noteTitle COLLATE NOCASE DESC, noteBody COLLATE NOCASE DESC";
+                return Constants.COLUMN_NOTE_TITLE + " COLLATE NOCASE DESC, " + Constants.COLUMN_NOTE_BODY + " COLLATE NOCASE DESC";
             case OLDEST_FIRST:
-                return "timestamp ASC";
+                return Constants.COLUMN_TIMESTAMP + " ASC";
             case NEWEST_FIRST:
             default:
-                return "timestamp DESC";
+                return Constants.COLUMN_TIMESTAMP + " DESC";
         }
     }
 }
