@@ -5,16 +5,25 @@ import com.thewhitewings.pouch.data.mockDateTimeNewYorkTimezone
 import com.thewhitewings.pouch.data.mockDateTimeNewYorkTimezoneUseDayLight
 import com.thewhitewings.pouch.data.mockDateTimeSingaporeTimezone
 import com.thewhitewings.pouch.data.mockDateTimeUtcTimezone
+import com.thewhitewings.pouch.utils.DateTimeUtils.DEFAULT_FORMAT
+import com.thewhitewings.pouch.utils.DateTimeUtils.MEDIUM_LENGTH_FORMAT
+import com.thewhitewings.pouch.utils.DateTimeUtils.SHORT_LENGTH_FORMAT
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 import java.util.TimeZone
 
 class DateTimeUtilsTest {
 
+    private val defaultLocale = Locale.getDefault()
+    private val defaultTimeZone = TimeZone.getDefault()
+
     private val invalidDateTimeString = "2024 10:00:00"
-    private val emptyDateTime = ""
+    private val emptyDateTimeString = ""
 
     @Before
     fun setUp() {
@@ -24,6 +33,9 @@ class DateTimeUtilsTest {
     @After
     fun tearDown() {
         DateTimeUtils.isTestEnvironment = false // Restore for other parts
+        // Reset the locale and timezone after tests
+        Locale.setDefault(defaultLocale)
+        TimeZone.setDefault(defaultTimeZone)
     }
 
     /**
@@ -78,11 +90,11 @@ class DateTimeUtilsTest {
         // When calling the function
         val result = DateTimeUtils.getFormattedDateTime(
             DateTimeFormatType.UTC_TO_LOCAL,
-            emptyDateTime
+            emptyDateTimeString
         )
 
         // Then the result should be an error message
-        assertEquals("Error $emptyDateTime", result)
+        assertEquals("Error $emptyDateTimeString", result)
     }
 
     /**
@@ -182,11 +194,11 @@ class DateTimeUtilsTest {
         // When calling the function
         val result = DateTimeUtils.getFormattedDateTime(
             DateTimeFormatType.LOCAL_TO_UTC,
-            emptyDateTime
+            emptyDateTimeString
         )
 
         // Then the result should be an error message
-        assertEquals("Error $emptyDateTime", result)
+        assertEquals("Error $emptyDateTimeString", result)
     }
 
     /**
@@ -233,4 +245,175 @@ class DateTimeUtilsTest {
         assertEquals(expectedUtcDateTime, resultSingapore)
     }
 
+    /**
+     * Get current date-time string in UTC timezone.
+     * Case: Current UTC time.
+     * Happy path for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_currentUtcTime() {
+        // Given the current time in UTC
+        val expectedUtcDateTime =
+            SimpleDateFormat(DEFAULT_FORMAT, Locale.getDefault()).apply {
+                timeZone = TimeZone.getTimeZone("UTC")
+            }.format(Date())
+
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.CURRENT_UTC
+        )
+
+        // Then the result should be the current time in UTC
+        assertEquals(expectedUtcDateTime, result)
+    }
+
+    /**
+     * Get current date-time string in Local timezone.
+     * Case: Current local time.
+     * Happy path for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_currentLocalTime() {
+        // Given the current local time
+        val expectedLocalDateTime =
+            SimpleDateFormat(DEFAULT_FORMAT, Locale.getDefault()).apply {
+                timeZone = TimeZone.getDefault()
+            }.format(Date())
+
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.CURRENT_LOCAL
+        )
+
+        // Then the result should be the current local time
+        assertEquals(expectedLocalDateTime, result)
+    }
+
+    /**
+     * Format Local date-time string with [DEFAULT_FORMAT] to [MEDIUM_LENGTH_FORMAT].
+     * Case: Local to Local in medium length format - Valid date-time string.
+     * Happy path for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_localToLocalMediumLengthFormat_validDateTimeString() {
+        // Given a valid local date-time string
+        // Local time (UTC+3)
+        val localDateTime = mockDateTimeLocalTimezone
+
+        // Expected formatted local time in medium length format
+        val expectedFormattedDateTime =
+            SimpleDateFormat(DEFAULT_FORMAT).parse(localDateTime)?.let {
+                SimpleDateFormat(MEDIUM_LENGTH_FORMAT, Locale.getDefault())
+                    .format(it)
+            }
+
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
+            localDateTime
+        )
+
+        // Then the result should match the expected formatted date-time
+        assertEquals(expectedFormattedDateTime, result)
+    }
+
+    /**
+     * Format Local date-time string with [DEFAULT_FORMAT] to [MEDIUM_LENGTH_FORMAT].
+     * Case: Local to Local in medium length format - Invalid date-time string.
+     * Error case for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_localToLocalMediumLengthFormat_invalidDateTimeString() {
+        // Given an invalid local date-time string
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
+            invalidDateTimeString
+        )
+
+        // Then the result should return an error message
+        assertEquals("Error $invalidDateTimeString", result)
+    }
+
+    /**
+     * Format Local date-time string with [DEFAULT_FORMAT] to [MEDIUM_LENGTH_FORMAT].
+     * Case: Local to Local in medium length format - Empty date-time string.
+     * Error case for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_localToLocalMediumLengthFormat_emptyDateTimeString() {
+        // Given an empty date-time string
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
+            emptyDateTimeString
+        )
+
+        // Then the result should return an error message
+        assertEquals("Error $emptyDateTimeString", result)
+    }
+
+    /**
+     * Format Local date-time string with [DEFAULT_FORMAT] to [SHORT_LENGTH_FORMAT].
+     * Case: Local to Local in short length format - Valid date-time string.
+     * Happy path for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_localToLocalShortLengthFormat_validDateTimeString() {
+        // Given a valid local date-time string
+        // Local time (UTC+3)
+        val localDateTime = mockDateTimeLocalTimezone
+
+        // Expected formatted local time in short length format
+        val expectedFormattedDateTime =
+            SimpleDateFormat(DEFAULT_FORMAT).parse(localDateTime)?.let {
+                SimpleDateFormat(SHORT_LENGTH_FORMAT, Locale.getDefault())
+                    .format(it)
+            }
+
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+            localDateTime
+        )
+
+        // Then the result should match the expected formatted date-time
+        assertEquals(expectedFormattedDateTime, result)
+    }
+
+    /**
+     * Format Local date-time string with [DEFAULT_FORMAT] to [SHORT_LENGTH_FORMAT].
+     * Case: Local to Local in short length format - Invalid date-time string.
+     * Error case for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_localToLocalShortLengthFormat_invalidDateTimeString() {
+        // Given an invalid local date-time string
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+            invalidDateTimeString
+        )
+
+        // Then the result should return an error message
+        assertEquals("Error $invalidDateTimeString", result)
+    }
+
+    /**
+     * Format Local date-time string with [DEFAULT_FORMAT] to [SHORT_LENGTH_FORMAT].
+     * Case: Local to Local in short length format - Empty date-time string.
+     * Error case for [DateTimeUtils.getFormattedDateTime]
+     */
+    @Test
+    fun getFormattedDateTime_localToLocalShortLengthFormat_emptyDateTimeString() {
+        // Given an empty date-time string
+        // When calling the function
+        val result = DateTimeUtils.getFormattedDateTime(
+            DateTimeFormatType.LOCAL_TO_LOCAL_SHORT_LENGTH_FORMAT,
+            emptyDateTimeString
+        )
+
+        // Then the result should return an error message
+        assertEquals("Error $emptyDateTimeString", result)
+    }
 }
