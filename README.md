@@ -91,19 +91,21 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 
 - **Architecture Pattern:** Model View ViewModel (MVVM) with Unidirectional Data Flow (UDF)
 
+- **Unit & UI Testing**: JUnit, Mockito
+
 - **Development Tools:** Figma, Lottie Animations, Git, and Android Studio
 
 - **Modern Practices:**
   - Layered architecture and abstraction
   - Dependency Injection (DI)
-  - Coroutines and Flows
+  - Reactive Programming with Coroutines and Flows
   - Well-documented codebase for ease of understanding and maintenance
 
 <br>
 
 ## Upcoming Enhancements 🚀
 
-- **Unit & UI Testing**: Strengthening code coverage and reliability.
+- **Unit & UI Testing**: Strengthening code coverage and reliability. (✅Done)
 
 - **Adaptive Layout**: Support for various screen sizes.
 
@@ -126,7 +128,12 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 - [PouchPreferences.kt](app/src/main/java/com/thewhitewings/pouch/data/PouchPreferences.kt)
 - [DatabaseMigrations.kt](app/src/main/java/com/thewhitewings/pouch/data/DatabaseMigrations.kt)<br><br>
 - [DateTimeUtils.kt](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.kt)
-- [PouchApplication.kt](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)
+- [PouchApplication.kt](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)<br><br>
+- [HomeViewModelTest](app/src/test/java/com/thewhitewings/pouch/ui/HomeViewModelTest.kt)
+- [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryTest.kt)
+- [DateTimeUtilsTest](app/src/test/java/com/thewhitewings/pouch/utils/DateTimeUtilsTest.kt)<br><br>
+- [HomeScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/ui/HomeScreenTest.kt)
+- [NoteDaoTest](app/src/androidTest/java/com/thewhitewings/pouch/data/NoteDaoTest.kt)
 
 <br>
 
