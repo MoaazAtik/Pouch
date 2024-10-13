@@ -191,10 +191,14 @@ class HomeViewModel(
      * If the sequence of revealing the Box of mysteries is completed before the timeout,
      * the Box of mysteries will be revealed.
      * Otherwise, the time window will be closed and the sequence will be reset.
+     *
+     * The Bom should be knocked 5 times ([bomRevealingThreshold])
+     * within 7 seconds ([timeoutKnocking]) to reveal the Box of mysteries.
      */
     private suspend fun startBoxRevealTimeout() {
         bomTimeoutStarted = true
         val timeoutKnocking = 7_000L // 7 seconds timeout
+        val bomRevealingThreshold = 5 // 5 knocks to reveal the Box of mysteries
         val startKnockingTime = System.currentTimeMillis()
 
         while (bomTimeoutStarted) {
@@ -204,7 +208,7 @@ class HomeViewModel(
                 bomTimeoutStarted = false
                 bomKnocks = 0
                 break
-            } else if (bomKnocks == 5) {
+            } else if (bomKnocks == bomRevealingThreshold) {
                 delay(500) // wait 500ms before completing the reveal
                 bomTimeoutStarted = false
                 bomKnocks = 0
