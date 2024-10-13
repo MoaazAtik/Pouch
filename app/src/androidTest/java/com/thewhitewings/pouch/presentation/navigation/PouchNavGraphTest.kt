@@ -9,19 +9,22 @@ import androidx.compose.ui.test.performTextInput
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.thewhitewings.pouch.R
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
+import com.thewhitewings.pouch.feature_note.presentation.navigation.PouchNavHost
+import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
 import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
-import com.thewhitewings.pouch.feature_note.presentation.navigation.PouchNavHost
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotEquals
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class PouchNavGraphTest {
 
     @get:Rule
