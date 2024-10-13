@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.thewhitewings.pouch.ui.navigation.PouchNavHost
+import com.thewhitewings.pouch.feature_note.presentation.navigation.PouchNavHost
 
 /**
  * Top level composable that represents screens for the application.

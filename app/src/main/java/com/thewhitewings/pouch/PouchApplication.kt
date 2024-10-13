@@ -5,11 +5,11 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
-import com.thewhitewings.pouch.data.NoteDatabase
-import com.thewhitewings.pouch.data.NotesRepository
-import com.thewhitewings.pouch.data.OfflineNotesRepository
-import com.thewhitewings.pouch.data.PouchPreferencesImpl
-import com.thewhitewings.pouch.utils.Constants
+import com.thewhitewings.pouch.feature_note.data.data_source.NoteDatabase
+import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.data.repository.OfflineNotesRepository
+import com.thewhitewings.pouch.feature_note.data.preferences.PouchPreferencesImpl
+import com.thewhitewings.pouch.feature_note.data.util.Constants
 
 // The name of the stored preference DataStore file
 private const val POUCH_PREFERENCE_NAME = "pouch_preferences"

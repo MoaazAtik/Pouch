@@ -3,6 +3,17 @@ package com.thewhitewings.pouch.data
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.thewhitewings.pouch.feature_note.data.data_source.NoteDao
+import com.thewhitewings.pouch.feature_note.data.data_source.NoteDatabase
+import com.thewhitewings.pouch.feature_note.domain.model.Note
+import com.thewhitewings.pouch.feature_note.domain.util.SortOption
+import com.thewhitewings.pouch.mocks.azSortedNotes
+import com.thewhitewings.pouch.mocks.mockNote1
+import com.thewhitewings.pouch.mocks.mockNote2
+import com.thewhitewings.pouch.mocks.mockNote3
+import com.thewhitewings.pouch.mocks.newestFirstNotes
+import com.thewhitewings.pouch.mocks.oldestFirstNotes
+import com.thewhitewings.pouch.mocks.zaSortedNotes
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.After
