@@ -109,7 +109,7 @@ object HomeDestination : NavigationDestination {
  */
 @Composable
 fun HomeScreen(
-    homeUiState: HomeViewModel.HomeUiState,
+    homeUiState: HomeUiState,
     navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
@@ -228,7 +228,7 @@ fun RevealLoaderAnimation(
 
 @Composable
 private fun HomeBody(
-    homeUiState: HomeViewModel.HomeUiState,
+    homeUiState: HomeUiState,
     onItemClick: (Int) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
@@ -559,7 +559,7 @@ fun ZoneText(currentZone: Zone) {
 private fun HomeScreenPreview() {
     PouchTheme(dynamicColor = false) {
         HomeScreen(
-            homeUiState = HomeViewModel.HomeUiState(
+            homeUiState = HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", "Apr 23"),
                     Note(2, "Pen", "200.0", "30"),
@@ -584,7 +584,7 @@ private fun HomeScreenPreview() {
 private fun HomeScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
         HomeScreen(
-            homeUiState = HomeViewModel.HomeUiState(
+            homeUiState = HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
                     Note(
@@ -611,7 +611,7 @@ private fun HomeScreenNightPreview() {
 private fun HomeBodyPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = HomeViewModel.HomeUiState(
+            homeUiState = HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
                     Note(
@@ -636,7 +636,7 @@ private fun HomeBodyPreview() {
 private fun HomeBodyEmptyListPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = HomeViewModel.HomeUiState(notesList = listOf()),
+            homeUiState = HomeUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
@@ -650,7 +650,7 @@ private fun HomeBodyEmptyListPreview() {
 private fun HomeBodyBomEmptyListPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = HomeViewModel.HomeUiState(
+            homeUiState = HomeUiState(
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
             ),
@@ -669,7 +669,7 @@ private fun HomeBodyBomEmptyListPreview() {
 private fun HomeBodyEmptyListNightPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = HomeViewModel.HomeUiState(notesList = listOf()),
+            homeUiState = HomeUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
@@ -685,7 +685,7 @@ private fun HomeBodyEmptyListNightPreview() {
 private fun HomeBodyBomEmptyListNightPreview() {
     PouchTheme {
         HomeBody(
-            homeUiState = HomeViewModel.HomeUiState(
+            homeUiState = HomeUiState(
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
             ),

@@ -26,7 +26,7 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeScreen
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
+import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.ShowAnimations
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
@@ -53,7 +53,7 @@ class HomeScreenTest {
     fun homeScreen_isDisplayed() {
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -76,7 +76,7 @@ class HomeScreenTest {
         // Provide the home screen state and other parameters
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -102,7 +102,7 @@ class HomeScreenTest {
 
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = { backTriggered = true },
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -131,7 +131,7 @@ class HomeScreenTest {
         // Set the content with showAnimations = true
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -156,7 +156,7 @@ class HomeScreenTest {
         // Set the content with showAnimations = true
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(showAnimations = false),
+                homeUiState = HomeUiState(showAnimations = false),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -247,7 +247,7 @@ class HomeScreenTest {
         // Given: initial notes list is empty, and zone is CREATIVE
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -269,7 +269,7 @@ class HomeScreenTest {
     fun homeBody_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(zone = Zone.BOX_OF_MYSTERIES),
+                homeUiState = HomeUiState(zone = Zone.BOX_OF_MYSTERIES),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -294,7 +294,7 @@ class HomeScreenTest {
 
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(
+                homeUiState = HomeUiState(
                     notesList = mockNotesList
                 ),
                 navigateBack = {},
@@ -318,7 +318,7 @@ class HomeScreenTest {
     fun homeBody_displayLogoImage() {
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -341,7 +341,7 @@ class HomeScreenTest {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(
+                homeUiState = HomeUiState(
                     searchQuery = ""
                 ),
                 navigateBack = {},
@@ -367,7 +367,7 @@ class HomeScreenTest {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(
+                homeUiState = HomeUiState(
                     searchQuery = ""
                 ),
                 navigateBack = {},
@@ -397,7 +397,7 @@ class HomeScreenTest {
         var searchText = ""
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -425,7 +425,7 @@ class HomeScreenTest {
         var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(searchQuery = searchText),
+                homeUiState = HomeUiState(searchQuery = searchText),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -460,7 +460,7 @@ class HomeScreenTest {
         var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(searchQuery = searchText),
+                homeUiState = HomeUiState(searchQuery = searchText),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -485,7 +485,7 @@ class HomeScreenTest {
     fun sortNotesButton_initially_buttonDisplayed_AndOptionsMenuNotDisplayed() {
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -512,7 +512,7 @@ class HomeScreenTest {
     fun sortNotesButton_onClick_expandMenu() {
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -544,7 +544,7 @@ class HomeScreenTest {
         var selectedSortOptionId: Int? = null
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -574,7 +574,7 @@ class HomeScreenTest {
     fun sortNotesButton_onOutsideClick_menuDismisses() {
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(),
+                homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -612,7 +612,7 @@ class HomeScreenTest {
 
             // HomeScreen composable with the state-driven zone
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(zone = currentZone.value),
+                homeUiState = HomeUiState(zone = currentZone.value),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -652,7 +652,7 @@ class HomeScreenTest {
 
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(notesList = mockNotesList),
+                homeUiState = HomeUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -705,7 +705,7 @@ class HomeScreenTest {
         // Set the content
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(notesList = mockNotesList),
+                homeUiState = HomeUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = { passedNoteId: Int ->
@@ -740,7 +740,7 @@ class HomeScreenTest {
         // Set the content
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(notesList = listOf(mockNote)),
+                homeUiState = HomeUiState(notesList = listOf(mockNote)),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -780,7 +780,7 @@ class HomeScreenTest {
         // Set the content
         composeTestRule.setContent {
             HomeScreen(
-                homeUiState = HomeViewModel.HomeUiState(notesList = listOf(noteWithEmptyContent)),
+                homeUiState = HomeUiState(notesList = listOf(noteWithEmptyContent)),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},

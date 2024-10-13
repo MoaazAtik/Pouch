@@ -3,9 +3,10 @@ package com.thewhitewings.pouch.presentation
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
+import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
-import com.thewhitewings.pouch.rules.MainDispatcherRule
 import com.thewhitewings.pouch.feature_note.util.Zone
+import com.thewhitewings.pouch.rules.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -251,7 +252,7 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that after [HomeViewModel] is initialized, the state of [HomeViewModel.HomeUiState.showAnimations] is updated correctly.
+     * Test that after [HomeViewModel] is initialized, the state of [HomeUiState.showAnimations] is updated correctly.
      * Happy path for [HomeViewModel.updateShowAnimationsStateDelayed]
      */
     @Test

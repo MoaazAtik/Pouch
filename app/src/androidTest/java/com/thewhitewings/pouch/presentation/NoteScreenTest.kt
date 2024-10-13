@@ -13,7 +13,7 @@ import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.mocks.mockNote1
 import com.thewhitewings.pouch.mocks.mockTimestamp1
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteScreen
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteViewModel
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteUiState
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
 import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
@@ -38,7 +38,7 @@ class NoteScreenTest {
     fun noteScreen_isDisplayed() {
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(),
+                noteUiState = NoteUiState(),
                 navigateBack = { },
                 onNavigateUp = { },
                 onNoteDelete = { },
@@ -58,7 +58,7 @@ class NoteScreenTest {
     fun noteScreen_containsBackAndDeleteButtonsAndTextFields() {
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(),
+                noteUiState = NoteUiState(),
                 navigateBack = {},
                 onNavigateUp = {},
                 onNoteDelete = {},
@@ -95,7 +95,7 @@ class NoteScreenTest {
 
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(),
+                noteUiState = NoteUiState(),
                 navigateBack = {},
                 onNavigateUp = {},
                 onNoteDelete = {},
@@ -133,7 +133,7 @@ class NoteScreenTest {
 
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(),
+                noteUiState = NoteUiState(),
                 navigateBack = { },
                 onNavigateUp = { upTriggered = true },
                 onNoteDelete = { deleteTriggered = true },
@@ -168,7 +168,7 @@ class NoteScreenTest {
 
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(),
+                noteUiState = NoteUiState(),
                 navigateBack = { backTriggered = true },
                 onNavigateUp = {},
                 onNoteDelete = {},
@@ -198,7 +198,7 @@ class NoteScreenTest {
         // Given the default note title, body, and timestamp of NoteUiState in the NoteScreen are empty strings
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(),
+                noteUiState = NoteUiState(),
                 navigateBack = {},
                 onNavigateUp = {},
                 onNoteDelete = {},
@@ -231,7 +231,7 @@ class NoteScreenTest {
         // Given: NoteScreen with a non-empty note
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(
+                noteUiState = NoteUiState(
                     note = mockNote1
                 ),
                 navigateBack = {},
@@ -272,7 +272,7 @@ class NoteScreenTest {
         val testTimestamp = mockTimestamp1
         composeTestRule.setContent {
             NoteScreen(
-                noteUiState = NoteViewModel.NoteUiState(
+                noteUiState = NoteUiState(
                     note = Note(timestamp = testTimestamp)
                 ),
                 navigateBack = {},

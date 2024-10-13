@@ -8,7 +8,6 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
-import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.domain.util.getSortOptionFromId
 import com.thewhitewings.pouch.feature_note.util.Zone
 import kotlinx.coroutines.CoroutineDispatcher
@@ -238,18 +237,6 @@ class HomeViewModel(
 
         updateShowAnimationsStateDelayed(false)
     }
-
-
-    /**
-     * UI state for the Home screen.
-     */
-    data class HomeUiState(
-        val notesList: List<Note> = emptyList(),
-        val zone: Zone = Zone.CREATIVE,
-        val sortOption: SortOption = SortOption.NEWEST_FIRST,
-        val searchQuery: String = "",
-        val showAnimations: Boolean = true
-    )
 
 
     companion object {

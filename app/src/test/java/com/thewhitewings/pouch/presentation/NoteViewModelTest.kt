@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
 import com.thewhitewings.pouch.mocks.mockNote1
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteUiState
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteViewModel
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,7 +50,7 @@ class NoteViewModelTest {
             initializeViewModelToCreateNewNote()
 
             // Then: Verify that the initial NoteUiState remains unchanged
-            val expectedState = NoteViewModel.NoteUiState()
+            val expectedState = NoteUiState()
             val currentState = viewModel.noteUiState.value
             assertEquals(expectedState, currentState)
 
@@ -106,7 +107,7 @@ class NoteViewModelTest {
             verify(notesRepository).getNoteById(1)
 
             // Assert that noteUiState remains in the default state (no note found)
-            assertEquals(NoteViewModel.NoteUiState(), currentState)
+            assertEquals(NoteUiState(), currentState)
         }
 
     /**
@@ -121,7 +122,7 @@ class NoteViewModelTest {
         initializeViewModelToCreateNewNote()
 
         // Initial note ui state
-        val initialNoteUiState = NoteViewModel.NoteUiState()
+        val initialNoteUiState = NoteUiState()
 
         // When: Update the note title
         val newTitle = "New Title"
@@ -151,7 +152,7 @@ class NoteViewModelTest {
         initializeViewModelToCreateNewNote()
 
         // Initial note ui state
-        val initialNoteUiState = NoteViewModel.NoteUiState()
+        val initialNoteUiState = NoteUiState()
 
         // When: Update the note body
         val newBody = "New Body"
@@ -185,7 +186,7 @@ class NoteViewModelTest {
         val newTitle = mockNote1.noteTitle
 
         // Expected note to be passed to the repository
-        val expectedNote = NoteViewModel.NoteUiState().note.copy(
+        val expectedNote = NoteUiState().note.copy(
             noteTitle = newTitle
         )
 

@@ -60,7 +60,7 @@ object NoteDestination : NavigationDestination {
 
 @Composable
 fun NoteScreen(
-    noteUiState: NoteViewModel.NoteUiState,
+    noteUiState: NoteUiState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onNoteDelete: () -> Unit,
@@ -87,7 +87,7 @@ fun NoteScreen(
 
 @Composable
 fun NoteScreenBody(
-    noteUiState: NoteViewModel.NoteUiState,
+    noteUiState: NoteUiState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onNoteDelete: () -> Unit,
@@ -205,7 +205,7 @@ fun NoteScreenBody(
 fun NoteScreenWithoutTimestampPreview() {
     PouchTheme(dynamicColor = false) {
         NoteScreen(
-            noteUiState = NoteViewModel.NoteUiState(),
+            noteUiState = NoteUiState(),
             navigateBack = {},
             onNavigateUp = {},
             onNoteDelete = {},
@@ -220,7 +220,7 @@ fun NoteScreenWithoutTimestampPreview() {
 fun NoteScreenPreview() {
     PouchTheme(dynamicColor = false) {
         NoteScreen(
-            noteUiState = NoteViewModel.NoteUiState(
+            noteUiState = NoteUiState(
                 Note(
                     timestamp = stringResource(
                         R.string.timestamp_not_formatted
@@ -244,7 +244,7 @@ fun NoteScreenPreview() {
 fun NoteScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
         NoteScreen(
-            noteUiState = NoteViewModel.NoteUiState(
+            noteUiState = NoteUiState(
                 Note(
                     timestamp = stringResource(
                         R.string.timestamp_not_formatted

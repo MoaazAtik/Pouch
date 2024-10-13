@@ -130,14 +130,6 @@ class NoteViewModel(
     }
 
 
-    /**
-     * UI state for the Note screen
-     */
-    data class NoteUiState(
-        val note: Note = Note(timestamp = "")
-    )
-
-
     companion object {
 
         /**
