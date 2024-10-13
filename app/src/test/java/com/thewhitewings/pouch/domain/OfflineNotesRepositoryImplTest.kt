@@ -1,7 +1,7 @@
 package com.thewhitewings.pouch.domain
 
 import com.thewhitewings.pouch.feature_note.data.data_source.NoteDao
-import com.thewhitewings.pouch.feature_note.data.repository.OfflineNotesRepository
+import com.thewhitewings.pouch.feature_note.data.repository.OfflineNotesRepositoryImpl
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.preferences.PouchPreferences
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
@@ -30,10 +30,10 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-class OfflineNotesRepositoryTest {
+class OfflineNotesRepositoryImplTest {
 
     // The repository being tested
-    private lateinit var repository: OfflineNotesRepository
+    private lateinit var repository: OfflineNotesRepositoryImpl
 
     // Mocked dependencies
     private lateinit var creativeNoteDao: NoteDao
@@ -54,7 +54,7 @@ class OfflineNotesRepositoryTest {
         currentZoneDao = creativeNoteDao
 
         // Initialize the repository with the mocks
-        repository = OfflineNotesRepository(
+        repository = OfflineNotesRepositoryImpl(
             creativeNoteDao = creativeNoteDao,
             bomNoteDao = bomNoteDao,
             pouchPreferences = pouchPreferences
@@ -63,7 +63,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Create a note and verify that the note is inserted via the Dao of the current zone.
-     * Happy path for [OfflineNotesRepository.createNote]
+     * Happy path for [OfflineNotesRepositoryImpl.createNote]
      */
     @Test
     fun offlineNotesRepository_createNote_insertsNoteToCurrentZone() = runTest {
@@ -76,7 +76,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Get a note by ID and verify that the note is returned correctly.
-     * Happy path for [OfflineNotesRepository.getNoteById]
+     * Happy path for [OfflineNotesRepositoryImpl.getNoteById]
      */
     @Test
     fun offlineNotesRepository_getNoteById_returnsCorrectNote() = runTest {
@@ -95,7 +95,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When querying all notes in the repository sorted by [SortOption.A_Z], get all notes in Local timezone and sorted correctly.
-     * Happy path for [OfflineNotesRepository.getAllNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.getAllNotesStream]
      */
     @Test
     fun offlineNotesRepository_getAllNotesStreamSortedAz_returnFormattedAndSortedNotes() = runTest {
@@ -115,7 +115,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When querying all notes in the repository sorted by [SortOption.Z_A], get all notes in Local timezone and sorted correctly.
-     * Happy path for [OfflineNotesRepository.getAllNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.getAllNotesStream]
      */
     @Test
     fun offlineNotesRepository_getAllNotesStreamSortedZa_returnFormattedAndSortedNotes() = runTest {
@@ -135,7 +135,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When querying all notes in the repository sorted by [SortOption.OLDEST_FIRST], get all notes in Local timezone and sorted correctly.
-     * Happy path for [OfflineNotesRepository.getAllNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.getAllNotesStream]
      */
     @Test
     fun offlineNotesRepository_getAllNotesStreamSortedOldestFirst_returnFormattedAndSortedNotes() =
@@ -156,7 +156,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When querying all notes in the repository sorted by [SortOption.NEWEST_FIRST], get all notes in Local timezone and sorted correctly.
-     * Happy path for [OfflineNotesRepository.getAllNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.getAllNotesStream]
      */
     @Test
     fun offlineNotesRepository_getAllNotesStreamSortedNewestFirst_returnFormattedAndSortedNotes() =
@@ -177,7 +177,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When searching for notes, get filtered notes sorted correctly.
-     * Happy path for [OfflineNotesRepository.searchNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.searchNotesStream]
      */
     @Test
     fun offlineNotesRepository_searchNotes_returnFilteredAndSortedNotes() = runTest {
@@ -197,7 +197,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When searching for notes sorted by [SortOption.A_Z], get filtered notes sorted correctly.
-     * Happy path for [OfflineNotesRepository.searchNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.searchNotesStream]
      */
     @Test
     fun offlineNotesRepository_searchNotesAndSortAz_returnFilteredAndSortedNotes() = runTest {
@@ -217,7 +217,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When searching for notes sorted by [SortOption.Z_A], get filtered notes sorted correctly.
-     * Happy path for [OfflineNotesRepository.searchNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.searchNotesStream]
      */
     @Test
     fun offlineNotesRepository_searchNotesAndSortZa_returnFilteredAndSortedNotes() = runTest {
@@ -237,7 +237,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When searching for notes sorted by [SortOption.OLDEST_FIRST], get filtered notes sorted correctly.
-     * Happy path for [OfflineNotesRepository.searchNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.searchNotesStream]
      */
     @Test
     fun offlineNotesRepository_searchNotesAndSortOldestFirst_returnFilteredAndSortedNotes() =
@@ -259,7 +259,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * When searching for notes sorted by [SortOption.NEWEST_FIRST], get filtered notes sorted correctly.
-     * Happy path for [OfflineNotesRepository.searchNotesStream]
+     * Happy path for [OfflineNotesRepositoryImpl.searchNotesStream]
      */
     @Test
     fun offlineNotesRepository_searchNotesAndSortNewestFirst_returnFilteredAndSortedNotes() =
@@ -282,7 +282,7 @@ class OfflineNotesRepositoryTest {
     /**
      * When searching for notes with no matches, get an empty list.
      * Case: Search notes with no matches.
-     * for [OfflineNotesRepository.searchNotesStream]
+     * for [OfflineNotesRepositoryImpl.searchNotesStream]
      */
     @Test
     fun offlineNotesRepository_searchNotesNoMatch_returnEmptyList() = runBlocking {
@@ -302,7 +302,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Update a note in the repository.
-     * Happy path for [OfflineNotesRepository.updateNote]
+     * Happy path for [OfflineNotesRepositoryImpl.updateNote]
      */
     @Test
     fun offlineNotesRepository_updateNote_daoUpdatesNote() = runTest {
@@ -316,7 +316,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Delete a note from the repository.
-     * Happy path for [OfflineNotesRepository.deleteNote]
+     * Happy path for [OfflineNotesRepositoryImpl.deleteNote]
      */
     @Test
     fun offlineNotesRepository_deleteNote_daoDeletesNote() = runTest {
@@ -330,7 +330,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Save a sort option for Creative zone in the repository.
-     * Happy path for [OfflineNotesRepository.saveSortOption]
+     * Happy path for [OfflineNotesRepositoryImpl.saveSortOption]
      */
     @Test
     fun offlineNotesRepository_saveSortOptionForCreativeZone_preferencesSavesSortOption() =
@@ -345,7 +345,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Save a sort option for Bom zone in the repository.
-     * Happy path for [OfflineNotesRepository.saveSortOption]
+     * Happy path for [OfflineNotesRepositoryImpl.saveSortOption]
      */
     @Test
     fun offlineNotesRepository_saveSortOptionForBomZone_preferencesSavesSortOption() = runTest {
@@ -359,7 +359,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Get sort option preference for Creative zone from the repository.
-     * Happy path for [OfflineNotesRepository.getSortOptionFlow]
+     * Happy path for [OfflineNotesRepositoryImpl.getSortOptionFlow]
      */
     @Test
     fun offlineNotesRepository_getSortOptionFlowForCreativeZone_returnsCorrectSortOption() =
@@ -379,7 +379,7 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Get sort option preference for Bom zone from the repository.
-     * Happy path for [OfflineNotesRepository.getSortOptionFlow]
+     * Happy path for [OfflineNotesRepositoryImpl.getSortOptionFlow]
      */
     @Test
     fun offlineNotesRepository_getSortOptionFlowForBomZone_returnsCorrectSortOption() = runTest {
@@ -399,7 +399,7 @@ class OfflineNotesRepositoryTest {
     /**
      * Toggle the current zone in the repository
      * and verify that the currentZoneDao in the repository is updated.
-     * Happy path for [OfflineNotesRepository.toggleZone]
+     * Happy path for [OfflineNotesRepositoryImpl.toggleZone]
      */
     @Test
     fun offlineNotesRepository_toggleZone_changeCurrentZone() = runTest {

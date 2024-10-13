@@ -11,7 +11,7 @@ import com.thewhitewings.pouch.feature_note.util.Zone
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private const val TAG = "OfflineNotesRepository"
+private const val TAG = "OfflineNotesRepositoryImpl"
 
 /**
  * Offline Notes Repository Class.
@@ -19,7 +19,7 @@ private const val TAG = "OfflineNotesRepository"
  *
  * It is the gate to interact with the Room databases and the DataStore.
  */
-class OfflineNotesRepository(
+class OfflineNotesRepositoryImpl(
 
     /**
      * DAO for the Creative Zone database.
