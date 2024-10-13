@@ -343,20 +343,21 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that [HomeViewModel.revealBoxOfMysteries] triggers the sequence of
+     * Test that [HomeViewModel.knockBoxOfMysteries] triggers the sequence of
      * revealing the Box of mysteries.
-     * The zone toggles to BOX_OF_MYSTERIES after 5 times of calling revealBoxOfMysteries by calling
+     * The zone toggles to [Zone.BOX_OF_MYSTERIES] after 5 times of calling
+     * [HomeViewModel.knockBoxOfMysteries] by calling
      * [HomeViewModel.startBoxRevealTimeout] and then [HomeViewModel.toggleZone] gets called.
-     * Happy path for [HomeViewModel.revealBoxOfMysteries]
+     * Happy path for [HomeViewModel.knockBoxOfMysteries]
      */
     @Test
-    fun `When revealBoxOfMysteries is called 5 times, zone is toggled to BOX_OF_MYSTERIES`() =
+    fun `When knocked on Bom 5 times, zone is toggled to Bom`() =
         runTest {
             // Given: the initial zone is CREATIVE, and the search query is empty
             val expectedZone = Zone.BOX_OF_MYSTERIES
 
             repeat(5) {
-                viewModel.revealBoxOfMysteries()
+                viewModel.knockBoxOfMysteries()
             }
 
             whenever(notesRepository.getSortOptionFlow(expectedZone))
@@ -369,17 +370,19 @@ class HomeViewModelTest {
         }
 
     /**
-     * Test that [HomeViewModel.revealBoxOfMysteries] triggers the sequence of
+     * Test that [HomeViewModel.knockBoxOfMysteries] triggers the sequence of
      * revealing the Box of mysteries.
-     * The zone doesn't toggle to BOX_OF_MYSTERIES before 5 times of calling revealBoxOfMysteries.
-     * Case: less than 5 times of calling revealBoxOfMysteries for [HomeViewModel.revealBoxOfMysteries]
+     * The zone doesn't toggle to [Zone.BOX_OF_MYSTERIES] before 5 times of calling
+     * [HomeViewModel.knockBoxOfMysteries].
+     * Case: less than 5 times of calling [HomeViewModel.knockBoxOfMysteries]
+     * for [HomeViewModel.knockBoxOfMysteries]
      */
     @Test
-    fun `When revealBoxOfMysteries is called less than 5 times, zone should not change`() =
+    fun `When knocked on Bom less than 5 times, zone should not change`() =
         runTest {
             // Given: the initial zone is CREATIVE
             repeat(4) {
-                viewModel.revealBoxOfMysteries()
+                viewModel.knockBoxOfMysteries()
             }
             assertEquals(initialZone, viewModel.homeUiState.value.zone)
         }

@@ -177,7 +177,7 @@ class HomeViewModel(
     /**
      * Triggers the sequence of revealing the Box of mysteries.
      */
-    fun revealBoxOfMysteries() {
+    fun knockBoxOfMysteries() {
         bomKnocks++
         if (!bomTimeoutStarted) {
             viewModelScope.launch(dispatcher) {
