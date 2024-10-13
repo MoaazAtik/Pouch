@@ -1,7 +1,7 @@
 package com.thewhitewings.pouch.presentation
 
 import androidx.lifecycle.SavedStateHandle
-import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.mocks.mockNote1
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteUiState
@@ -31,7 +31,7 @@ class NoteViewModelTest {
     // Mocks and ViewModel
     private lateinit var viewModel: NoteViewModel
     private lateinit var savedStateHandle: SavedStateHandle
-    private lateinit var notesRepository: NotesRepository
+    private lateinit var notesRepository: OfflineNotesRepository
 
     // Test dispatcher for coroutines
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -89,7 +89,7 @@ class NoteViewModelTest {
     fun `When initializing note and noteId is provided, but note is not found, do not update ui state`() =
         runTest {
             // Mock the repository
-            notesRepository = mock(NotesRepository::class.java)
+            notesRepository = mock(OfflineNotesRepository::class.java)
 
             // SavedStateHandle with noteIdArg
             savedStateHandle = SavedStateHandle(mapOf(NoteDestination.noteIdArg to 1))
@@ -302,7 +302,7 @@ class NoteViewModelTest {
      */
     private fun initializeViewModelToCreateNewNote() {
         // Mock the repository
-        notesRepository = mock(NotesRepository::class.java)
+        notesRepository = mock(OfflineNotesRepository::class.java)
 
         // Initialize SavedStateHandle without noteIdArg
         savedStateHandle = SavedStateHandle()
@@ -316,7 +316,7 @@ class NoteViewModelTest {
      */
     private fun initializeViewModelToUpdateExistingNote() {
         // Mock the repository
-        notesRepository = mock(NotesRepository::class.java)
+        notesRepository = mock(OfflineNotesRepository::class.java)
 
         // SavedStateHandle with noteIdArg
         savedStateHandle = SavedStateHandle(mapOf(NoteDestination.noteIdArg to 1))

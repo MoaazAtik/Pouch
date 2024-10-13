@@ -9,7 +9,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.feature_note.domain.model.Note
-import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,11 +20,11 @@ import kotlinx.coroutines.launch
 private const val TAG = "NoteViewModel"
 
 /**
- * ViewModel to interact with the [NotesRepository]'s data source and the Note screen.
+ * ViewModel to interact with the [OfflineNotesRepository]'s data source and the Note screen.
  */
 class NoteViewModel(
     private val savedStateHandle: SavedStateHandle,
-    private val notesRepository: NotesRepository,
+    private val notesRepository: OfflineNotesRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -133,7 +133,7 @@ class NoteViewModel(
     companion object {
 
         /**
-         * Factory for [NoteViewModel] that takes [NotesRepository] as a dependency
+         * Factory for [NoteViewModel] that takes [OfflineNotesRepository] as a dependency
          */
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

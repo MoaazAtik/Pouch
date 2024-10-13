@@ -30,7 +30,7 @@ import org.mockito.kotlin.any
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
-class OfflineNotesRepositoryImplTest {
+class OfflineNotesRepositoryTest {
 
     // The repository being tested
     private lateinit var repository: OfflineNotesRepositoryImpl

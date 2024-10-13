@@ -6,7 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 import com.thewhitewings.pouch.feature_note.data.data_source.NoteDatabase
-import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.data.repository.OfflineNotesRepositoryImpl
 import com.thewhitewings.pouch.feature_note.data.preferences.PouchPreferencesImpl
 import com.thewhitewings.pouch.feature_note.data.util.Constants
@@ -27,7 +27,7 @@ class PouchApplication : Application() {
     /**
      * The repository of the app that manages the interactions with the databases and preferences.
      */
-    lateinit var notesRepository: NotesRepository
+    lateinit var notesRepository: OfflineNotesRepository
         private set
 
     override fun onCreate() {

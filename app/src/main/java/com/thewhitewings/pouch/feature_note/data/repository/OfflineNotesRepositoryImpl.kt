@@ -1,7 +1,7 @@
 package com.thewhitewings.pouch.feature_note.data.repository
 
 import com.thewhitewings.pouch.feature_note.domain.model.Note
-import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.domain.preferences.PouchPreferences
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.domain.model.formatTimestamp
@@ -15,7 +15,7 @@ private const val TAG = "OfflineNotesRepositoryImpl"
 
 /**
  * Offline Notes Repository Class.
- * Implementation of [NotesRepository] interface.
+ * Implementation of [OfflineNotesRepository] interface.
  *
  * It is the gate to interact with the Room databases and the DataStore.
  */
@@ -35,7 +35,7 @@ class OfflineNotesRepositoryImpl(
      * Preferences DataStore for the app.
      */
     private val pouchPreferences: PouchPreferences
-) : NotesRepository {
+) : OfflineNotesRepository {
 
     /**
      * The DAO for the database of the zone that is currently being used.

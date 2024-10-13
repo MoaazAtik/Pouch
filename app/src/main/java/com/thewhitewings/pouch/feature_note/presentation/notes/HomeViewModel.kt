@@ -7,7 +7,7 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.feature_note.domain.model.Note
-import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.domain.util.getSortOptionFromId
 import com.thewhitewings.pouch.feature_note.util.Zone
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,11 +26,11 @@ import kotlinx.coroutines.launch
 private const val TAG = "HomeViewModel"
 
 /**
- * ViewModel to interact with the [NotesRepository]'s data source and the Notes list screen.
+ * ViewModel to interact with the [OfflineNotesRepository]'s data source and the Notes list screen.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeViewModel(
-    private val notesRepository: NotesRepository,
+    private val notesRepository: OfflineNotesRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
@@ -242,7 +242,7 @@ class HomeViewModel(
     companion object {
 
         /**
-         * Factory for [HomeViewModel] that takes [NotesRepository] as a dependency
+         * Factory for [HomeViewModel] that takes [OfflineNotesRepository] as a dependency
          */
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {

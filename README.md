@@ -130,7 +130,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 - [DateTimeUtils.kt](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.kt)
 - [PouchApplication.kt](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)<br><br>
 - [HomeViewModelTest](app/src/test/java/com/thewhitewings/pouch/ui/HomeViewModelTest.kt)
-- [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryImplTest.kt)
+- [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryTest.kt)
 - [DateTimeUtilsTest](app/src/test/java/com/thewhitewings/pouch/utils/DateTimeUtilsTest.kt)<br><br>
 - [HomeScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/ui/HomeScreenTest.kt)
 - [NoteDaoTest](app/src/androidTest/java/com/thewhitewings/pouch/data/NoteDaoTest.kt)

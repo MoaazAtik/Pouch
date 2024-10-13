@@ -1,7 +1,7 @@
 package com.thewhitewings.pouch.presentation
 
 import com.thewhitewings.pouch.feature_note.domain.model.Note
-import com.thewhitewings.pouch.feature_note.domain.repository.NotesRepository
+import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
@@ -29,7 +29,7 @@ class HomeViewModelTest {
 
     // Mocks and ViewModel
     private lateinit var viewModel: HomeViewModel
-    private lateinit var notesRepository: NotesRepository
+    private lateinit var notesRepository: OfflineNotesRepository
 
     // Test dispatcher for coroutines
     private val testDispatcher = UnconfinedTestDispatcher()
@@ -48,7 +48,7 @@ class HomeViewModelTest {
     @Before
     fun setUp() {
         // Mocking the repository
-        notesRepository = mock(NotesRepository::class.java)
+        notesRepository = mock(OfflineNotesRepository::class.java)
 
         // Mocking the repository methods that are needed
         // because they are being observed by the view model.

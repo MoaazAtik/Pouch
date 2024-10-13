@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 /**
  * Interface for the Notes Repository
  */
-interface NotesRepository {
+interface OfflineNotesRepository {
 
     /**
      * Insert a new note into the database
