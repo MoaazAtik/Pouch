@@ -23,13 +23,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private const val TAG = "HomeViewModel"
+private const val TAG = "NotesViewModel"
 
 /**
  * ViewModel to interact with the [OfflineNotesRepository]'s data source and the Notes list screen.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeViewModel(
+class NotesViewModel(
     private val notesRepository: OfflineNotesRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
@@ -242,14 +242,14 @@ class HomeViewModel(
     companion object {
 
         /**
-         * Factory for [HomeViewModel] that takes [OfflineNotesRepository] as a dependency
+         * Factory for [NotesViewModel] that takes [OfflineNotesRepository] as a dependency
          */
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as PouchApplication)
                 val notesRepository = application.notesRepository
-                HomeViewModel(notesRepository = notesRepository)
+                NotesViewModel(notesRepository = notesRepository)
             }
         }
     }

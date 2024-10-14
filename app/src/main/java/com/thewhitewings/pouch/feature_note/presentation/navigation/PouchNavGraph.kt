@@ -13,7 +13,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesScreen
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesViewModel
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteViewModel
@@ -38,7 +38,7 @@ fun PouchNavHost(
         composable(
             route = HomeDestination.route
         ) {
-            val viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
+            val viewModel: NotesViewModel = viewModel(factory = NotesViewModel.Factory)
             val homeUiState by viewModel.homeUiState.collectAsState()
 
             NotesScreen(

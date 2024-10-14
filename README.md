@@ -119,7 +119,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 
 ## Core Files 📁
 - [NotesScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/NotesScreen.kt)
-- [HomeViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeViewModel.kt)
+- [NotesViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/NotesViewModel.kt)
 - [AddEditNoteScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteScreen.kt)
 - [AddEditNoteViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteViewModel.kt)
 - [PouchNavGraph](app/src/main/java/com/thewhitewings/pouch/ui/navigation/PouchNavGraph.kt)<br><br>
@@ -129,7 +129,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 - [DatabaseMigrations.kt](app/src/main/java/com/thewhitewings/pouch/data/DatabaseMigrations.kt)<br><br>
 - [DateTimeUtils.kt](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.kt)
 - [PouchApplication.kt](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)<br><br>
-- [HomeViewModelTest](app/src/test/java/com/thewhitewings/pouch/ui/HomeViewModelTest.kt)
+- [NotesViewModelTest](app/src/test/java/com/thewhitewings/pouch/ui/NotesViewModelTest.kt)
 - [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryTest.kt)
 - [DateTimeUtilsTest](app/src/test/java/com/thewhitewings/pouch/utils/DateTimeUtilsTest.kt)<br><br>
 - [NotesScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/ui/NotesScreenTest.kt)

@@ -4,7 +4,7 @@ import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesViewModel
 import com.thewhitewings.pouch.feature_note.util.Zone
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,14 +21,14 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class HomeViewModelTest {
+class NotesViewModelTest {
 
     // Rule to set main dispatcher to a test coroutine dispatcher
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
     // Mocks and ViewModel
-    private lateinit var viewModel: HomeViewModel
+    private lateinit var viewModel: NotesViewModel
     private lateinit var notesRepository: OfflineNotesRepository
 
     // Test dispatcher for coroutines
@@ -59,12 +59,12 @@ class HomeViewModelTest {
             .thenReturn(flowOf(mockInitialNotesList))
 
         // Initialize ViewModel before each test, with a test dispatcher
-        viewModel = HomeViewModel(notesRepository, testDispatcher)
+        viewModel = NotesViewModel(notesRepository, testDispatcher)
     }
 
     /**
      * Test that zone changes are collected and sort option is updated correctly.
-     * Happy path test for [HomeViewModel.collectZoneAndCollectSortOption]
+     * Happy path test for [NotesViewModel.collectZoneAndCollectSortOption]
      */
     @Test
     fun `When zone changes, update sort option correctly`() = runTest {
@@ -94,7 +94,7 @@ class HomeViewModelTest {
 
     /**
      * Test that sort option changes are collected and notes list is updated correctly.
-     * Happy path for [HomeViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
+     * Happy path for [NotesViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
      */
     @Test
     fun `When sort option changes and search query is empty, update notes list correctly`() =
@@ -116,7 +116,7 @@ class HomeViewModelTest {
 
     /**
      * Test that sort option changes are collected and notes list is updated correctly.
-     * Happy path for [HomeViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
+     * Happy path for [NotesViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
      */
     @Test
     fun `When sort option changes and search query is Not empty, update notes list correctly`() =
@@ -144,7 +144,7 @@ class HomeViewModelTest {
 
     /**
      * Test that search query changes are collected and notes list is updated correctly.
-     * Happy path for [HomeViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
+     * Happy path for [NotesViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
      */
     @Test
     fun `When search query changes and search query is Not empty, update notes list correctly`() =
@@ -165,7 +165,7 @@ class HomeViewModelTest {
 
     /**
      * Test that search query changes are collected and notes list is updated correctly.
-     * Happy path for [HomeViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
+     * Happy path for [NotesViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
      */
     @Test
     fun `When search query changes and search query is empty, update notes list correctly`() =
@@ -199,7 +199,7 @@ class HomeViewModelTest {
 
     /**
      * Test that zone changes are collected and notes list is updated correctly.
-     * Happy path for [HomeViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
+     * Happy path for [NotesViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
      */
     @Test
     fun `When zone changes and search query is empty, update notes list correctly`() =
@@ -223,7 +223,7 @@ class HomeViewModelTest {
 
     /**
      * Test that zone changes are collected and notes list is updated correctly.
-     * Happy path for [HomeViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
+     * Happy path for [NotesViewModel.collectSortOptionSearchQueryZoneAndCollectNotesList]
      */
     @Test
     fun `When zone changes and search query is Not empty, update notes list correctly`() = runTest {
@@ -252,8 +252,8 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that after [HomeViewModel] is initialized, the state of [HomeUiState.showAnimations] is updated correctly.
-     * Happy path for [HomeViewModel.updateShowAnimationsStateDelayed]
+     * Test that after [NotesViewModel] is initialized, the state of [HomeUiState.showAnimations] is updated correctly.
+     * Happy path for [NotesViewModel.updateShowAnimationsStateDelayed]
      */
     @Test
     fun `When the view model is initialized, showAnimations is updated correctly`() = runTest {
@@ -264,8 +264,8 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that [HomeViewModel.updateSearchQuery] updates the search query state correctly.
-     * Happy path for [HomeViewModel.updateSearchQuery]
+     * Test that [NotesViewModel.updateSearchQuery] updates the search query state correctly.
+     * Happy path for [NotesViewModel.updateSearchQuery]
      */
     @Test
     fun `When updating search query, update search query state correctly`() =
@@ -287,8 +287,8 @@ class HomeViewModelTest {
         }
 
     /**
-     * Test that [HomeViewModel.updateSortOption] saves the sort option with [notesRepository.saveSortOption].
-     * Happy path for [HomeViewModel.updateSortOption]
+     * Test that [NotesViewModel.updateSortOption] saves the sort option with [notesRepository.saveSortOption].
+     * Happy path for [NotesViewModel.updateSortOption]
      */
     @Test
     fun `When updating sort option, save the sort option`() = runTest {
@@ -311,8 +311,8 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that [HomeViewModel.updateSortOptionStateForTesting] updates the sort option state correctly.
-     * Happy path for [HomeViewModel.updateSortOptionStateForTesting]
+     * Test that [NotesViewModel.updateSortOptionStateForTesting] updates the sort option state correctly.
+     * Happy path for [NotesViewModel.updateSortOptionStateForTesting]
      */
     @Test
     fun `When updating sort option, update sort option state correctly`() = runTest {
@@ -334,8 +334,8 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that [HomeViewModel.deleteNote] interacts with the repository to delete a note.
-     * Happy path for [HomeViewModel.deleteNote]
+     * Test that [NotesViewModel.deleteNote] interacts with the repository to delete a note.
+     * Happy path for [NotesViewModel.deleteNote]
      */
     @Test
     fun `When deleteNote is called, call deleteNote on notesRepository`() = runTest {
@@ -345,12 +345,12 @@ class HomeViewModelTest {
     }
 
     /**
-     * Test that [HomeViewModel.knockBoxOfMysteries] triggers the sequence of
+     * Test that [NotesViewModel.knockBoxOfMysteries] triggers the sequence of
      * revealing the Box of mysteries.
      * The zone toggles to [Zone.BOX_OF_MYSTERIES] after 5 times of calling
-     * [HomeViewModel.knockBoxOfMysteries] by calling
-     * [HomeViewModel.startBoxRevealTimeout] and then [HomeViewModel.toggleZone] gets called.
-     * Happy path for [HomeViewModel.knockBoxOfMysteries]
+     * [NotesViewModel.knockBoxOfMysteries] by calling
+     * [NotesViewModel.startBoxRevealTimeout] and then [NotesViewModel.toggleZone] gets called.
+     * Happy path for [NotesViewModel.knockBoxOfMysteries]
      */
     @Test
     fun `When knocked on Bom 5 times, zone is toggled to Bom`() =
@@ -372,12 +372,12 @@ class HomeViewModelTest {
         }
 
     /**
-     * Test that [HomeViewModel.knockBoxOfMysteries] triggers the sequence of
+     * Test that [NotesViewModel.knockBoxOfMysteries] triggers the sequence of
      * revealing the Box of mysteries.
      * The zone doesn't toggle to [Zone.BOX_OF_MYSTERIES] before 5 times of calling
-     * [HomeViewModel.knockBoxOfMysteries].
-     * Case: less than 5 times of calling [HomeViewModel.knockBoxOfMysteries]
-     * for [HomeViewModel.knockBoxOfMysteries]
+     * [NotesViewModel.knockBoxOfMysteries].
+     * Case: less than 5 times of calling [NotesViewModel.knockBoxOfMysteries]
+     * for [NotesViewModel.knockBoxOfMysteries]
      */
     @Test
     fun `When knocked on Bom less than 5 times, zone should not change`() =
@@ -390,8 +390,8 @@ class HomeViewModelTest {
         }
 
     /**
-     * Test that [HomeViewModel.toggleZone] toggles the zone and updates the UI state correctly.
-     * Happy path for [HomeViewModel.toggleZone]
+     * Test that [NotesViewModel.toggleZone] toggles the zone and updates the UI state correctly.
+     * Happy path for [NotesViewModel.toggleZone]
      */
     @Test
     fun `When toggleZone is called, zone changes and ui state updates correctly`() = runTest {
