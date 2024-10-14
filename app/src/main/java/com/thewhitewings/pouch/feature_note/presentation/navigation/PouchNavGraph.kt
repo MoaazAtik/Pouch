@@ -64,10 +64,10 @@ fun PouchNavHost(
             })
         ) {
             val viewModel: NoteViewModel = viewModel(factory = NoteViewModel.Factory)
-            val noteUiState by viewModel.noteUiState.collectAsState()
+            val noteUiState by viewModel.uiState.collectAsState()
 
             AddEditNoteScreen(
-                noteUiState = noteUiState,
+                uiState = noteUiState,
                 navigateBack = { viewModel.createOrUpdateNote(); navController.popBackStack() },
                 onNavigateUp = { viewModel.createOrUpdateNote(); navController.navigateUp() },
                 onNoteDelete = { viewModel.deleteNote(); navController.popBackStack() },

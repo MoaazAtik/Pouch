@@ -60,7 +60,7 @@ object NoteDestination : NavigationDestination {
 
 @Composable
 fun AddEditNoteScreen(
-    noteUiState: NoteUiState,
+    uiState: AddEditNoteUiState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onNoteDelete: () -> Unit,
@@ -72,7 +72,7 @@ fun AddEditNoteScreen(
         modifier = modifier.testTag(stringResource(R.string.add_edit_note_screen_tag))
     ) { innerPadding ->
         AddEditNoteScreenBody(
-            noteUiState = noteUiState,
+            uiState = uiState,
             navigateBack = navigateBack,
             onNavigateUp = onNavigateUp,
             onNoteDelete = onNoteDelete,
@@ -87,7 +87,7 @@ fun AddEditNoteScreen(
 
 @Composable
 fun AddEditNoteScreenBody(
-    noteUiState: NoteUiState,
+    uiState: AddEditNoteUiState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onNoteDelete: () -> Unit,
@@ -132,7 +132,7 @@ fun AddEditNoteScreenBody(
             }
         }
         TextField(
-            value = noteUiState.note.noteTitle,
+            value = uiState.note.noteTitle,
             onValueChange = onNoteTitleChange,
             modifier = Modifier
                 .testTag(stringResource(R.string.note_title_text_field_tag))
@@ -157,7 +157,7 @@ fun AddEditNoteScreenBody(
             )
         )
         TextField(
-            value = noteUiState.note.noteBody,
+            value = uiState.note.noteBody,
             onValueChange = onNoteBodyChange,
             modifier = Modifier
                 .testTag(stringResource(R.string.note_body_text_field_tag))
@@ -182,10 +182,10 @@ fun AddEditNoteScreenBody(
                 focusedContainerColor = Color.Transparent
             )
         )
-        if (noteUiState.note.timestamp.isNotEmpty()) {
+        if (uiState.note.timestamp.isNotEmpty()) {
             val formattedTimestamp = DateTimeUtils.getFormattedDateTime(
                 DateTimeFormatType.LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
-                noteUiState.note.timestamp
+                uiState.note.timestamp
             )
             Text(
                 text = stringResource(R.string.timestamp_edited, formattedTimestamp),
@@ -205,7 +205,7 @@ fun AddEditNoteScreenBody(
 fun AddEditNoteScreenWithoutTimestampPreview() {
     PouchTheme(dynamicColor = false) {
         AddEditNoteScreen(
-            noteUiState = NoteUiState(),
+            uiState = AddEditNoteUiState(),
             navigateBack = {},
             onNavigateUp = {},
             onNoteDelete = {},
@@ -220,7 +220,7 @@ fun AddEditNoteScreenWithoutTimestampPreview() {
 fun AddEditNoteScreenPreview() {
     PouchTheme(dynamicColor = false) {
         AddEditNoteScreen(
-            noteUiState = NoteUiState(
+            uiState = AddEditNoteUiState(
                 Note(
                     timestamp = stringResource(
                         R.string.timestamp_not_formatted
@@ -244,7 +244,7 @@ fun AddEditNoteScreenPreview() {
 fun AddEditNoteScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
         AddEditNoteScreen(
-            noteUiState = NoteUiState(
+            uiState = AddEditNoteUiState(
                 Note(
                     timestamp = stringResource(
                         R.string.timestamp_not_formatted

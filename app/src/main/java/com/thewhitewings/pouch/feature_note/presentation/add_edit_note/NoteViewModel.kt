@@ -31,9 +31,9 @@ class NoteViewModel(
     // the note that is opened for updating purpose
     private var oldNote: Note? = null
 
-    // Holds current NoteUiState
-    private val _noteUiState = MutableStateFlow(NoteUiState())
-    val noteUiState = _noteUiState.asStateFlow()
+    // Holds current AddEditNoteUiState
+    private val _uiState = MutableStateFlow(AddEditNoteUiState())
+    val uiState = _uiState.asStateFlow()
 
     init {
         initializeNote()
@@ -50,7 +50,7 @@ class NoteViewModel(
             notesRepository.getNoteById(noteId)
                 .collect { note ->
                     if (note != null) {
-                        _noteUiState.value = _noteUiState.value.copy(
+                        _uiState.value = _uiState.value.copy(
                             note = note
                         )
                         oldNote = note
@@ -63,7 +63,7 @@ class NoteViewModel(
      * Updates the note title of the current note's state
      */
     fun updateNoteTitle(title: String) {
-        _noteUiState.update {
+        _uiState.update {
             it.copy(
                 note = it.note.copy(noteTitle = title)
             )
@@ -74,7 +74,7 @@ class NoteViewModel(
      * Updates the note body of the current note's state
      */
     fun updateNoteBody(body: String) {
-        _noteUiState.update {
+        _uiState.update {
             it.copy(
                 note = it.note.copy(noteBody = body)
             )
@@ -90,7 +90,7 @@ class NoteViewModel(
      * Otherwise, the note will not be updated, i.e., its timestamp will stay the same.
      */
     fun createOrUpdateNote() {
-        with(_noteUiState.value.note) {
+        with(_uiState.value.note) {
             if (oldNote == null) {
                 if (noteTitle.isNotEmpty() || noteBody.isNotEmpty())
                     createNote()
@@ -107,7 +107,7 @@ class NoteViewModel(
      */
     private fun createNote() {
         viewModelScope.launch(dispatcher) {
-            notesRepository.createNote(_noteUiState.value.note)
+            notesRepository.createNote(_uiState.value.note)
         }
     }
 
@@ -116,7 +116,7 @@ class NoteViewModel(
      */
     private fun updateNote() {
         viewModelScope.launch(dispatcher) {
-            notesRepository.updateNote(_noteUiState.value.note)
+            notesRepository.updateNote(_uiState.value.note)
         }
     }
 
@@ -125,7 +125,7 @@ class NoteViewModel(
      */
     fun deleteNote() {
         viewModelScope.launch(dispatcher) {
-            notesRepository.deleteNote(_noteUiState.value.note)
+            notesRepository.deleteNote(_uiState.value.note)
         }
     }
 

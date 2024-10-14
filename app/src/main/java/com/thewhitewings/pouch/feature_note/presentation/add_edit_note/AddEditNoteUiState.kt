@@ -5,6 +5,6 @@ import com.thewhitewings.pouch.feature_note.domain.model.Note
 /**
  * UI state for the [AddEditNoteScreen]
  */
-data class NoteUiState(
+data class AddEditNoteUiState(
     val note: Note = Note(timestamp = "")
 )

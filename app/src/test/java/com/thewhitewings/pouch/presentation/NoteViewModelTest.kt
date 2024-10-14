@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.mocks.mockNote1
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteUiState
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteUiState
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteViewModel
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -49,9 +49,9 @@ class NoteViewModelTest {
             // Since noteIdArg is not provided, no note should be loaded
             initializeViewModelToCreateNewNote()
 
-            // Then: Verify that the initial NoteUiState remains unchanged
-            val expectedState = NoteUiState()
-            val currentState = viewModel.noteUiState.value
+            // Then: Verify that the initial AddEditNoteUiState remains unchanged
+            val expectedState = AddEditNoteUiState()
+            val currentState = viewModel.uiState.value
             assertEquals(expectedState, currentState)
 
             // Ensure that no interaction with repository happens
@@ -71,7 +71,7 @@ class NoteViewModelTest {
             initializeViewModelToUpdateExistingNote()
 
             // Collect the latest noteUiState value
-            val currentState = viewModel.noteUiState.first()
+            val currentState = viewModel.uiState.first()
 
             // Assert that the repository function was called with the correct noteId
             verify(notesRepository).getNoteById(1)
@@ -101,13 +101,13 @@ class NoteViewModelTest {
             viewModel = NoteViewModel(savedStateHandle, notesRepository, testDispatcher)
 
             // Collect the latest noteUiState value
-            val currentState = viewModel.noteUiState.first()
+            val currentState = viewModel.uiState.first()
 
             // Assert that the repository function was called with the correct noteId
             verify(notesRepository).getNoteById(1)
 
             // Assert that noteUiState remains in the default state (no note found)
-            assertEquals(NoteUiState(), currentState)
+            assertEquals(AddEditNoteUiState(), currentState)
         }
 
     /**
@@ -122,14 +122,14 @@ class NoteViewModelTest {
         initializeViewModelToCreateNewNote()
 
         // Initial note ui state
-        val initialNoteUiState = NoteUiState()
+        val initialNoteUiState = AddEditNoteUiState()
 
         // When: Update the note title
         val newTitle = "New Title"
         viewModel.updateNoteTitle(newTitle)
 
         // Collect the latest noteUiState value
-        val currentState = viewModel.noteUiState.first()
+        val currentState = viewModel.uiState.first()
 
         // Then: Verify that the note title is updated in the state
         assertEquals(newTitle, currentState.note.noteTitle)
@@ -152,14 +152,14 @@ class NoteViewModelTest {
         initializeViewModelToCreateNewNote()
 
         // Initial note ui state
-        val initialNoteUiState = NoteUiState()
+        val initialNoteUiState = AddEditNoteUiState()
 
         // When: Update the note body
         val newBody = "New Body"
         viewModel.updateNoteBody(newBody)
 
         // Collect the latest noteUiState value
-        val currentState = viewModel.noteUiState.first()
+        val currentState = viewModel.uiState.first()
 
         // Then: Verify that the note body is updated in the state
         assertEquals(newBody, currentState.note.noteBody)
@@ -186,7 +186,7 @@ class NoteViewModelTest {
         val newTitle = mockNote1.noteTitle
 
         // Expected note to be passed to the repository
-        val expectedNote = NoteUiState().note.copy(
+        val expectedNote = AddEditNoteUiState().note.copy(
             noteTitle = newTitle
         )
 
@@ -213,7 +213,7 @@ class NoteViewModelTest {
         initializeViewModelToCreateNewNote()
 
         // Collect the latest noteUiState value
-        val currentState = viewModel.noteUiState.first()
+        val currentState = viewModel.uiState.first()
 
         // When: The createOrUpdateNote function is called
         viewModel.createOrUpdateNote()
@@ -267,7 +267,7 @@ class NoteViewModelTest {
             initializeViewModelToUpdateExistingNote()
 
             // Collect the latest noteUiState value
-            val currentState = viewModel.noteUiState.first()
+            val currentState = viewModel.uiState.first()
 
             // When: The createOrUpdateNote function is called
             viewModel.createOrUpdateNote()
@@ -290,7 +290,7 @@ class NoteViewModelTest {
         viewModel.deleteNote()
 
         // Collect the latest noteUiState value
-        val currentState = viewModel.noteUiState.first()
+        val currentState = viewModel.uiState.first()
 
         // Then: Verify that repository is called
         verify(notesRepository).deleteNote(currentState.note)
