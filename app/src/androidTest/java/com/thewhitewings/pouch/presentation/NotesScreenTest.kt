@@ -25,7 +25,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeScreen
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesScreen
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.ShowAnimations
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
@@ -40,19 +40,19 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class HomeScreenTest {
+class NotesScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     /**
-     * Test that the home screen is displayed correctly.
-     * Happy path for [HomeScreen]
+     * Test that the [NotesScreen] is displayed correctly.
+     * Happy path for [NotesScreen]
      */
     @Test
-    fun homeScreen_isDisplayed() {
+    fun notesScreen_isDisplayed() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -63,19 +63,18 @@ class HomeScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithTagForStringId(R.string.home_screen_tag)
+        composeTestRule.onNodeWithTagForStringId(R.string.notes_screen_tag)
             .assertIsDisplayed()
     }
 
     /**
-     * Test that the FAB is displayed on the home screen
-     * Happy path for [HomeScreen]
+     * Test that the FAB is displayed on the [NotesScreen]
+     * Happy path for [NotesScreen]
      */
     @Test
-    fun homeScreen_displaysFAB() {
-        // Provide the home screen state and other parameters
+    fun notesScreen_displaysFAB() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -94,14 +93,14 @@ class HomeScreenTest {
     /**
      * Test that when pressing the system back button,
      * the navigateBack callback is triggered.
-     * Happy path for system back button in [HomeScreen]
+     * Happy path for system back button in [NotesScreen]
      */
     @Test
-    fun homeScreen_backHandler_triggersNavigateBack() {
+    fun notesScreen_backHandler_triggersNavigateBack() {
         var backTriggered = false
 
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = { backTriggered = true },
                 navigateToCreateNote = {},
@@ -123,14 +122,14 @@ class HomeScreenTest {
 
     /**
      * Test that animations are displayed when initializing a zone, i.e., [HomeUiState.showAnimations] is true
-     * Happy path for [HomeScreen] and [ShowAnimations]
+     * Happy path for [NotesScreen] and [ShowAnimations]
      */
     @Test
-    fun homeScreen_displaysAnimations_whenInitializingZone() {
+    fun notesScreen_displaysAnimations_whenInitializingZone() {
         // Given: showAnimations' default is true
         // Set the content with showAnimations = true
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -148,14 +147,14 @@ class HomeScreenTest {
     /**
      * Test that animations are not displayed when a zone is already initialized, i.e., [HomeUiState.showAnimations] is false
      * Case: zone is already initialized
-     * for [HomeScreen]
+     * for [NotesScreen]
      */
     @Test
-    fun homeScreen_noAnimations_whenZoneAlreadyInitialized() {
+    fun notesScreen_noAnimations_whenZoneAlreadyInitialized() {
         // Given: showAnimations' default true
         // Set the content with showAnimations = true
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(showAnimations = false),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -246,7 +245,7 @@ class HomeScreenTest {
     fun homeBody_emptyNotesListAndCreativeZone_displayZoneTextCorrectly() {
         // Given: initial notes list is empty, and zone is CREATIVE
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -268,7 +267,7 @@ class HomeScreenTest {
     @Test
     fun homeBody_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(zone = Zone.BOX_OF_MYSTERIES),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -293,7 +292,7 @@ class HomeScreenTest {
         val mockNotesList = listOf(Note())
 
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(
                     notesList = mockNotesList
                 ),
@@ -317,7 +316,7 @@ class HomeScreenTest {
     @Test
     fun homeBody_displayLogoImage() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -340,7 +339,7 @@ class HomeScreenTest {
     fun searchNotesTextField_isDisplayed() {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(
                     searchQuery = ""
                 ),
@@ -366,7 +365,7 @@ class HomeScreenTest {
     fun searchNotesTextField_whenEmpty_placeholderDisplayedAndNoClearButton() {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(
                     searchQuery = ""
                 ),
@@ -396,7 +395,7 @@ class HomeScreenTest {
     fun searchNotesTextField_whenTyping_updatesText() {
         var searchText = ""
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -424,7 +423,7 @@ class HomeScreenTest {
     fun searchNotesTextField_whenNotEmpty_showsClearButtonAndClearsText() {
         var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(searchQuery = searchText),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -459,7 +458,7 @@ class HomeScreenTest {
     fun searchNotesTextField_afterClearingText_showsPlaceholder() {
         var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(searchQuery = searchText),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -484,7 +483,7 @@ class HomeScreenTest {
     @Test
     fun sortNotesButton_initially_buttonDisplayed_AndOptionsMenuNotDisplayed() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -511,7 +510,7 @@ class HomeScreenTest {
     @Test
     fun sortNotesButton_onClick_expandMenu() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -543,7 +542,7 @@ class HomeScreenTest {
     fun sortNotesButton_onOptionClick_collapseMenu_andSelectOption() {
         var selectedSortOptionId: Int? = null
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -573,7 +572,7 @@ class HomeScreenTest {
     @Test
     fun sortNotesButton_onOutsideClick_menuDismisses() {
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -610,8 +609,8 @@ class HomeScreenTest {
             // MutableState to manage the current zone
             val currentZone = remember { mutableStateOf(Zone.CREATIVE) }
 
-            // HomeScreen composable with the state-driven zone
-            HomeScreen(
+            // NotesScreen composable with the state-driven zone
+            NotesScreen(
                 homeUiState = HomeUiState(zone = currentZone.value),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -651,7 +650,7 @@ class HomeScreenTest {
         )
 
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -704,7 +703,7 @@ class HomeScreenTest {
 
         // Set the content
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -739,7 +738,7 @@ class HomeScreenTest {
 
         // Set the content
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(notesList = listOf(mockNote)),
                 navigateBack = {},
                 navigateToCreateNote = {},
@@ -779,7 +778,7 @@ class HomeScreenTest {
 
         // Set the content
         composeTestRule.setContent {
-            HomeScreen(
+            NotesScreen(
                 homeUiState = HomeUiState(notesList = listOf(noteWithEmptyContent)),
                 navigateBack = {},
                 navigateToCreateNote = {},

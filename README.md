@@ -118,7 +118,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 <br>
 
 ## Core Files 📁
-- [HomeScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeScreen.kt)
+- [NotesScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/NotesScreen.kt)
 - [HomeViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeViewModel.kt)
 - [AddEditNoteScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteScreen.kt)
 - [AddEditNoteViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteViewModel.kt)
@@ -132,7 +132,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 - [HomeViewModelTest](app/src/test/java/com/thewhitewings/pouch/ui/HomeViewModelTest.kt)
 - [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryTest.kt)
 - [DateTimeUtilsTest](app/src/test/java/com/thewhitewings/pouch/utils/DateTimeUtilsTest.kt)<br><br>
-- [HomeScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/ui/HomeScreenTest.kt)
+- [NotesScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/ui/NotesScreenTest.kt)
 - [NoteDaoTest](app/src/androidTest/java/com/thewhitewings/pouch/data/NoteDaoTest.kt)
 
 <br>

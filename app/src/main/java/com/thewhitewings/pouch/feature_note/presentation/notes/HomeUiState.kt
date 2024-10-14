@@ -5,7 +5,7 @@ import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.util.Zone
 
 /**
- * UI state for the Home screen.
+ * UI state for the [NotesScreen].
  */
 data class HomeUiState(
     val notesList: List<Note> = emptyList(),

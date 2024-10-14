@@ -27,7 +27,7 @@
     <string name="bom_button_tag">Box of mysteries revealing button</string>
     <string name="notes_list_tag">Notes list</string>
     <string name="notes_list_item_tag">Notes list item</string>
-    <string name="home_screen_tag">Home screen</string>
+    <string name="notes_screen_tag">Notes screen</string>
     <string name="add_edit_note_screen_tag">Add edit note screen</string>
     <string name="note_title_text_field_tag">Note title text field</string>
     <string name="note_body_text_field_tag">Note body text field</string>

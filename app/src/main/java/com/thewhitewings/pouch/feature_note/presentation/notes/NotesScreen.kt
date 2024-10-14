@@ -94,7 +94,7 @@ import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 import com.thewhitewings.pouch.feature_note.util.Zone
 
-private const val TAG = "HomeScreen"
+private const val TAG = "NotesScreen"
 
 /**
  * Navigation destination for Notes list screen
@@ -105,10 +105,10 @@ object HomeDestination : NavigationDestination {
 }
 
 /**
- * Entry route for Home screen
+ * Entry route for [NotesScreen]
  */
 @Composable
-fun HomeScreen(
+fun NotesScreen(
     homeUiState: HomeUiState,
     navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
@@ -121,7 +121,7 @@ fun HomeScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
-        modifier = modifier.testTag(stringResource(R.string.home_screen_tag)),
+        modifier = modifier.testTag(stringResource(R.string.notes_screen_tag)),
         floatingActionButton = {
             FloatingActionButton(
                 onClick = navigateToCreateNote,
@@ -140,7 +140,7 @@ fun HomeScreen(
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
-        HomeBody(
+        NotesScreenBody(
             homeUiState = homeUiState,
             onItemClick = navigateToEditNote,
             onSearchNotes = onSearchNotes,
@@ -227,7 +227,7 @@ fun RevealLoaderAnimation(
 }
 
 @Composable
-private fun HomeBody(
+private fun NotesScreenBody(
     homeUiState: HomeUiState,
     onItemClick: (Int) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
@@ -556,9 +556,9 @@ fun ZoneText(currentZone: Zone) {
 
 //@Preview(showBackground = true)
 @Composable
-private fun HomeScreenPreview() {
+private fun NotesScreenPreview() {
     PouchTheme(dynamicColor = false) {
-        HomeScreen(
+        NotesScreen(
             homeUiState = HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", "Apr 23"),
@@ -581,9 +581,9 @@ private fun HomeScreenPreview() {
 //    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 //)
 @Composable
-private fun HomeScreenNightPreview() {
+private fun NotesScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
-        HomeScreen(
+        NotesScreen(
             homeUiState = HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
@@ -608,9 +608,9 @@ private fun HomeScreenNightPreview() {
 
 //@Preview(showBackground = true)
 @Composable
-private fun HomeBodyPreview() {
+private fun NotesScreenBodyPreview() {
     PouchTheme {
-        HomeBody(
+        NotesScreenBody(
             homeUiState = HomeUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
@@ -633,9 +633,9 @@ private fun HomeBodyPreview() {
 
 //@Preview(showBackground = true)
 @Composable
-private fun HomeBodyEmptyListPreview() {
+private fun NotesScreenBodyEmptyListPreview() {
     PouchTheme {
-        HomeBody(
+        NotesScreenBody(
             homeUiState = HomeUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
@@ -647,9 +647,9 @@ private fun HomeBodyEmptyListPreview() {
 
 //@Preview(showBackground = true)
 @Composable
-private fun HomeBodyBomEmptyListPreview() {
+private fun NotesScreenBodyBomEmptyListPreview() {
     PouchTheme {
-        HomeBody(
+        NotesScreenBody(
             homeUiState = HomeUiState(
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
@@ -666,9 +666,9 @@ private fun HomeBodyBomEmptyListPreview() {
 //    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 //)
 @Composable
-private fun HomeBodyEmptyListNightPreview() {
+private fun NotesScreenBodyEmptyListNightPreview() {
     PouchTheme {
-        HomeBody(
+        NotesScreenBody(
             homeUiState = HomeUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
@@ -682,9 +682,9 @@ private fun HomeBodyEmptyListNightPreview() {
 //    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 //)
 @Composable
-private fun HomeBodyBomEmptyListNightPreview() {
+private fun NotesScreenBodyBomEmptyListNightPreview() {
     PouchTheme {
-        HomeBody(
+        NotesScreenBody(
             homeUiState = HomeUiState(
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES

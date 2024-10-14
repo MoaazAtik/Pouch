@@ -43,16 +43,16 @@ class PouchNavGraphTest {
     }
 
     /**
-     * Test that initially, the home screen is displayed
+     * Test that initially, the [NotesScreen] is displayed
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_onAppInitialization_homeScreenIsDisplayed() {
-        // Assert that current route in the navController is HomeScreen's route
+    fun pouchNavHost_onAppInitialization_notesScreenIsDisplayed() {
+        // Assert that current route in the navController is NotesScreen's route
         navController.assertCurrentRouteName(HomeDestination.route)
 
-        // Assert that the home screen is displayed
-        composeTestRule.onNodeWithTagForStringId(R.string.home_screen_tag)
+        // Assert that the NotesScreen is displayed
+        composeTestRule.onNodeWithTagForStringId(R.string.notes_screen_tag)
             .assertIsDisplayed()
     }
 
@@ -81,11 +81,11 @@ class PouchNavGraphTest {
 
     /**
      * Test that when the back button is clicked on the [AddEditNoteScreen],
-     * the app navigates back to the home screen
+     * the app navigates back to the [NotesScreen]
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_backClickedOnAddEditNoteScreen_navigateBackToHomeScreen() {
+    fun pouchNavHost_backClickedOnAddEditNoteScreen_navigateBackToNotesScreen() {
         // Simulate clicking the FAB to navigate to the AddEditNoteScreen (create note scenario)
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
@@ -98,18 +98,18 @@ class PouchNavGraphTest {
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.back_description)
             .performClick()
 
-        // Verify that the app navigates back to the HomeScreen
-        composeTestRule.onNodeWithTagForStringId(R.string.home_screen_tag)
+        // Verify that the app navigates back to the NotesScreen
+        composeTestRule.onNodeWithTagForStringId(R.string.notes_screen_tag)
             .assertIsDisplayed()
     }
 
     /**
      * Test that when the delete button is clicked on the [AddEditNoteScreen],
-     * the app navigates back to the home screen
+     * the app navigates back to the [NotesScreen]
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_deleteClickedOnAddEditNoteScreen_navigateBackToHomeScreen() {
+    fun pouchNavHost_deleteClickedOnAddEditNoteScreen_navigateBackToNotesScreen() {
         // Simulate clicking the FAB to navigate to the AddEditNoteScreen (create note scenario)
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
@@ -122,17 +122,17 @@ class PouchNavGraphTest {
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.delete_note_description)
             .performClick()
 
-        // Verify that the app navigates back to the HomeScreen
-        composeTestRule.onNodeWithTagForStringId(R.string.home_screen_tag)
+        // Verify that the app navigates back to the NotesScreen
+        composeTestRule.onNodeWithTagForStringId(R.string.notes_screen_tag)
             .assertIsDisplayed()
     }
 
     /**
-     * Test that when a note is clicked in the home screen, we navigate to the [AddEditNoteScreen]
+     * Test that when a note is clicked in the [NotesScreen], we navigate to the [AddEditNoteScreen]
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_noteClickedOnHomeScreen_navigateToAddEditNoteScreen() {
+    fun pouchNavHost_noteClickedOnNotesScreen_navigateToAddEditNoteScreen() {
         // Simulate clicking the FAB to navigate to the AddEditNoteScreen (create note scenario)
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
@@ -141,11 +141,11 @@ class PouchNavGraphTest {
         composeTestRule.onNodeWithStringId(R.string.note_title_hint)
             .performTextInput("test title")
 
-        // Navigate back to the HomeScreen
+        // Navigate back to the NotesScreen
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.back_description)
             .performClick()
 
-        // Simulate clicking on a note item in the HomeScreen
+        // Simulate clicking on a note item in the NotesScreen
         composeTestRule.onNodeWithTagForStringId(R.string.notes_list_tag)
             .onChildAt(0)
             .performClick()

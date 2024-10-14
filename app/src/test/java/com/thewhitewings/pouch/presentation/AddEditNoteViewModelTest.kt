@@ -70,13 +70,13 @@ class AddEditNoteViewModelTest {
             // Initialize the ViewModel to update an existing note
             initializeViewModelToUpdateExistingNote()
 
-            // Collect the latest noteUiState value
+            // Collect the latest AddEditNoteUiState value
             val currentState = viewModel.uiState.first()
 
             // Assert that the repository function was called with the correct noteId
             verify(notesRepository).getNoteById(1)
 
-            // Assert that noteUiState contains the correct note
+            // Assert that AddEditNoteUiState contains the correct note
             assertEquals(mockNote1, currentState.note)
         }
 
@@ -100,13 +100,13 @@ class AddEditNoteViewModelTest {
             // Initialize the ViewModel
             viewModel = AddEditNoteViewModel(savedStateHandle, notesRepository, testDispatcher)
 
-            // Collect the latest noteUiState value
+            // Collect the latest AddEditNoteUiState value
             val currentState = viewModel.uiState.first()
 
             // Assert that the repository function was called with the correct noteId
             verify(notesRepository).getNoteById(1)
 
-            // Assert that noteUiState remains in the default state (no note found)
+            // Assert that AddEditNoteUiState remains in the default state (no note found)
             assertEquals(AddEditNoteUiState(), currentState)
         }
 
@@ -118,26 +118,26 @@ class AddEditNoteViewModelTest {
     fun `When updating note title, update ui state correctly`() = runTest {
         // Initialize the ViewModel to create or update a note
         // Given: Initialize the ViewModel to create a new note
-        // with default note ui state values
+        // with default AddEditNoteUiState values
         initializeViewModelToCreateNewNote()
 
-        // Initial note ui state
-        val initialNoteUiState = AddEditNoteUiState()
+        // Initial AddEditNoteUiState
+        val initialUiState = AddEditNoteUiState()
 
         // When: Update the note title
         val newTitle = "New Title"
         viewModel.updateNoteTitle(newTitle)
 
-        // Collect the latest noteUiState value
+        // Collect the latest AddEditNoteUiState value
         val currentState = viewModel.uiState.first()
 
         // Then: Verify that the note title is updated in the state
         assertEquals(newTitle, currentState.note.noteTitle)
 
         // Assert that the rest of the note properties remain unchanged
-        assertEquals(initialNoteUiState.note.id, currentState.note.id)
-        assertEquals(initialNoteUiState.note.noteBody, currentState.note.noteBody)
-        assertEquals(initialNoteUiState.note.timestamp, currentState.note.timestamp)
+        assertEquals(initialUiState.note.id, currentState.note.id)
+        assertEquals(initialUiState.note.noteBody, currentState.note.noteBody)
+        assertEquals(initialUiState.note.timestamp, currentState.note.timestamp)
     }
 
     /**
@@ -148,26 +148,26 @@ class AddEditNoteViewModelTest {
     fun `When updating note body, update ui state correctly`() = runTest {
         // Initialize the ViewModel to create or update a note
         // Given: Initialize the ViewModel to create a new note
-        // with default note ui state values
+        // with default AddEditNoteUiState values
         initializeViewModelToCreateNewNote()
 
-        // Initial note ui state
-        val initialNoteUiState = AddEditNoteUiState()
+        // Initial AddEditNoteUiState
+        val initialUiState = AddEditNoteUiState()
 
         // When: Update the note body
         val newBody = "New Body"
         viewModel.updateNoteBody(newBody)
 
-        // Collect the latest noteUiState value
+        // Collect the latest AddEditNoteUiState value
         val currentState = viewModel.uiState.first()
 
         // Then: Verify that the note body is updated in the state
         assertEquals(newBody, currentState.note.noteBody)
 
         // Assert that the rest of the note properties remain unchanged
-        assertEquals(initialNoteUiState.note.id, currentState.note.id)
-        assertEquals(initialNoteUiState.note.noteTitle, currentState.note.noteTitle)
-        assertEquals(initialNoteUiState.note.timestamp, currentState.note.timestamp)
+        assertEquals(initialUiState.note.id, currentState.note.id)
+        assertEquals(initialUiState.note.noteTitle, currentState.note.noteTitle)
+        assertEquals(initialUiState.note.timestamp, currentState.note.timestamp)
     }
 
     /**
@@ -212,7 +212,7 @@ class AddEditNoteViewModelTest {
         // Thus, oldNote is null and title and body are empty.
         initializeViewModelToCreateNewNote()
 
-        // Collect the latest noteUiState value
+        // Collect the latest AddEditNoteUiState value
         val currentState = viewModel.uiState.first()
 
         // When: The createOrUpdateNote function is called
@@ -266,7 +266,7 @@ class AddEditNoteViewModelTest {
             // Initialize the ViewModel to update an existing note
             initializeViewModelToUpdateExistingNote()
 
-            // Collect the latest noteUiState value
+            // Collect the latest AddEditNoteUiState value
             val currentState = viewModel.uiState.first()
 
             // When: The createOrUpdateNote function is called
@@ -289,7 +289,7 @@ class AddEditNoteViewModelTest {
         // When: The deleteNote function is called
         viewModel.deleteNote()
 
-        // Collect the latest noteUiState value
+        // Collect the latest AddEditNoteUiState value
         val currentState = viewModel.uiState.first()
 
         // Then: Verify that repository is called

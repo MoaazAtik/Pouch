@@ -12,7 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeScreen
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesScreen
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
@@ -34,14 +34,14 @@ fun PouchNavHost(
         modifier = modifier
     ) {
 
-        // Home Screen
+        // Notes Screen
         composable(
             route = HomeDestination.route
         ) {
             val viewModel: HomeViewModel = viewModel(factory = HomeViewModel.Factory)
             val homeUiState by viewModel.homeUiState.collectAsState()
 
-            HomeScreen(
+            NotesScreen(
                 homeUiState = homeUiState,
                 navigateBack = {
                     if (homeUiState.zone == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
@@ -64,10 +64,10 @@ fun PouchNavHost(
             })
         ) {
             val viewModel: AddEditNoteViewModel = viewModel(factory = AddEditNoteViewModel.Factory)
-            val noteUiState by viewModel.uiState.collectAsState()
+            val addEditNoteUiState by viewModel.uiState.collectAsState()
 
             AddEditNoteScreen(
-                uiState = noteUiState,
+                uiState = addEditNoteUiState,
                 navigateBack = { viewModel.createOrUpdateNote(); navController.popBackStack() },
                 onNavigateUp = { viewModel.createOrUpdateNote(); navController.navigateUp() },
                 onNoteDelete = { viewModel.deleteNote(); navController.popBackStack() },
