@@ -47,7 +47,7 @@ class AddEditNoteViewModel(
             ?: return
 
         viewModelScope.launch(dispatcher) {
-            notesRepository.getNoteById(noteId)
+            notesRepository.getNoteStream(noteId)
                 .collect { note ->
                     if (note != null) {
                         _uiState.value = _uiState.value.copy(

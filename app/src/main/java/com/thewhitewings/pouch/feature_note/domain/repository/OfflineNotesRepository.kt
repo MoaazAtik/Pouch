@@ -21,7 +21,7 @@ interface OfflineNotesRepository {
      * @param noteId ID of the note to be retrieved
      * @return Flow of the note with the specified ID
      */
-    fun getNoteById(noteId: Int): Flow<Note?>
+    fun getNoteStream(noteId: Int): Flow<Note?>
 
     /**
      * Get all notes from the database sorted by the specified sort option.

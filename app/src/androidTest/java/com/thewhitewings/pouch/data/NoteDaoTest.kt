@@ -51,16 +51,16 @@ class NoteDaoTest {
     }
 
     /**
-     * Test the insert and getNoteById functionality of the NoteDao.
-     * Happy path for [NoteDao.insert] and [NoteDao.getNoteById]
+     * Test the insert and getNoteStream functionality of the NoteDao.
+     * Happy path for [NoteDao.insert] and [NoteDao.getNoteStream]
      */
     @Test
-    fun noteDao_insertAndGetNoteById_insertNoteAndRetrieveFromDatabase() = runBlocking {
+    fun noteDao_insertAndGetNoteStream_insertNoteAndRetrieveFromDatabase() = runBlocking {
         // When: Insert the note into the database
         noteDao.insert(mockNote1)
 
         // Then: Collect from the Flow and check if the note was inserted correctly
-        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
+        val retrievedNote = noteDao.getNoteStream(mockNote1.id).first()
 
         // Check the retrieved note matches the inserted note
         assertNotNull(retrievedNote)
@@ -70,7 +70,7 @@ class NoteDaoTest {
     /**
      * On insertion conflict, i.e., inserting a note with the same id, replace the existing note.
      * Case: Inserting Conflict (insert a note with the same id as an existing note).
-     * for [NoteDao.insert] and [NoteDao.getNoteById]
+     * for [NoteDao.insert] and [NoteDao.getNoteStream]
      */
     @Test
     fun noteDao_insertNoteDuplicate_replaceOnConflict() = runBlocking {
@@ -85,7 +85,7 @@ class NoteDaoTest {
         noteDao.insert(updatedNote)
 
         // Then: Query the database and check that the note was replaced
-        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
+        val retrievedNote = noteDao.getNoteStream(mockNote1.id).first()
 
         // Check the retrieved note matches the updated note
         assertEquals(updatedNote.noteTitle, retrievedNote?.noteTitle)
@@ -288,7 +288,7 @@ class NoteDaoTest {
         noteDao.updateNote(updatedNote)
 
         // Then: Check if the note is updated in the database
-        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
+        val retrievedNote = noteDao.getNoteStream(mockNote1.id).first()
 
         // Assert that the note is not null and the title and content are updated
         assertEquals(updatedNote, retrievedNote)
@@ -308,7 +308,7 @@ class NoteDaoTest {
         noteDao.updateNote(mockNote1)
 
         // Then: Retrieve the note and verify that nothing has changed
-        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
+        val retrievedNote = noteDao.getNoteStream(mockNote1.id).first()
 
         // Assert that all of the note properties are unchanged
         assertEquals(mockNote1, retrievedNote)
@@ -327,7 +327,7 @@ class NoteDaoTest {
         noteDao.updateNote(mockNote1)
 
         // Then: No changes should be made to the database
-        val retrievedNote = noteDao.getNoteById(mockNote1.id).first()
+        val retrievedNote = noteDao.getNoteStream(mockNote1.id).first()
 
         // Assert that the note is null
         // It should not be added to the database
@@ -344,14 +344,14 @@ class NoteDaoTest {
         noteDao.insert(mockNote1)
 
         // Ensure the note exists in the database before deletion
-        val insertedNote = noteDao.getNoteById(mockNote1.id).first()
+        val insertedNote = noteDao.getNoteStream(mockNote1.id).first()
         assertNotNull(insertedNote)
 
         // When: Delete the note
         noteDao.deleteNote(mockNote1)
 
         // Then: Check if the note is removed from the database
-        val deletedNote = noteDao.getNoteById(mockNote1.id).first()
+        val deletedNote = noteDao.getNoteStream(mockNote1.id).first()
         assertNull(deletedNote)
     }
 

@@ -55,7 +55,7 @@ class AddEditNoteViewModelTest {
             assertEquals(expectedState, currentState)
 
             // Ensure that no interaction with repository happens
-            verify(notesRepository, never()).getNoteById(anyInt())
+            verify(notesRepository, never()).getNoteStream(anyInt())
         }
 
     /**
@@ -74,7 +74,7 @@ class AddEditNoteViewModelTest {
             val currentState = viewModel.uiState.first()
 
             // Assert that the repository function was called with the correct noteId
-            verify(notesRepository).getNoteById(1)
+            verify(notesRepository).getNoteStream(1)
 
             // Assert that AddEditNoteUiState contains the correct note
             assertEquals(mockNote1, currentState.note)
@@ -95,7 +95,7 @@ class AddEditNoteViewModelTest {
             savedStateHandle = SavedStateHandle(mapOf(AddEditNoteDestination.noteIdArg to 1))
 
             // Mock the repository to return null for the provided note ID
-            whenever(notesRepository.getNoteById(1)).thenReturn(flowOf(null))
+            whenever(notesRepository.getNoteStream(1)).thenReturn(flowOf(null))
 
             // Initialize the ViewModel
             viewModel = AddEditNoteViewModel(savedStateHandle, notesRepository, testDispatcher)
@@ -104,7 +104,7 @@ class AddEditNoteViewModelTest {
             val currentState = viewModel.uiState.first()
 
             // Assert that the repository function was called with the correct noteId
-            verify(notesRepository).getNoteById(1)
+            verify(notesRepository).getNoteStream(1)
 
             // Assert that AddEditNoteUiState remains in the default state (no note found)
             assertEquals(AddEditNoteUiState(), currentState)
@@ -322,7 +322,7 @@ class AddEditNoteViewModelTest {
         savedStateHandle = SavedStateHandle(mapOf(AddEditNoteDestination.noteIdArg to 1))
 
         // Mock the repository response to return the mock note
-        whenever(notesRepository.getNoteById(1)).thenReturn(flowOf(mockNote1))
+        whenever(notesRepository.getNoteStream(1)).thenReturn(flowOf(mockNote1))
 
         // Initialize ViewModel with the new SavedStateHandle
         viewModel = AddEditNoteViewModel(savedStateHandle, notesRepository, testDispatcher)

@@ -36,7 +36,7 @@ interface NoteDao {
         LIMIT 1
         """
     )
-    fun getNoteById(noteId: Int): Flow<Note?>
+    fun getNoteStream(noteId: Int): Flow<Note?>
 
     /**
      * Get all notes sorted by the specified sort option from the database.

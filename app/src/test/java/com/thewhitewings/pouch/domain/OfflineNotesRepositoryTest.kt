@@ -76,19 +76,19 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Get a note by ID and verify that the note is returned correctly.
-     * Happy path for [OfflineNotesRepositoryImpl.getNoteById]
+     * Happy path for [OfflineNotesRepositoryImpl.getNoteStream]
      */
     @Test
-    fun offlineNotesRepository_getNoteById_returnsCorrectNote() = runTest {
+    fun offlineNotesRepository_getNoteStream_returnsCorrectNote() = runTest {
         // Mock the Dao to return a note with a non-formatted timestamp
-        whenever(currentZoneDao.getNoteById(1)).thenReturn(flowOf(mockNoteWithTitleAndBody))
+        whenever(currentZoneDao.getNoteStream(1)).thenReturn(flowOf(mockNoteWithTitleAndBody))
 
         // When: We retrieve the note by ID
-        val result = repository.getNoteById(1).first()
+        val result = repository.getNoteStream(1).first()
 
         // Then: Verify that the note getting call with the correct id passed
         // to the Dao of the current zone
-        verify(currentZoneDao).getNoteById(1)
+        verify(currentZoneDao).getNoteStream(1)
         // Then: Assert that the returned note has the formatted timestamp
         assertEquals(mockNoteFromRepository, result)
     }

@@ -62,8 +62,8 @@ class OfflineNotesRepositoryImpl(
      * @param noteId The ID of the note to retrieve.
      * @return A flow of the note with the specified ID.
      */
-    override fun getNoteById(noteId: Int): Flow<Note?> {
-        return currentZoneDao.getNoteById(noteId).map { note ->
+    override fun getNoteStream(noteId: Int): Flow<Note?> {
+        return currentZoneDao.getNoteStream(noteId).map { note ->
             note?.formatTimestamp(DateTimeFormatType.UTC_TO_LOCAL)
         }
     }
