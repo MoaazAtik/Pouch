@@ -3,7 +3,7 @@ package com.thewhitewings.pouch.domain
 import com.thewhitewings.pouch.feature_note.data.data_source.NoteDao
 import com.thewhitewings.pouch.feature_note.data.repository.OfflineNotesRepositoryImpl
 import com.thewhitewings.pouch.feature_note.domain.model.Note
-import com.thewhitewings.pouch.feature_note.domain.preferences.PouchPreferences
+import com.thewhitewings.pouch.feature_note.domain.repository.PouchPreferences
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.util.Zone
 import com.thewhitewings.pouch.mocks.azSortedNotesLocal

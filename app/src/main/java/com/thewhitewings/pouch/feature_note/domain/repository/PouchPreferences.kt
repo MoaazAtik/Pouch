@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch.feature_note.domain.preferences
+package com.thewhitewings.pouch.feature_note.domain.repository
 
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.util.Zone

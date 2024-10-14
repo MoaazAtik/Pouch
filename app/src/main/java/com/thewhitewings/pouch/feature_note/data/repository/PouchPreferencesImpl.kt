@@ -1,4 +1,4 @@
-package com.thewhitewings.pouch.feature_note.data.preferences
+package com.thewhitewings.pouch.feature_note.data.repository
 
 import android.util.Log
 import androidx.datastore.core.DataStore
@@ -6,7 +6,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.thewhitewings.pouch.feature_note.domain.preferences.PouchPreferences
+import com.thewhitewings.pouch.feature_note.domain.repository.PouchPreferences
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.util.Zone
 import kotlinx.coroutines.flow.Flow

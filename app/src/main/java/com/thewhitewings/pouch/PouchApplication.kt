@@ -8,7 +8,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.thewhitewings.pouch.feature_note.data.data_source.NoteDatabase
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.data.repository.OfflineNotesRepositoryImpl
-import com.thewhitewings.pouch.feature_note.data.preferences.PouchPreferencesImpl
+import com.thewhitewings.pouch.feature_note.data.repository.PouchPreferencesImpl
 import com.thewhitewings.pouch.feature_note.data.util.Constants
 
 // The name of the stored preference DataStore file

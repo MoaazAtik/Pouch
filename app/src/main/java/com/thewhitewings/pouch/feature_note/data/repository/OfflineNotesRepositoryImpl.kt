@@ -2,7 +2,7 @@ package com.thewhitewings.pouch.feature_note.data.repository
 
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
-import com.thewhitewings.pouch.feature_note.domain.preferences.PouchPreferences
+import com.thewhitewings.pouch.feature_note.domain.repository.PouchPreferences
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.domain.model.formatTimestamp
 import com.thewhitewings.pouch.feature_note.data.data_source.NoteDao
