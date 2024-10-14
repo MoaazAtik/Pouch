@@ -41,7 +41,7 @@ class PouchPreferencesImpl(
      * @param zone current [Zone]
      * @return Flow of stored sort option
      */
-    override fun getSortOptionFlow(zone: Zone): Flow<SortOption> {
+    override fun getSortOptionStream(zone: Zone): Flow<SortOption> {
         val sortOptionKey = getSortOptionKey(zone)
 
         return dataStore.data

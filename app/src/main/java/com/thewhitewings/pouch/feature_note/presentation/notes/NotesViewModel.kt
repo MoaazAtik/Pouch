@@ -67,7 +67,7 @@ class NotesViewModel(
                 .distinctUntilChanged()
                 // Collect zone changes
                 .flatMapLatest { zone ->
-                    notesRepository.getSortOptionFlow(zone)
+                    notesRepository.getSortOptionStream(zone)
                 }
                 .distinctUntilChanged()
                 // Collect the corresponding sortOption

@@ -106,10 +106,10 @@ class PouchPreferencesImplInstrumentedTest {
 
     /**
      * Test the retrieval of the [SortOption] preference flow for the Creative Zone.
-     * Happy path for [PouchPreferencesImpl.getSortOptionFlow]
+     * Happy path for [PouchPreferencesImpl.getSortOptionStream]
      */
     @Test
-    fun pouchPreferences_getSortOptionFlowForCreativeZone_returnsCorrectSortOption() = runTest {
+    fun pouchPreferences_getSortOptionStreamForCreativeZone_returnsCorrectSortOption() = runTest {
         // Given: Save a sort option for the CREATIVE zone
         val expectedSortOption = SortOption.A_Z
         dataStore.edit { preferences ->
@@ -118,7 +118,7 @@ class PouchPreferencesImplInstrumentedTest {
         }
 
         // When: Retrieve the sort option flow
-        val retrievedSortOption = pouchPreferences.getSortOptionFlow(Zone.CREATIVE).first()
+        val retrievedSortOption = pouchPreferences.getSortOptionStream(Zone.CREATIVE).first()
 
         // Then: Assert that the correct sort option is returned
         assertEquals(expectedSortOption, retrievedSortOption)
@@ -126,10 +126,10 @@ class PouchPreferencesImplInstrumentedTest {
 
     /**
      * Test the retrieval of the [SortOption] preference flow for the Bom Zone.
-     * Happy path for [PouchPreferencesImpl.getSortOptionFlow]
+     * Happy path for [PouchPreferencesImpl.getSortOptionStream]
      */
     @Test
-    fun pouchPreferences_getSortOptionFlowForBomZone_returnsCorrectSortOption() = runTest {
+    fun pouchPreferences_getSortOptionStreamForBomZone_returnsCorrectSortOption() = runTest {
         // Given: Save a sort option for the BOM zone
         val expectedSortOption = SortOption.OLDEST_FIRST
         dataStore.edit { preferences ->
@@ -139,7 +139,7 @@ class PouchPreferencesImplInstrumentedTest {
 
         // When: Retrieve the sort option flow
         val retrievedSortOption =
-            pouchPreferences.getSortOptionFlow(Zone.BOX_OF_MYSTERIES).first()
+            pouchPreferences.getSortOptionStream(Zone.BOX_OF_MYSTERIES).first()
 
         // Then: Assert that the correct sort option is returned
         assertEquals(expectedSortOption, retrievedSortOption)
@@ -147,12 +147,12 @@ class PouchPreferencesImplInstrumentedTest {
 
     /**
      * Test the retrieval of the [SortOption] preference flow when not set.
-     * Happy path for [PouchPreferencesImpl.getSortOptionFlow]
+     * Happy path for [PouchPreferencesImpl.getSortOptionStream]
      */
     @Test
-    fun pouchPreferences_getSortOptionFlowWhenNotSet_returnDefaultSortOption() = runTest {
+    fun pouchPreferences_getSortOptionStreamWhenNotSet_returnDefaultSortOption() = runTest {
         // When: Retrieve the sort option flow without setting any value in DataStore
-        val retrievedSortOption = pouchPreferences.getSortOptionFlow(Zone.CREATIVE).first()
+        val retrievedSortOption = pouchPreferences.getSortOptionStream(Zone.CREATIVE).first()
 
         // Then: Assert that the default sort option is returned
         assertEquals(PouchPreferencesImpl.DEFAULT_SORT_OPTION, retrievedSortOption)

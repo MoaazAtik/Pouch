@@ -359,39 +359,39 @@ class OfflineNotesRepositoryTest {
 
     /**
      * Get sort option preference for Creative zone from the repository.
-     * Happy path for [OfflineNotesRepositoryImpl.getSortOptionFlow]
+     * Happy path for [OfflineNotesRepositoryImpl.getSortOptionStream]
      */
     @Test
-    fun offlineNotesRepository_getSortOptionFlowForCreativeZone_returnsCorrectSortOption() =
+    fun offlineNotesRepository_getSortOptionStreamForCreativeZone_returnsCorrectSortOption() =
         runBlocking {
             // Mock the preferences DataStore to return a flow with a specific sort option
-            whenever(pouchPreferences.getSortOptionFlow(Zone.CREATIVE))
+            whenever(pouchPreferences.getSortOptionStream(Zone.CREATIVE))
                 .thenReturn(flowOf(SortOption.A_Z))
 
             // When: Retrieve the sort option flow for the Creative zone
-            val retrievedSortOption = repository.getSortOptionFlow(Zone.CREATIVE).first()
+            val retrievedSortOption = repository.getSortOptionStream(Zone.CREATIVE).first()
 
             // Then: Verify that the preferences DataStore is accessed with the correct zone
-            verify(pouchPreferences).getSortOptionFlow(Zone.CREATIVE)
+            verify(pouchPreferences).getSortOptionStream(Zone.CREATIVE)
             // Then: Assert that the retrieved sort option matches the expected value
             assertEquals(SortOption.A_Z, retrievedSortOption)
         }
 
     /**
      * Get sort option preference for Bom zone from the repository.
-     * Happy path for [OfflineNotesRepositoryImpl.getSortOptionFlow]
+     * Happy path for [OfflineNotesRepositoryImpl.getSortOptionStream]
      */
     @Test
-    fun offlineNotesRepository_getSortOptionFlowForBomZone_returnsCorrectSortOption() = runTest {
+    fun offlineNotesRepository_getSortOptionStreamForBomZone_returnsCorrectSortOption() = runTest {
         // Mock the preferences DataStore to return a flow with a specific sort option
-        whenever(pouchPreferences.getSortOptionFlow(Zone.BOX_OF_MYSTERIES))
+        whenever(pouchPreferences.getSortOptionStream(Zone.BOX_OF_MYSTERIES))
             .thenReturn(flowOf(SortOption.A_Z))
 
         // When: Retrieve the sort option flow for the Bom zone
-        val retrievedSortOption = repository.getSortOptionFlow(Zone.BOX_OF_MYSTERIES).first()
+        val retrievedSortOption = repository.getSortOptionStream(Zone.BOX_OF_MYSTERIES).first()
 
         // Then: Verify that the preferences DataStore is accessed with the correct zone
-        verify(pouchPreferences).getSortOptionFlow(Zone.BOX_OF_MYSTERIES)
+        verify(pouchPreferences).getSortOptionStream(Zone.BOX_OF_MYSTERIES)
         // Then: Assert that the retrieved sort option matches the expected value
         assertEquals(SortOption.A_Z, retrievedSortOption)
     }

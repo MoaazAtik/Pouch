@@ -53,7 +53,7 @@ class NotesViewModelTest {
         // Mocking the repository methods that are needed
         // because they are being observed by the view model.
         // Their observation starts on the view model initialization
-        whenever(notesRepository.getSortOptionFlow(initialZone))
+        whenever(notesRepository.getSortOptionStream(initialZone))
             .thenReturn(flowOf(initialSortOption))
         whenever(notesRepository.getAllNotesStream(initialSortOption))
             .thenReturn(flowOf(mockInitialNotesList))
@@ -73,7 +73,7 @@ class NotesViewModelTest {
         val expectedMockSortOption = SortOption.OLDEST_FIRST
         val expectedMockNotesList = mockInitialNotesList.reversed()
 
-        whenever(notesRepository.getSortOptionFlow(expectedZone))
+        whenever(notesRepository.getSortOptionStream(expectedZone))
             .thenReturn(flowOf(expectedMockSortOption))
         whenever(notesRepository.getAllNotesStream(expectedMockSortOption))
             .thenReturn(flowOf(expectedMockNotesList))
@@ -82,8 +82,8 @@ class NotesViewModelTest {
         viewModel.toggleZone()
         assertEquals(expectedZone, viewModel.uiState.value.zone)
 
-        // Assert: Verify that the repository's getSortOptionFlow() is called with the new zone
-        verify(notesRepository).getSortOptionFlow(expectedZone)
+        // Assert: Verify that the repository's getSortOptionStream is called with the new zone
+        verify(notesRepository).getSortOptionStream(expectedZone)
 
         // Assert: Ensure that the sort option is correctly updated in the UI state
         assertEquals(
@@ -108,7 +108,7 @@ class NotesViewModelTest {
 
             viewModel.updateSortOptionStateForTesting(mockSortOption.id)
             assertEquals(mockSortOption, viewModel.uiState.value.sortOption)
-            verify(notesRepository).getSortOptionFlow(initialZone)
+            verify(notesRepository).getSortOptionStream(initialZone)
 
             verify(notesRepository).getAllNotesStream(mockSortOption)
             assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
@@ -133,7 +133,7 @@ class NotesViewModelTest {
 
             viewModel.updateSortOptionStateForTesting(mockSortOption.id)
             assertEquals(mockSortOption, viewModel.uiState.value.sortOption)
-            verify(notesRepository).getSortOptionFlow(initialZone)
+            verify(notesRepository).getSortOptionStream(initialZone)
 
             viewModel.updateSearchQuery(mockSearchQuery)
             assertEquals(mockSearchQuery, viewModel.uiState.value.searchQuery)
@@ -208,14 +208,14 @@ class NotesViewModelTest {
             val expectedZone = Zone.BOX_OF_MYSTERIES
             val expectedMockNotesList = mockInitialNotesList.reversed()
 
-            whenever(notesRepository.getSortOptionFlow(expectedZone))
+            whenever(notesRepository.getSortOptionStream(expectedZone))
                 .thenReturn(flowOf(initialSortOption))
             whenever(notesRepository.getAllNotesStream(initialSortOption))
                 .thenReturn(flowOf(expectedMockNotesList))
 
             viewModel.toggleZone()
             assertEquals(expectedZone, viewModel.uiState.value.zone)
-            verify(notesRepository).getSortOptionFlow(expectedZone)
+            verify(notesRepository).getSortOptionStream(expectedZone)
 
             verify(notesRepository, times(2)).getAllNotesStream(initialSortOption)
             assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
@@ -234,7 +234,7 @@ class NotesViewModelTest {
 
         whenever(notesRepository.searchNotesStream(mockSearchQuery, initialSortOption))
             .thenReturn(flowOf(expectedMockNotesList))
-        whenever(notesRepository.getSortOptionFlow(expectedZone))
+        whenever(notesRepository.getSortOptionStream(expectedZone))
             .thenReturn(flowOf(initialSortOption))
         whenever(notesRepository.getAllNotesStream(initialSortOption))
             .thenReturn(flowOf(expectedMockNotesList))
@@ -245,7 +245,7 @@ class NotesViewModelTest {
 
         viewModel.toggleZone()
         assertEquals(expectedZone, viewModel.uiState.value.zone)
-        verify(notesRepository).getSortOptionFlow(expectedZone)
+        verify(notesRepository).getSortOptionStream(expectedZone)
 
         verify(notesRepository, times(3)).getAllNotesStream(initialSortOption)
         assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
@@ -298,7 +298,7 @@ class NotesViewModelTest {
 
         /*
         Updating the sort option with updateSortOption will trigger the collecting
-        of the flow of notesRepository.getSortOptionFlow(zone) in
+        of the flow of notesRepository.getSortOptionStream(zone) in
         collectZoneAndCollectSortOption function and the collecting in
         collectSortOptionSearchQueryZoneAndCollectNotesList function.
         */
@@ -307,7 +307,7 @@ class NotesViewModelTest {
 
         viewModel.updateSortOption(mockSortOption.id)
         verify(notesRepository).saveSortOption(mockSortOption, initialZone)
-        verify(notesRepository).getSortOptionFlow(initialZone)
+        verify(notesRepository).getSortOptionStream(initialZone)
     }
 
     /**
@@ -322,7 +322,7 @@ class NotesViewModelTest {
 
         /*
         Updating the sort option with updateSortOptionStateForTesting will trigger the collecting
-        of the flow of notesRepository.getSortOptionFlow(zone) in
+        of the flow of notesRepository.getSortOptionStream(zone) in
         collectZoneAndCollectSortOption function.
         */
         whenever(notesRepository.getAllNotesStream(mockSortOption))
@@ -330,7 +330,7 @@ class NotesViewModelTest {
 
         viewModel.updateSortOptionStateForTesting(mockSortOption.id)
         assertEquals(mockSortOption, viewModel.uiState.value.sortOption)
-        verify(notesRepository).getSortOptionFlow(initialZone)
+        verify(notesRepository).getSortOptionStream(initialZone)
     }
 
     /**
@@ -362,7 +362,7 @@ class NotesViewModelTest {
                 viewModel.knockBoxOfMysteries()
             }
 
-            whenever(notesRepository.getSortOptionFlow(expectedZone))
+            whenever(notesRepository.getSortOptionStream(expectedZone))
                 .thenReturn(flowOf(initialSortOption))
             whenever(notesRepository.getAllNotesStream(initialSortOption))
                 .thenReturn(flowOf(mockInitialNotesList))
@@ -396,7 +396,7 @@ class NotesViewModelTest {
     @Test
     fun `When toggleZone is called, zone changes and ui state updates correctly`() = runTest {
         // Given: the initial zone is CREATIVE
-        whenever(notesRepository.getSortOptionFlow(Zone.BOX_OF_MYSTERIES))
+        whenever(notesRepository.getSortOptionStream(Zone.BOX_OF_MYSTERIES))
             .thenReturn(flowOf(initialSortOption))
         whenever(notesRepository.getAllNotesStream(initialSortOption))
             .thenReturn(flowOf(mockInitialNotesList))

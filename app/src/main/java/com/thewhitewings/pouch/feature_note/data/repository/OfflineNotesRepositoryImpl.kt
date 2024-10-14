@@ -125,8 +125,8 @@ class OfflineNotesRepositoryImpl(
      * @param zone The current [Zone].
      * @return A flow of stored sort option.
      */
-    override fun getSortOptionFlow(zone: Zone): Flow<SortOption> {
-        return pouchPreferences.getSortOptionFlow(zone)
+    override fun getSortOptionStream(zone: Zone): Flow<SortOption> {
+        return pouchPreferences.getSortOptionStream(zone)
     }
 
     /**

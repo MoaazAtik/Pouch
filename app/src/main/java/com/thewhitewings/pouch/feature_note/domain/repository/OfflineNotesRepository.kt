@@ -61,7 +61,7 @@ interface OfflineNotesRepository {
      * @param zone current [Zone]
      * @return Flow of stored sort option
      */
-    fun getSortOptionFlow(zone: Zone): Flow<SortOption>
+    fun getSortOptionStream(zone: Zone): Flow<SortOption>
 
     /**
      * Toggle the current [Zone]
