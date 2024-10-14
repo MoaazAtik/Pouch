@@ -2,6 +2,9 @@ package com.thewhitewings.pouch.feature_note.data.util
 
 object Constants {
 
+    // The name of the stored preference DataStore file
+    const val POUCH_PREFERENCE_NAME = "pouch_preferences"
+
     // Databases
     /**
      * Database name of Creative zone
