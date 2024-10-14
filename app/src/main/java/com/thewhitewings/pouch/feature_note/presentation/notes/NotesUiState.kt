@@ -7,7 +7,7 @@ import com.thewhitewings.pouch.feature_note.util.Zone
 /**
  * UI state for the [NotesScreen].
  */
-data class HomeUiState(
+data class NotesUiState(
     val notesList: List<Note> = emptyList(),
     val zone: Zone = Zone.CREATIVE,
     val sortOption: SortOption = SortOption.NEWEST_FIRST,

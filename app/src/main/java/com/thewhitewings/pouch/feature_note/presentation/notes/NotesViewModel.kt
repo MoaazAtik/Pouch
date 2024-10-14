@@ -34,9 +34,9 @@ class NotesViewModel(
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : ViewModel() {
 
-    // Holds current HomeUiState
-    private val _homeUiState = MutableStateFlow(HomeUiState())
-    val homeUiState = _homeUiState.asStateFlow()
+    // Holds current NotesUiState
+    private val _uiState = MutableStateFlow(NotesUiState())
+    val uiState = _uiState.asStateFlow()
 
     // Count of how many times the Box of mysteries reveal button has been pressed (knocked)
     private var bomKnocks = 0
@@ -63,7 +63,7 @@ class NotesViewModel(
      */
     private fun collectZoneAndCollectSortOption() {
         viewModelScope.launch(dispatcher) {
-            _homeUiState.map { it.zone }
+            _uiState.map { it.zone }
                 .distinctUntilChanged()
                 // Collect zone changes
                 .flatMapLatest { zone ->
@@ -73,7 +73,7 @@ class NotesViewModel(
                 // Collect the corresponding sortOption
                 .collect { sortOption ->
                     // Update the UI state with the new sortOption
-                    _homeUiState.update {
+                    _uiState.update {
                         it.copy(sortOption = sortOption)
                     }
                 }
@@ -87,11 +87,11 @@ class NotesViewModel(
     private fun collectSortOptionSearchQueryZoneAndCollectNotesList() {
         viewModelScope.launch(dispatcher) {
             combine(
-                _homeUiState.map { it.sortOption }
+                _uiState.map { it.sortOption }
                     .distinctUntilChanged(),
-                _homeUiState.map { it.searchQuery }
+                _uiState.map { it.searchQuery }
                     .distinctUntilChanged(),
-                _homeUiState.map { it.zone }
+                _uiState.map { it.zone }
                     .distinctUntilChanged()
             ) { sortOption, searchQuery, _ ->
                 Pair(sortOption, searchQuery)
@@ -107,7 +107,7 @@ class NotesViewModel(
                 // Collect the corresponding notesList
                 .collect { notesList ->
                     // Update the UI state with the new notesList
-                    _homeUiState.update {
+                    _uiState.update {
                         it.copy(notesList = notesList)
                     }
                 }
@@ -122,7 +122,7 @@ class NotesViewModel(
     private fun updateShowAnimationsStateDelayed(canShowAnimations: Boolean, delay: Long = 2_000) {
         viewModelScope.launch(dispatcher) {
             delay(delay)
-            _homeUiState.update {
+            _uiState.update {
                 it.copy(showAnimations = canShowAnimations)
             }
         }
@@ -133,7 +133,7 @@ class NotesViewModel(
      * @param newQuery New search query.
      */
     fun updateSearchQuery(newQuery: String) {
-        _homeUiState.update {
+        _uiState.update {
             it.copy(searchQuery = newQuery)
         }
     }
@@ -145,7 +145,7 @@ class NotesViewModel(
     fun updateSortOption(sortOptionId: Int) {
         val sortOption = getSortOptionFromId(sortOptionId)
         viewModelScope.launch(dispatcher) {
-            notesRepository.saveSortOption(sortOption, _homeUiState.value.zone)
+            notesRepository.saveSortOption(sortOption, _uiState.value.zone)
         }
     }
 
@@ -157,7 +157,7 @@ class NotesViewModel(
      */
     fun updateSortOptionStateForTesting(sortOptionId: Int) {
         val sortOption = getSortOptionFromId(sortOptionId)
-        _homeUiState.update {
+        _uiState.update {
             it.copy(sortOption = sortOption)
         }
     }
@@ -224,10 +224,10 @@ class NotesViewModel(
     fun toggleZone() {
         notesRepository.toggleZone()
         val newZone =
-            if (_homeUiState.value.zone == Zone.CREATIVE)
+            if (_uiState.value.zone == Zone.CREATIVE)
                 Zone.BOX_OF_MYSTERIES else Zone.CREATIVE
 
-        _homeUiState.update {
+        _uiState.update {
             it.copy(
                 zone = newZone,
                 searchQuery = "",

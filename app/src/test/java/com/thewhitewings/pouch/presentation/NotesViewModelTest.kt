@@ -3,7 +3,7 @@ package com.thewhitewings.pouch.presentation
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesViewModel
 import com.thewhitewings.pouch.feature_note.util.Zone
 import com.thewhitewings.pouch.rules.MainDispatcherRule
@@ -80,7 +80,7 @@ class NotesViewModelTest {
 
         // Act: Update the zone and trigger the function to collect the sort option
         viewModel.toggleZone()
-        assertEquals(expectedZone, viewModel.homeUiState.value.zone)
+        assertEquals(expectedZone, viewModel.uiState.value.zone)
 
         // Assert: Verify that the repository's getSortOptionFlow() is called with the new zone
         verify(notesRepository).getSortOptionFlow(expectedZone)
@@ -88,7 +88,7 @@ class NotesViewModelTest {
         // Assert: Ensure that the sort option is correctly updated in the UI state
         assertEquals(
             expectedMockSortOption,
-            viewModel.homeUiState.value.sortOption
+            viewModel.uiState.value.sortOption
         )
     }
 
@@ -107,11 +107,11 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(expectedMockNotesList))
 
             viewModel.updateSortOptionStateForTesting(mockSortOption.id)
-            assertEquals(mockSortOption, viewModel.homeUiState.value.sortOption)
+            assertEquals(mockSortOption, viewModel.uiState.value.sortOption)
             verify(notesRepository).getSortOptionFlow(initialZone)
 
             verify(notesRepository).getAllNotesStream(mockSortOption)
-            assertEquals(expectedMockNotesList, viewModel.homeUiState.value.notesList)
+            assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
         }
 
     /**
@@ -132,14 +132,14 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(expectedMockNotesList))
 
             viewModel.updateSortOptionStateForTesting(mockSortOption.id)
-            assertEquals(mockSortOption, viewModel.homeUiState.value.sortOption)
+            assertEquals(mockSortOption, viewModel.uiState.value.sortOption)
             verify(notesRepository).getSortOptionFlow(initialZone)
 
             viewModel.updateSearchQuery(mockSearchQuery)
-            assertEquals(mockSearchQuery, viewModel.homeUiState.value.searchQuery)
+            assertEquals(mockSearchQuery, viewModel.uiState.value.searchQuery)
             verify(notesRepository).searchNotesStream(mockSearchQuery, mockSortOption)
 
-            assertEquals(expectedMockNotesList, viewModel.homeUiState.value.notesList)
+            assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
         }
 
     /**
@@ -157,10 +157,10 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(expectedMockNotesList))
 
             viewModel.updateSearchQuery(mockSearchQuery)
-            assertEquals(mockSearchQuery, viewModel.homeUiState.value.searchQuery)
+            assertEquals(mockSearchQuery, viewModel.uiState.value.searchQuery)
             verify(notesRepository).searchNotesStream(mockSearchQuery, initialSortOption)
 
-            assertEquals(expectedMockNotesList, viewModel.homeUiState.value.notesList)
+            assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
         }
 
     /**
@@ -187,14 +187,14 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(expectedMockNotesListLast))
 
             viewModel.updateSearchQuery(mockSearchQueryFirstChange)
-            assertEquals(mockSearchQueryFirstChange, viewModel.homeUiState.value.searchQuery)
+            assertEquals(mockSearchQueryFirstChange, viewModel.uiState.value.searchQuery)
             verify(notesRepository).searchNotesStream(mockSearchQueryFirstChange, initialSortOption)
-            assertEquals(expectedMockNotesListFirst, viewModel.homeUiState.value.notesList)
+            assertEquals(expectedMockNotesListFirst, viewModel.uiState.value.notesList)
 
             viewModel.updateSearchQuery(mockSearchQueryLastChange)
-            assertEquals(mockSearchQueryLastChange, viewModel.homeUiState.value.searchQuery)
+            assertEquals(mockSearchQueryLastChange, viewModel.uiState.value.searchQuery)
             verify(notesRepository, times(2)).getAllNotesStream(initialSortOption)
-            assertEquals(expectedMockNotesListLast, viewModel.homeUiState.value.notesList)
+            assertEquals(expectedMockNotesListLast, viewModel.uiState.value.notesList)
         }
 
     /**
@@ -214,11 +214,11 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(expectedMockNotesList))
 
             viewModel.toggleZone()
-            assertEquals(expectedZone, viewModel.homeUiState.value.zone)
+            assertEquals(expectedZone, viewModel.uiState.value.zone)
             verify(notesRepository).getSortOptionFlow(expectedZone)
 
             verify(notesRepository, times(2)).getAllNotesStream(initialSortOption)
-            assertEquals(expectedMockNotesList, viewModel.homeUiState.value.notesList)
+            assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
         }
 
     /**
@@ -240,19 +240,19 @@ class NotesViewModelTest {
             .thenReturn(flowOf(expectedMockNotesList))
 
         viewModel.updateSearchQuery(mockSearchQuery)
-        assertEquals(mockSearchQuery, viewModel.homeUiState.value.searchQuery)
+        assertEquals(mockSearchQuery, viewModel.uiState.value.searchQuery)
         verify(notesRepository).searchNotesStream(mockSearchQuery, initialSortOption)
 
         viewModel.toggleZone()
-        assertEquals(expectedZone, viewModel.homeUiState.value.zone)
+        assertEquals(expectedZone, viewModel.uiState.value.zone)
         verify(notesRepository).getSortOptionFlow(expectedZone)
 
         verify(notesRepository, times(3)).getAllNotesStream(initialSortOption)
-        assertEquals(expectedMockNotesList, viewModel.homeUiState.value.notesList)
+        assertEquals(expectedMockNotesList, viewModel.uiState.value.notesList)
     }
 
     /**
-     * Test that after [NotesViewModel] is initialized, the state of [HomeUiState.showAnimations] is updated correctly.
+     * Test that after [NotesViewModel] is initialized, the state of [NotesUiState.showAnimations] is updated correctly.
      * Happy path for [NotesViewModel.updateShowAnimationsStateDelayed]
      */
     @Test
@@ -260,7 +260,7 @@ class NotesViewModelTest {
         // Given: the initial showAnimations state is true
         val expectedShowAnimations = false
         testDispatcher.scheduler.advanceUntilIdle()
-        assertEquals(expectedShowAnimations, viewModel.homeUiState.value.showAnimations)
+        assertEquals(expectedShowAnimations, viewModel.uiState.value.showAnimations)
     }
 
     /**
@@ -283,7 +283,7 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(expectedMockNotesList))
 
             viewModel.updateSearchQuery(mockSearchQuery)
-            assertEquals(mockSearchQuery, viewModel.homeUiState.value.searchQuery)
+            assertEquals(mockSearchQuery, viewModel.uiState.value.searchQuery)
         }
 
     /**
@@ -329,7 +329,7 @@ class NotesViewModelTest {
             .thenReturn(flowOf(expectedMockNotesList))
 
         viewModel.updateSortOptionStateForTesting(mockSortOption.id)
-        assertEquals(mockSortOption, viewModel.homeUiState.value.sortOption)
+        assertEquals(mockSortOption, viewModel.uiState.value.sortOption)
         verify(notesRepository).getSortOptionFlow(initialZone)
     }
 
@@ -368,7 +368,7 @@ class NotesViewModelTest {
                 .thenReturn(flowOf(mockInitialNotesList))
 
             testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.homeUiState.value.zone)
+            assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.uiState.value.zone)
         }
 
     /**
@@ -386,7 +386,7 @@ class NotesViewModelTest {
             repeat(4) {
                 viewModel.knockBoxOfMysteries()
             }
-            assertEquals(initialZone, viewModel.homeUiState.value.zone)
+            assertEquals(initialZone, viewModel.uiState.value.zone)
         }
 
     /**
@@ -403,12 +403,12 @@ class NotesViewModelTest {
 
         viewModel.toggleZone()
         verify(notesRepository).toggleZone()
-        assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.homeUiState.value.zone)
-        assertEquals("", viewModel.homeUiState.value.searchQuery)
-        assertEquals(true, viewModel.homeUiState.value.showAnimations)
+        assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.uiState.value.zone)
+        assertEquals("", viewModel.uiState.value.searchQuery)
+        assertEquals(true, viewModel.uiState.value.showAnimations)
 
         viewModel.toggleZone()
         verify(notesRepository, times(2)).toggleZone()
-        assertEquals(Zone.CREATIVE, viewModel.homeUiState.value.zone)
+        assertEquals(Zone.CREATIVE, viewModel.uiState.value.zone)
     }
 }

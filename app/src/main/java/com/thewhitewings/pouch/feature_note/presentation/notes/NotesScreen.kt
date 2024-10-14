@@ -109,7 +109,7 @@ object HomeDestination : NavigationDestination {
  */
 @Composable
 fun NotesScreen(
-    homeUiState: HomeUiState,
+    uiState: NotesUiState,
     navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
@@ -141,7 +141,7 @@ fun NotesScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         NotesScreenBody(
-            homeUiState = homeUiState,
+            uiState = uiState,
             onItemClick = navigateToEditNote,
             onSearchNotes = onSearchNotes,
             onSortNotes = onSortNotes,
@@ -152,9 +152,9 @@ fun NotesScreen(
         )
         BackHandler(onBack = navigateBack)
 
-        if (homeUiState.showAnimations)
+        if (uiState.showAnimations)
             ShowAnimations(
-                zone = homeUiState.zone,
+                zone = uiState.zone,
                 snackbarHostState = snackbarHostState,
                 context = LocalContext.current
             )
@@ -228,7 +228,7 @@ fun RevealLoaderAnimation(
 
 @Composable
 private fun NotesScreenBody(
-    homeUiState: HomeUiState,
+    uiState: NotesUiState,
     onItemClick: (Int) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
@@ -245,9 +245,9 @@ private fun NotesScreenBody(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (homeUiState.notesList.isEmpty())
-            ZoneText(currentZone = homeUiState.zone)
-        LogoImage(currentZone = homeUiState.zone)
+        if (uiState.notesList.isEmpty())
+            ZoneText(currentZone = uiState.zone)
+        LogoImage(currentZone = uiState.zone)
     }
 
     Column(
@@ -265,7 +265,7 @@ private fun NotesScreenBody(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             SearchNotesTextField(
-                value = homeUiState.searchQuery,
+                value = uiState.searchQuery,
                 onValueChange = { onSearchNotes(it) },
                 modifier = Modifier
                     .weight(1f)
@@ -280,10 +280,10 @@ private fun NotesScreenBody(
         BomRevealingButton(
             onToggleZone = onToggleZone,
             focusManager = focusManager,
-            zone = homeUiState.zone
+            zone = uiState.zone
         )
         NotesList(
-            notesList = homeUiState.notesList,
+            notesList = uiState.notesList,
             onItemClick = { onItemClick(it.id) },
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_small))
         )
@@ -559,7 +559,7 @@ fun ZoneText(currentZone: Zone) {
 private fun NotesScreenPreview() {
     PouchTheme(dynamicColor = false) {
         NotesScreen(
-            homeUiState = HomeUiState(
+            uiState = NotesUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", "Apr 23"),
                     Note(2, "Pen", "200.0", "30"),
@@ -584,7 +584,7 @@ private fun NotesScreenPreview() {
 private fun NotesScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
         NotesScreen(
-            homeUiState = HomeUiState(
+            uiState = NotesUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
                     Note(
@@ -611,7 +611,7 @@ private fun NotesScreenNightPreview() {
 private fun NotesScreenBodyPreview() {
     PouchTheme {
         NotesScreenBody(
-            homeUiState = HomeUiState(
+            uiState = NotesUiState(
                 notesList = listOf(
                     Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
                     Note(
@@ -636,7 +636,7 @@ private fun NotesScreenBodyPreview() {
 private fun NotesScreenBodyEmptyListPreview() {
     PouchTheme {
         NotesScreenBody(
-            homeUiState = HomeUiState(notesList = listOf()),
+            uiState = NotesUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
@@ -650,7 +650,7 @@ private fun NotesScreenBodyEmptyListPreview() {
 private fun NotesScreenBodyBomEmptyListPreview() {
     PouchTheme {
         NotesScreenBody(
-            homeUiState = HomeUiState(
+            uiState = NotesUiState(
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
             ),
@@ -669,7 +669,7 @@ private fun NotesScreenBodyBomEmptyListPreview() {
 private fun NotesScreenBodyEmptyListNightPreview() {
     PouchTheme {
         NotesScreenBody(
-            homeUiState = HomeUiState(notesList = listOf()),
+            uiState = NotesUiState(notesList = listOf()),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
@@ -685,7 +685,7 @@ private fun NotesScreenBodyEmptyListNightPreview() {
 private fun NotesScreenBodyBomEmptyListNightPreview() {
     PouchTheme {
         NotesScreenBody(
-            homeUiState = HomeUiState(
+            uiState = NotesUiState(
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
             ),

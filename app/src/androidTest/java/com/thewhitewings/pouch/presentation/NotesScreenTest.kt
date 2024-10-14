@@ -26,7 +26,7 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesScreen
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeUiState
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.ShowAnimations
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
@@ -53,7 +53,7 @@ class NotesScreenTest {
     fun notesScreen_isDisplayed() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -75,7 +75,7 @@ class NotesScreenTest {
     fun notesScreen_displaysFAB() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -101,7 +101,7 @@ class NotesScreenTest {
 
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = { backTriggered = true },
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -121,7 +121,7 @@ class NotesScreenTest {
     }
 
     /**
-     * Test that animations are displayed when initializing a zone, i.e., [HomeUiState.showAnimations] is true
+     * Test that animations are displayed when initializing a zone, i.e., [NotesUiState.showAnimations] is true
      * Happy path for [NotesScreen] and [ShowAnimations]
      */
     @Test
@@ -130,7 +130,7 @@ class NotesScreenTest {
         // Set the content with showAnimations = true
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -145,7 +145,7 @@ class NotesScreenTest {
     }
 
     /**
-     * Test that animations are not displayed when a zone is already initialized, i.e., [HomeUiState.showAnimations] is false
+     * Test that animations are not displayed when a zone is already initialized, i.e., [NotesUiState.showAnimations] is false
      * Case: zone is already initialized
      * for [NotesScreen]
      */
@@ -155,7 +155,7 @@ class NotesScreenTest {
         // Set the content with showAnimations = true
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(showAnimations = false),
+                uiState = NotesUiState(showAnimations = false),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -246,7 +246,7 @@ class NotesScreenTest {
         // Given: initial notes list is empty, and zone is CREATIVE
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -268,7 +268,7 @@ class NotesScreenTest {
     fun homeBody_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(zone = Zone.BOX_OF_MYSTERIES),
+                uiState = NotesUiState(zone = Zone.BOX_OF_MYSTERIES),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -293,7 +293,7 @@ class NotesScreenTest {
 
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(
+                uiState = NotesUiState(
                     notesList = mockNotesList
                 ),
                 navigateBack = {},
@@ -317,7 +317,7 @@ class NotesScreenTest {
     fun homeBody_displayLogoImage() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -340,7 +340,7 @@ class NotesScreenTest {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(
+                uiState = NotesUiState(
                     searchQuery = ""
                 ),
                 navigateBack = {},
@@ -366,7 +366,7 @@ class NotesScreenTest {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(
+                uiState = NotesUiState(
                     searchQuery = ""
                 ),
                 navigateBack = {},
@@ -396,7 +396,7 @@ class NotesScreenTest {
         var searchText = ""
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -424,7 +424,7 @@ class NotesScreenTest {
         var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(searchQuery = searchText),
+                uiState = NotesUiState(searchQuery = searchText),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -459,7 +459,7 @@ class NotesScreenTest {
         var searchText by mutableStateOf("Test Text")
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(searchQuery = searchText),
+                uiState = NotesUiState(searchQuery = searchText),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -484,7 +484,7 @@ class NotesScreenTest {
     fun sortNotesButton_initially_buttonDisplayed_AndOptionsMenuNotDisplayed() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -511,7 +511,7 @@ class NotesScreenTest {
     fun sortNotesButton_onClick_expandMenu() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -543,7 +543,7 @@ class NotesScreenTest {
         var selectedSortOptionId: Int? = null
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -573,7 +573,7 @@ class NotesScreenTest {
     fun sortNotesButton_onOutsideClick_menuDismisses() {
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(),
+                uiState = NotesUiState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -611,7 +611,7 @@ class NotesScreenTest {
 
             // NotesScreen composable with the state-driven zone
             NotesScreen(
-                homeUiState = HomeUiState(zone = currentZone.value),
+                uiState = NotesUiState(zone = currentZone.value),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -651,7 +651,7 @@ class NotesScreenTest {
 
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(notesList = mockNotesList),
+                uiState = NotesUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -704,7 +704,7 @@ class NotesScreenTest {
         // Set the content
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(notesList = mockNotesList),
+                uiState = NotesUiState(notesList = mockNotesList),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = { passedNoteId: Int ->
@@ -739,7 +739,7 @@ class NotesScreenTest {
         // Set the content
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(notesList = listOf(mockNote)),
+                uiState = NotesUiState(notesList = listOf(mockNote)),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
@@ -779,7 +779,7 @@ class NotesScreenTest {
         // Set the content
         composeTestRule.setContent {
             NotesScreen(
-                homeUiState = HomeUiState(notesList = listOf(noteWithEmptyContent)),
+                uiState = NotesUiState(notesList = listOf(noteWithEmptyContent)),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},

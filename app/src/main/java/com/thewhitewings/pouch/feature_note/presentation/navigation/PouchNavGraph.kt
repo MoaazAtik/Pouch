@@ -39,12 +39,12 @@ fun PouchNavHost(
             route = HomeDestination.route
         ) {
             val viewModel: NotesViewModel = viewModel(factory = NotesViewModel.Factory)
-            val homeUiState by viewModel.homeUiState.collectAsState()
+            val notesUiState by viewModel.uiState.collectAsState()
 
             NotesScreen(
-                homeUiState = homeUiState,
+                uiState = notesUiState,
                 navigateBack = {
-                    if (homeUiState.zone == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
+                    if (notesUiState.zone == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
                     else (navController.context as? Activity)?.finish()
                 },
                 navigateToCreateNote = { navController.navigate("${NoteDestination.route}/0") },
