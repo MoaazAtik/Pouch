@@ -120,7 +120,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 ## Core Files 📁
 - [HomeScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeScreen.kt)
 - [HomeViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/HomeViewModel.kt)
-- [NoteScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/NoteScreen.kt)
+- [AddEditNoteScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteScreen.kt)
 - [NoteViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/NoteViewModel.kt)
 - [PouchNavGraph](app/src/main/java/com/thewhitewings/pouch/ui/navigation/PouchNavGraph.kt)<br><br>
 - [OfflineNotesRepositoryImpl.kt](app/src/main/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryImpl.kt)

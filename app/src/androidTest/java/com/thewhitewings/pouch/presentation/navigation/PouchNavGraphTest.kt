@@ -57,16 +57,16 @@ class PouchNavGraphTest {
     }
 
     /**
-     * Test that when the create note FAB is clicked, the note screen is displayed
+     * Test that when the create note FAB is clicked, the [AddEditNoteScreen] is displayed
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_whenCreateNoteButtonClicked_navigateToNoteScreen() {
+    fun pouchNavHost_whenCreateNoteButtonClicked_navigateToAddEditNoteScreen() {
         // Simulate a click on the FAB to trigger note creation
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
 
-        // Assert that current route in the navController is NoteScreen's route
+        // Assert that current route in the navController is correct
         navController.assertCurrentRouteName(NoteDestination.routeWithArgs)
 
         // Verify that the noteId argument is passed as 0 (indicating new note creation)
@@ -74,24 +74,24 @@ class PouchNavGraphTest {
             navController.currentBackStackEntry?.arguments?.getInt(NoteDestination.noteIdArg)
         assertEquals(0, noteIdArg)
 
-        // Verify that the Note Screen is displayed
-        composeTestRule.onNodeWithTagForStringId(R.string.note_screen_tag)
+        // Verify that the AddEditNoteScreen is displayed
+        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag)
             .assertIsDisplayed()
     }
 
     /**
-     * Test that when the back button is clicked on the note screen,
+     * Test that when the back button is clicked on the [AddEditNoteScreen],
      * the app navigates back to the home screen
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_backClickedOnNoteScreen_navigateBackToHomeScreen() {
-        // Simulate clicking the FAB to navigate to the NoteScreen (create note scenario)
+    fun pouchNavHost_backClickedOnAddEditNoteScreen_navigateBackToHomeScreen() {
+        // Simulate clicking the FAB to navigate to the AddEditNoteScreen (create note scenario)
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
 
-        // Verify that we are on the NoteScreen by checking if the NoteScreen UI element is displayed
-        composeTestRule.onNodeWithTagForStringId(R.string.note_screen_tag)
+        // Verify that we are on the AddEditNoteScreen by checking if the AddEditNoteScreen UI element is displayed
+        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag)
             .assertIsDisplayed()
 
         // Simulate clicking the back button (assuming this will save the note and navigate back)
@@ -104,18 +104,18 @@ class PouchNavGraphTest {
     }
 
     /**
-     * Test that when the delete button is clicked on the note screen,
+     * Test that when the delete button is clicked on the [AddEditNoteScreen],
      * the app navigates back to the home screen
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_deleteClickedOnNoteScreen_navigateBackToHomeScreen() {
-        // Simulate clicking the FAB to navigate to the NoteScreen (create note scenario)
+    fun pouchNavHost_deleteClickedOnAddEditNoteScreen_navigateBackToHomeScreen() {
+        // Simulate clicking the FAB to navigate to the AddEditNoteScreen (create note scenario)
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
 
-        // Verify that we are on the NoteScreen by checking if the NoteScreen UI element is displayed
-        composeTestRule.onNodeWithTagForStringId(R.string.note_screen_tag)
+        // Verify that we are on the AddEditNoteScreen by checking if the AddEditNoteScreen UI element is displayed
+        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag)
             .assertIsDisplayed()
 
         // Simulate clicking the back button (assuming this will save the note and navigate back)
@@ -128,12 +128,12 @@ class PouchNavGraphTest {
     }
 
     /**
-     * Test that when a note is clicked in the home screen, we navigate to the note screen
+     * Test that when a note is clicked in the home screen, we navigate to the [AddEditNoteScreen]
      * Happy path for [PouchNavHost]
      */
     @Test
-    fun pouchNavHost_noteClickedOnHomeScreen_navigateToNoteScreen() {
-        // Simulate clicking the FAB to navigate to the NoteScreen (create note scenario)
+    fun pouchNavHost_noteClickedOnHomeScreen_navigateToAddEditNoteScreen() {
+        // Simulate clicking the FAB to navigate to the AddEditNoteScreen (create note scenario)
         composeTestRule.onNodeWithContentDescriptionForStringId(R.string.add_new_note)
             .performClick()
 
@@ -150,11 +150,11 @@ class PouchNavGraphTest {
             .onChildAt(0)
             .performClick()
 
-        // Assert that current route in the navController is NoteScreen's route
+        // Assert that current route in the navController is AddEditNoteScreen's route
         navController.assertCurrentRouteName(NoteDestination.routeWithArgs)
 
-        // Verify that we are on the NoteScreen by checking if the NoteScreen UI element is displayed
-        composeTestRule.onNodeWithTagForStringId(R.string.note_screen_tag)
+        // Verify that we are on the AddEditNoteScreen by checking if the AddEditNoteScreen UI element is displayed
+        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag)
             .assertIsDisplayed()
 
         // Verify that the noteId argument is Not passed as 0 (indicating editing an existing note)

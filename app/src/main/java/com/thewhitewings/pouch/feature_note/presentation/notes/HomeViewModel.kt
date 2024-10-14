@@ -51,7 +51,7 @@ class HomeViewModel(
 
         // Disable zone initialization animations after the zone is initialized
         /*
-        It is needed so the animations are not triggered everytime when navigating back from a Note screen.
+        It is needed so the animations are not triggered everytime when navigating back from [AddEditNoteScreen].
         These animations should trigger only when a zone is initialized.
          */
         updateShowAnimationsStateDelayed(false)

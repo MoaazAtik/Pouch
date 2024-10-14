@@ -37,10 +37,10 @@ import com.thewhitewings.pouch.ui.theme.PouchTheme
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 
-private const val TAG = "NoteScreen"
+private const val TAG = "AddEditNoteScreen"
 
 /**
- * Navigation destination for Note screen
+ * Navigation destination for [AddEditNoteScreen]
  */
 object NoteDestination : NavigationDestination {
     override val route = "note"
@@ -53,13 +53,13 @@ object NoteDestination : NavigationDestination {
     const val noteIdArg = "noteId"
 
     /**
-     * Route to navigate to note screen
+     * Route to navigate to [AddEditNoteScreen]
      */
     val routeWithArgs = "$route/{$noteIdArg}"
 }
 
 @Composable
-fun NoteScreen(
+fun AddEditNoteScreen(
     noteUiState: NoteUiState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
@@ -69,9 +69,9 @@ fun NoteScreen(
     modifier: Modifier = Modifier
 ) {
     Scaffold(
-        modifier = modifier.testTag(stringResource(R.string.note_screen_tag))
+        modifier = modifier.testTag(stringResource(R.string.add_edit_note_screen_tag))
     ) { innerPadding ->
-        NoteScreenBody(
+        AddEditNoteScreenBody(
             noteUiState = noteUiState,
             navigateBack = navigateBack,
             onNavigateUp = onNavigateUp,
@@ -86,7 +86,7 @@ fun NoteScreen(
 }
 
 @Composable
-fun NoteScreenBody(
+fun AddEditNoteScreenBody(
     noteUiState: NoteUiState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
@@ -191,7 +191,7 @@ fun NoteScreenBody(
                 text = stringResource(R.string.timestamp_edited, formattedTimestamp),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .testTag(stringResource(R.string.timestamp_in_note_screen_tag))
+                    .testTag(stringResource(R.string.timestamp_in_add_edit_note_screen_tag))
                     .align(Alignment.CenterHorizontally),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
@@ -202,9 +202,9 @@ fun NoteScreenBody(
 
 //@Preview(showBackground = true)
 @Composable
-fun NoteScreenWithoutTimestampPreview() {
+fun AddEditNoteScreenWithoutTimestampPreview() {
     PouchTheme(dynamicColor = false) {
-        NoteScreen(
+        AddEditNoteScreen(
             noteUiState = NoteUiState(),
             navigateBack = {},
             onNavigateUp = {},
@@ -217,9 +217,9 @@ fun NoteScreenWithoutTimestampPreview() {
 
 @Preview(showBackground = true)
 @Composable
-fun NoteScreenPreview() {
+fun AddEditNoteScreenPreview() {
     PouchTheme(dynamicColor = false) {
-        NoteScreen(
+        AddEditNoteScreen(
             noteUiState = NoteUiState(
                 Note(
                     timestamp = stringResource(
@@ -241,9 +241,9 @@ fun NoteScreenPreview() {
     uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
 )
 @Composable
-fun NoteScreenNightPreview() {
+fun AddEditNoteScreenNightPreview() {
     PouchTheme(dynamicColor = false) {
-        NoteScreen(
+        AddEditNoteScreen(
             noteUiState = NoteUiState(
                 Note(
                     timestamp = stringResource(

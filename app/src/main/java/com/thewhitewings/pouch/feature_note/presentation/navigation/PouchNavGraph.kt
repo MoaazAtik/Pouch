@@ -15,7 +15,7 @@ import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeScreen
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteScreen
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteViewModel
 import com.thewhitewings.pouch.feature_note.util.Zone
 
@@ -55,7 +55,7 @@ fun PouchNavHost(
             )
         }
 
-        // Note Screen
+        // [AddEditNoteScreen]
         composable(
             route = NoteDestination.routeWithArgs,
             arguments = listOf(navArgument(NoteDestination.noteIdArg) {
@@ -66,7 +66,7 @@ fun PouchNavHost(
             val viewModel: NoteViewModel = viewModel(factory = NoteViewModel.Factory)
             val noteUiState by viewModel.noteUiState.collectAsState()
 
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = noteUiState,
                 navigateBack = { viewModel.createOrUpdateNote(); navController.popBackStack() },
                 onNavigateUp = { viewModel.createOrUpdateNote(); navController.navigateUp() },

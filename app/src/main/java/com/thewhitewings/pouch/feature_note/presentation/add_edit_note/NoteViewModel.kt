@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "NoteViewModel"
 
 /**
- * ViewModel to interact with the [OfflineNotesRepository]'s data source and the Note screen.
+ * ViewModel to interact with the [OfflineNotesRepository]'s data source and the [AddEditNoteScreen].
  */
 class NoteViewModel(
     private val savedStateHandle: SavedStateHandle,

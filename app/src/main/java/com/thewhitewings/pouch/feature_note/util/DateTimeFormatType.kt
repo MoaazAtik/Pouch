@@ -1,5 +1,7 @@
 package com.thewhitewings.pouch.feature_note.util
 
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
+
 /**
  * Enum class for DateTime format types.
  * It is used to format date and time for different time zones and format text lengths.
@@ -39,7 +41,7 @@ enum class DateTimeFormatType {
     CURRENT_LOCAL,
 
     /**
-     * Formatted Date in Local Time Zone for displaying in Note Screen.
+     * Formatted Date in Local Time Zone for displaying in [AddEditNoteScreen].
      *
      * It is formatted as: [DateTimeUtils.MEDIUM_LENGTH_FORMAT]
      * "MMM d, yyyy" = Feb 4, 2024

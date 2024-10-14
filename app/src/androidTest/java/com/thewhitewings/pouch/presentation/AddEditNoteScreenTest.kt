@@ -12,7 +12,7 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.mocks.mockNote1
 import com.thewhitewings.pouch.mocks.mockTimestamp1
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteScreen
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteUiState
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
@@ -25,19 +25,19 @@ import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class NoteScreenTest {
+class AddEditNoteScreenTest {
 
     @get:Rule
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     /**
-     * Test that the NoteScreen is displayed correctly.
-     * Happy path for [NoteScreen]
+     * Test that the [AddEditNoteScreen] is displayed correctly.
+     * Happy path for [AddEditNoteScreen]
      */
     @Test
-    fun noteScreen_isDisplayed() {
+    fun addEditNoteScreen_isDisplayed() {
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(),
                 navigateBack = { },
                 onNavigateUp = { },
@@ -47,17 +47,17 @@ class NoteScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithTagForStringId(R.string.note_screen_tag).assertIsDisplayed()
+        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag).assertIsDisplayed()
     }
 
     /**
-     * Test that the elements in the NoteScreen are displayed correctly.
-     * Happy path for [NoteScreen]
+     * Test that the elements in the [AddEditNoteScreen] are displayed correctly.
+     * Happy path for [AddEditNoteScreen]
      */
     @Test
-    fun noteScreen_containsBackAndDeleteButtonsAndTextFields() {
+    fun addEditNoteScreen_containsBackAndDeleteButtonsAndTextFields() {
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(),
                 navigateBack = {},
                 onNavigateUp = {},
@@ -86,15 +86,15 @@ class NoteScreenTest {
 
     /**
      * Test that when typing in the title and body TextFields, their corresponding callbacks are triggered.
-     * Happy path for note title and body text fields in [NoteScreenBody]
+     * Happy path for note title and body text fields in [AddEditNoteScreenBody]
      */
     @Test
-    fun noteScreen_typingInTextFields_triggersCallbacks() {
+    fun addEditNoteScreen_typingInTextFields_triggersCallbacks() {
         var updatedTitle = ""
         var updatedBody = ""
 
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(),
                 navigateBack = {},
                 onNavigateUp = {},
@@ -124,15 +124,15 @@ class NoteScreenTest {
     /**
      * Test that when clicking on the up or delete button,
      * the corresponding callbacks are triggered.
-     * Happy path for up and delete buttons in [NoteScreenBody]
+     * Happy path for up and delete buttons in [AddEditNoteScreenBody]
      */
     @Test
-    fun noteScreen_upAndDeleteButtons_triggerCallbacksCorrectly() {
+    fun addEditNoteScreen_upAndDeleteButtons_triggerCallbacksCorrectly() {
         var upTriggered = false
         var deleteTriggered = false
 
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(),
                 navigateBack = { },
                 onNavigateUp = { upTriggered = true },
@@ -160,14 +160,14 @@ class NoteScreenTest {
     /**
      * Test that when pressing the system back button,
      * the navigateBack callback is triggered.
-     * Happy path for system back button in [NoteScreen]
+     * Happy path for system back button in [AddEditNoteScreen]
      */
     @Test
-    fun noteScreen_backHandler_triggersNavigateBack() {
+    fun addEditNoteScreen_backHandler_triggersNavigateBack() {
         var backTriggered = false
 
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(),
                 navigateBack = { backTriggered = true },
                 onNavigateUp = {},
@@ -191,13 +191,14 @@ class NoteScreenTest {
      * the placeholder texts are displayed for note title and body text fields,
      * and timestamp text is not displayed.
      * Case: New note
-     * for [NoteScreen]
+     * for [AddEditNoteScreen]
      */
     @Test
-    fun noteScreen_whenCreatingNote_displaysEmptyFields() {
-        // Given the default note title, body, and timestamp of NoteUiState in the NoteScreen are empty strings
+    fun addEditNoteScreen_whenCreatingNote_displaysEmptyFields() {
+        // Given the default note title, body, and timestamp of NoteUiState
+        // in the AddEditNoteScreen are empty strings
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(),
                 navigateBack = {},
                 onNavigateUp = {},
@@ -216,7 +217,7 @@ class NoteScreenTest {
             .assertIsDisplayed()
 
         // Assert that the timestamp text does not exist
-        composeTestRule.onNodeWithTagForStringId(R.string.timestamp_in_note_screen_tag)
+        composeTestRule.onNodeWithTagForStringId(R.string.timestamp_in_add_edit_note_screen_tag)
             .assertDoesNotExist()
     }
 
@@ -224,13 +225,13 @@ class NoteScreenTest {
      * Test that when updating an existing note,
      * note title and body text fields are filled correctly.
      * Case: Updating note
-     * for [NoteScreen]
+     * for [AddEditNoteScreen]
      */
     @Test
-    fun noteScreen_whenUpdatingNote_displaysFilledFields() {
-        // Given: NoteScreen with a non-empty note
+    fun addEditNoteScreen_whenUpdatingNote_displaysFilledFields() {
+        // Given: non-empty note
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(
                     note = mockNote1
                 ),
@@ -264,14 +265,14 @@ class NoteScreenTest {
      * Test that when updating an existing note,
      * the timestamp text is displayed correctly.
      * Case: Updating note
-     * for [NoteScreen]
+     * for [AddEditNoteScreen]
      */
     @Test
-    fun noteScreenBody_whenUpdatingNote_displaysTimestampCorrectly() {
-        // Given: NoteScreen with a non-empty timestamp
+    fun addEditNoteScreenBody_whenUpdatingNote_displaysTimestampCorrectly() {
+        // Given: non-empty timestamp
         val testTimestamp = mockTimestamp1
         composeTestRule.setContent {
-            NoteScreen(
+            AddEditNoteScreen(
                 noteUiState = NoteUiState(
                     note = Note(timestamp = testTimestamp)
                 ),
