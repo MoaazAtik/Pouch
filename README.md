@@ -107,32 +107,32 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 
 - **Unit & UI Testing**: Strengthening code coverage and reliability. (✅Done)
 
+- **Architecture & Code**: Improved structure and scalability. (✅Done)
+
 - **Adaptive Layout**: Support for various screen sizes.
 
 - **Recycle Bin Feature**: Temporarily storing deleted notes for 1 month.
-
-- **Architecture & Code**: Improved structure and scalability.
 
 - **UI/UX**: Smoother interface and user experience.
 
 <br>
 
 ## Core Files 📁
-- [NotesScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/NotesScreen.kt)
-- [NotesViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/NotesViewModel.kt)
-- [AddEditNoteScreen.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteScreen.kt)
-- [AddEditNoteViewModel.kt](app/src/main/java/com/thewhitewings/pouch/ui/AddEditNoteViewModel.kt)
-- [PouchNavGraph](app/src/main/java/com/thewhitewings/pouch/ui/navigation/PouchNavGraph.kt)<br><br>
-- [OfflineNotesRepositoryImpl.kt](app/src/main/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryImpl.kt)
-- [NoteDao.kt](app/src/main/java/com/thewhitewings/pouch/data/NoteDao.kt)
-- [PouchPreferences.kt](app/src/main/java/com/thewhitewings/pouch/data/PouchPreferences.kt)
-- [DatabaseMigrations.kt](app/src/main/java/com/thewhitewings/pouch/data/DatabaseMigrations.kt)<br><br>
-- [DateTimeUtils.kt](app/src/main/java/com/thewhitewings/pouch/utils/DateTimeUtils.kt)
-- [PouchApplication.kt](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)<br><br>
-- [NotesViewModelTest](app/src/test/java/com/thewhitewings/pouch/ui/NotesViewModelTest.kt)
-- [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/data/OfflineNotesRepositoryTest.kt)
-- [DateTimeUtilsTest](app/src/test/java/com/thewhitewings/pouch/utils/DateTimeUtilsTest.kt)<br><br>
-- [NotesScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/ui/NotesScreenTest.kt)
+- [NotesScreen](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/notes/NotesScreen.kt)
+- [NotesViewModel](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/notes/NotesViewModel.kt)
+- [AddEditNoteScreen](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/add_edit_note/AddEditNoteScreen.kt)
+- [AddEditNoteViewModel](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/add_edit_note/AddEditNoteViewModel.kt)
+- [PouchNavGraph](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/navigation/PouchNavGraph.kt)<br><br>
+- [OfflineNotesRepositoryImpl](app/src/main/java/com/thewhitewings/pouch/feature_note/data/repository/OfflineNotesRepositoryImpl.kt)
+- [NoteDao](app/src/main/java/com/thewhitewings/pouch/feature_note/data/data_source/NoteDao.kt)
+- [PouchPreferencesImpl](app/src/main/java/com/thewhitewings/pouch/feature_note/data/repository/PouchPreferencesImpl.kt)
+- [DatabaseMigrations](app/src/main/java/com/thewhitewings/pouch/feature_note/data/data_source/DatabaseMigrations.kt)<br><br>
+- [DateTimeUtils](app/src/main/java/com/thewhitewings/pouch/feature_note/util/DateTimeUtils.kt)
+- [PouchApplication](app/src/main/java/com/thewhitewings/pouch/PouchApplication.kt)<br><br>
+- [NotesViewModelTest](app/src/test/java/com/thewhitewings/pouch/presentation/NotesViewModelTest.kt)
+- [OfflineNotesRepositoryTest](app/src/test/java/com/thewhitewings/pouch/domain/OfflineNotesRepositoryTest.kt)
+- [DateTimeUtilsTest](app/src/test/java/com/thewhitewings/pouch/util/DateTimeUtilsTest.kt)<br><br>
+- [NotesScreenTest](app/src/androidTest/java/com/thewhitewings/pouch/presentation/NotesScreenTest.kt)
 - [NoteDaoTest](app/src/androidTest/java/com/thewhitewings/pouch/data/NoteDaoTest.kt)
 
 <br>
