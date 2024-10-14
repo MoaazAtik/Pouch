@@ -11,10 +11,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesDestination
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesScreen
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesViewModel
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteViewModel
 import com.thewhitewings.pouch.feature_note.util.Zone
@@ -30,13 +30,13 @@ fun PouchNavHost(
 
     NavHost(
         navController = navController,
-        startDestination = HomeDestination.route,
+        startDestination = NotesDestination.route,
         modifier = modifier
     ) {
 
         // Notes Screen
         composable(
-            route = HomeDestination.route
+            route = NotesDestination.route
         ) {
             val viewModel: NotesViewModel = viewModel(factory = NotesViewModel.Factory)
             val notesUiState by viewModel.uiState.collectAsState()
@@ -47,8 +47,8 @@ fun PouchNavHost(
                     if (notesUiState.zone == Zone.BOX_OF_MYSTERIES) viewModel.toggleZone()
                     else (navController.context as? Activity)?.finish()
                 },
-                navigateToCreateNote = { navController.navigate("${NoteDestination.route}/0") },
-                navigateToEditNote = { noteId -> navController.navigate("${NoteDestination.route}/$noteId") },
+                navigateToCreateNote = { navController.navigate("${AddEditNoteDestination.route}/0") },
+                navigateToEditNote = { noteId -> navController.navigate("${AddEditNoteDestination.route}/$noteId") },
                 onSearchNotes = viewModel::updateSearchQuery,
                 onSortNotes = viewModel::updateSortOption,
                 onToggleZone = viewModel::knockBoxOfMysteries
@@ -57,8 +57,8 @@ fun PouchNavHost(
 
         // [AddEditNoteScreen]
         composable(
-            route = NoteDestination.routeWithArgs,
-            arguments = listOf(navArgument(NoteDestination.noteIdArg) {
+            route = AddEditNoteDestination.routeWithArgs,
+            arguments = listOf(navArgument(AddEditNoteDestination.noteIdArg) {
                 type = NavType.IntType
                 defaultValue = 0
             })

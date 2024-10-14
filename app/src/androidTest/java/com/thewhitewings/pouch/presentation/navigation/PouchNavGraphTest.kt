@@ -11,9 +11,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.thewhitewings.pouch.R
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.navigation.PouchNavHost
-import com.thewhitewings.pouch.feature_note.presentation.notes.HomeDestination
+import com.thewhitewings.pouch.feature_note.presentation.notes.NotesDestination
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
 import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
@@ -49,7 +49,7 @@ class PouchNavGraphTest {
     @Test
     fun pouchNavHost_onAppInitialization_notesScreenIsDisplayed() {
         // Assert that current route in the navController is NotesScreen's route
-        navController.assertCurrentRouteName(HomeDestination.route)
+        navController.assertCurrentRouteName(NotesDestination.route)
 
         // Assert that the NotesScreen is displayed
         composeTestRule.onNodeWithTagForStringId(R.string.notes_screen_tag)
@@ -67,11 +67,11 @@ class PouchNavGraphTest {
             .performClick()
 
         // Assert that current route in the navController is correct
-        navController.assertCurrentRouteName(NoteDestination.routeWithArgs)
+        navController.assertCurrentRouteName(AddEditNoteDestination.routeWithArgs)
 
         // Verify that the noteId argument is passed as 0 (indicating new note creation)
         val noteIdArg =
-            navController.currentBackStackEntry?.arguments?.getInt(NoteDestination.noteIdArg)
+            navController.currentBackStackEntry?.arguments?.getInt(AddEditNoteDestination.noteIdArg)
         assertEquals(0, noteIdArg)
 
         // Verify that the AddEditNoteScreen is displayed
@@ -151,7 +151,7 @@ class PouchNavGraphTest {
             .performClick()
 
         // Assert that current route in the navController is AddEditNoteScreen's route
-        navController.assertCurrentRouteName(NoteDestination.routeWithArgs)
+        navController.assertCurrentRouteName(AddEditNoteDestination.routeWithArgs)
 
         // Verify that we are on the AddEditNoteScreen by checking if the AddEditNoteScreen UI element is displayed
         composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag)
@@ -159,7 +159,7 @@ class PouchNavGraphTest {
 
         // Verify that the noteId argument is Not passed as 0 (indicating editing an existing note)
         val noteIdArg =
-            navController.currentBackStackEntry?.arguments?.getInt(NoteDestination.noteIdArg)
+            navController.currentBackStackEntry?.arguments?.getInt(AddEditNoteDestination.noteIdArg)
         assertNotEquals(0, noteIdArg)
     }
 }

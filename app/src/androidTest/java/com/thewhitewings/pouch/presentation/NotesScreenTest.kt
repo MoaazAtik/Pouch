@@ -239,10 +239,10 @@ class NotesScreenTest {
 
     /**
      * Test that the zone text is displayed when the notes list is empty and the zone is CREATIVE
-     * Happy path for [HomeBody] and [ZoneText]
+     * Happy path for [NotesScreen] and [ZoneText]
      */
     @Test
-    fun homeBody_emptyNotesListAndCreativeZone_displayZoneTextCorrectly() {
+    fun notesScreen_emptyNotesListAndCreativeZone_displayZoneTextCorrectly() {
         // Given: initial notes list is empty, and zone is CREATIVE
         composeTestRule.setContent {
             NotesScreen(
@@ -262,10 +262,10 @@ class NotesScreenTest {
 
     /**
      * Test that the zone text is displayed when the notes list is empty and the zone is BOX_OF_MYSTERIES
-     * Happy path for [HomeBody] and [ZoneText]
+     * Happy path for [NotesScreen] and [ZoneText]
      */
     @Test
-    fun homeBody_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
+    fun notesScreen_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(zone = Zone.BOX_OF_MYSTERIES),
@@ -285,10 +285,10 @@ class NotesScreenTest {
     /**
      * Test that the zone text is not displayed when the notes list is not empty and the zone is Creative
      * Case: notes list is not empty and zone is CREATIVE
-     * for [HomeBody] and [ZoneText]
+     * for [NotesScreen] and [ZoneText]
      */
     @Test
-    fun homeBody_nonEmptyNotesListAndCreativeZone_noZoneText() {
+    fun notesScreen_nonEmptyNotesListAndCreativeZone_noZoneText() {
         val mockNotesList = listOf(Note())
 
         composeTestRule.setContent {
@@ -311,10 +311,10 @@ class NotesScreenTest {
 
     /**
      * Test that the logo image is displayed
-     * Happy path for [HomeBody] and [LogoImage]
+     * Happy path for [NotesScreen] and [LogoImage]
      */
     @Test
-    fun homeBody_displayLogoImage() {
+    fun notesScreen_displayLogoImage() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),
@@ -358,7 +358,8 @@ class NotesScreenTest {
     }
 
     /**
-     * Test that when the search notes text field is empty, the placeholder is displayed and the clear button is not displayed
+     * Test that when the search notes text field is empty,
+     * the placeholder is displayed and the clear button is not displayed
      * Happy path for [SearchNotesTextField]
      */
     @Test
@@ -478,7 +479,7 @@ class NotesScreenTest {
 
     /**
      * Test that the sort notes button is displayed and the sort options menu is not displayed initially
-     * Happy path for [HomeBody] and [SortNotesButton]
+     * Happy path for [NotesScreen] and [SortNotesButton]
      */
     @Test
     fun sortNotesButton_initially_buttonDisplayed_AndOptionsMenuNotDisplayed() {
@@ -505,7 +506,7 @@ class NotesScreenTest {
 
     /**
      * Test that the sort notes button opens the sort options menu and the options are displayed
-     * Happy path for [HomeBody] and [SortNotesButton]
+     * Happy path for [NotesScreen] and [SortNotesButton]
      */
     @Test
     fun sortNotesButton_onClick_expandMenu() {
@@ -536,7 +537,7 @@ class NotesScreenTest {
 
     /**
      * Test that when a sort option is selected, the sort options menu is collapsed and the correct sort option is selected.
-     * Happy path for [HomeBody] and [SortNotesButton]
+     * Happy path for [NotesScreen] and [SortNotesButton]
      */
     @Test
     fun sortNotesButton_onOptionClick_collapseMenu_andSelectOption() {
@@ -567,7 +568,7 @@ class NotesScreenTest {
 
     /**
      * Test that when clicking outside the sort notes button, the sort options menu is dismissed.
-     * Edge case for [HomeBody] and [SortNotesButton]
+     * Edge case for [NotesScreen] and [SortNotesButton]
      */
     @Test
     fun sortNotesButton_onOutsideClick_menuDismisses() {

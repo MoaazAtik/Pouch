@@ -42,8 +42,8 @@ private const val TAG = "AddEditNoteScreen"
 /**
  * Navigation destination for [AddEditNoteScreen]
  */
-object NoteDestination : NavigationDestination {
-    override val route = "note"
+object AddEditNoteDestination : NavigationDestination {
+    override val route = "add_edit_note"
     override val titleRes = R.string.app_name
 
     /**

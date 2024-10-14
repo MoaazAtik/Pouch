@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
 private const val TAG = "NotesViewModel"
 
 /**
- * ViewModel to interact with the [OfflineNotesRepository]'s data source and the Notes list screen.
+ * ViewModel to interact with the [OfflineNotesRepository]'s data source and the [NotesScreen].
  */
 @OptIn(ExperimentalCoroutinesApi::class)
 class NotesViewModel(

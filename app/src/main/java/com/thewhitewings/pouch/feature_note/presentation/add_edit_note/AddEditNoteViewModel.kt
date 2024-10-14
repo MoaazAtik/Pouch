@@ -43,7 +43,7 @@ class AddEditNoteViewModel(
      * Initialize the note with the given ID when opening an existing note.
      */
     private fun initializeNote() {
-        val noteId: Int = savedStateHandle[NoteDestination.noteIdArg]
+        val noteId: Int = savedStateHandle[AddEditNoteDestination.noteIdArg]
             ?: return
 
         viewModelScope.launch(dispatcher) {

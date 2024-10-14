@@ -49,7 +49,7 @@ enum class DateTimeFormatType {
     LOCAL_TO_LOCAL_MEDIUM_LENGTH_FORMAT,
 
     /**
-     * Formatted Date in Local Time Zone for displaying in Notes list Screen.
+     * Formatted Date in Local Time Zone for displaying in [NotesScreen].
      *
      * It is formatted as: [DateTimeUtils.SHORT_LENGTH_FORMAT]
      * "MMM d" = Feb 4

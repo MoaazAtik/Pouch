@@ -3,7 +3,7 @@ package com.thewhitewings.pouch.presentation
 import androidx.lifecycle.SavedStateHandle
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import com.thewhitewings.pouch.mocks.mockNote1
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteUiState
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteViewModel
 import com.thewhitewings.pouch.rules.MainDispatcherRule
@@ -92,7 +92,7 @@ class AddEditNoteViewModelTest {
             notesRepository = mock(OfflineNotesRepository::class.java)
 
             // SavedStateHandle with noteIdArg
-            savedStateHandle = SavedStateHandle(mapOf(NoteDestination.noteIdArg to 1))
+            savedStateHandle = SavedStateHandle(mapOf(AddEditNoteDestination.noteIdArg to 1))
 
             // Mock the repository to return null for the provided note ID
             whenever(notesRepository.getNoteById(1)).thenReturn(flowOf(null))
@@ -298,7 +298,7 @@ class AddEditNoteViewModelTest {
 
 
     /**
-     * Initialize the ViewModel without passing in a [NoteDestination.noteIdArg] to create a new note.
+     * Initialize the ViewModel without passing in a [AddEditNoteDestination.noteIdArg] to create a new note.
      */
     private fun initializeViewModelToCreateNewNote() {
         // Mock the repository
@@ -312,14 +312,14 @@ class AddEditNoteViewModelTest {
     }
 
     /**
-     * Initialize the ViewModel with a [NoteDestination.noteIdArg] to update an existing note.
+     * Initialize the ViewModel with a [AddEditNoteDestination.noteIdArg] to update an existing note.
      */
     private fun initializeViewModelToUpdateExistingNote() {
         // Mock the repository
         notesRepository = mock(OfflineNotesRepository::class.java)
 
         // SavedStateHandle with noteIdArg
-        savedStateHandle = SavedStateHandle(mapOf(NoteDestination.noteIdArg to 1))
+        savedStateHandle = SavedStateHandle(mapOf(AddEditNoteDestination.noteIdArg to 1))
 
         // Mock the repository response to return the mock note
         whenever(notesRepository.getNoteById(1)).thenReturn(flowOf(mockNote1))

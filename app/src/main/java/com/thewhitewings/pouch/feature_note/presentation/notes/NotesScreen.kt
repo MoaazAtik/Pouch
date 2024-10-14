@@ -97,10 +97,10 @@ import com.thewhitewings.pouch.feature_note.util.Zone
 private const val TAG = "NotesScreen"
 
 /**
- * Navigation destination for Notes list screen
+ * Navigation destination for [NotesScreen]
  */
-object HomeDestination : NavigationDestination {
-    override val route = "home"
+object NotesDestination : NavigationDestination {
+    override val route = "notes"
     override val titleRes = R.string.app_name
 }
 
