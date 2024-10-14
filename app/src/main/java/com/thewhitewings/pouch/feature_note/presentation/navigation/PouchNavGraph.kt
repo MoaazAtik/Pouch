@@ -16,7 +16,7 @@ import com.thewhitewings.pouch.feature_note.presentation.notes.HomeScreen
 import com.thewhitewings.pouch.feature_note.presentation.notes.HomeViewModel
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteViewModel
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteViewModel
 import com.thewhitewings.pouch.feature_note.util.Zone
 
 /**
@@ -63,7 +63,7 @@ fun PouchNavHost(
                 defaultValue = 0
             })
         ) {
-            val viewModel: NoteViewModel = viewModel(factory = NoteViewModel.Factory)
+            val viewModel: AddEditNoteViewModel = viewModel(factory = AddEditNoteViewModel.Factory)
             val noteUiState by viewModel.uiState.collectAsState()
 
             AddEditNoteScreen(

@@ -17,12 +17,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-private const val TAG = "NoteViewModel"
+private const val TAG = "AddEditNoteViewModel"
 
 /**
  * ViewModel to interact with the [OfflineNotesRepository]'s data source and the [AddEditNoteScreen].
  */
-class NoteViewModel(
+class AddEditNoteViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val notesRepository: OfflineNotesRepository,
     private val dispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -133,14 +133,14 @@ class NoteViewModel(
     companion object {
 
         /**
-         * Factory for [NoteViewModel] that takes [OfflineNotesRepository] as a dependency
+         * Factory for [AddEditNoteViewModel] that takes [OfflineNotesRepository] as a dependency
          */
         val Factory: ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 val application =
                     (this[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY] as PouchApplication)
                 val notesRepository = application.notesRepository
-                NoteViewModel(
+                AddEditNoteViewModel(
                     savedStateHandle = this.createSavedStateHandle(),
                     notesRepository = notesRepository
                 )

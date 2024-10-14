@@ -5,7 +5,7 @@ import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesReposi
 import com.thewhitewings.pouch.mocks.mockNote1
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteDestination
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteUiState
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.NoteViewModel
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteViewModel
 import com.thewhitewings.pouch.rules.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -22,14 +22,14 @@ import org.mockito.Mockito.verify
 import org.mockito.kotlin.whenever
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class NoteViewModelTest {
+class AddEditNoteViewModelTest {
 
     // Rule to set main dispatcher to a test coroutine dispatcher
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
     // Mocks and ViewModel
-    private lateinit var viewModel: NoteViewModel
+    private lateinit var viewModel: AddEditNoteViewModel
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var notesRepository: OfflineNotesRepository
 
@@ -37,15 +37,15 @@ class NoteViewModelTest {
     private val testDispatcher = UnconfinedTestDispatcher()
 
     /**
-     * Try to initialize NoteViewModel without passing in a noteIdArg. No repository call should be made and no ui state update should happen.
+     * Try to initialize AddEditNoteViewModel without passing in a noteIdArg. No repository call should be made and no ui state update should happen.
      * This case represents creating a new note.
      * Case: noteIdArg is not provided
-     * for [NoteViewModel.initializeNote]
+     * for [AddEditNoteViewModel.initializeNote]
      */
     @Test
     fun `When initializing note and noteId is not provided, no repository call and no ui state update`() =
         runTest {
-            // When NoteViewModel is initialized, it calls initializeNote()
+            // When AddEditNoteViewModel is initialized, it calls initializeNote()
             // Since noteIdArg is not provided, no note should be loaded
             initializeViewModelToCreateNewNote()
 
@@ -59,10 +59,10 @@ class NoteViewModelTest {
         }
 
     /**
-     * Try to initialize NoteViewModel with a noteIdArg. A repository call should be made and ui state should be updated.
+     * Try to initialize AddEditNoteViewModel with a noteIdArg. A repository call should be made and ui state should be updated.
      * This case represents updating an existing note.
      * Case: noteIdArg is provided
-     * for [NoteViewModel.initializeNote]
+     * for [AddEditNoteViewModel.initializeNote]
      */
     @Test
     fun `When initializing note and noteId is provided, get note from repository and update ui state`() =
@@ -81,9 +81,9 @@ class NoteViewModelTest {
         }
 
     /**
-     * Try to initialize NoteViewModel with a noteIdArg, but the note is not found in the repository. A repository call should be made, but ui state should not be updated.
+     * Try to initialize AddEditNoteViewModel with a noteIdArg, but the note is not found in the repository. A repository call should be made, but ui state should not be updated.
      * Case: noteIdArg is provided, but note is not found
-     * for [NoteViewModel.initializeNote]
+     * for [AddEditNoteViewModel.initializeNote]
      */
     @Test
     fun `When initializing note and noteId is provided, but note is not found, do not update ui state`() =
@@ -98,7 +98,7 @@ class NoteViewModelTest {
             whenever(notesRepository.getNoteById(1)).thenReturn(flowOf(null))
 
             // Initialize the ViewModel
-            viewModel = NoteViewModel(savedStateHandle, notesRepository, testDispatcher)
+            viewModel = AddEditNoteViewModel(savedStateHandle, notesRepository, testDispatcher)
 
             // Collect the latest noteUiState value
             val currentState = viewModel.uiState.first()
@@ -112,7 +112,7 @@ class NoteViewModelTest {
 
     /**
      * Pass note title to update note title of the current note's state correctly.
-     * Happy path for [NoteViewModel.updateNoteTitle]
+     * Happy path for [AddEditNoteViewModel.updateNoteTitle]
      */
     @Test
     fun `When updating note title, update ui state correctly`() = runTest {
@@ -142,7 +142,7 @@ class NoteViewModelTest {
 
     /**
      * Pass note body to update note body of the current note's state correctly.
-     * Happy path for [NoteViewModel.updateNoteBody]
+     * Happy path for [AddEditNoteViewModel.updateNoteBody]
      */
     @Test
     fun `When updating note body, update ui state correctly`() = runTest {
@@ -174,7 +174,7 @@ class NoteViewModelTest {
      * When creating a new note, and title and/or body is not empty,
      * call the repository to create note.
      * Case: Creating a note when title is not empty
-     * Happy path for [NoteViewModel.createOrUpdateNote]
+     * Happy path for [AddEditNoteViewModel.createOrUpdateNote]
      */
     @Test
     fun `When creating new note, and title or body is not empty, create note`() = runTest {
@@ -204,7 +204,7 @@ class NoteViewModelTest {
      * When creating a new note, and title and body are empty,
      * do not call the repository to create note.
      * Case: Creating a note when title and body are empty
-     * Happy path for [NoteViewModel.createOrUpdateNote]
+     * Happy path for [AddEditNoteViewModel.createOrUpdateNote]
      */
     @Test
     fun `When creating new note, and title and body are empty, do not create note`() = runTest {
@@ -226,7 +226,7 @@ class NoteViewModelTest {
      * When updating an existing note, and title and/or body is modified,
      * call the repository to update note.
      * Case: Updating an existing note when title is modified
-     * Happy path for [NoteViewModel.createOrUpdateNote]
+     * Happy path for [AddEditNoteViewModel.createOrUpdateNote]
      */
     @Test
     fun `When updating an existing note, and title or body is modified, update note`() = runTest {
@@ -258,7 +258,7 @@ class NoteViewModelTest {
      * When updating an existing note, and title and body are unchanged,
      * do not call the repository to update note.
      * Case: Updating an existing note when title and body are unchanged
-     * Happy path for [NoteViewModel.createOrUpdateNote]
+     * Happy path for [AddEditNoteViewModel.createOrUpdateNote]
      */
     @Test
     fun `When updating an existing note, and title and body are unchanged, do not update note`() =
@@ -278,7 +278,7 @@ class NoteViewModelTest {
 
     /**
      * When deleting a note, call the repository to delete note.
-     * Happy path for [NoteViewModel.deleteNote]
+     * Happy path for [AddEditNoteViewModel.deleteNote]
      */
     @Test
     fun `When deleting a note, delete it`() = runTest {
@@ -308,7 +308,7 @@ class NoteViewModelTest {
         savedStateHandle = SavedStateHandle()
 
         // Initialize ViewModel before each test, with a test dispatcher
-        viewModel = NoteViewModel(savedStateHandle, notesRepository, testDispatcher)
+        viewModel = AddEditNoteViewModel(savedStateHandle, notesRepository, testDispatcher)
     }
 
     /**
@@ -325,6 +325,6 @@ class NoteViewModelTest {
         whenever(notesRepository.getNoteById(1)).thenReturn(flowOf(mockNote1))
 
         // Initialize ViewModel with the new SavedStateHandle
-        viewModel = NoteViewModel(savedStateHandle, notesRepository, testDispatcher)
+        viewModel = AddEditNoteViewModel(savedStateHandle, notesRepository, testDispatcher)
     }
 }
