@@ -223,7 +223,7 @@ fun AddEditNoteScreenPreview() {
             uiState = AddEditNoteUiState(
                 Note(
                     timestamp = stringResource(
-                        R.string.timestamp_not_formatted
+                        R.string.mock_timestamp_default_format
                     )
                 )
             ),
@@ -247,7 +247,7 @@ fun AddEditNoteScreenNightPreview() {
             uiState = AddEditNoteUiState(
                 Note(
                     timestamp = stringResource(
-                        R.string.timestamp_not_formatted
+                        R.string.mock_timestamp_default_format
                     )
                 )
             ),

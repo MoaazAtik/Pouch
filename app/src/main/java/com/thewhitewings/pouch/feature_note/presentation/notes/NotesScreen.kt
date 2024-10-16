@@ -586,14 +586,14 @@ private fun NotesScreenNightPreview() {
         NotesScreen(
             uiState = NotesUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
+                    Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format)),
                     Note(
                         2,
                         "Pen",
                         "200.0\nStaggered",
-                        stringResource(R.string.timestamp_not_formatted)
+                        stringResource(R.string.mock_timestamp_default_format)
                     ),
-                    Note(3, "TV", "300.0", stringResource(R.string.timestamp_not_formatted))
+                    Note(3, "TV", "300.0", stringResource(R.string.mock_timestamp_default_format))
                 )
             ),
             navigateBack = {},
@@ -613,14 +613,14 @@ private fun NotesScreenBodyPreview() {
         NotesScreenBody(
             uiState = NotesUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted)),
+                    Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format)),
                     Note(
                         2,
                         "Pen",
                         "200.0\nStaggered",
-                        stringResource(R.string.timestamp_not_formatted)
+                        stringResource(R.string.mock_timestamp_default_format)
                     ),
-                    Note(3, "TV", "300.0", stringResource(R.string.timestamp_not_formatted))
+                    Note(3, "TV", "300.0", stringResource(R.string.mock_timestamp_default_format))
                 )
             ),
             onSearchNotes = {},
@@ -738,7 +738,7 @@ private fun SearchNotesNightPreview() {
 private fun NotesListItemPreview() {
     PouchTheme {
         NotesListItem(
-            Note(1, "Game", "Note body", stringResource(R.string.timestamp_not_formatted))
+            Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
         )
     }
 }
