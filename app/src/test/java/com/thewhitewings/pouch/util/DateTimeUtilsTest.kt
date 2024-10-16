@@ -1,15 +1,15 @@
 package com.thewhitewings.pouch.util
 
+import com.thewhitewings.pouch.feature_note.util.DEFAULT_FORMAT
+import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
+import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
+import com.thewhitewings.pouch.feature_note.util.MEDIUM_LENGTH_FORMAT
+import com.thewhitewings.pouch.feature_note.util.SHORT_LENGTH_FORMAT
 import com.thewhitewings.pouch.mocks.mockDateTimeLocalTimezone
 import com.thewhitewings.pouch.mocks.mockDateTimeNewYorkTimezone
 import com.thewhitewings.pouch.mocks.mockDateTimeNewYorkTimezoneUseDayLight
 import com.thewhitewings.pouch.mocks.mockDateTimeSingaporeTimezone
 import com.thewhitewings.pouch.mocks.mockDateTimeUtcTimezone
-import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
-import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
-import com.thewhitewings.pouch.feature_note.util.DateTimeUtils.DEFAULT_FORMAT
-import com.thewhitewings.pouch.feature_note.util.DateTimeUtils.MEDIUM_LENGTH_FORMAT
-import com.thewhitewings.pouch.feature_note.util.DateTimeUtils.SHORT_LENGTH_FORMAT
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before

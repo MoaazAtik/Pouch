@@ -14,28 +14,6 @@ private const val TAG = "DateTimeUtils"
  */
 object DateTimeUtils {
 
-    /**
-     * Default format of date and time.
-     *
-     * yyyy-MM-dd HH:mm:ss = 2024-01-02 19:16:19
-     */
-    const val DEFAULT_FORMAT: String = "yyyy-MM-dd HH:mm:ss"
-
-    /**
-     * Medium length format for date and time.
-     *
-     * "MMM d, yyyy" = Feb 4, 2024
-     */
-    const val MEDIUM_LENGTH_FORMAT: String = "MMM d, yyyy"
-
-    /**
-     * Short length format for date and time.
-     *
-     * "MMM d" = Feb 4
-     */
-    const val SHORT_LENGTH_FORMAT: String = "MMM d"
-
-
     var isTestEnvironment = false
 
     /**

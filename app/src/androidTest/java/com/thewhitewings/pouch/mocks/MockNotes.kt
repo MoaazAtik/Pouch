@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.mocks
 
 import com.thewhitewings.pouch.feature_note.domain.model.Note
+import com.thewhitewings.pouch.feature_note.util.DEFAULT_FORMAT
 
 /*
 Important Note: timestamp format in these notes doesn't represent the actual timestamp format of notes in the database.
@@ -33,6 +34,6 @@ val oldestFirstNotes = listOf(mockNote1, mockNote3, mockNote2)
 val newestFirstNotes = oldestFirstNotes.reversed()
 
 /**
- * Timestamp formatted like [DatetimeUtils.DEFAULT_FORMAT] which represents the actual timestamp format of notes in the database.
+ * Timestamp formatted like [DEFAULT_FORMAT] which represents the actual timestamp format of notes in the database.
  */
 const val mockTimestamp1 = "2024-01-02 19:16:19"
