@@ -680,20 +680,20 @@ class NotesScreenTest {
     }
 
     /**
-     * Test that when a note is clicked, the correct note is passed to the onItemClick callback
+     * Test that when a note is clicked, the correct note is passed to the onNoteClick callback
      * Happy path for [NotesList]
      */
     @Test
-    fun notesList_whenNoteClicked_callsOnItemClickWithCorrectNote() {
+    fun notesList_whenNoteClicked_callsOnNoteClickWithCorrectNote() {
         val mockNotesList = listOf(
             Note(1, "Title 1", "Body 1"),
             Note(2, "Title 2", "Body 2"),
             Note(3, "Title 3", "Body 3")
         )
 
-        // Create a mock for the onItemClick callback
+        // Create a mock for the onNoteClick callback
         var clickedNote: Note? = null
-        val onItemClick: (Int) -> Unit = { passedNoteId ->
+        val onNoteClick: (Int) -> Unit = { passedNoteId ->
             mockNotesList.forEach { note ->
                 if (note.id == passedNoteId) {
                     clickedNote = note
@@ -709,7 +709,7 @@ class NotesScreenTest {
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = { passedNoteId: Int ->
-                    onItemClick(passedNoteId)
+                    onNoteClick(passedNoteId)
                 },
                 onSearchNotes = {},
                 onSortNotes = {},
@@ -721,7 +721,7 @@ class NotesScreenTest {
         composeTestRule.onNodeWithText(mockNotesList[1].noteTitle)
             .performClick()
 
-        // Assert: The correct note is passed to the onItemClick callback
+        // Assert: The correct note is passed to the onNoteClick callback
         assertEquals(mockNotesList[1], clickedNote)
     }
 

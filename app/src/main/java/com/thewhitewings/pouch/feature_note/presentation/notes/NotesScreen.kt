@@ -142,7 +142,7 @@ fun NotesScreen(
     ) { innerPadding ->
         NotesScreenBody(
             uiState = uiState,
-            onItemClick = navigateToEditNote,
+            onNoteClick = navigateToEditNote,
             onSearchNotes = onSearchNotes,
             onSortNotes = onSortNotes,
             onToggleZone = onToggleZone,
@@ -229,7 +229,7 @@ fun RevealLoaderAnimation(
 @Composable
 private fun NotesScreenBody(
     uiState: NotesUiState,
-    onItemClick: (Int) -> Unit,
+    onNoteClick: (Int) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
@@ -284,7 +284,7 @@ private fun NotesScreenBody(
         )
         NotesList(
             notesList = uiState.notesList,
-            onItemClick = { onItemClick(it.id) },
+            onNoteClick = { onNoteClick(it.id) },
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_small))
         )
     }
@@ -420,7 +420,7 @@ fun BomRevealingButton(
 @Composable
 private fun NotesList(
     notesList: List<Note>,
-    onItemClick: (Note) -> Unit,
+    onNoteClick: (Note) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalStaggeredGrid(
@@ -433,7 +433,7 @@ private fun NotesList(
                 note = note,
                 modifier = Modifier
                     .padding(dimensionResource(id = R.dimen.padding_small))
-                    .clickable { onItemClick(note) }
+                    .clickable { onNoteClick(note) }
                     .animateItem()
             )
         }
@@ -626,7 +626,7 @@ private fun NotesScreenBodyPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onItemClick = {}
+            onNoteClick = {}
         )
     }
 }
@@ -640,7 +640,7 @@ private fun NotesScreenBodyEmptyListPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onItemClick = {}
+            onNoteClick = {}
         )
     }
 }
@@ -657,7 +657,7 @@ private fun NotesScreenBodyBomEmptyListPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onItemClick = {}
+            onNoteClick = {}
         )
     }
 }
@@ -673,7 +673,7 @@ private fun NotesScreenBodyEmptyListNightPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onItemClick = {}
+            onNoteClick = {}
         )
     }
 }
@@ -692,7 +692,7 @@ private fun NotesScreenBodyBomEmptyListNightPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onItemClick = {}
+            onNoteClick = {}
         )
     }
 }
