@@ -479,10 +479,10 @@ class NotesScreenTest {
 
     /**
      * Test that the sort notes button is displayed and the sort options menu is not displayed initially
-     * Happy path for [NotesScreen] and [SortNotesButton]
+     * Happy path for [NotesScreen] and [SortNotesButtonAndMenu]
      */
     @Test
-    fun sortNotesButton_initially_buttonDisplayed_AndOptionsMenuNotDisplayed() {
+    fun sortNotesButtonAndMenu_initially_buttonDisplayed_AndOptionsMenuNotDisplayed() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),
@@ -506,10 +506,10 @@ class NotesScreenTest {
 
     /**
      * Test that the sort notes button opens the sort options menu and the options are displayed
-     * Happy path for [NotesScreen] and [SortNotesButton]
+     * Happy path for [NotesScreen] and [SortNotesButtonAndMenu]
      */
     @Test
-    fun sortNotesButton_onClick_expandMenu() {
+    fun sortNotesButtonAndMenu_onClick_expandMenu() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),
@@ -537,10 +537,10 @@ class NotesScreenTest {
 
     /**
      * Test that when a sort option is selected, the sort options menu is collapsed and the correct sort option is selected.
-     * Happy path for [NotesScreen] and [SortNotesButton]
+     * Happy path for [NotesScreen] and [SortNotesButtonAndMenu]
      */
     @Test
-    fun sortNotesButton_onOptionClick_collapseMenu_andSelectOption() {
+    fun sortNotesButtonAndMenu_onOptionClick_collapseMenu_andSelectOption() {
         var selectedSortOptionId: Int? = null
         composeTestRule.setContent {
             NotesScreen(
@@ -568,10 +568,10 @@ class NotesScreenTest {
 
     /**
      * Test that when clicking outside the sort notes button, the sort options menu is dismissed.
-     * Edge case for [NotesScreen] and [SortNotesButton]
+     * Edge case for [NotesScreen] and [SortNotesButtonAndMenu]
      */
     @Test
-    fun sortNotesButton_onOutsideClick_menuDismisses() {
+    fun sortNotesButtonAndMenu_onOutsideClick_menuDismisses() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),

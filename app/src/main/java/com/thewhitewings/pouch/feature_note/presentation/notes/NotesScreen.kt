@@ -271,7 +271,7 @@ private fun NotesScreenBody(
                     .weight(1f)
             )
 
-            SortNotesButton(
+            SortNotesButtonAndMenu(
                 onSortNotes = onSortNotes,
                 focusManager = focusManager,
                 modifier = Modifier
@@ -351,7 +351,7 @@ private fun SearchNotesTextField(
 }
 
 @Composable
-private fun SortNotesButton(
+private fun SortNotesButtonAndMenu(
     onSortNotes: (sortOptionId: Int) -> Unit,
     focusManager: FocusManager,
     modifier: Modifier = Modifier
