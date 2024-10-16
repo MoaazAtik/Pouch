@@ -1,35 +1,40 @@
 <resources>
     <string name="app_name">Pouch</string>
+    <string name="zone_initialization_animations_tag">Zone initialization animations</string>
     <string name="creative_zone">Creative Zone</string>
     <string name="box_of_mysteries">Box\nof\nMysteries</string>
-    <string name="sort_notes">Sort notes</string>
     <string name="the_white_wings_logo">Logo</string>
-    <string name="add_new_note">Add new note</string>
-    <string name="bom_revealing_message">Box of Mysteries is revealed</string>
-    <string name="back_description">Back and save or discard note</string>
-    <string name="delete_note_description">Delete Note</string>
+
+    <string name="notes_screen_tag">Notes screen</string>
+    <string name="search_notes_text_field_tag">Search notes</string>
     <string name="search_notes_hint">Search notes</string>
     <string name="clear_search_notes_hint">Clear search notes</string>
-    <string name="note_title_hint">Title</string>
-    <string name="note_body_hint">Note...</string>
-    <string name="timestamp_edited">Edited %1$s</string>
-    <string name="mock_timestamp_default_format">2024-04-23 19:16:15</string>
-    <string name="mock_timestamp_medium_length_format">Apr 23, 2024</string>
-    <string name="mock_timestamp_short_length_format">Apr 23</string>
+    <string name="sort_options_menu_tag">Sort options menu</string>
+    <string name="sort_notes">Sort notes</string>
+    <string name="bom_button_tag">Box of mysteries revealing button</string>
+    <string name="notes_list_tag">Notes list</string>
+    <string name="notes_list_item_tag">Notes list item</string>
+    <string name="add_new_note">Add new note</string>
+
     <string name="sort_option_a_z">A ► Z</string>
     <string name="sort_option_z_a">Z ► A</string>
     <string name="sort_option_oldest_first">Oldest</string>
     <string name="sort_option_newest_first">Newest</string>
-    <string name="zone_initialization_animations_tag">Zone initialization animations</string>
+
     <string name="reveal_loader_animation_tag">Reveal loader animation</string>
-    <string name="search_notes_text_field_tag">Search notes</string>
-    <string name="sort_options_menu_tag">Sort options menu</string>
-    <string name="bom_button_tag">Box of mysteries revealing button</string>
-    <string name="notes_list_tag">Notes list</string>
-    <string name="notes_list_item_tag">Notes list item</string>
-    <string name="notes_screen_tag">Notes screen</string>
+    <string name="bom_revealing_message">Box of Mysteries is revealed</string>
+
     <string name="add_edit_note_screen_tag">Add edit note screen</string>
+    <string name="back_description">Back and save or discard note</string>
+    <string name="delete_note_description">Delete Note</string>
     <string name="note_title_text_field_tag">Note title text field</string>
+    <string name="note_title_hint">Title</string>
     <string name="note_body_text_field_tag">Note body text field</string>
+    <string name="note_body_hint">Note...</string>
     <string name="timestamp_in_add_edit_note_screen_tag">Timestamp in add edit note screen</string>
+    <string name="timestamp_in_add_edit_note_screen_template">Edited %1$s</string>
+
+    <string name="mock_timestamp_default_format">2024-04-23 19:16:15</string>
+    <string name="mock_timestamp_medium_length_format">Apr 23, 2024</string>
+    <string name="mock_timestamp_short_length_format">Apr 23</string>
 </resources>

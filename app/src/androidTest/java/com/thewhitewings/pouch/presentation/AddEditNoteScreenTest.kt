@@ -293,7 +293,7 @@ class AddEditNoteScreenTest {
         composeTestRule
             .onNodeWithText(
                 composeTestRule.activity.getString(
-                    R.string.timestamp_edited,
+                    R.string.timestamp_in_add_edit_note_screen_template,
                     formattedTimestamp
                 )
             )

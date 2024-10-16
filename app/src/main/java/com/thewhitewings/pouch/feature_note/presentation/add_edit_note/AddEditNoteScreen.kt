@@ -188,7 +188,7 @@ fun AddEditNoteScreenBody(
                 uiState.note.timestamp
             )
             Text(
-                text = stringResource(R.string.timestamp_edited, formattedTimestamp),
+                text = stringResource(R.string.timestamp_in_add_edit_note_screen_template, formattedTimestamp),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .testTag(stringResource(R.string.timestamp_in_add_edit_note_screen_tag))
