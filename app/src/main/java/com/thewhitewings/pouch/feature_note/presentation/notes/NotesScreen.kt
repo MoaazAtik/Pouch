@@ -515,13 +515,13 @@ fun ZoneText(currentZone: Zone) {
     val targetTextColor: Color
 
     if (currentZone == Zone.BOX_OF_MYSTERIES) {
-        zoneName = stringResource(id = R.string.box_of_mysteries)
+        zoneName = stringResource(id = R.string.box_of_mysteries_zone_name_multi_line)
         typeface = FontFamily.Cursive
         fontWeight = FontWeight.Bold
         targetTextSize = 32f
         targetTextColor = Color.Black
     } else {
-        zoneName = stringResource(id = R.string.creative_zone)
+        zoneName = stringResource(id = R.string.creative_zone_name)
         typeface = FontFamily.SansSerif
         fontWeight = FontWeight.Light
         targetTextSize = 26f

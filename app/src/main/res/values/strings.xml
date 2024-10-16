@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Pouch</string>
     <string name="zone_initialization_animations_tag">Zone initialization animations</string>
-    <string name="creative_zone">Creative Zone</string>
-    <string name="box_of_mysteries">Box\nof\nMysteries</string>
+    <string name="creative_zone_name">Creative Zone</string>
+    <string name="box_of_mysteries_zone_name_multi_line">Box\nof\nMysteries</string>
     <string name="the_white_wings_logo">Logo</string>
 
     <string name="notes_screen_tag">Notes screen</string>

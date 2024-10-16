@@ -256,7 +256,7 @@ class NotesScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.creative_zone)
+        composeTestRule.onNodeWithStringId(R.string.creative_zone_name)
             .assertIsDisplayed()
     }
 
@@ -278,7 +278,7 @@ class NotesScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.box_of_mysteries)
+        composeTestRule.onNodeWithStringId(R.string.box_of_mysteries_zone_name_multi_line)
             .assertIsDisplayed()
     }
 
@@ -305,7 +305,7 @@ class NotesScreenTest {
             )
         }
 
-        composeTestRule.onNodeWithStringId(R.string.creative_zone)
+        composeTestRule.onNodeWithStringId(R.string.creative_zone_name)
             .assertIsNotDisplayed()
     }
 
