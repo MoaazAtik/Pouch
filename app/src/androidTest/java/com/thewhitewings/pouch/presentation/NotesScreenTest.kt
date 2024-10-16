@@ -72,7 +72,7 @@ class NotesScreenTest {
      * Happy path for [NotesScreen]
      */
     @Test
-    fun notesScreen_displaysFAB() {
+    fun notesScreen_FAB_isDisplayed() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),
@@ -125,7 +125,7 @@ class NotesScreenTest {
      * Happy path for [NotesScreen] and [ShowAnimations]
      */
     @Test
-    fun notesScreen_displaysAnimations_whenInitializingZone() {
+    fun notesScreen_initializationAnimations_initializeZone_displayAnimations() {
         // Given: showAnimations' default is true
         // Set the content with showAnimations = true
         composeTestRule.setContent {
@@ -150,7 +150,7 @@ class NotesScreenTest {
      * for [NotesScreen]
      */
     @Test
-    fun notesScreen_noAnimations_whenZoneAlreadyInitialized() {
+    fun notesScreen_whenZoneAlreadyInitialized_noAnimations() {
         // Given: showAnimations' default true
         // Set the content with showAnimations = true
         composeTestRule.setContent {
@@ -174,7 +174,7 @@ class NotesScreenTest {
      * Happy path for [ShowAnimations] and [RevealScreenAnimation]
      */
     @Test
-    fun showAnimations_displaysCreativeZoneAnimation() {
+    fun showAnimations_onCreativeZone_displayAnimationsCorrectly() {
         // Set content with CREATIVE zone
         composeTestRule.setContent {
             ShowAnimations(
@@ -194,7 +194,7 @@ class NotesScreenTest {
      * Happy path for [ShowAnimations], [RevealScreenAnimation], and [RevealLoaderAnimation]
      */
     @Test
-    fun showAnimations_displaysBoxOfMysteriesAnimations() {
+    fun showAnimations_onBoxOfMysteriesZone_displayAnimationsCorrectly() {
         // Set content with BOX_OF_MYSTERIES zone
         composeTestRule.setContent {
             ShowAnimations(
@@ -218,7 +218,7 @@ class NotesScreenTest {
      * Happy path for [ShowAnimations]
      */
     @Test
-    fun showAnimations_displaysSnackbar_forBoxOfMysteries() {
+    fun showAnimations_onBoxOfMysteriesZone_displaySnackbar() {
         val snackbarHostState = SnackbarHostState()
 
         // Set content with BOX_OF_MYSTERIES zone
@@ -242,7 +242,7 @@ class NotesScreenTest {
      * Happy path for [NotesScreen] and [ZoneText]
      */
     @Test
-    fun notesScreen_emptyNotesListAndCreativeZone_displayZoneTextCorrectly() {
+    fun notesScreen_zoneText_emptyNotesListAndCreativeZone_displayZoneTextCorrectly() {
         // Given: initial notes list is empty, and zone is CREATIVE
         composeTestRule.setContent {
             NotesScreen(
@@ -265,7 +265,7 @@ class NotesScreenTest {
      * Happy path for [NotesScreen] and [ZoneText]
      */
     @Test
-    fun notesScreen_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
+    fun notesScreen_zoneText_emptyNotesListAndBomZone_displayZoneTextCorrectly() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(zone = Zone.BOX_OF_MYSTERIES),
@@ -288,7 +288,7 @@ class NotesScreenTest {
      * for [NotesScreen] and [ZoneText]
      */
     @Test
-    fun notesScreen_nonEmptyNotesListAndCreativeZone_noZoneText() {
+    fun notesScreen_zoneText_nonEmptyNotesListAndCreativeZone_noZoneText() {
         val mockNotesList = listOf(Note())
 
         composeTestRule.setContent {
@@ -314,7 +314,7 @@ class NotesScreenTest {
      * Happy path for [NotesScreen] and [LogoImage]
      */
     @Test
-    fun notesScreen_displayLogoImage() {
+    fun notesScreen_logoImage_isDisplayed() {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),
@@ -333,10 +333,10 @@ class NotesScreenTest {
 
     /**
      * Test that the search notes text field is displayed
-     * Happy path for [SearchNotesTextField]
+     * Happy path for [NotesScreen] and [SearchNotesTextField]
      */
     @Test
-    fun searchNotesTextField_isDisplayed() {
+    fun notesScreen_searchNotesTextField_isDisplayed() {
         // The initial state of the search notes text field is empty
         composeTestRule.setContent {
             NotesScreen(
@@ -417,7 +417,9 @@ class NotesScreenTest {
     }
 
     /**
-     * Test that when the search notes text field is not empty, the clear button is displayed and when clicked, the text field is cleared and the clear button is not displayed anymore
+     * Test that when the search notes text field is not empty,
+     * the clear button is displayed and when clicked,
+     * the text field is cleared and the clear button is not displayed anymore.
      * Happy path for [SearchNotesTextField]
      */
     @Test
