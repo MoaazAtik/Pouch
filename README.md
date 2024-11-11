@@ -85,8 +85,10 @@ This app was originally developed in Java using Android Views and older librarie
 The focus was on maintainability, scalability, and aligning with Modern App Development Principles.
  - **Programming Language:** Java
 
- - **UI**: Android Views
+ - **UI**: Android Views with XML
 
+ - **View Binding**: For better interaction with Android Views.
+ 
  - **Storage:** SQLite Database for local storage of notes.
 
  - **Architecture Pattern:** Model View ViewModel (MVVM) with Unidirectional Data Flow (UDF)
