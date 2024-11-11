@@ -87,7 +87,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 
  - **UI**: Android Views with XML
 
- - **View Binding**: For better interaction with Android Views.
+ - **View Binding**: For better interactions with Android Views.
  
  - **Storage:** SQLite Database for local storage of notes.
 
