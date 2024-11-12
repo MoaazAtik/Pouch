@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -268,6 +269,8 @@ private fun NotesScreenBody(
                 onValueChange = { onSearchNotes(it) },
                 modifier = Modifier
                     .weight(1f)
+                    .defaultMinSize(minHeight = 48.dp)
+                    .padding(horizontal = 14.dp)
             )
 
             SortNotesButtonAndMenu(
@@ -302,7 +305,6 @@ private fun SearchNotesTextField(
             Icon(
                 painter = painterResource(R.drawable.magnifier),
                 contentDescription = "",
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
             )
         },
         trailingIcon = {
@@ -317,18 +319,20 @@ private fun SearchNotesTextField(
         },
         modifier = modifier
             .testTag(stringResource(R.string.search_notes_text_field_tag))
-            .background(
-                color = Color.White,
-                shape = RoundedCornerShape(10.dp)
-            )
             .border(
                 width = 1.dp,
-                color = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
+                color = MaterialTheme.colorScheme.inversePrimary,
                 shape = RoundedCornerShape(10.dp)
             ),
-        colors = TextFieldDefaults.colors(
+        colors = TextFieldDefaults.colors().copy(
             unfocusedIndicatorColor = Color.Transparent,
-            focusedIndicatorColor = Color.Transparent
+            focusedIndicatorColor = Color.Transparent,
+            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = 0.5f),
+            focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            unfocusedLeadingIconColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.75f),
+            focusedLeadingIconColor = MaterialTheme.colorScheme.inversePrimary,
+            unfocusedTrailingIconColor = MaterialTheme.colorScheme.inversePrimary.copy(alpha = 0.75f),
+            focusedTrailingIconColor = MaterialTheme.colorScheme.inversePrimary
         ),
         shape = RoundedCornerShape(10.dp),
         textStyle = TextStyle(
@@ -367,7 +371,7 @@ private fun SortNotesButtonAndMenu(
             Icon(
                 painter = painterResource(R.drawable.sort),
                 contentDescription = stringResource(R.string.sort_notes),
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
+                tint = MaterialTheme.colorScheme.inversePrimary
             )
         }
         DropdownMenu(
@@ -623,7 +627,7 @@ private fun NotesScreenNightPreview() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun NotesScreenBodyPreview() {
     PouchTheme(dynamicColor = false) {
@@ -653,10 +657,10 @@ private fun NotesScreenBodyPreview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
+//@Preview(
+//    showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
 @Composable
 private fun NotesScreenBodyNightPreview() {
     PouchTheme(dynamicColor = false) {
@@ -763,28 +767,33 @@ private fun SearchNotesPreview() {
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 320, heightDp = 100)
 @Composable
 private fun SearchNotesWithTextPreview() {
     PouchTheme(dynamicColor = false) {
-        SearchNotesTextField(
-            value = "note",
-            onValueChange = {}
-        )
+        Box(Modifier.padding(20.dp)) {
+            SearchNotesTextField(
+                value = "note",
+                onValueChange = {}
+            )
+        }
     }
 }
 
-//@Preview(
-//    showBackground = true,
-//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-//)
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+    widthDp = 320, heightDp = 100
+)
 @Composable
 private fun SearchNotesNightPreview() {
     PouchTheme(dynamicColor = false) {
-        SearchNotesTextField(
-            value = "",
-            onValueChange = {}
-        )
+        Box(Modifier.padding(20.dp)) {
+            SearchNotesTextField(
+                value = "",
+                onValueChange = {}
+            )
+        }
     }
 }
 
