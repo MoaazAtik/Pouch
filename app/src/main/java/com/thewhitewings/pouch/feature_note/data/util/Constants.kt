@@ -9,7 +9,7 @@ object Constants {
     /**
      * Database name of Creative zone
      */
-    const val CREATIVE_DATABASE_NAME: String = "notes_db"
+    const val CREATIVE_DATABASE_NAME: String = "creative_db"
 
     /**
      * Database name of BoxOfMysteries zone
