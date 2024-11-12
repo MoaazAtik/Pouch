@@ -6,7 +6,7 @@ val grayLogoBom = Color(0xB76A6A6A)
 
 val seedColor = Color(0xFF410006)
 
-val primaryLight = Color(0xFF904A48)
+val primaryLight = Color(0xFF9C4141)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFFFDAD8)
 val onPrimaryContainerLight = Color(0xFF3B080B)

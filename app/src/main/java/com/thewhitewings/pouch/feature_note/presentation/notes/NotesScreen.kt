@@ -18,13 +18,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -39,8 +37,6 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
@@ -90,11 +86,12 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.navigation.NavigationDestination
-import com.thewhitewings.pouch.ui.theme.PouchTheme
-import com.thewhitewings.pouch.ui.theme.grayLogoBom
+import com.thewhitewings.pouch.feature_note.presentation.util.customShadowedShape
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 import com.thewhitewings.pouch.feature_note.util.Zone
+import com.thewhitewings.pouch.ui.theme.PouchTheme
+import com.thewhitewings.pouch.ui.theme.grayLogoBom
 
 private const val TAG = "NotesScreen"
 
@@ -287,7 +284,7 @@ private fun NotesScreenBody(
         NotesList(
             notesList = uiState.notesList,
             onNoteClick = { onNoteClick(it.id) },
-            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_small))
+            modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_large))
         )
     }
 }
@@ -434,14 +431,14 @@ private fun NotesList(
             NotesListItem(
                 note = note,
                 modifier = Modifier
-                    .padding(dimensionResource(id = R.dimen.padding_small))
+                    .padding(
+                        start = dimensionResource(R.dimen.padding_medium),
+                        end = dimensionResource(R.dimen.padding_medium),
+                        top = 10.dp,
+                        bottom = 26.dp
+                    )
                     .clickable { onNoteClick(note) }
                     .animateItem()
-            )
-        }
-        item {
-            Spacer(
-                modifier = Modifier.height(dimensionResource(R.dimen.padding_extra_large))
             )
         }
     }
@@ -452,9 +449,15 @@ private fun NotesListItem(
     note: Note,
     modifier: Modifier = Modifier
 ) {
-    Card(
-        modifier = modifier.testTag(stringResource(R.string.notes_list_item_tag)),
-        elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
+    Box(
+        modifier = modifier
+            .testTag(stringResource(R.string.notes_list_item_tag))
+            .customShadowedShape(
+                color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                shadowColor = MaterialTheme.colorScheme.primary,
+                blurRadius = 12.dp,
+                cornerRadius = 10.dp
+            )
     ) {
         Column(
             modifier = Modifier
@@ -467,6 +470,7 @@ private fun NotesListItem(
             Text(
                 text = note.noteTitle,
                 style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
@@ -482,6 +486,7 @@ private fun NotesListItem(
             Text(
                 text = note.noteBody,
                 style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onBackground,
                 maxLines = 6,
                 overflow = TextOverflow.Ellipsis
             )
@@ -593,7 +598,12 @@ private fun NotesScreenNightPreview() {
         NotesScreen(
             uiState = NotesUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format)),
+                    Note(
+                        1,
+                        "Game",
+                        "Note body",
+                        stringResource(R.string.mock_timestamp_default_format)
+                    ),
                     Note(
                         2,
                         "Pen",
@@ -613,14 +623,52 @@ private fun NotesScreenNightPreview() {
     }
 }
 
-//@Preview(showBackground = true)
+@Preview(showBackground = true)
 @Composable
 private fun NotesScreenBodyPreview() {
-    PouchTheme {
+    PouchTheme(dynamicColor = false) {
         NotesScreenBody(
             uiState = NotesUiState(
                 notesList = listOf(
-                    Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format)),
+                    Note(
+                        1,
+                        "Game",
+                        "Note body",
+                        stringResource(R.string.mock_timestamp_default_format)
+                    ),
+                    Note(
+                        2,
+                        "Pen",
+                        "200.0\nStaggered",
+                        stringResource(R.string.mock_timestamp_default_format)
+                    ),
+                    Note(3, "TV", "300.0", stringResource(R.string.mock_timestamp_default_format))
+                )
+            ),
+            onSearchNotes = {},
+            onSortNotes = {},
+            onToggleZone = {},
+            onNoteClick = {}
+        )
+    }
+}
+
+@Preview(
+    showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+)
+@Composable
+private fun NotesScreenBodyNightPreview() {
+    PouchTheme(dynamicColor = false) {
+        NotesScreenBody(
+            uiState = NotesUiState(
+                notesList = listOf(
+                    Note(
+                        1,
+                        "Game",
+                        "Note body",
+                        stringResource(R.string.mock_timestamp_default_format)
+                    ),
                     Note(
                         2,
                         "Pen",
@@ -715,7 +763,7 @@ private fun SearchNotesPreview() {
     }
 }
 
-@Preview(showBackground = true)
+//@Preview(showBackground = true)
 @Composable
 private fun SearchNotesWithTextPreview() {
     PouchTheme(dynamicColor = false) {
@@ -726,10 +774,10 @@ private fun SearchNotesWithTextPreview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
-)
+//@Preview(
+//    showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
 @Composable
 private fun SearchNotesNightPreview() {
     PouchTheme(dynamicColor = false) {
@@ -743,7 +791,20 @@ private fun SearchNotesNightPreview() {
 //@Preview(showBackground = true)
 @Composable
 private fun NotesListItemPreview() {
-    PouchTheme {
+    PouchTheme(dynamicColor = false) {
+        NotesListItem(
+            Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
+        )
+    }
+}
+
+//@Preview(
+//    showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL
+//)
+@Composable
+private fun NotesListItemNightPreview() {
+    PouchTheme(dynamicColor = false) {
         NotesListItem(
             Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
         )
