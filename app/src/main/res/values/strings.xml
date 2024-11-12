@@ -15,6 +15,8 @@
     <string name="notes_list_tag">Notes list</string>
     <string name="notes_list_item_tag">Notes list item</string>
     <string name="add_new_note">Add new note</string>
+    <string name="note_deletion_snackbar_message">Note deleted</string>
+    <string name="note_deletion_snackbar_action_undo">Undo</string>
 
     <string name="sort_option_a_z">A ► Z</string>
     <string name="sort_option_z_a">Z ► A</string>

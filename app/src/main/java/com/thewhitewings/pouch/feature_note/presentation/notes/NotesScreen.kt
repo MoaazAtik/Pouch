@@ -11,7 +11,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -110,6 +109,7 @@ object NotesDestination : NavigationDestination {
 @Composable
 fun NotesScreen(
     uiState: NotesUiState,
+    snackbarHostState: SnackbarHostState,
     navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
@@ -118,7 +118,6 @@ fun NotesScreen(
     onToggleZone: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         modifier = modifier.testTag(stringResource(R.string.notes_screen_tag)),
@@ -582,6 +581,7 @@ private fun NotesScreenPreview() {
                     Note(3, "TV", "300.0", "50")
                 )
             ),
+            snackbarHostState = SnackbarHostState(),
             navigateBack = {},
             navigateToCreateNote = {},
             navigateToEditNote = {},
@@ -617,6 +617,7 @@ private fun NotesScreenNightPreview() {
                     Note(3, "TV", "300.0", stringResource(R.string.mock_timestamp_default_format))
                 )
             ),
+            snackbarHostState = SnackbarHostState(),
             navigateBack = {},
             navigateToCreateNote = {},
             navigateToEditNote = {},

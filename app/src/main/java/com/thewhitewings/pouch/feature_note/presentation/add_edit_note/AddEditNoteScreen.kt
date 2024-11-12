@@ -1,19 +1,14 @@
 package com.thewhitewings.pouch.feature_note.presentation.add_edit_note
 
-import android.content.res.Configuration
+import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -22,6 +17,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -29,21 +28,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
-import androidx.compose.ui.unit.dp
 import com.thewhitewings.pouch.R
+import com.thewhitewings.pouch.feature_note.domain.model.EMPTY_NOTE
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.presentation.navigation.NavigationDestination
-import com.thewhitewings.pouch.ui.theme.PouchTheme
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
+import com.thewhitewings.pouch.ui.theme.PouchTheme
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.launch
 
 private const val TAG = "AddEditNoteScreen"
 
@@ -69,21 +69,27 @@ object AddEditNoteDestination : NavigationDestination {
 @Composable
 fun AddEditNoteScreen(
     uiState: AddEditNoteUiState,
+    snackbarHostState: SnackbarHostState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onNoteDelete: () -> Unit,
+    onNoteRestore: () -> Unit,
     onNoteTitleChange: (String) -> Unit,
     onNoteBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     Scaffold(
-        modifier = modifier.testTag(stringResource(R.string.add_edit_note_screen_tag))
+        modifier = modifier.testTag(stringResource(R.string.add_edit_note_screen_tag)),
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         AddEditNoteScreenBody(
             uiState = uiState,
+            snackbarHostState = snackbarHostState,
             navigateBack = navigateBack,
             onNavigateUp = onNavigateUp,
             onNoteDelete = onNoteDelete,
+            onNoteRestore = onNoteRestore,
             onNoteTitleChange = onNoteTitleChange,
             onNoteBodyChange = onNoteBodyChange,
             modifier = modifier
@@ -96,13 +102,17 @@ fun AddEditNoteScreen(
 @Composable
 fun AddEditNoteScreenBody(
     uiState: AddEditNoteUiState,
+    snackbarHostState: SnackbarHostState,
     navigateBack: () -> Unit,
     onNavigateUp: () -> Unit,
     onNoteDelete: () -> Unit,
+    onNoteRestore: () -> Unit,
     onNoteTitleChange: (String) -> Unit,
     onNoteBodyChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .padding(
@@ -129,7 +139,15 @@ fun AddEditNoteScreenBody(
                 )
             }
             IconButton(
-                onClick = onNoteDelete,
+                onClick = {
+                    onNoteDelete()
+                    if (uiState.note != EMPTY_NOTE)
+                        showRestoreNoteSnackbar(
+                            context = context,
+                            snackbarHostState = snackbarHostState,
+                            onNoteRestore = onNoteRestore
+                        )
+                },
                 modifier = Modifier.padding(end = dimensionResource(R.dimen.padding_medium))
             ) {
                 Icon(
@@ -196,7 +214,10 @@ fun AddEditNoteScreenBody(
                 uiState.note.timestamp
             )
             Text(
-                text = stringResource(R.string.timestamp_in_add_edit_note_screen_template, formattedTimestamp),
+                text = stringResource(
+                    R.string.timestamp_in_add_edit_note_screen_template,
+                    formattedTimestamp
+                ),
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .testTag(stringResource(R.string.timestamp_in_add_edit_note_screen_tag))
@@ -208,15 +229,35 @@ fun AddEditNoteScreenBody(
     }
 }
 
+
+fun showRestoreNoteSnackbar(
+    context: Context,
+    snackbarHostState: SnackbarHostState,
+    onNoteRestore: () -> Unit
+) {
+    MainScope().launch {
+        val snackbarResult = snackbarHostState.showSnackbar(
+            message = context.getString(R.string.note_deletion_snackbar_message),
+            actionLabel = context.getString(R.string.note_deletion_snackbar_action_undo),
+            duration = SnackbarDuration.Long
+        )
+        if (snackbarResult == SnackbarResult.ActionPerformed)
+            onNoteRestore()
+    }
+}
+
+
 //@Preview(showBackground = true)
 @Composable
 fun AddEditNoteScreenWithoutTimestampPreview() {
     PouchTheme(dynamicColor = false) {
         AddEditNoteScreen(
             uiState = AddEditNoteUiState(),
+            snackbarHostState = SnackbarHostState(),
             navigateBack = {},
             onNavigateUp = {},
             onNoteDelete = {},
+            onNoteRestore = {},
             onNoteTitleChange = {},
             onNoteBodyChange = {}
         )
@@ -235,9 +276,11 @@ fun AddEditNoteScreenPreview() {
                     )
                 )
             ),
+            snackbarHostState = SnackbarHostState(),
             navigateBack = {},
             onNavigateUp = {},
             onNoteDelete = {},
+            onNoteRestore = {},
             onNoteTitleChange = {},
             onNoteBodyChange = {}
         )
@@ -259,9 +302,11 @@ fun AddEditNoteScreenNightPreview() {
                     )
                 )
             ),
+            snackbarHostState = SnackbarHostState(),
             navigateBack = {},
             onNavigateUp = {},
             onNoteDelete = {},
+            onNoteRestore = {},
             onNoteTitleChange = {},
             onNoteBodyChange = {}
         )

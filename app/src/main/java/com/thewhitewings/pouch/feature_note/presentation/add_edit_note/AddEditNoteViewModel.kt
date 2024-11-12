@@ -11,6 +11,7 @@ import com.thewhitewings.pouch.PouchApplication
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.repository.OfflineNotesRepository
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -126,6 +127,18 @@ class AddEditNoteViewModel(
     fun deleteNote() {
         viewModelScope.launch(dispatcher) {
             notesRepository.deleteNote(_uiState.value.note)
+        }
+    }
+
+    /**
+     * Restores a note by creating a note with the same title and body as the deleted note.
+     *
+     * **Note:**
+     * The note ID and the timestamp are not restored.
+     */
+    fun restoreNote() {
+        CoroutineScope(dispatcher).launch {
+            notesRepository.createNote(_uiState.value.note)
         }
     }
 

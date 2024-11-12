@@ -47,6 +47,13 @@ data class Note(
 )
 
 /**
+ * Empty note object.
+ *
+ * It has zeros and empty strings for all corresponding properties of the [Note].
+ */
+val EMPTY_NOTE = Note(timestamp = "")
+
+/**
  * Extension function to format the timestamp of a note.
  * @param formatType The [DateTimeFormatType] to use for formatting the timestamp.
  * @return The note with the formatted timestamp.
