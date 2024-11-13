@@ -35,6 +35,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -46,9 +47,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -113,6 +117,7 @@ fun NotesScreen(
     navigateBack: () -> Unit,
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
+    onNoteDelete: (Note) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
@@ -142,6 +147,7 @@ fun NotesScreen(
         NotesScreenBody(
             uiState = uiState,
             onNoteClick = navigateToEditNote,
+            onNoteDelete = onNoteDelete,
             onSearchNotes = onSearchNotes,
             onSortNotes = onSortNotes,
             onToggleZone = onToggleZone,
@@ -229,6 +235,7 @@ fun RevealLoaderAnimation(
 private fun NotesScreenBody(
     uiState: NotesUiState,
     onNoteClick: (Int) -> Unit,
+    onNoteDelete: (Note) -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
@@ -286,6 +293,7 @@ private fun NotesScreenBody(
         NotesList(
             notesList = uiState.notesList,
             onNoteClick = { onNoteClick(it.id) },
+            onNoteDelete = { onNoteDelete(it) },
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_large))
         )
     }
@@ -423,6 +431,7 @@ fun BomRevealingButton(
 private fun NotesList(
     notesList: List<Note>,
     onNoteClick: (Note) -> Unit,
+    onNoteDelete: (Note) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalStaggeredGrid(
@@ -433,6 +442,8 @@ private fun NotesList(
         items(items = notesList, key = { it.id }) { note ->
             NotesListItem(
                 note = note,
+                onNoteClick = { onNoteClick(note) },
+                onNoteDelete = { onNoteDelete(note) },
                 modifier = Modifier
                     .padding(
                         start = dimensionResource(R.dimen.padding_medium),
@@ -440,7 +451,6 @@ private fun NotesList(
                         top = 10.dp,
                         bottom = 26.dp
                     )
-                    .clickable { onNoteClick(note) }
                     .animateItem()
             )
         }
@@ -450,20 +460,46 @@ private fun NotesList(
 @Composable
 private fun NotesListItem(
     note: Note,
+    onNoteClick: (Note) -> Unit,
+    onNoteDelete: (Note) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(
+    val dismissState = rememberSwipeToDismissBoxState()
+
+    SwipeToDismissBox(
+        state = dismissState,
         modifier = modifier
-            .testTag(stringResource(R.string.notes_list_item_tag))
-            .customShadowedShape(
-                color = MaterialTheme.colorScheme.surfaceContainerLowest,
-                shadowColor = MaterialTheme.colorScheme.primary,
-                blurRadius = 12.dp,
-                cornerRadius = 10.dp
-            )
+            .testTag(stringResource(R.string.notes_list_item_tag)),
+        enableDismissFromStartToEnd = false,
+        backgroundContent = {
+            Box(
+                Modifier
+                    .fillMaxSize()
+                    .wrapContentSize(align = Alignment.CenterEnd)
+                    .padding(end = 16.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Delete,
+                    contentDescription = stringResource(R.string.delete_note_description),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
     ) {
+        if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
+            onNoteDelete(note)
+        }
+
         Column(
             modifier = Modifier
+                .clickable { onNoteClick(note) }
+                .fillMaxWidth()
+                .customShadowedShape(
+                    color = MaterialTheme.colorScheme.surfaceContainerLowest,
+                    shadowColor = MaterialTheme.colorScheme.primary,
+                    blurRadius = 12.dp,
+                    cornerRadius = 10.dp
+                )
                 .padding(
                     horizontal = dimensionResource(R.dimen.padding_medium),
                     vertical = dimensionResource(R.dimen.padding_10)
@@ -585,6 +621,7 @@ private fun NotesScreenPreview() {
             navigateBack = {},
             navigateToCreateNote = {},
             navigateToEditNote = {},
+            onNoteDelete = {},
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {}
@@ -621,6 +658,7 @@ private fun NotesScreenNightPreview() {
             navigateBack = {},
             navigateToCreateNote = {},
             navigateToEditNote = {},
+            onNoteDelete = {},
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {}
@@ -653,7 +691,8 @@ private fun NotesScreenBodyPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteDelete = {}
         )
     }
 }
@@ -686,7 +725,8 @@ private fun NotesScreenBodyNightPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteDelete = {}
         )
     }
 }
@@ -700,7 +740,8 @@ private fun NotesScreenBodyEmptyListPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteDelete = {}
         )
     }
 }
@@ -717,7 +758,8 @@ private fun NotesScreenBodyBomEmptyListPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteDelete = {}
         )
     }
 }
@@ -733,7 +775,8 @@ private fun NotesScreenBodyEmptyListNightPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteDelete = {}
         )
     }
 }
@@ -752,7 +795,8 @@ private fun NotesScreenBodyBomEmptyListNightPreview() {
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
-            onNoteClick = {}
+            onNoteClick = {},
+            onNoteDelete = {}
         )
     }
 }
@@ -802,9 +846,9 @@ private fun SearchNotesNightPreview() {
 @Composable
 private fun NotesListItemPreview() {
     PouchTheme(dynamicColor = false) {
-        NotesListItem(
-            Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
-        )
+//        NotesListItem(
+//            Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
+//        )
     }
 }
 
@@ -815,8 +859,8 @@ private fun NotesListItemPreview() {
 @Composable
 private fun NotesListItemNightPreview() {
     PouchTheme(dynamicColor = false) {
-        NotesListItem(
-            Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
-        )
+//        NotesListItem(
+//            Note(1, "Game", "Note body", stringResource(R.string.mock_timestamp_default_format))
+//        )
     }
 }
