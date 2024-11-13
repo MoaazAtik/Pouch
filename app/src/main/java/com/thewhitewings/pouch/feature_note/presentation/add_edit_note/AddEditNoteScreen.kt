@@ -1,6 +1,5 @@
 package com.thewhitewings.pouch.feature_note.presentation.add_edit_note
 
-import android.content.Context
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,10 +16,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -39,11 +36,10 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.EMPTY_NOTE
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.presentation.navigation.NavigationDestination
+import com.thewhitewings.pouch.feature_note.presentation.util.showRestoreNoteSnackbar
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 import com.thewhitewings.pouch.ui.theme.PouchTheme
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 private const val TAG = "AddEditNoteScreen"
 
@@ -229,22 +225,22 @@ fun AddEditNoteScreenBody(
     }
 }
 
-
-fun showRestoreNoteSnackbar(
-    context: Context,
-    snackbarHostState: SnackbarHostState,
-    onNoteRestore: () -> Unit
-) {
-    MainScope().launch {
-        val snackbarResult = snackbarHostState.showSnackbar(
-            message = context.getString(R.string.note_deletion_snackbar_message),
-            actionLabel = context.getString(R.string.note_deletion_snackbar_action_undo),
-            duration = SnackbarDuration.Long
-        )
-        if (snackbarResult == SnackbarResult.ActionPerformed)
-            onNoteRestore()
-    }
-}
+//
+//fun showRestoreNoteSnackbar(
+//    context: Context,
+//    snackbarHostState: SnackbarHostState,
+//    onNoteRestore: () -> Unit
+//) {
+//    MainScope().launch {
+//        val snackbarResult = snackbarHostState.showSnackbar(
+//            message = context.getString(R.string.note_deletion_snackbar_message),
+//            actionLabel = context.getString(R.string.note_deletion_snackbar_action_undo),
+//            duration = SnackbarDuration.Long
+//        )
+//        if (snackbarResult == SnackbarResult.ActionPerformed)
+//            onNoteRestore()
+//    }
+//}
 
 
 //@Preview(showBackground = true)

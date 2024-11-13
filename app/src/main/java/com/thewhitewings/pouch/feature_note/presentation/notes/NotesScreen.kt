@@ -89,9 +89,9 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
-import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.showRestoreNoteSnackbar
 import com.thewhitewings.pouch.feature_note.presentation.navigation.NavigationDestination
 import com.thewhitewings.pouch.feature_note.presentation.util.customShadowedShape
+import com.thewhitewings.pouch.feature_note.presentation.util.showRestoreNoteSnackbar
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 import com.thewhitewings.pouch.feature_note.util.Zone
