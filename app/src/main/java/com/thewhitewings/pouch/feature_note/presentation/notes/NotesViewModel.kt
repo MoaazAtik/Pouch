@@ -44,6 +44,9 @@ class NotesViewModel(
     // Boolean of whether the timeout for revealing the Box of mysteries has started
     private var bomTimeoutStarted = false
 
+    // The recently deleted note that it may be restored
+    private var recentlyDeletedNote: Note? = null
+
     init {
         collectZoneAndCollectSortOption()
 
@@ -169,6 +172,20 @@ class NotesViewModel(
     fun deleteNote(note: Note) {
         viewModelScope.launch(dispatcher) {
             notesRepository.deleteNote(note)
+            recentlyDeletedNote = note
+        }
+    }
+
+    /**
+     * Restores a note by creating a note with the same title and body as the deleted note.
+     *
+     * **Note:**
+     * The note ID and the timestamp are not restored.
+     */
+    fun restoreNote() {
+        viewModelScope.launch(dispatcher) {
+            recentlyDeletedNote?.let { notesRepository.createNote(it) }
+            recentlyDeletedNote = null
         }
     }
 

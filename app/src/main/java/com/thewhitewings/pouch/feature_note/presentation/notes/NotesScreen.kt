@@ -89,6 +89,7 @@ import com.airbnb.lottie.compose.rememberLottieComposition
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
+import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.showRestoreNoteSnackbar
 import com.thewhitewings.pouch.feature_note.presentation.navigation.NavigationDestination
 import com.thewhitewings.pouch.feature_note.presentation.util.customShadowedShape
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
@@ -118,6 +119,7 @@ fun NotesScreen(
     navigateToCreateNote: () -> Unit,
     navigateToEditNote: (Int) -> Unit,
     onNoteDelete: (Note) -> Unit,
+    onNoteRestore: () -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
@@ -146,8 +148,10 @@ fun NotesScreen(
     ) { innerPadding ->
         NotesScreenBody(
             uiState = uiState,
+            snackbarHostState = snackbarHostState,
             onNoteClick = navigateToEditNote,
             onNoteDelete = onNoteDelete,
+            onNoteRestore = onNoteRestore,
             onSearchNotes = onSearchNotes,
             onSortNotes = onSortNotes,
             onToggleZone = onToggleZone,
@@ -234,8 +238,10 @@ fun RevealLoaderAnimation(
 @Composable
 private fun NotesScreenBody(
     uiState: NotesUiState,
+    snackbarHostState: SnackbarHostState,
     onNoteClick: (Int) -> Unit,
     onNoteDelete: (Note) -> Unit,
+    onNoteRestore: () -> Unit,
     onSearchNotes: (searchQuery: String) -> Unit,
     onSortNotes: (sortOptionId: Int) -> Unit,
     onToggleZone: () -> Unit,
@@ -292,8 +298,10 @@ private fun NotesScreenBody(
         )
         NotesList(
             notesList = uiState.notesList,
+            snackbarHostState = snackbarHostState,
             onNoteClick = { onNoteClick(it.id) },
             onNoteDelete = { onNoteDelete(it) },
+            onNoteRestore = { onNoteRestore() },
             modifier = Modifier.padding(horizontal = dimensionResource(R.dimen.padding_large))
         )
     }
@@ -430,8 +438,10 @@ fun BomRevealingButton(
 @Composable
 private fun NotesList(
     notesList: List<Note>,
+    snackbarHostState: SnackbarHostState,
     onNoteClick: (Note) -> Unit,
     onNoteDelete: (Note) -> Unit,
+    onNoteRestore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyVerticalStaggeredGrid(
@@ -442,8 +452,10 @@ private fun NotesList(
         items(items = notesList, key = { it.id }) { note ->
             NotesListItem(
                 note = note,
+                snackbarHostState = snackbarHostState,
                 onNoteClick = { onNoteClick(note) },
                 onNoteDelete = { onNoteDelete(note) },
+                onNoteRestore = { onNoteRestore() },
                 modifier = Modifier
                     .padding(
                         start = dimensionResource(R.dimen.padding_medium),
@@ -460,8 +472,10 @@ private fun NotesList(
 @Composable
 private fun NotesListItem(
     note: Note,
+    snackbarHostState: SnackbarHostState,
     onNoteClick: (Note) -> Unit,
     onNoteDelete: (Note) -> Unit,
+    onNoteRestore: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val dismissState = rememberSwipeToDismissBoxState()
@@ -488,6 +502,11 @@ private fun NotesListItem(
     ) {
         if (dismissState.currentValue == SwipeToDismissBoxValue.EndToStart) {
             onNoteDelete(note)
+            showRestoreNoteSnackbar(
+                context = LocalContext.current,
+                snackbarHostState = snackbarHostState,
+                onNoteRestore = onNoteRestore
+            )
         }
 
         Column(
@@ -622,6 +641,7 @@ private fun NotesScreenPreview() {
             navigateToCreateNote = {},
             navigateToEditNote = {},
             onNoteDelete = {},
+            onNoteRestore = {},
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {}
@@ -659,6 +679,7 @@ private fun NotesScreenNightPreview() {
             navigateToCreateNote = {},
             navigateToEditNote = {},
             onNoteDelete = {},
+            onNoteRestore = {},
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {}
@@ -688,11 +709,13 @@ private fun NotesScreenBodyPreview() {
                     Note(3, "TV", "300.0", stringResource(R.string.mock_timestamp_default_format))
                 )
             ),
+            snackbarHostState = SnackbarHostState(),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
             onNoteClick = {},
-            onNoteDelete = {}
+            onNoteDelete = {},
+            onNoteRestore = {}
         )
     }
 }
@@ -722,11 +745,13 @@ private fun NotesScreenBodyNightPreview() {
                     Note(3, "TV", "300.0", stringResource(R.string.mock_timestamp_default_format))
                 )
             ),
+            snackbarHostState = SnackbarHostState(),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
             onNoteClick = {},
-            onNoteDelete = {}
+            onNoteDelete = {},
+            onNoteRestore = {}
         )
     }
 }
@@ -737,11 +762,13 @@ private fun NotesScreenBodyEmptyListPreview() {
     PouchTheme {
         NotesScreenBody(
             uiState = NotesUiState(notesList = listOf()),
+            snackbarHostState = SnackbarHostState(),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
             onNoteClick = {},
-            onNoteDelete = {}
+            onNoteDelete = {},
+            onNoteRestore = {}
         )
     }
 }
@@ -755,11 +782,13 @@ private fun NotesScreenBodyBomEmptyListPreview() {
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
             ),
+            snackbarHostState = SnackbarHostState(),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
             onNoteClick = {},
-            onNoteDelete = {}
+            onNoteDelete = {},
+            onNoteRestore = {}
         )
     }
 }
@@ -772,11 +801,13 @@ private fun NotesScreenBodyEmptyListNightPreview() {
     PouchTheme {
         NotesScreenBody(
             uiState = NotesUiState(notesList = listOf()),
+            snackbarHostState = SnackbarHostState(),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
             onNoteClick = {},
-            onNoteDelete = {}
+            onNoteDelete = {},
+            onNoteRestore = {}
         )
     }
 }
@@ -792,11 +823,13 @@ private fun NotesScreenBodyBomEmptyListNightPreview() {
                 notesList = listOf(),
                 zone = Zone.BOX_OF_MYSTERIES
             ),
+            snackbarHostState = SnackbarHostState(),
             onSearchNotes = {},
             onSortNotes = {},
             onToggleZone = {},
             onNoteClick = {},
-            onNoteDelete = {}
+            onNoteDelete = {},
+            onNoteRestore = {}
         )
     }
 }
