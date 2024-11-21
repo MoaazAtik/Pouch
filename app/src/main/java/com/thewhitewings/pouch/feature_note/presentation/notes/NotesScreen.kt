@@ -1,7 +1,6 @@
 package com.thewhitewings.pouch.feature_note.presentation.notes
 
 import android.content.Context
-import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RawRes
 import androidx.compose.animation.animateColorAsState
@@ -36,8 +35,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FloatingActionButton
@@ -90,6 +87,7 @@ import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
 import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.navigation.NavigationDestination
+import com.thewhitewings.pouch.feature_note.presentation.util.BomRevealingButton
 import com.thewhitewings.pouch.feature_note.presentation.util.customShadowedShape
 import com.thewhitewings.pouch.feature_note.presentation.util.showRestoreNoteSnackbar
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
@@ -408,31 +406,6 @@ private fun SortNotesButtonAndMenu(
             }
         }
     }
-}
-
-@Composable
-fun BomRevealingButton(
-    onToggleZone: () -> Unit,
-    focusManager: FocusManager,
-    zone: Zone,
-    modifier: Modifier = Modifier
-) {
-    Button(
-        onClick = {
-            focusManager.clearFocus()
-            onToggleZone()
-        },
-        colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent),
-        modifier =
-        if (zone == Zone.CREATIVE)
-            modifier
-                .size(width = 80.dp, height = 20.dp)
-                .testTag(stringResource(R.string.bom_button_tag))
-        else
-            modifier
-                .size(width = 0.dp, height = 20.dp)
-                .testTag(stringResource(R.string.bom_button_tag))
-    ) {}
 }
 
 @Composable
@@ -845,7 +818,7 @@ private fun SearchNotesPreview() {
     }
 }
 
-@Preview(showBackground = true, widthDp = 320, heightDp = 100)
+//@Preview(showBackground = true, widthDp = 320, heightDp = 100)
 @Composable
 private fun SearchNotesWithTextPreview() {
     PouchTheme(dynamicColor = false) {
@@ -858,11 +831,11 @@ private fun SearchNotesWithTextPreview() {
     }
 }
 
-@Preview(
-    showBackground = true,
-    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
-    widthDp = 320, heightDp = 100
-)
+//@Preview(
+//    showBackground = true,
+//    uiMode = Configuration.UI_MODE_NIGHT_YES or Configuration.UI_MODE_TYPE_NORMAL,
+//    widthDp = 320, heightDp = 100
+//)
 @Composable
 private fun SearchNotesNightPreview() {
     PouchTheme(dynamicColor = false) {
@@ -872,6 +845,18 @@ private fun SearchNotesNightPreview() {
                 onValueChange = {}
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BomRevealingButtonPreview() {
+    PouchTheme(dynamicColor = false) {
+        BomRevealingButton(
+            onToggleZone = {},
+            focusManager = LocalFocusManager.current,
+            zone = Zone.CREATIVE
+        )
     }
 }
 

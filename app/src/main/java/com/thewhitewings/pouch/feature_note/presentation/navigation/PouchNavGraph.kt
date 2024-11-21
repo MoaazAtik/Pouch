@@ -57,7 +57,7 @@ fun PouchNavHost(
                 onNoteRestore = viewModel::restoreNote,
                 onSearchNotes = viewModel::updateSearchQuery,
                 onSortNotes = viewModel::updateSortOption,
-                onToggleZone = viewModel::knockBoxOfMysteries
+                onToggleZone = viewModel::toggleZone
             )
         }
 
