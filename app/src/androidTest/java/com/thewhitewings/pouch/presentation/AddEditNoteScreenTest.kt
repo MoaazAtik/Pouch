@@ -1,6 +1,7 @@
 package com.thewhitewings.pouch.presentation
 
 import androidx.activity.ComponentActivity
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
@@ -10,15 +11,15 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
-import com.thewhitewings.pouch.mocks.mockNote1
-import com.thewhitewings.pouch.mocks.mockTimestamp1
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteScreen
 import com.thewhitewings.pouch.feature_note.presentation.add_edit_note.AddEditNoteUiState
+import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
+import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
+import com.thewhitewings.pouch.mocks.mockNote1
+import com.thewhitewings.pouch.mocks.mockTimestamp1
 import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
 import com.thewhitewings.pouch.rules.onNodeWithStringId
 import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
-import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
-import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -39,15 +40,18 @@ class AddEditNoteScreenTest {
         composeTestRule.setContent {
             AddEditNoteScreen(
                 uiState = AddEditNoteUiState(),
+                snackbarHostState = SnackbarHostState(),
                 navigateBack = { },
                 onNavigateUp = { },
                 onNoteDelete = { },
+                onNoteRestore = {},
                 onNoteTitleChange = {},
                 onNoteBodyChange = {}
             )
         }
 
-        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag).assertIsDisplayed()
+        composeTestRule.onNodeWithTagForStringId(R.string.add_edit_note_screen_tag)
+            .assertIsDisplayed()
     }
 
     /**
@@ -63,6 +67,8 @@ class AddEditNoteScreenTest {
                 onNavigateUp = {},
                 onNoteDelete = {},
                 onNoteTitleChange = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteBodyChange = {}
             )
         }
@@ -99,6 +105,8 @@ class AddEditNoteScreenTest {
                 navigateBack = {},
                 onNavigateUp = {},
                 onNoteDelete = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteTitleChange = { updatedTitle = it },
                 onNoteBodyChange = { updatedBody = it }
             )
@@ -138,6 +146,8 @@ class AddEditNoteScreenTest {
                 onNavigateUp = { upTriggered = true },
                 onNoteDelete = { deleteTriggered = true },
                 onNoteTitleChange = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteBodyChange = {}
             )
         }
@@ -173,6 +183,8 @@ class AddEditNoteScreenTest {
                 onNavigateUp = {},
                 onNoteDelete = {},
                 onNoteTitleChange = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteBodyChange = {}
             )
         }
@@ -204,6 +216,8 @@ class AddEditNoteScreenTest {
                 onNavigateUp = {},
                 onNoteDelete = {},
                 onNoteTitleChange = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteBodyChange = {}
             )
         }
@@ -238,6 +252,8 @@ class AddEditNoteScreenTest {
                 navigateBack = {},
                 onNavigateUp = {},
                 onNoteDelete = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteTitleChange = {},
                 onNoteBodyChange = {}
             )
@@ -279,6 +295,8 @@ class AddEditNoteScreenTest {
                 navigateBack = {},
                 onNavigateUp = {},
                 onNoteDelete = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteRestore = {},
                 onNoteTitleChange = {},
                 onNoteBodyChange = {}
             )

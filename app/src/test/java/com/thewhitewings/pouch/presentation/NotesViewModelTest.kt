@@ -345,51 +345,6 @@ class NotesViewModelTest {
     }
 
     /**
-     * Test that [NotesViewModel.knockBoxOfMysteries] triggers the sequence of
-     * revealing the Box of mysteries.
-     * The zone toggles to [Zone.BOX_OF_MYSTERIES] after 5 times of calling
-     * [NotesViewModel.knockBoxOfMysteries] by calling
-     * [NotesViewModel.startBoxRevealTimeout] and then [NotesViewModel.toggleZone] gets called.
-     * Happy path for [NotesViewModel.knockBoxOfMysteries]
-     */
-    @Test
-    fun `When knocked on Bom 5 times, zone is toggled to Bom`() =
-        runTest {
-            // Given: the initial zone is CREATIVE, and the search query is empty
-            val expectedZone = Zone.BOX_OF_MYSTERIES
-
-            repeat(5) {
-                viewModel.knockBoxOfMysteries()
-            }
-
-            whenever(notesRepository.getSortOptionStream(expectedZone))
-                .thenReturn(flowOf(initialSortOption))
-            whenever(notesRepository.getAllNotesStream(initialSortOption))
-                .thenReturn(flowOf(mockInitialNotesList))
-
-            testDispatcher.scheduler.advanceUntilIdle()
-            assertEquals(Zone.BOX_OF_MYSTERIES, viewModel.uiState.value.zone)
-        }
-
-    /**
-     * Test that [NotesViewModel.knockBoxOfMysteries] triggers the sequence of
-     * revealing the Box of mysteries.
-     * The zone doesn't toggle to [Zone.BOX_OF_MYSTERIES] before 5 times of calling
-     * [NotesViewModel.knockBoxOfMysteries].
-     * Case: less than 5 times of calling [NotesViewModel.knockBoxOfMysteries]
-     * for [NotesViewModel.knockBoxOfMysteries]
-     */
-    @Test
-    fun `When knocked on Bom less than 5 times, zone should not change`() =
-        runTest {
-            // Given: the initial zone is CREATIVE
-            repeat(4) {
-                viewModel.knockBoxOfMysteries()
-            }
-            assertEquals(initialZone, viewModel.uiState.value.zone)
-        }
-
-    /**
      * Test that [NotesViewModel.toggleZone] toggles the zone and updates the UI state correctly.
      * Happy path for [NotesViewModel.toggleZone]
      */

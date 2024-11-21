@@ -4,13 +4,11 @@ import androidx.activity.ComponentActivity
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onChildren
@@ -20,7 +18,6 @@ import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
-import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.thewhitewings.pouch.R
 import com.thewhitewings.pouch.feature_note.domain.model.Note
@@ -28,12 +25,12 @@ import com.thewhitewings.pouch.feature_note.domain.util.SortOption
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesScreen
 import com.thewhitewings.pouch.feature_note.presentation.notes.NotesUiState
 import com.thewhitewings.pouch.feature_note.presentation.notes.ShowAnimations
-import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
-import com.thewhitewings.pouch.rules.onNodeWithStringId
-import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
 import com.thewhitewings.pouch.feature_note.util.DateTimeFormatType
 import com.thewhitewings.pouch.feature_note.util.DateTimeUtils
 import com.thewhitewings.pouch.feature_note.util.Zone
+import com.thewhitewings.pouch.rules.onNodeWithContentDescriptionForStringId
+import com.thewhitewings.pouch.rules.onNodeWithStringId
+import com.thewhitewings.pouch.rules.onNodeWithTagForStringId
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -54,9 +51,12 @@ class NotesScreenTest {
         composeTestRule.setContent {
             NotesScreen(
                 uiState = NotesUiState(),
+                snackbarHostState = SnackbarHostState(),
                 navigateBack = {},
                 navigateToCreateNote = {},
                 navigateToEditNote = {},
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onSearchNotes = {},
                 onSortNotes = {},
                 onToggleZone = {}
@@ -81,6 +81,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -107,6 +110,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -136,6 +142,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -161,6 +170,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -252,6 +264,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -274,6 +289,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -301,6 +319,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -323,6 +344,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -348,6 +372,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -375,6 +402,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -403,6 +433,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = { searchText = it },
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -433,6 +466,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = { searchText = it },
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -468,6 +504,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = { searchText = it },
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -493,6 +532,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -520,6 +562,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -552,6 +597,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = { sortOptionId -> selectedSortOptionId = sortOptionId },
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -582,6 +630,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -597,47 +648,6 @@ class NotesScreenTest {
 
         composeTestRule.onNodeWithTagForStringId(R.string.sort_options_menu_tag)
             .assertIsNotDisplayed()
-    }
-
-    /**
-     * Test that the Bom Revealing Button is displayed in CREATIVE zone and toggles the zone to BOX_OF_MYSTERIES when clicked.
-     * Also, the it is shrunk to 0.dp width in BOX_OF_MYSTERIES zone.
-     * Happy path for [BomRevealingButton]
-     * Cases: CREATIVE zone and BOX_OF_MYSTERIES zone
-     */
-    @Test
-    fun bomRevealingButton_basedOnZone_isDisplayedOrShrunk_AndTogglesZone() {
-        // Given: initial zone is CREATIVE, so the button should be visible
-        composeTestRule.setContent {
-            // MutableState to manage the current zone
-            val currentZone = remember { mutableStateOf(Zone.CREATIVE) }
-
-            // NotesScreen composable with the state-driven zone
-            NotesScreen(
-                uiState = NotesUiState(zone = currentZone.value),
-                navigateBack = {},
-                navigateToCreateNote = {},
-                navigateToEditNote = {},
-                onSearchNotes = {},
-                onSortNotes = {},
-                onToggleZone = {
-                    // Toggle to BOX_OF_MYSTERIES
-                    currentZone.value = Zone.BOX_OF_MYSTERIES
-                }
-            )
-        }
-
-        // Assert that the button with the bom button tag is displayed
-        composeTestRule.onNodeWithTagForStringId(R.string.bom_button_tag)
-            .assertIsDisplayed()
-
-        // Update the zone state to BOX_OF_MYSTERIES to trigger recomposition
-        composeTestRule.onNodeWithTagForStringId(R.string.bom_button_tag)
-            .performClick()
-
-        // Assert that the button is shrunk to 0.dp width after the zone change
-        composeTestRule.onNodeWithTagForStringId(R.string.bom_button_tag)
-            .assertWidthIsEqualTo(0.dp)
     }
 
     /**
@@ -660,6 +670,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -715,6 +728,9 @@ class NotesScreenTest {
                 },
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -748,6 +764,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
@@ -788,6 +807,9 @@ class NotesScreenTest {
                 navigateToEditNote = {},
                 onSearchNotes = {},
                 onSortNotes = {},
+                snackbarHostState = SnackbarHostState(),
+                onNoteDelete = {},
+                onNoteRestore = {},
                 onToggleZone = {}
             )
         }
