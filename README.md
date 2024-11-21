@@ -52,6 +52,8 @@ Here's how to make the most of this space:
  - Utilize the **Search** Field at the top to swiftly locate specific notes by title or content.
  - Tap on the **Sorting** Button at the right of the search field to open a pop-up menu for sorting notes alphabetically or by creating/editing time in ascending or descending order.
  - Tap on any note to **view** its details or make **edits**.
+ - Easily remove a note by swiping it to the left.
+ - Restore a recently removed note by tapping on the **Undo** button in the **Snackbar** that is shown temporarily after removing a note.
 
 <br>
 
@@ -85,7 +87,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 
 - **Programming Language:** Kotlin (migrated from Java)
 
-- **UI**: Jetpack Compose, Navigation Component
+- **UI**: Jetpack Compose, Android Views via Interoperability API, Navigation Component
 
 - **Storage:** Room library for local storage of notes
 
@@ -120,6 +122,7 @@ The focus was on maintainability, scalability, and aligning with Modern App Deve
 ## Core Files 📁
 - [NotesScreen](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/notes/NotesScreen.kt)
 - [NotesViewModel](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/notes/NotesViewModel.kt)
+- [BomRevealingButton](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/util/BomRevealingButton.kt)
 - [AddEditNoteScreen](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/add_edit_note/AddEditNoteScreen.kt)
 - [AddEditNoteViewModel](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/add_edit_note/AddEditNoteViewModel.kt)
 - [PouchNavGraph](app/src/main/java/com/thewhitewings/pouch/feature_note/presentation/navigation/PouchNavGraph.kt)<br><br>
