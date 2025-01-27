@@ -8,17 +8,6 @@ Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/
 
 <br>
 
-## Navigate Your Journey of exploring Pouch 🗺️
- 1. [Why Choose Pouch?](#why-choose-pouch-)
- 2. [Quick Start](#quick-start-)
- 3. [Usage](#usage-)
- 4. [Demonstration](#demonstration-)
- 5. [Utilized Techniques and Technologies](#utilized-techniques-and-technologies-)
- 6. [Upcoming Enhancements](#upcoming-enhancements-)
- 7. [Core Files](#core-files-)
-
-<br>
-
 <div align="center">
   <img src="https://github.com/user-attachments/assets/4d2c0536-bab9-47a9-bfc6-6ce96dc9ef85" alt="Creative Zone" width="250"/>
   <img src="https://github.com/user-attachments/assets/8f2c0fe4-309a-4882-bfc2-2ec42fe824f9" alt="Box of Mysteries" width="250"/>
@@ -27,6 +16,17 @@ Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/
 <div align="center">
   Screenshots
 </div>
+
+<br>
+
+## Navigate Your Journey of exploring Pouch 🗺️
+ 1. [Why Choose Pouch?](#why-choose-pouch-)
+ 2. [Quick Start](#quick-start-)
+ 3. [Usage](#usage-)
+ 4. [Demonstration](#demonstration-)
+ 5. [Utilized Techniques and Technologies](#utilized-techniques-and-technologies-)
+ 6. [Upcoming Enhancements](#upcoming-enhancements-)
+ 7. [Core Files](#core-files-)
 
 <br>
 
