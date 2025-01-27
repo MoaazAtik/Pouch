@@ -19,6 +19,17 @@ Supported by **The White Wings**🪽. Play Store [link](https://play.google.com/
 
 <br>
 
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/4d2c0536-bab9-47a9-bfc6-6ce96dc9ef85" alt="Creative Zone" width="250"/>
+  <img src="https://github.com/user-attachments/assets/8f2c0fe4-309a-4882-bfc2-2ec42fe824f9" alt="Box of Mysteries" width="250"/>
+</div>
+
+<div align="center">
+  Screenshots
+</div>
+
+<br>
+
 ## Why Choose Pouch? 💡
  - **Seamless Capture**: Pouch offers an intuitive interface that won't overwhelm you, allowing you to swiftly store your ideas and notes seamlessly in the **Creative Zone**, where inspiration thrives.
  - **Hidden Box of Mysteries**: Discover the hidden Box of Mysteries, where your most valuable ideas are safeguarded away from prying eyes.
